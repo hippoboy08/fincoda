@@ -1,0 +1,29 @@
+.registration-form {
+margin-top: 65px;
+}
+u{
+    text-decoration: underline;
+
+}
+input[type="radio"] {
+    display:none;
+}
+
+input[type="radio"]  {
+    display:inline-block;
+    width:16px;
+    height:16px;
+    margin:-1px 4px 0 0;
+    vertical-align:middle;
+    cursor:pointer;
+    -moz-border-radius:  50%;
+    border-radius:  50%;
+}
+
+input[type="radio"]:checked {
+    width:20px;
+    height:20px;
+    border: 5px solid #0DFF92;
+    color: #0DFF92;
+    background: orangered;
+}
