@@ -24,8 +24,13 @@ class UserGroupController extends Controller
         for($i=0; $i<count($groups); $i++){
             $group_id[]=$groups[$i]->user_group_id;
         }
+        if(empty($group_id)){
+            return view('errors.404')->with('title', ' Group not found')->with('message','You have not been associated with any company group.');
+        }else{
+            return view('usergroup.index')->with('groups',User_Group::whereIn('id',$group_id)->get());
+        }
 
-       return view('usergroup.index')->with('groups',User_Group::whereIn('id',$group_id)->get());
+
     }
 
     /**
