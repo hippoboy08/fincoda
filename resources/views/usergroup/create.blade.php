@@ -13,6 +13,14 @@
 
             @include('message.fail')
             @include('message.errors_head')
+            @if(count($administrators)<1)
+                <div class="alert alert-danger role=alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+                    <p>  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                       Every special user is assigned with a group or you do not have a special user. Please make a new special user before making a new group. </p>
+                </div>
+                @endif
             <div class="box box-primary">
                 <div class="box-body">
                     <div class="panel panel-default">
@@ -70,10 +78,12 @@
                                 </table>
                                 </div>
 
+                            @if(count($administrators)<1)
 
-
+                                <button type="submit" class="btn btn-info btn-flat" disabled="disabled" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Create Group</button>
+                            @else
                                 <button type="submit" class="btn btn-info btn-flat" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Create Group</button>
-
+                                @endif
                          </div>
                      </div>
                  </div>
