@@ -14,7 +14,7 @@ class UserGroupController extends Controller
 {
  public function index(){
 
-     $group=Auth::User()->group_administrator;
+ $group=Auth::User()->group_administrator;
  return view('usergroup.show')->with('group',$group)->with('members',User_Group::find($group->id)->hasMembers);
  }
 

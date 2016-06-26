@@ -20,8 +20,8 @@
                 <div class="box-body">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <label><h4>Group name : </h4></label><br>
-                           {!! $group->name !!}</label><br>
+                            <label><h4>Group name : </h4></label>
+                           <label>{!! $group->name !!}</label></label><br>
 
                             <label><h4>Description : </h4></label>
                             {!! $group->description !!}

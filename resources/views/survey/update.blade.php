@@ -5,7 +5,9 @@
         <div class="col-md-12 col-md-offset-0">
             <!-- general form elements -->
 
+
             {!! Form::open(['method'=>'PUT']) !!}
+
             <div class="box-header with-border">
                 <h3 class="box-title"><b>Pending survey.</b></h3>
                 <p><i>Below is the information about the pending survey you requested.

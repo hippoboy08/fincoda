@@ -8,9 +8,15 @@
             @include('message.success')
 
             <div class="box-header with-border">
-                <h3 class="box-title"><b>User Dashboard.</b></h3>
-                <p><i>Below is the list of all the surveys that you have been requested. If there is any open survey, please open it to answer.
-                    Also, you can view the results of all the closed surveys you have participated in.</i></p>
+                @if(Route::current()->getName()=='special.survey.index')
+                    <h3 class="box-title"><b>Company Group Dashboard.</b></h3>
+                    <p><i>Below is the list of all the surveys in your group.</i></p>
+                    @else
+                    <h3 class="box-title"><b>User Dashboard.</b></h3>
+                    <p><i>Below is the list of all the surveys that you have been requested. If there is any open survey, please open it to answer.
+                            Also, you can view the results of all the closed surveys you have participated in.</i></p>
+                    @endif
+
             </div>
             <div class="box box-primary">
                 <div class="box-body">
@@ -27,8 +33,15 @@
                         @endrole
 
                         @role('special')
-                        @include('survey.open')
-                        @include('survey.closed')
+                        @if(Route::current()->getName()=='special.survey.index')
+                            @include('survey.pending')
+                            @include('survey.open')
+                            @include('survey.closed')
+                            @else
+                            @include('survey.open')
+                            @include('survey.closed')
+                            @endif
+
                         @endrole
 
                     </div>
