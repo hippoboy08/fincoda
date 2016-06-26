@@ -62,5 +62,7 @@ Route::group(['middleware'=>'special',
     Route::get('/','DashboardController@index');
     Route::get('profile','ProfileController@index');
     Route::resource('survey','CompanySurveyController');
+    Route::resource('usergroup','UserGroupController');
+    Route::resource('survey','GroupSurveyController');
 
 });

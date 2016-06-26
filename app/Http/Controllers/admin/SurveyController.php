@@ -72,11 +72,7 @@ class SurveyController extends Controller
                     ->withInput();
             }else{
 
-                if(Auth::User()->hasRole('admin')){
-                   $category=1;
-                }else{
-                    $category=2;
-                }
+
                 $owner=Auth::User();
                 $survey=$owner->creates_survey()->create([
                     'title'=>$request->title,
@@ -85,7 +81,7 @@ class SurveyController extends Controller
                     'user_id'=>$owner->id,
                     'type_id'=>$request->survey_type,
                     'company_id'=>Auth::User()->company_id,
-                    'category_id'=>$category,
+                    'category_id'=>1,
                     'start_time'=>$from,
                     'end_time'=>$to
                 ]);

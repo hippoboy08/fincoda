@@ -5,7 +5,13 @@
         <div class="col-md-12 col-md-offset-0">
             <!-- general form elements -->
 
+            @role('admin')
             {!! Form::open(['method'=>'POST','action'=>'admin\SurveyController@store']) !!}
+            @endrole
+            @role('special')
+            {!! Form::open(['method'=>'POST','action'=>'special\GroupSurveyController@store']) !!}
+            @endrole
+
             <div class="box-header with-border">
                 <h3 class="box-title"><b>Create a new survey.</b></h3>
                 <p><i>Please provide all the information below to create a new survey.</i></p>
@@ -148,6 +154,7 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('editor2') !!}</label>
                                 @endif
                                 {!! Form::textarea('editor2',old('editor2'),['id'=>'editor2','rows'=>'10','cols'=>'80']) !!}</div><br>
+
 
                             <button type="submit" class="btn btn-info btn-flat" > Create Survey</button>
 
