@@ -21,7 +21,11 @@
             @endrole
 
             @role('special')
+            @if(Route::current()->getName()=='special.groupsurvey.index')
+                <th>Total participants</th>
+            @else
             <th>Survey Status</th>
+            @endif
             @endrole
         </tr>
         </thead>
@@ -45,7 +49,7 @@
         @role('special')
         @if(Route::current()->getName()=='special.groupsurvey.index')
             <td><a href="{!! url('special/groupsurvey/'.$open->id) !!}">{!! $open->title !!}</a></td>
-            @else
+         @else
         @if($open->completed=='0')
             <td><a href="{!! url('special/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
         @else
@@ -70,10 +74,14 @@
 
 
         @role('special')
+        @if(Route::current()->getName()=='special.groupsurvey.index')
+            <td>{!! count(\App\Participant::where('survey_id',$open->id)->get()) !!}</td>
+        @else
         @if($open->completed=='0')
             <td><span class="label label-danger">Not completed</span></td>
         @else
             <td><span class="label label-success">Completed</span></td>
+        @endif
         @endif
         @endrole
         @role('basic')

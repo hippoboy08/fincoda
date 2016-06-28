@@ -41,8 +41,7 @@
                     <li><a href="{{url('special/usergroup')}}"><i class="fa fa-info-circle" aria-hidden="true"></i>Group info</a></li>
                     <li><a href="{{url('special/groupsurvey')}}"><i class="fa fa-tachometer" aria-hidden="true"></i>Group Dashboard</a></li>
                     <li><a href="{!! url('special/groupsurvey/create') !!}"><i class="fa fa-list-alt" aria-hidden="true"></i>Create group survey</a></li>
-                    <li><a href="{{url('admin/survey')}}"><i class="fa fa-pie-chart" aria-hidden="true"></i>Survey Results</a></li>
-
+                    <li><a href="{!! url('special/groupsurveyresult') !!}"><i class="fa fa-pie-chart" aria-hidden="true"></i>Survey Results</a></li>
 
                 </ul>
             </li>

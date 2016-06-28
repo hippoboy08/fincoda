@@ -4,6 +4,7 @@ namespace App\Http\Controllers\special;
 
 use App\Indicator;
 use App\Survey;
+use App\User;
 use App\User_Group;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class GroupSurveyController extends Controller
         ->where('category_id',2)->get();
     $closed=Auth::User()->creates_survey()
         ->where('start_time','<',Carbon::now())
-        ->where('end_time','>',Carbon::now())
+        ->where('end_time','<',Carbon::now())
         ->where('category_id',2)->get();
         return view('dashboard')->with('open',$open)->with('closed',$closed)->with('pending',$pending);
 
@@ -188,7 +189,5 @@ class GroupSurveyController extends Controller
             return 'pending';
         }
     }
-
-
 
 }

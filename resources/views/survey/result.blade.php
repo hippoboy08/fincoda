@@ -74,6 +74,58 @@
 
                                 </div><br>
                                 @endrole
+
+                                @role('special')
+                                @if(Route::current()->getName()=='special.groupsurvey.show')
+                                <p class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse1"><i class="fa fa-sort-desc" aria-hidden="true"></i>
+                                        <label>Participants of the survey</label></a>
+                                <p>Below is the list of all the company members invited to take part in this survey.</p>
+                                </p>
+
+
+                                <div id="collapse1" class="panel-collapse collapse">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Full Name</th>
+                                            <th>Email Address</th>
+                                            <th>Survey Status</th>
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @foreach($participants as $participant)
+                                            <tr>
+                                                <td>{!! \App\User::find($participant->user_id)->name !!}</td>
+                                                <td>{!! \App\User::find($participant->user_id)->email  !!}</td>
+                                                @if($participant->completed==0)
+                                                    <td><span class="label label-danger">Not completed</span></td>
+                                                @else
+                                                    <td><span class="label label-success">Completed</span></td>
+                                                @endif
+                                            </tr>
+
+                                        @endforeach
+
+
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Full Name</th>
+                                            <th>Email Address</th>
+                                            <th>Survey Status</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+
+                                </div><br>
+                                @endif
+                                @endrole
+
+
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#home">Categories</a></li>
                                     <li><a data-toggle="tab" href="#menu1">Indicators</a></li>

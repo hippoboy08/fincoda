@@ -31,7 +31,7 @@
                 @endrole
 
                 @role('special')
-                @if(Route::current()->getName()=='special.groupsurvey.index')
+                @if(Route::current()->getName()=='special.groupsurvey.index' || Route::current()->getName()=='special.groupsurveyresult')
                     <td><a href="{!! url('special/groupsurvey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
                 @else
                 @if(Auth::User()->participate_survey->where('survey_id',$closed->id)->first()->completed==0)

@@ -24,8 +24,6 @@ class SurveyController extends Controller
 
     public function index()
     {
-
-
         return view('survey.index')->with('closed',Company::find(Auth::User()->company_id)->hasSurveys()->where('end_time','<',Carbon::now())->get());
     }
 
