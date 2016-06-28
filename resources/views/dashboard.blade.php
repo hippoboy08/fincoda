@@ -33,7 +33,7 @@
                         @endrole
 
                         @role('special')
-                        @if(Route::current()->getName()=='special.survey.index')
+                        @if(Route::current()->getName()=='special.groupsurvey.index')
                             @include('survey.pending')
                             @include('survey.open')
                             @include('survey.closed')

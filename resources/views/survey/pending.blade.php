@@ -21,7 +21,7 @@
             @endrole
 
             @role('special')
-            <td><a href="{!! url('special/survey/'.$pending->id) !!}"> {!! $pending->title !!}</a></td>
+            <td><a href="{!! url('special/groupsurvey/'.$pending->id) !!}"> {!! $pending->title !!}</a></td>
             @endrole
 
             <td>{!! \App\Survey_Type::find($pending->type_id)->name !!}</td>

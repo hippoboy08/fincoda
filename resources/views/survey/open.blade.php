@@ -43,12 +43,16 @@
         @endrole
 
         @role('special')
+        @if(Route::current()->getName()=='special.groupsurvey.index')
+            <td><a href="{!! url('special/groupsurvey/'.$open->id) !!}">{!! $open->title !!}</a></td>
+            @else
         @if($open->completed=='0')
             <td><a href="{!! url('special/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
         @else
             <td>{!! $open->title !!}
 
             </td>
+        @endif
         @endif
 
         @endrole
