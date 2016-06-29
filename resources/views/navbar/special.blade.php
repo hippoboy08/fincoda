@@ -134,7 +134,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{url('admin/members/'.Auth::id())}}" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{url('special/profile')}}" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
                                 <a href="{{url('logout')}}" class="btn btn-default btn-flat">Sign out</a>
