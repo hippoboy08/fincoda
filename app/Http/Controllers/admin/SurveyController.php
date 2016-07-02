@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\EmailTrait;
 use App\Indicator;
 use App\Participant;
 use App\Role_User;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Validator;
 
 class SurveyController extends Controller
 {
-
+use EmailTrait;
     public function index()
     {
         return view('survey.index')->with('closed',Company::find(Auth::User()->company_id)->hasSurveys()->where('end_time','<',Carbon::now())->get());
@@ -88,13 +89,22 @@ class SurveyController extends Controller
                     ->join('role_user','role_user.user_id','=','users.id')
                     ->where('role_user.role_id','!=',1)
                     ->where('role_user.user_id','!=',Auth::id())
-                    ->select('users.id')->get();
+                    ->select('users.id', 'email')->get();
 
                 foreach($participants as $participant){
                     $survey->participants()->create([
                         'user_id'=>$participant->id
                     ]);
                 }
+
+                foreach($participants as $participant){
+                    $member_email[]=$participant->email;
+                }
+
+                //send email to the participants
+              $this->email('email.newsurvey',['owner'=>$owner->name, 'title'=>$survey->title],$member_email);
+
+
 
                 return Redirect::to('admin')->with('success','Your survey has been created successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');

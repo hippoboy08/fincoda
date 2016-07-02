@@ -41,6 +41,7 @@
 
 
         {!! Form::open(['method'=>'POST']) !!}
+
         <div class="form-group has-feedback">
             <div class="form-group{!! $errors->has('email') ? ' has-error':'' !!}">
                 @if($errors->has('email'))

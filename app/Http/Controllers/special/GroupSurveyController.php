@@ -94,7 +94,16 @@ class GroupSurveyController extends Controller
                     }
 
 
-                 return Redirect::to('special')->with('success','Your survey has been created successfully.
+                    //send email to the participants
+                    foreach($participants as $participant){
+                        $member_email[]=User::find($participant->user_id)->email;
+                    }
+
+                    $this->email('email.newsurvey',['owner'=>$owner->name, 'title'=>$survey->title],$member_email);
+
+
+
+                    return Redirect::to('special')->with('success','The survey has been created successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
 
                 }

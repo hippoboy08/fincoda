@@ -12,6 +12,7 @@
         </div><!-- /.box-header -->
 
         {!! Form::open(['role'=>'form','method'=>'POST']) !!}
+
         <div class="box box-primary">
             <div class="box-body">
                 @include('message.fail')
