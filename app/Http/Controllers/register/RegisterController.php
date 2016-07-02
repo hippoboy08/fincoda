@@ -4,6 +4,7 @@ namespace App\Http\Controllers\register;
 
 use App\Company;
 use App\Company_Profile;
+use App\Http\Controllers\EmailTrait;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
+    use EmailTrait;
     public function company()
     {
         return view('register.company');
@@ -76,6 +78,11 @@ class RegisterController extends Controller
 
             ]);
 
+            //send an email with the company code
+            $name=$request->company_name;
+            $code=$company_code;
+            $this->email('email.registration',['name'=>$name,'code'=>$code],$admin->email);
+
           }
 
        return view('register.success')->with('success','Your Organisation has bee registered successfully. An Email has been sent to you containing your
@@ -116,6 +123,8 @@ class RegisterController extends Controller
             $user->profile()->create([
 
             ]);
+
+
 
             return view('register.success')->with('success','You have been registered to the FINCODA Survey System successfully. Now you are able to receive the survey request created by
              your Administrators. Please login to explore more');
