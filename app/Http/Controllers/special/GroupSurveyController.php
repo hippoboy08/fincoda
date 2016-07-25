@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\special;
 
+use App\Http\Controllers\EmailTrait;
 use App\Indicator;
 use App\Survey;
 use App\User;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 
 class GroupSurveyController extends Controller
 {
+    use EmailTrait;
     public function index(){
         //group dashboard
     $open=Auth::User()->creates_survey()

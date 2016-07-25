@@ -46,6 +46,7 @@ class SurveyController extends Controller
                             ->with('participants',Survey::find($id)->participants)
                             ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
                     }else{
+                        //the place to start with for the peer evaluation
                         return 'peer evaluation not yet implemented';
                     }
 
