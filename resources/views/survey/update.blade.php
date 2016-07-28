@@ -74,9 +74,37 @@
 
                             <div id="collapse1" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    @foreach($indicators as $indicator)
-                                        <p>{!! $indicator !!}</p>
-                                    @endforeach
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Indicators</th>
+                                            <th>Indicator Category</th>
+
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($indicators as $question)
+                                            <tr>
+                                                <td>{!! $question->id !!}</td>
+                                                <td>{!! $question->indicator !!}</td>
+                                                <td>{!! strtoupper(\App\Indicator_Group::find($question->group_id)->name) !!}</td>
+                                            </tr>
+
+                                        @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Indicators</th>
+                                            <th>Indicator Category</th>
+
+
+                                        </tr>
+                                        </tfoot>
+                                    </table>
 
                                 </div>
 

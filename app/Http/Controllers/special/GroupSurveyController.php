@@ -42,7 +42,15 @@ class GroupSurveyController extends Controller
     {
 
         return view('survey.create')->with('indicators',Indicator::all())
-            ->with('participants',DB::table('users')->join('role_user','role_user.user_id','=','users.id')->where('role_id','=',3)->get());
+            ->with('participants',DB::table('users')
+                ->join('role_user','role_user.user_id','=','users.id')
+                ->where('role_id','=',3)
+                ->join('user_in_groups','user_in_groups.user_id','=','users.id')
+                ->join('user_groups','user_groups.id','=','user_in_groups.user_group_id')
+                ->join('companies','companies.id','=','users.company_id')
+                ->where('companies.id','=',Auth::User()->company_id)
+                ->where('user_groups.administrator','=',Auth::id())
+                ->get());
 
     }
 
