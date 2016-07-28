@@ -15,7 +15,15 @@ class UserGroupController extends Controller
  public function index(){
 
  $group=Auth::User()->group_administrator;
- return view('usergroup.show')->with('group',$group)->with('members',User_Group::find($group->id)->hasMembers);
+  if(!$group){
+   return view('errors.404')->with('title',' Group not found')
+       ->with('message','You have not been assigned any group. Please contact your company administrator.');
+  }else{
+   return view('usergroup.show')->with('group',$group)->with('members',User_Group::find($group->id)->hasMembers);
+
+  }
+
+
  }
 
 }
