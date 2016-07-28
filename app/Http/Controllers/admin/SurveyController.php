@@ -36,7 +36,12 @@ use EmailTrait;
     public function create()
     {
       return view('survey.create')->with('indicators',Indicator::all())
-          ->with('participants',DB::table('users')->join('role_user','role_user.user_id','=','users.id')->where('role_id','!=',1)->get());
+                 ->with('participants',DB::table('users')
+              ->join('role_user','role_user.user_id','=','users.id')
+              ->join('companies','companies.id','=','users.company_id')
+              ->where('role_id','!=',1)
+                     ->where('company_id','=',Auth::User()->company_id)
+                     ->get());
 
     }
 
