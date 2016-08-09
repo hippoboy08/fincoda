@@ -13,6 +13,8 @@
                 <!-- form start -->
 
                     {!! Form::open(['role'=>'form','method'=>'POST']) !!}
+
+
                   <div class="box box-primary">
                     <div class="box-body">
 
@@ -27,7 +29,7 @@
 
                         </div>
 
-                        <div class="form-group{!! $errors->has('company_name') ? ' has-error':'' !!} has-feedback">
+                        <div class="form-group{!! $errors->has('company_type') ? ' has-error':'' !!} has-feedback">
                             <label>Organisation Type*</label><br>
                             @if($errors->has('company_type'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_type') !!}.</label>

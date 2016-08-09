@@ -1,10 +1,27 @@
 
+@media (min-width: 768px) {
+    .col-sm-4 {
+        width: 33.3333333333%;
+    }
+
+    .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+        float: left;
+    }
+
+    .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+        position: relative;
+        min-height: 1px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
 body {
   background-color: #f2f2f2;
     font-family: "Lato";
     font-weight: 300;
     font-size: 16px;
-    color: #555;
+    color: black;
     padding-top: 50px;
 
     -webkit-font-smoothing: antialiased;
@@ -25,8 +42,18 @@ p {
     margin-bottom: 25px;
 }
 
+.navbar-nav>li>a {
+    font-size: larger;
+    font-weight: bolder;
+
+}
+
 .centered {
     text-align: center;
+    background-color: white;
+    border-radius: 7px;
+    padding-bottom: 30px;
+    margin-bottom: 100px;
 }
 
 /* Links */
@@ -41,7 +68,10 @@ a {
     transition: color 0.1s ease-in, background 0.1s ease-in;
 }
 
-a:hover,
+a:hover {
+    text-decoration: none;
+}
+
 a:focus {
     color: #c0392b;
     text-decoration: none;
@@ -72,44 +102,33 @@ a:after {
    ========================================================================== */
 
 #headerwrap {
-	background-color: #34495e;
-	padding-top: 60px;
+	padding-top: 80px;
 }
 
 #headerwrap h1 {
 	margin-top: 30px;
-	color: white;
-	font-size: 70px;
-	
+	font-size: 60px;
 }
 
 #headerwrap h3 {
-	color: white;
 	font-size: 30px;
 }
 
 #headerwrap h5 {
-	color: white;
 	font-weight: 700;
 	text-align: left;
 }
 
 #headerwrap p {
 	text-align: left;
-	color: white
 }
 
 /* intro Wrap */
 
-#intro {
-	padding-top: 50px;
-	border-top: #bdc3c7 solid 5px;
+h1 {
+    padding-top: 30px;
 }
 
-#features {
-	padding-top: 50px;
-	padding-bottom: 50px;
-}
 
 #features .ac a{
 	font-size: 20px;
@@ -117,36 +136,41 @@ a:after {
 
 /* Showcase Wrap */
 
-#showcase {
-	display: block;
-	background-color: #34495e;
-	padding-top: 50px;
-	padding-bottom: 50px;
-}
-
 #showcase h1 {
-	color: white;
+	color: black;
 }
 
 #footerwrap {
-	background-color: #2f2f2f;
-	color: white;
-	padding-top: 40px;
-	padding-bottom: 60px;
-	text-align: left;
+    background-color: #f2f2f2;
+    color: black;
+    padding-top: 40px;
+    padding-bottom: 60px;
+    text-align: left;
 }
 
 #footerwrap h3 {
 	font-size: 28px;
-	color: white;
+	color: black;
 }
 
 #footerwrap p {
-	color: white;
+	color: black;
 	font-size: 18px;
 }
 
-/* Copyright Wrap */
+/*Contact section*/
+.align-left{
+    text-align: left;
+    padding-left: 60px;
+}
+
+.align-right {
+    text-align: left;
+    padding-right: 60px;
+}
+
+
+    /* Copyright Wrap */
 
 #c {
 	background: #222222;
@@ -157,4 +181,84 @@ a:after {
 #c p {
 	color: white
 }
+
+.general-table {
+    width: 100%;
+}
+
+.general-table tr th {
+    padding: 10px 15px 10px 15px;
+    color: #6C7068;
+    text-align: center;
+}
+
+.general-table tr:nth-child(even) {
+    background-color: #EDEDF2;
+}
+
+.general-table tr td {
+    padding: 10px 15px 10px 15px;
+    text-align: center;
+}
+
+.general-table.left-table tr td,
+.general-table.left-table tr th {
+    text-align: left;
+    padding-left: 10%;
+}
+
+.white-bg {
+    background: white;
+}
+
+.navbar-brand {
+    height: auto;
+}
+
+.navbar-brand > img {
+    height: 50px;
+}
+.navbar-brand > img {
+    display: block;
+}
+
+.navbar-nav {
+    padding-top: 30px;
+}
+
+.navbar-default {
+    background-color: #3A88B5;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: white;
+}
+
+.logos {
+    height: 70px;
+}
+.logos, .logos-long {
+    margin: 20px 0px 20px 0px;
+    text-align: center;
+}
+
+.row-logo {
+    background-color: #f2f2f2;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #151313;
+    background-color: #b9e2e8;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: whitesmoke;
+}
+
+
+.copyright {
+    background-color: #f2f2f2;
+}
+
+
 

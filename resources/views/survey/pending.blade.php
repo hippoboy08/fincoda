@@ -16,7 +16,14 @@
     <tbody>
     @foreach($pending as $pending)
         <tr>
-           <td><a href="{!! url('admin/survey/'.$pending->id) !!}"> {!! $pending->title !!}</a></td>
+            @role('admin')
+            <td><a href="{!! url('admin/survey/'.$pending->id) !!}"> {!! $pending->title !!}</a></td>
+            @endrole
+
+            @role('special')
+            <td><a href="{!! url('special/groupsurvey/'.$pending->id) !!}"> {!! $pending->title !!}</a></td>
+            @endrole
+
             <td>{!! \App\Survey_Type::find($pending->type_id)->name !!}</td>
             <td>{!! $pending->start_time !!}</td>
             <td>{!! $pending->end_time !!}</td>

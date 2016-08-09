@@ -15,4 +15,8 @@ class User_Group extends Model
     public function hasMembers(){
         return $this->hasMany(User_In_Group::class,'user_group_id');
     }
+
+    public function hasAdministrator(){
+        return $this->belongsTo(User::class,'administrator');
+    }
 }

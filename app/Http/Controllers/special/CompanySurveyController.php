@@ -135,7 +135,7 @@ class CompanySurveyController extends Controller
             $answer->completed=1;
             $answer->save();
 
-            return Redirect::to('special/survey')->with('success','Your answer has been saved thank you for answering the survey. The complete result can be viewed once the survey is completed ');
+            return Redirect::to('special/survey')->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed ');
 
 
 

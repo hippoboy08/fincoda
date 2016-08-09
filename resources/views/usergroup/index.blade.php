@@ -53,7 +53,7 @@
                                             <td>{!! \App\User::find($group->created_by)->name  !!}</td>
 
                                             <td>{!! \App\User::find($group->administrator)->name !!}</td>
-                                            <td>{!! 10 !!}</td>
+                                            <td>{!! count(\App\User_In_Group::where('user_group_id',$group->id)->get()) !!}</td>
                                             <td>{!! $group->created_at->toDateString() !!}</td>
 
                                         </tr>

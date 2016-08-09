@@ -8,7 +8,7 @@
 
             <div class="box-header with-border">
                 <h3 class="box-title"><b>Completed and/or Closed surveys.</b></h3>
-                <p><i>Below is the list of all the completed and the closed surveys of your company.
+                <p><i>Below is the list of all the completed and the closed surveys.
                         Click to view the individual survey result.</i></p>
             </div>
             <div class="box box-primary">

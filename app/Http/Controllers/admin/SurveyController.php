@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\EmailTrait;
 use App\Indicator;
 use App\Participant;
 use App\Role_User;
@@ -21,11 +22,9 @@ use Illuminate\Support\Facades\Validator;
 
 class SurveyController extends Controller
 {
-
+use EmailTrait;
     public function index()
     {
-
-
         return view('survey.index')->with('closed',Company::find(Auth::User()->company_id)->hasSurveys()->where('end_time','<',Carbon::now())->get());
     }
 
@@ -37,7 +36,12 @@ class SurveyController extends Controller
     public function create()
     {
       return view('survey.create')->with('indicators',Indicator::all())
-          ->with('participants',DB::table('users')->join('role_user','role_user.user_id','=','users.id')->where('role_id','!=',1)->get());
+              ->with('participants',DB::table('users')
+              ->join('role_user','role_user.user_id','=','users.id')
+              ->join('companies','companies.id','=','users.company_id')
+              ->where('role_id','!=',1)
+                     ->where('company_id','=',Auth::User()->company_id)
+                     ->get());
 
     }
 
@@ -72,11 +76,7 @@ class SurveyController extends Controller
                     ->withInput();
             }else{
 
-                if(Auth::User()->hasRole('admin')){
-                   $category=1;
-                }else{
-                    $category=2;
-                }
+
                 $owner=Auth::User();
                 $survey=$owner->creates_survey()->create([
                     'title'=>$request->title,
@@ -85,7 +85,7 @@ class SurveyController extends Controller
                     'user_id'=>$owner->id,
                     'type_id'=>$request->survey_type,
                     'company_id'=>Auth::User()->company_id,
-                    'category_id'=>$category,
+                    'category_id'=>1,
                     'start_time'=>$from,
                     'end_time'=>$to
                 ]);
@@ -94,13 +94,22 @@ class SurveyController extends Controller
                     ->join('role_user','role_user.user_id','=','users.id')
                     ->where('role_user.role_id','!=',1)
                     ->where('role_user.user_id','!=',Auth::id())
-                    ->select('users.id')->get();
+                    ->select('users.id', 'email')->get();
 
                 foreach($participants as $participant){
                     $survey->participants()->create([
                         'user_id'=>$participant->id
                     ]);
                 }
+
+                foreach($participants as $participant){
+                    $member_email[]=$participant->email;
+                }
+
+                //send email to the participants
+              $this->email('email.newsurvey',['owner'=>$owner->name, 'title'=>$survey->title],$member_email);
+
+
 
                 return Redirect::to('admin')->with('success','Your survey has been created successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');

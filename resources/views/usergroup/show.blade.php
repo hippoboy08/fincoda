@@ -5,7 +5,7 @@
         <div class="col-md-12 col-md-offset-0">
             <!-- general form elements -->
 
-            {!! Form::open(['method'=>'POST','action'=>'admin\UserGroupController@store']) !!}
+
             <div class="box-header with-border">
                 <h3 class="box-title"><b>Company User Group information.</b></h3>
                 <p><i>Below is the list of all the user groups in your company. Click the group name to explore more about the group.</i></p>
@@ -16,12 +16,14 @@
             @include('message.fail')
             @include('message.errors_head')
             @include('message.success')
+
+
             <div class="box box-primary">
                 <div class="box-body">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <label><h4>Group name : </h4></label>
-                            <label>{!! $group->name !!}</label><br>
+                           <label>{!! $group->name !!}</label></label><br>
 
                             <label><h4>Description : </h4></label>
                             {!! $group->description !!}
@@ -66,7 +68,7 @@
 
                             </div><br>
 
-                            <label><h4>Surveys conducted in the group. --------Dummy Records for now</h4></label>
+                            <label><h4>Surveys conducted in the group. --------Dummy table belowRecords for now</h4></label>
                             <p>Below is the list of surveys conducted in the group.</p>
 
                             <table id="example2" class="table table-bordered table-striped">
@@ -120,7 +122,7 @@
                 </div>
              </div>
          </div>
-    </div>
+
     <!-- DataTables -->
     <script src="{{URL::asset('datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{URL::asset('datatables/dataTables.bootstrap.min.js')}}"></script>

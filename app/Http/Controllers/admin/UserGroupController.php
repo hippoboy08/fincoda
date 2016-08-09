@@ -28,6 +28,7 @@ class UserGroupController extends Controller
     {
 
         return view('usergroup.index')->with('groups',Company::find(Auth::User()->company_id)->hasUserGroups()->orderBy('id','desc')->get());
+
     }
 
     /**

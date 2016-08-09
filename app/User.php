@@ -70,4 +70,9 @@ class User extends Authenticatable
     public function associated_groups(){
         return $this->hasMany(User_In_Group::class);
     }
+
+    public function group_administrator(){
+        return $this ->hasOne(User_Group::class,'administrator');
+
+    }
 }

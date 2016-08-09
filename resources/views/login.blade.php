@@ -41,6 +41,7 @@
 
 
         {!! Form::open(['method'=>'POST']) !!}
+
         <div class="form-group has-feedback">
             <div class="form-group{!! $errors->has('email') ? ' has-error':'' !!}">
                 @if($errors->has('email'))
@@ -72,9 +73,9 @@
 
         <a href="#">I forgot my password</a><br>
         <br>
-        <a href="register.html" class="text-center">Register a new company</a><br>
+        <a href="{{url('register/company')}}" class="text-center">Register a new company</a><br>
         --OR--<br>
-        <a href="register.html" class="text-center">Register as a company member</a>
+        <a href="{{url('register/user')}}" class="text-center">Register as a company member</a>
 
 
     </div><!-- /.login-box-body -->
