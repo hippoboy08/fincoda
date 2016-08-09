@@ -37,6 +37,11 @@ Route::group(['middleware'=>'admin',
 
     Route::get('/','DashboardController@index');
     Route::get('company','ProfileController@company');
+    //This returns the edit blade
+    Route::get('editCompanyProfile','ProfileController@editCompanyProfile');
+    //This posts back the edit blade to action updateCompanyProfile
+    Route::post('updateCompanyProfile','ProfileController@updateCompanyProfile');
+    Route::post('deleteCompanyProfile','ProfileController@deleteCompanyProfile');
     Route::resource('members','MembersController');
     Route::resource('roles','RolesController');
     Route::resource('survey','SurveyController');
@@ -49,7 +54,7 @@ Route::group(['middleware'=>'basic',
                 'namespace'=>'basic',
                 'prefix'=>'basic'],function(){
     Route::get('/','DashboardController@index');
-    Route::get('profile','ProfileController@index');
+    Route::resource('profile','ProfileController@index');
     Route::resource('survey','SurveyController');
     Route::resource('usergroup','UserGroupController');
 

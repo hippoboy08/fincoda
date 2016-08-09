@@ -129,20 +129,68 @@ class SurveyController extends Controller
                   ->with('indicators',Indicator::all())
                   ->with('participants',Survey::find($id)->participants);
           }else{
+              //This returns the indicator scores for each user that took part in the survey
+              //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
+              //In other words it will always return a single result
+              $surveyScoreAllUsers = DB::table('indicators')
+                                ->join('results','results.indicator_id','=','indicators.id')
+                                ->join('user_in_groups','results.user_id','=','user_in_groups.user_id')
+                                ->select('user_in_groups.user_group_id as Group_ID','results.survey_id as Survey_ID',
+                                         'results.user_id as User_ID','indicators.id as Indicator_ID',
+                                         'results.answer as Answer')
+                                ->where('results.survey_id',$id)
+                                ->groupBy('user_in_groups.user_group_id', 'results.user_id', 'results.survey_id', 'indicators.id')
+                                ->get();
+
+              //This returns the average of the user group per indicator in this survey
+              $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
+                                "SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
+                                indicators.id as Indicator_ID, indicators.indicator as Indicator,
+                                AVG(results.answer) as Group_Average
+                                FROM indicators
+                                join results on results.indicator_id = indicators.id
+                                join user_in_groups on results.user_id = user_in_groups.user_id
+                                WHERE results.survey_id = :surveyId
+                                GROUP BY user_in_groups.user_group_id, results.survey_id, indicators.id"),
+                                array("surveyId"=>$id));
+
+              //This returns the average of each user per indicator group for this survey
+              $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
+                                "SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
+                                results.user_id as User_ID, indicators.group_id as Indicator_Group,
+                                AVG(results.answer) as Indicator_Group_Average
+                                FROM indicators
+                                JOIN results on results.indicator_id = indicators.id
+                                JOIN user_in_groups on results.user_id = user_in_groups.user_id
+                                WHERE results.survey_id = :surveyId
+                                GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id"),
+                                array("surveyId"=>$id));
+
+              //This returns the average of each user group per indicator group in this survey
+              $surveyScorePerIndicatorGroup = DB::select(DB::raw(
+                                "SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
+                                indicators.group_id as Indicator_Group,
+                                AVG(results.answer) as Indicator_Group_Average
+                                FROM indicators
+                                JOIN results on results.indicator_id = indicators.id
+                                JOIN user_in_groups on results.user_id = user_in_groups.user_id
+                                WHERE results.survey_id = :surveyId
+                                GROUP BY results.survey_id, indicators.group_id"),
+                                array("surveyId"=>$id));
 
               return view('survey.result')->with('survey',Survey::find($id))
-                  ->with('participants',Survey::find($id)->participants)
-                  ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+              ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
+              ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
+              ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
+              ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+              ->with('participants',Survey::find($id)->participants)
+              ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
           }
 
       }else{
           return view('errors.404')->with('title',' Survey Not found')
               ->with('message','The survey you requested doe not belong to your company or does not exists in the Fincoda Survey System.');
       }
-
-
-
-
     }
 
     /**
