@@ -12,14 +12,25 @@ class IndicatorGroupTableSeeder extends Seeder
      */
     public function run()
     {
-       Indicator_Group::create([
-            'name'=>'individual',
-            ]);
-        Indicator_Group::create([
-           'name'=>'interpersonal'
+        DB::table('indicator_groups')->insert([
+            'name' => 'CREATIVITY',
+            'created_at' => \Carbon\Carbon::now()
         ]);
-        Indicator_Group::create([
-           'name'=>'networking'
+        DB::table('indicator_groups')->insert([
+            'name' => 'CRITICAL THINKING',
+            'created_at' => \Carbon\Carbon::now()
+        ]);
+        DB::table('indicator_groups')->insert([
+            'name' => 'INITIATIVE',
+            'created_at' => \Carbon\Carbon::now()
+        ]);
+        DB::table('indicator_groups')->insert([
+            'name' => 'TEAMWORK',
+            'created_at' => \Carbon\Carbon::now()
+        ]);
+        DB::table('indicator_groups')->insert([
+            'name' => 'NETWORKING',
+            'created_at' => \Carbon\Carbon::now()
         ]);
     }
 }

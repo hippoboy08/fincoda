@@ -12,7 +12,7 @@
                 </div><!-- /.box-header -->
                 <!-- form start -->
 
-                    {!! Form::open(['role'=>'form','method'=>'POST']) !!}
+                 {!! Form::open(['role'=>'form','method'=>'POST']) !!}
 
 
                   <div class="box box-primary">
