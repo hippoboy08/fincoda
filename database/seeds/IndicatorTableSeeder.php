@@ -214,7 +214,7 @@ class IndicatorTableSeeder extends Seeder
         DB::table('indicators')->insert([
             'indicator' => 'Work in multidisciplinary environments ',
             'group_id' => 5,
-           
+
 
         ]);
 
