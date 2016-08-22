@@ -18,10 +18,7 @@
 
 
 
-            <<<<<<< HEAD
-            =======
-
-                                            <p class="panel-title">
+                                                   <p class="panel-title">
                                                 <a data-toggle="collapse" href="#collapse1"><i class="fa fa-sort-desc" aria-hidden="true"></i>
                                                     <label>Participants of the survey</label></a>
                                             <p>Below is the list of all the company members invited to take part in this survey.</p>
@@ -116,7 +113,7 @@
                                             @endrole
 
 
-            >>>>>>> 6e3ff70ca071a5fac96e417c6056d67fe52fd3b7
+          
 
 
 

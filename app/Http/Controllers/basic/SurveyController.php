@@ -134,7 +134,8 @@ class SurveyController extends Controller
             $answer->completed=1;
             $answer->save();
 
-            return 'saved';
+            return Redirect::to('basic/survey')->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed ');
+
 
 
 
