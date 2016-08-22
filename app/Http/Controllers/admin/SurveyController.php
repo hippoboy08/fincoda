@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 
 class SurveyController extends Controller
@@ -122,6 +124,10 @@ use EmailTrait;
 
     }
 
+    public function getParticipantDetails(Request $request){
+
+          return view('survey.index')->with('closed',Company::find(Auth::User()->company_id)->hasSurveys()->where('end_time','<',Carbon::now())->get());
+    }
 
     /**
      * Display the specified resource.
@@ -144,12 +150,21 @@ use EmailTrait;
               $surveyScoreAllUsers = DB::table('indicators')
                                 ->join('results','results.indicator_id','=','indicators.id')
                                 ->join('user_in_groups','results.user_id','=','user_in_groups.user_id')
+                                ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
                                 ->select('user_in_groups.user_group_id as Group_ID','results.survey_id as Survey_ID',
                                          'results.user_id as User_ID','indicators.id as Indicator_ID',
-                                         'results.answer as Answer')
-                                ->where('results.survey_id',$id)
+                                         'indicators.indicator as Indicator', 'results.answer as Answer',
+                                         'indicators.group_id as Indicator_Group_ID','indicator_groups.name as Indicator_Group')
+                                ->where('results.survey_id',1)
                                 ->groupBy('user_in_groups.user_group_id', 'results.user_id', 'results.survey_id', 'indicators.id')
                                 ->get();
+
+                                //This returns the paginated results for survey score all users
+                                $page = LengthAwarePaginator::resolveCurrentPage();
+                                $collection = new Collection($surveyScoreAllUsers);
+                                $itemsPerPage = 5;
+                                $slicedCollection = $collection->slice(($page-1)*$itemsPerPage,$page)->all();
+                                $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);
 
               //This returns the average of the user group per indicator in this survey
               $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
@@ -161,31 +176,35 @@ use EmailTrait;
                                 join user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
                                 GROUP BY user_in_groups.user_group_id, results.survey_id, indicators.id"),
-                                array("surveyId"=>$id));
+                                array("surveyId"=>1));
 
               //This returns the average of each user per indicator group for this survey
               $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
                                 "SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
-                                results.user_id as User_ID, indicators.group_id as Indicator_Group,
+                                results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
+                                indicator_groups.name as Indicator_Group,
                                 AVG(results.answer) as Indicator_Group_Average
                                 FROM indicators
                                 JOIN results on results.indicator_id = indicators.id
+                                JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                 JOIN user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
                                 GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id"),
-                                array("surveyId"=>$id));
+                                array("surveyId"=>1));
 
               //This returns the average of each user group per indicator group in this survey
               $surveyScorePerIndicatorGroup = DB::select(DB::raw(
                                 "SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
-                                indicators.group_id as Indicator_Group,
+                                indicators.group_id as Indicator_Group_ID,
+                                indicator_groups.name as Indicator_Group,
                                 AVG(results.answer) as Indicator_Group_Average
                                 FROM indicators
                                 JOIN results on results.indicator_id = indicators.id
+                                JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                 JOIN user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
                                 GROUP BY results.survey_id, indicators.group_id"),
-                                array("surveyId"=>$id));
+                                array("surveyId"=>1));
 
               return view('survey.result')->with('survey',Survey::find($id))
               ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])

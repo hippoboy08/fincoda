@@ -41,9 +41,9 @@
                                   {!! Form::text('company_joined_at', $company->created_at->toDateString(),['class'=>'form-control']) !!}
                                   <div>
                                     <button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Profile</button>
-                                  </div>
-                                  <div align="right">
-                                    <button disabled class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Delete Profile</button>
+                                    <div class="row pull-right" >
+                                     <button disabled class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Delete Profile</button>
+                                    </div>
                                   </div>
 
                                 </div>

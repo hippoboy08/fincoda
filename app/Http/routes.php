@@ -44,6 +44,7 @@ Route::group(['middleware'=>'admin',
     Route::post('deleteCompanyProfile','ProfileController@deleteCompanyProfile');
     Route::resource('members','MembersController');
     Route::resource('roles','RolesController');
+    Route::post('getParticipantDetails','SurveyController@getParticipantDetails');
     Route::resource('survey','SurveyController');
     Route::resource('usergroup','UserGroupController');
 

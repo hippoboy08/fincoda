@@ -15,7 +15,6 @@
         </thead>
         <tbody>
         @foreach($closed as $closed)
-
             <tr>
                 @role('admin')
                 <td><a href="{!! url('admin/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
@@ -31,14 +30,10 @@
                 @endrole
 
                 @role('special')
-                @if(Route::current()->getName()=='special.groupsurvey.index' || Route::current()->getName()=='special.groupsurveyresult')
-                    <td><a href="{!! url('special/groupsurvey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
-                @else
                 @if(Auth::User()->participate_survey->where('survey_id',$closed->id)->first()->completed==0)
                     <td>{!! $closed->title !!}</td>
                 @else
                     <td><a href="{!! url('special/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
-                @endif
                 @endif
 
                 @endrole
