@@ -12,101 +12,212 @@ class IndicatorTableSeeder extends Seeder
      */
     public function run()
     {
-        Indicator::create([
-            'indicator' => 'Presents ideas that are suitable for tasks.',
+        //factory(App\Indicator::class, 30)->create();
+
+        DB::table('indicators')->insert([
+            'indicator' => 'Think differently and adopt different perspectives.',
             'group_id' => 1,
+
         ]);
-        Indicator::create([
-            'indicator' => 'Presents creative ideas.',
+        DB::table('indicators')->insert([
+            'indicator' => 'Be attentive when others are speaking, and respond effectively to others’ comments during the conversation.',
+            'group_id' => 4,
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Use intuition and own knowledge to start actions.',
             'group_id' => 1,
+
         ]);
-        Indicator::create([
-            'indicator' => 'Presents new ways to implement ideas.',
-            'group_id' => 1,
+        DB::table('indicators')->insert([
+            'indicator' => 'Invite feedback and comments .',
+            'group_id' => 4,
+
         ]);
-        Indicator::create([
-            'indicator' => 'Evaluate the advantage and disadvantage of actions.',
-            'group_id' => 1,
-        ]);
-        Indicator::create([
-            'indicator' => 'Identifies relationships among different components of the task.',
-            'group_id' => 1,
-        ]);
-        Indicator::create([
-            'indicator' => 'Faces the tasks from different points of view.',
-            'group_id' => 1,
-        ]);
-        Indicator::create([
-            'indicator' => 'Uses available resources ingeniously.',
-            'group_id' => 1,
-        ]);
-        Indicator::create([
-            'indicator' => 'Foresees how events will develop.',
-            'group_id' => 1,
-        ]);
-        Indicator::create([
-            'indicator' => 'Shows enthusiasm',
-            'group_id' => 1,
-        ]);
-        Indicator::create([
-            'indicator' => 'Persistently pursues the goals.',
-            'group_id' => 1,
-        ]);
-        Indicator::create([
-            'indicator' => 'Takes daring yet reasonable risks.',
-            'group_id' => 1,
-        ]);
-        Indicator::create([
-            'indicator' => 'Orients the task towards the target.',
-            'group_id' => 1,
-        ]);
-        Indicator::create([
-            'indicator' => 'Transmits ideas effectively.',
-            'group_id' => 2,
-        ]);
-        Indicator::create([
-            'indicator' => 'Listens to teammates.',
-            'group_id' => 2,
-        ]);
-        Indicator::create([
-            'indicator' => 'Establishes constructive group relationships through dialogue.',
-            'group_id' => 2,
-        ]);
-        Indicator::create([
-            'indicator' => 'Collaborates actively.',
-            'group_id' => 2,
-        ]);
-        Indicator::create([
-            'indicator' => 'Contributes to group functioning.',
-            'group_id' => 2,
-        ]);
-        Indicator::create([
-            'indicator' => 'Takes initiatives.',
-            'group_id' => 2,
-        ]);
-        Indicator::create([
-            'indicator' => 'Drives others to act.',
-            'group_id' => 2,
-        ]);
-        Indicator::create([
-            'indicator' => 'Faces conflicts with flexibility to reach agreements.',
-            'group_id' => 2,
-        ]);
-        Indicator::create([
-            'indicator' => 'Applies ethical values.',
+
+        DB::table('indicators')->insert([
+            'indicator' => 'Foster improvements in work organization.',
             'group_id' => 3,
+
         ]);
-        Indicator::create([
-            'indicator' => 'Takes into account the implications of the task for society.',
+
+        DB::table('indicators')->insert([
+            'indicator' => 'Obtain constructive comments from colleagues.',
+            'group_id' => 4,
+
+
+        ]);
+
+        DB::table('indicators')->insert([
+            'indicator' => 'Find new ways to implement ideas.',
+            'group_id' => 1,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Identify sources of conflict between oneself and others, or among other people, and to take steps to overcome disharmony',
+            'group_id' => 4,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Take an acceptable level of risk to support new ideas .',
             'group_id' => 3,
+
+
         ]);
-        Indicator::create([
-            'indicator' => 'Is able to work in multidisciplinary environments.',
-            'group_id' =>3,
-        ]);
-        Indicator::create([
-            'indicator' => 'Uses networking contacts to reach goals',
+        DB::table('indicators')->insert([
+            'indicator' => 'Go beyond expectations in the assignment, task, or job description without being asked  .',
             'group_id' => 3,
+
+
         ]);
-      }
+        DB::table('indicators')->insert([
+            'indicator' => 'Meet people with different kinds of ideas and perspectives to extend your own knowledge domains .',
+            'group_id' => 5,
+
+
+        ]);
+
+        //group twwo
+
+        DB::table('indicators')->insert([
+            'indicator' => 'Convince people to support an innovative idea .',
+            'group_id' => 3,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Systematically introduce new ideas into work practices.',
+            'group_id' => 3,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Act quickly and energetically.',
+            'group_id' => 3,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Generate original solutions for problems or to opportunities.',
+            'group_id' => 1,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Use trial and error for problem solving.',
+            'group_id' => 2,
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Develop and experiment with new ways of problem solving .',
+            'group_id' => 2,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Acquire, assimilate, transform and exploit external knowledge to establish, manage and learn from informal organisational ties .',
+            'group_id' => 5,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Challenge the status quo.',
+            'group_id' => 2,
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Face the task from different points of view.',
+            'group_id' => 2,
+
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Make suggestions to improve current process products or services.',
+            'group_id' => 1,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Present novel ideas.',
+            'group_id' => 1,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Forecast impact on users.',
+            'group_id' =>2,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Show inventiveness in using resources.',
+            'group_id' => 1,
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Search out new working methods, techniques or instruments.',
+            'group_id' => 1,
+
+        ]);
+
+
+        /**/
+        DB::table('indicators')->insert([
+            'indicator' => 'Provide constructive feedback, cooperation, coaching or help to team colleagues.',
+            'group_id' => 4,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Work well with others, understanding their needs and being sympathetic with them.',
+            'group_id' => 4,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Share timely information with the appropriate stakeholders.',
+            'group_id' => 4,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Consult about essential changes .',
+            'group_id' => 4,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Build relationships outside the team/organization.',
+            'group_id' => 5,
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Refine ideas into a useful form.',
+            'group_id' => 1,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Engage outsiders of the core work group from the beginning.',
+            'group_id' => 5,
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Ask “Why?” and “Why not?” and “What if?” with a purpose',
+            'group_id' => 2,
+
+
+        ]);
+        DB::table('indicators')->insert([
+            'indicator' => 'Work in multidisciplinary environments ',
+            'group_id' => 5,
+
+
+        ]);
+
+
+    }
 }
