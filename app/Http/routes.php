@@ -8,6 +8,10 @@ Route::get('/', function () {
 Route::get('login', function () {
     return view('login');
 });
+Route::get('password/reset','Auth\PasswordController@showLinkRequestForm');
+Route::post('password/reset','Auth\passwordController@postReset');
+Route::post('password/email','Auth\PasswordController@sendResetLinkEmail');
+Route::get('password/reset/{var}','Auth\PasswordController@showResetForm');
 
 /*
 Route::get('/','home\HomeController@homepage');
