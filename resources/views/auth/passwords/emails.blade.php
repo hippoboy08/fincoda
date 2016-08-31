@@ -5,6 +5,7 @@
             <p class="login-box-msg" style="font-size: 19px; font-weight: 600">Reset your password.</p>
             <p class="login-box-msg">Please provide your email address below.</p>
 
+            @include('message.success')
 
             @if (session('status'))
                 <div class="alert alert-success">
