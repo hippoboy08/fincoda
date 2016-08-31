@@ -18,7 +18,7 @@
                 @include('message.fail')
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <div class="form-group{!! $errors->has('company_name') ? ' has-error':'' !!} has-feedback">
+                        <div class="form-group{!! $errors->has('company_code') ? ' has-error':'' !!} has-feedback">
                         <label>Organisation Code*</label><br>
                             @if($errors->has('company_code'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_code') !!}</label>
@@ -41,7 +41,7 @@
                     <div class="panel-body">
                         <div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
                             <label>Full Name*</label><br>
-                            @if($errors->has('company_code'))
+                            @if($errors->has('name'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('name') !!}</label>
                             @endif
                             {!! Form::text('name',old('name'),['class'=>'form-control','placeholder'=>'Full name']) !!}
@@ -74,6 +74,16 @@
                             {!! Form::password('password_confirmation',['class'=>'form-control','placeholder'=>'Re-type Password']) !!}
                             <span class="form-control-feedback"><i class="fa fa-eye" aria-hidden="true"></i></span>
                         </div>
+
+                        <div class="form-group{!! $errors->has('g-recaptcha-response') ? ' has-error':'' !!} has-feedback">
+                            <label>Please check the box below*<i>(Spam filtration)</i></label><br>
+                            @if($errors->has('g-recaptcha-response'))
+                                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('g-recaptcha-response') !!}.</label>
+                            @endif
+                            {!! Recaptcha::render() !!}
+                        </div>
+
+
                         <div class="form-group col-md-offset-5">
                             {!! Form::submit('Register',['class'=>'btn btn-primary']) !!}
                         </div>

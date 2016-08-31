@@ -30,7 +30,8 @@ class RegisterController extends Controller
             'street' => 'required|max:255',
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|max:20|confirmed'
+            'password' => 'required|min:6|max:20|confirmed',
+            'g-recaptcha-response' => 'required|recaptcha',
 
         ]);
         if ($validator->fails()) {
@@ -103,7 +104,8 @@ class RegisterController extends Controller
             'company_code'=>'required|max:255',
             'name'=>'required|max:255',
             'email'=>'required|email|max:255|unique:users',
-            'password'=>'required|confirmed|min:6|max:20'
+            'password'=>'required|confirmed|min:6|max:20',
+            'g-recaptcha-response' => 'required|recaptcha',
       ]);
         if($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput();
