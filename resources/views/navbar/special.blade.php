@@ -47,7 +47,7 @@
                         <i class="fa fa-flag-o"></i>
                         <span class="label label-danger">0</span>
                     </a>
-              
+
                 </li>
                 <!-- User Account Menu -->
                 <li class="dropdown user user-menu">

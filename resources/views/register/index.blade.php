@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{'../css/AdminLTE.min.css'}}">
+
     <!-- iCheck -->
     <link rel="stylesheet" href="{{'../iCheck/square/blue.css'}}">
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -34,7 +35,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="../"><b>Fincoda</b></a>
+            <a class="navbar-brand" href="../"><b>FINCODA</b></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
