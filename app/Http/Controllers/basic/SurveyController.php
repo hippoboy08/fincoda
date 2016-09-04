@@ -16,6 +16,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class SurveyController extends Controller
@@ -88,6 +89,7 @@ class SurveyController extends Controller
     public function ValidateSurvey($id){
         if(Company::find(Auth::User()->company_id)->hasSurveys()->where('id',$id)->exists()){
             return true;
+            
         }else{
             return false;
         }

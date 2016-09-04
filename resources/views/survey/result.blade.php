@@ -14,6 +14,8 @@
 
             @include('message.fail')
             @include('message.errors_head')
+
+
             <div class="box box-primary">
                 <div class="box-body">
                     <div class="panel panel-default">
