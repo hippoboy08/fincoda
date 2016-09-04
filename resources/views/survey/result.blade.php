@@ -20,27 +20,27 @@
                 <div class="box-body">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <div class="container">
+                            <div>
                                 <h2>Survey Results</h2><br>
                                 <!-- <label id="surveyId">{!! $survey->title !!}</label> -->
-                                <h5><label>Title : </label> {!! $survey->title !!}</h5>
-                                <h5><label>Type : </label> {!! \App\Survey_Type::find($survey->type_id)->name !!}</h5>
-                                <h5><label>Start time : </label> {!! $survey->start_time !!}</h5>
-                                <h5><label>Deadline : </label> {!! $survey->end_time !!}</h5>
-                                <h5><label>Total Participants : </label> {!! count($participants)!!}</h5>
-                                <h5><label>Total answers : </label> {!! $answers!!}</h5>
+                                <ul>
+                                  <li><h5><label>Title : </label> {!! $survey->title !!}</h5></li>
+                                  <li><h5><label>Type : </label> {!! \App\Survey_Type::find($survey->type_id)->name !!}</h5></li>
+                                  <li><h5><label>Start time : </label> {!! $survey->start_time !!}</h5></li>
+                                  <li><h5><label>Deadline : </label> {!! $survey->end_time !!}</h5></li>
+                                  <li><h5><label>Total Participants : </label> {!! count($participants)!!}</h5></li>
+                                  <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
+                                </ul>
 
                                 <ul class="nav nav-tabs">
                                   <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
                                 </ul>
 
-
                                 <div class="tab-content">
-                                  <div id="overview" class="tab-pane fade">
+                                  <div id="overview" class="tab-pane fade in active">
                                     Overview
                                   </div>
-
 
 
                                   <div id="detailedview" class="tab-pane fade">
@@ -49,17 +49,17 @@
                                     @endrole
 
                                     @role ('admin')
-                                    <ul class="nav nav-tabs">
-                                        <li class="active"><a data-toggle="tab" href="#home">Participants</a></li>
-                                        <li><a data-toggle="tab" href="#menu1">Participants Scores</a></li>
-                                        <li><a data-toggle="tab" href="#menu2">User Groups Indicator Averages</a></li>
-                                        <li><a data-toggle="tab" href="#menu3">Participants Scores On Indicator Groups</a></li>
-                                        <li><a data-toggle="tab" href="#menu4">User Groups And Indicator Group Averages</a></li>
-                                        <li><a data-toggle="tab" href="#menu5">Admin View</a></li>
-                                    </ul>
+                                      <ul class="nav nav-tabs">
+                                          <li class="active"><a data-toggle="tab" href="#participants">Participants</a></li>
+                                          <li><a data-toggle="tab" href="#menu1">Participants Scores</a></li>
+                                          <li><a data-toggle="tab" href="#menu2">User Groups Indicator Averages</a></li>
+                                          <li><a data-toggle="tab" href="#menu3">Participants Scores On Indicator Groups</a></li>
+                                          <li><a data-toggle="tab" href="#menu4">User Groups And Indicator Group Averages</a></li>
+                                          <li><a data-toggle="tab" href="#menu5">Admin View</a></li>
+                                      </ul>
 
                                     <div class="tab-content">
-                                        <div id="home" class="tab-pane fade">
+                                        <div id="participants" class="tab-pane fade in active">
                                            <div class="row pull-right" >
                                               <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                            </div>
@@ -84,13 +84,6 @@
                                                    </tr>
                                                    @endforeach
                                                </tbody>
-                                               <tfoot>
-                                               <tr>
-                                                   <th>Full Name</th>
-                                                   <th>Email Address</th>
-                                                   <th>Survey Status</th>
-                                               </tr>
-                                               </tfoot>
                                            </table>
 
                                         </div>
@@ -125,18 +118,9 @@
                                                   @endforeach
                                                   @endif
                                                 </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                  <th>Group ID</th>
-                                                  <th>Survey ID</th>
-                                                  <th>User ID</th>
-                                                  <th>Indicator ID</th>
-                                                  <th>Indicator </th>
-                                                  <th>Answer</th>
-                                                </tr>
-                                                </tfoot>
                                             </table>
                                         </div>
+
                                         <div id="menu2" class="tab-pane fade">
                                             <div class="row pull-right" >
                                                 <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
@@ -166,15 +150,6 @@
                                                   @endforeach
                                                   @endif
                                                 </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                  <th>Group ID</th>
-                                                  <th>Survey ID</th>
-                                                  <th>User ID</th>
-                                                  <th>Indicator ID</th>
-                                                  <th>Answer</th>
-                                                </tr>
-                                                </tfoot>
                                             </table>
                                         </div>
 
@@ -207,15 +182,6 @@
                                                   @endforeach
                                                   @endif
                                                 </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                  <th>Group ID</th>
-                                                  <th>Survey ID</th>
-                                                  <th>User ID</th>
-                                                  <th>Indicator Group</th>
-                                                  <th>Indicator Group Average</th>
-                                                </tr>
-                                                </tfoot>
                                             </table>
                                         </div>
 
@@ -234,7 +200,7 @@
                                                 </thead>
                                                 <tbody>
                                                   @if(count($surveyScorePerIndicatorGroup)==0)
-                                                    You have no surveys results to Display
+                                                    <div>You have no surveys results to Display</div>
                                                   @else
                                                   @foreach($surveyScorePerIndicatorGroup as $result)
                                                   <tr>
@@ -246,54 +212,47 @@
                                                   @endforeach
                                                   @endif
                                                 </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                  <th>Group ID</th>
-                                                  <th>Survey ID</th>
-                                                  <th>Indicator Group</th>
-                                                  <th>Indicator Group Average</th>
-                                                </tr>
-                                                </tfoot>
                                             </table>
                                         </div>
 
-                                        <div id="menu5" class="tab-pane fade in active">
+                                        <div id="menu5" class="tab-pane fade">
 
-                                          <div class="row pull-left" >
-                                            <b>Select User</b>
-                                            <select id="participants">
-                                               @foreach($participants as $participant)
-                                                <option value="{!! \App\User::find($participant->user_id)->id !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
-                                               @endforeach
-                                            </select>
+                                          <div class="pull-left" >
+                                            <h5 class="select-users"><label>Select User</label>
+                                              <select id="participants">
+                                                 @foreach($participants as $participant)
+                                                  <option value="{!! \App\User::find($participant->user_id)->id !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
+                                                 @endforeach
+                                              </select>
+                                            </h5>
                                           </div>
 
                                           <script>
-                                          $(document).ready(function(){
-                                            $('#participants').change(function(){
-                                              if($(this).val()==""){
-                                                return;
-                                              }else{
-                                              alert($(this).val());
-                                              $ajaxSetup({
-                                                headers:{
-                                                  'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                                            $(document).ready(function(){
+                                              $('#participants').change(function(){
+                                                if($(this).val()==""){
+                                                  return;
+                                                }else{
+                                                alert($(this).val());
+                                                $ajaxSetup({
+                                                  headers:{
+                                                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                                                  }
+                                                });
+                                                $.ajax({
+                                                  method: 'POST',
+                                                  url: 'admin/survey/getParticipantDetails',
+                                                  data: {'participantId':$(this).val()}
+                                                });
                                                 }
                                               });
-                                              $.ajax({
-                                                method: 'POST',
-                                                url: 'admin/survey/getParticipantDetails',
-                                                data: {'participantId':$(this).val()}
-                                              });
-                                              }
                                             });
-                                          });
                                           </script>
 
-                                         <div class="row pull-right" >
-                                              <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                           </div>
-                                            <table id="Participants_scores" class="table table-bordered table-striped">
+                                         <div class="pull-right" >
+                                            <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                         </div>
+                                            <table id="Participants_scores" class="table table-bordered table-striped table-responsive" >
                                                 <thead>
                                                 <tr>
                                                     <th>Group ID</th>
@@ -309,9 +268,10 @@
                                                     <th>Survey Indicator Group Average</th>
                                                 </tr>
                                                 </thead>
+
                                                 <tbody>
                                                   @if(count($surveyScoreAllUsers)==0)
-                                                    You have no surveys results to display
+                                                    <div>You have no surveys results to display</div>
                                                   @else
                                                   @foreach($surveyScoreAllUsers as $results)
                                                     <tr>
@@ -365,21 +325,6 @@
                                                   @endforeach
                                                   @endif
                                                 </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                  <th>Group ID</th>
-                                                  <th>Survey ID</th>
-                                                  <th>User ID</th>
-                                                  <th>Indicator ID</th>
-                                                  <th>Indicator </th>
-                                                  <th>Answer</th>
-                                                  <th>Group Average</th>
-                                                  <th>Indicator Group</th>
-                                                  <th>Indicator Group Average</th>
-                                                  <th>Indicator Group</th>
-                                                  <th>Survey Indicator Group Average</th>
-                                                </tr>
-                                                </tfoot>
                                             </table>
                                         </div>
                                     </div>
