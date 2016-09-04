@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     public function index(){
-        $open_survey=Auth::User()->company->hasSurveys()->where('start_time','<',Carbon::now())->where('end_time','>',Carbon::now())->select('id')->get();
+        $open_survey=Auth::User()->company->hasSurveys()->where('start_time','<',Carbon::now()->addHour(1))->where('end_time','>',Carbon::now()->addHour(1))->select('id')->get();
         $open=Auth::User()->participate_survey()->whereIn('survey_id',$open_survey)->select('survey_id')->get();
 
-        $closed_survey=Auth::User()->company->hasSurveys()->where('start_time','<',Carbon::now())->where('end_time','<',Carbon::now())->select('id')->get();
+        $closed_survey=Auth::User()->company->hasSurveys()->where('start_time','<',Carbon::now()->addHour(1))->where('end_time','<',Carbon::now()->addHour(1))->select('id')->get();
         $closed=Auth::User()->participate_survey()->whereIn('survey_id',$closed_survey)->select('survey_id')->get();
 
 

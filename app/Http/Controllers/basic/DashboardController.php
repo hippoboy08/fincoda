@@ -18,11 +18,11 @@ class DashboardController extends Controller
     public function index(){
 
 
-      $survey_open=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<=',Carbon::now())->where('end_time','>',Carbon::now())->select('id')->get();
+      $survey_open=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<=',Carbon::now()->addHour(1))->where('end_time','>',Carbon::now()->addHour(1))->select('id')->get();
       $open=Auth::User()->participate_survey()->whereIn('survey_id',$survey_open)->select('survey_id')->get();
 
 
-      $survey_closed=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<=',Carbon::now())->where('end_time','<',Carbon::now())->select('id')->get();
+      $survey_closed=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<=',Carbon::now()->addHour(1))->where('end_time','<',Carbon::now()->addHour(1))->select('id')->get();
       $closed=Auth::User()->participate_survey()->whereIn('survey_id',$survey_closed)->select('survey_id')->get();
 
 

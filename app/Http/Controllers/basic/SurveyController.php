@@ -22,12 +22,12 @@ use Illuminate\Support\Facades\Validator;
 class SurveyController extends Controller
 {
     public function index(){
-        $open=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<',Carbon::now())->where('end_time','>',Carbon::now())->select('id')->get();
+        $open=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<',Carbon::now()->addHour(1))->where('end_time','>',Carbon::now()->addHour(1))->select('id')->get();
 
          $completed_survey=DB::table('participants')->whereIn('survey_id',$open)->where('participants.user_id',Auth::id())->where('completed',1)->join('surveys','surveys.id','=','participants.survey_id')
             ->select('surveys.id','surveys.type_id','surveys.start_time','surveys.end_time','surveys.user_id','surveys.title','surveys.title','participants.completed')
             ->get();
-        $closed=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<',Carbon::now())->where('end_time','<',Carbon::now())->select('id')->get();
+        $closed=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<',Carbon::now()->addHour(1))->where('end_time','<',Carbon::now()->addHour(1))->select('id')->get();
       $closed_survey=DB::table('participants')->whereIn('survey_id',$closed)->where('participants.user_id',Auth::id())->join('surveys','surveys.id','=','participants.survey_id')
             ->select('surveys.id','surveys.type_id','surveys.start_time','surveys.end_time','surveys.user_id','surveys.title','surveys.title','participants.completed')
             ->get();
@@ -89,16 +89,16 @@ class SurveyController extends Controller
     public function ValidateSurvey($id){
         if(Company::find(Auth::User()->company_id)->hasSurveys()->where('id',$id)->exists()){
             return true;
-            
+
         }else{
             return false;
         }
     }
 
     public function SurveyStatus($id){
-        if(Survey::find($id)->start_time<Carbon::now() && Survey::find($id)->end_time>Carbon::now()) {
+        if(Survey::find($id)->start_time<Carbon::now()->addHour(1) && Survey::find($id)->end_time>Carbon::now()->addHour(1)) {
             return 'open';
-        }elseif(Survey::find($id)->start_time<Carbon::now() && Survey::find($id)->end_time<Carbon::now()){
+        }elseif(Survey::find($id)->start_time<Carbon::now()->addHour(1) && Survey::find($id)->end_time<Carbon::now()->addHour(1)){
             return 'closed';
         }else{
             return 'pending';

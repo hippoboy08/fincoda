@@ -27,7 +27,7 @@ class SurveyController extends Controller
 use EmailTrait;
     public function index()
     {
-        return view('survey.index')->with('closed',Company::find(Auth::User()->company_id)->hasSurveys()->where('end_time','<',Carbon::now())->get());
+        return view('survey.index')->with('closed',Company::find(Auth::User()->company_id)->hasSurveys()->where('end_time','<',Carbon::now()->addHour(1))->get());
     }
 
     /**
@@ -72,7 +72,7 @@ use EmailTrait;
             $from=new Carbon($date[0]);
             $to=new Carbon($date[1]);
 
-            if($from<Carbon::now() || $to<Carbon::now()){
+            if($from<Carbon::now()->addHour(1) || $to<Carbon::now()->addHour(1)){
                 return redirect()->back()
                     ->with('fail','The Survey open and close date should not be before the current date and time. Please fix the date range before creating the survey.')
                     ->withInput();

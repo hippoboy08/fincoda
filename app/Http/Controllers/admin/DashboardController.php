@@ -32,14 +32,14 @@ public function index(){
     }
 
     $open=Company::find(Auth::User()->company_id)->hasSurveys()->whereIn('user_id',$admin_id)
-        ->where('start_time','<=',Carbon::now())
+        ->where('start_time','<=',Carbon::now()->addHour(1))
         ->where('end_time','>',Carbon::now())->get();
     $closed=Company::find(Auth::User()->company_id)->hasSurveys()->whereIn('user_id',$admin_id)
-        ->where('start_time','<',Carbon::now())
-        ->where('end_time','<',Carbon::now())->get();
+        ->where('start_time','<',Carbon::now()->addHour(1))
+        ->where('end_time','<',Carbon::now()->addHour(1))->get();
     $pending=Company::find(Auth::User()->company_id)->hasSurveys()->whereIn('user_id',$admin_id)
-        ->where('start_time','>',Carbon::now())
-        ->where('end_time','>',Carbon::now())->get();
+        ->where('start_time','>',Carbon::now()->addHour(1))
+        ->where('end_time','>',Carbon::now()->addHour(1))->get();
 
     return view('dashboard')->with('open',$open)->with('closed',$closed)->with('pending',$pending);
 }
