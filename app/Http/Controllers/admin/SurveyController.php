@@ -155,7 +155,7 @@ use EmailTrait;
                                          'results.user_id as User_ID','indicators.id as Indicator_ID',
                                          'indicators.indicator as Indicator', 'results.answer as Answer',
                                          'indicators.group_id as Indicator_Group_ID','indicator_groups.name as Indicator_Group')
-                                ->where('results.survey_id',$id)
+                                ->where('results.survey_id',2)
                                 ->groupBy('user_in_groups.user_group_id', 'results.user_id', 'results.survey_id', 'indicators.id')
                                 ->get();
 
@@ -176,7 +176,7 @@ use EmailTrait;
                                 join user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
                                 GROUP BY user_in_groups.user_group_id, results.survey_id, indicators.id"),
-                                array("surveyId"=>$id));
+                                array("surveyId"=>2));
 
               //This returns the average of each user per indicator group for this survey
               $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
@@ -190,7 +190,7 @@ use EmailTrait;
                                 JOIN user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
                                 GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id"),
-                                array("surveyId"=>$id));
+                                array("surveyId"=>2));
 
               //This returns the average of each user group per indicator group in this survey
               $surveyScorePerIndicatorGroup = DB::select(DB::raw(
@@ -204,7 +204,7 @@ use EmailTrait;
                                 JOIN user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
                                 GROUP BY results.survey_id, indicators.group_id"),
-                                array("surveyId"=>$id));
+                                array("surveyId"=>2));
 
               return view('survey.result')->with('survey',Survey::find($id))
               ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])

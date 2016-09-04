@@ -45,7 +45,7 @@
 
                                   <div id="detailedview" class="tab-pane fade">
                                     @role ('basic')
-                                      <p>This content is available only for Administrators.</p>
+                                      <div>This content is available only for Administrators.</div>
                                     @endrole
 
                                     @role ('admin')
