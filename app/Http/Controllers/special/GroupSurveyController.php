@@ -23,16 +23,16 @@ class GroupSurveyController extends Controller
     public function index(){
         //group dashboard
     $open=Auth::User()->creates_survey()
-        ->where('start_time','<',Carbon::now())
-        ->where('end_time','>',Carbon::now())
+        ->where('start_time','<',Carbon::now()->addHour(1))
+        ->where('end_time','>',Carbon::now()->addHour(1))
         ->where('category_id',2)->get();
     $pending=Auth::User()->creates_survey()->
-    where('start_time','>',Carbon::now())
-        ->where('end_time','>',Carbon::now())
+    where('start_time','>',Carbon::now()->addHour(1))
+        ->where('end_time','>',Carbon::now()->addHour(1))
         ->where('category_id',2)->get();
     $closed=Auth::User()->creates_survey()
-        ->where('start_time','<',Carbon::now())
-        ->where('end_time','<',Carbon::now())
+        ->where('start_time','<',Carbon::now()->addHour(1))
+        ->where('end_time','<',Carbon::now()->addHour(1))
         ->where('category_id',2)->get();
         return view('dashboard')->with('open',$open)->with('closed',$closed)->with('pending',$pending);
 
@@ -73,7 +73,7 @@ class GroupSurveyController extends Controller
                 $from=new Carbon($date[0]);
                 $to=new Carbon($date[1]);
 
-                if($from<Carbon::now() || $to<Carbon::now()){
+                if($from<Carbon::now()->addHour(1) || $to<Carbon::now()->addHour(1)){
                     return redirect()->back()
                         ->with('fail','The Survey open and close date should not be before the current date and time. Please fix the date range before creating the survey.')
                         ->withInput();
@@ -162,7 +162,7 @@ class GroupSurveyController extends Controller
             $from=new Carbon($date[0]);
             $to=new Carbon($date[1]);
 
-            if($from<Carbon::now() || $to<Carbon::now()){
+            if($from<Carbon::now()->addHour(1) || $to<Carbon::now()->addHour(1)){
                 return redirect()->back()
                     ->with('fail','The Survey open and close date should not be before the current date and time. Please fix the date range before creating the survey.')
                     ->withInput();
@@ -199,10 +199,10 @@ class GroupSurveyController extends Controller
 
     public function SurveyStatus($id){
         $survey=Survey::find($id);
-        if($survey->start_time < Carbon::now() && $survey->end_time > Carbon::now() ){
+        if($survey->start_time < Carbon::now()->addHour(1) && $survey->end_time > Carbon::now()->addHour(1) ){
             return 'open';
         }
-        elseif($survey->start_time < Carbon::now() && $survey->end_time < Carbon::now()){
+        elseif($survey->start_time < Carbon::now()->addHour(1) && $survey->end_time < Carbon::now()->addHour(1)){
             return 'closed';
         }else{
             return 'pending';

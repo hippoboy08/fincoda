@@ -13,6 +13,6 @@ class GroupSurveyResultController extends Controller
 {
     public function index(){
 
-        return view('survey.index')->with('closed',Auth::User()->creates_survey()->where('end_time','<',Carbon::now())->get());
+        return view('survey.index')->with('closed',Auth::User()->creates_survey()->where('end_time','<',Carbon::now()->addHour(1))->get());
     }
 }
