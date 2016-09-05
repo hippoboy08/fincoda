@@ -7,7 +7,7 @@
                     <!-- general form elements -->
                     <div class="box-header with-border">
                         <h3 class="box-title"><b>{!! $company->name !!}</b></h3>
-                        <p><i>The company has been updated to the <strong>Fincoda Survey System.</strong> </i></p>
+                        <p><i>The company has been registered to the <strong>Fincoda Survey System.</strong> </i></p>
                         <p>Below is the details you had provided to Fincoda upon registration. </p>
                     </div>
                     {!! Form::open(array('method'=>'post', 'action'=>'admin\ProfileController@updateCompanyProfile')) !!}
@@ -15,35 +15,144 @@
                         <div class="box-body">
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                  {!! Form::label('company_name','Company Name : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_name',$company->name,['class'=>'form-control']) !!}
-                                  {!! Form::label('company_code','Company code : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_code',$company->company_code,['class'=>'form-control']) !!}
 
-
-
-
-                                  {!! Form::label('company_type','Company Type : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_type',$company_profile->type,['class'=>'form-control']) !!}
-                                  {!! Form::label('company_country','Country : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_country', $company_profile->country,['class'=>'form-control']) !!}
-                                  {!! Form::label('company_city','City : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_city', $company_profile->city,['class'=>'form-control']) !!}
-                                  {!! Form::label('company_street','Street : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_street', $company_profile->street,['class'=>'form-control']) !!}
-                                  {!! Form::label('company_email','Company Email : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_email', $company_profile->email,['class'=>'form-control']) !!}
-                                  {!! Form::label('company_phone','Company Phone : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_phone', $company_profile->phone,['class'=>'form-control']) !!}
-                                  {!! Form::label('company_postcode','Company Postcode : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_postcode', $company_profile->postcode,['class'=>'form-control']) !!}
-                                  {!! Form::label('company_joined_at','Company Joined At : *',['class'=>'col-md-4 control-label']) !!}
-                                  {!! Form::text('company_joined_at', $company->created_at->toDateString(),['class'=>'form-control']) !!}
-                                  <div>
-                                    <button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Profile</button>
-                                    <div class="row pull-right" >
-                                     <button disabled class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Delete Profile</button>
+                                    <div class="form-group{!! $errors->has('company_name') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('company_name'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_name') !!}</label>
+                                        @endif
+                                    <div class="col-md-2 pull-left">
+                                        <strong>Company Name* :</strong>
                                     </div>
+                                    <div class="col-md-10 pull-right">
+                                            {!! Form::text('company_name',$company->name,['class'=>'form-control']) !!}
+                                    </div>
+                                    </div>
+
+                                    <div class="form-group row">
+
+                                        <div class="col-md-2 pull-left">
+                                            <strong>Company code* :</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('company_code',$company->company_code,['class'=>'form-control','disabled']) !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group{!! $errors->has('type') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('type'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_name') !!}</label>
+                                        @endif
+                                        <div class="col-md-2 pull-left">
+                                            <strong> Type* :</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('company_type',$company_profile->type,['class'=>'form-control']) !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-2 pull-left">
+                                            <strong>Country* :</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            <?php
+                                            $default=$company_profile->country
+                                            ?>
+
+                                           @include('partials.countries')
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group{!! $errors->has('city') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('city'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_name') !!}</label>
+                                        @endif
+                                        <div class="col-md-2 pull-left">
+                                            <strong> City* :</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('city',$company_profile->city,['class'=>'form-control']) !!}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group{!! $errors->has('address') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('address'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_name') !!}</label>
+                                        @endif
+                                        <div class="col-md-2 pull-left">
+                                            <strong> Address* :</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('address',$company_profile->street,['class'=>'form-control']) !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group{!! $errors->has('email') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('email'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('email') !!}</label>
+                                        @endif
+                                        <div class="col-md-2 pull-left">
+                                            <strong> Email :</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('email',$company_profile->email,['class'=>'form-control']) !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group{!! $errors->has('phone') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('phone'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('phone') !!}</label>
+                                        @endif
+                                        <div class="col-md-2 pull-left">
+                                            <strong> Phone:</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('address',$company_profile->phone,['class'=>'form-control']) !!}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group{!! $errors->has('postcode') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('postcode'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('postcode') !!}</label>
+                                        @endif
+                                        <div class="col-md-2 pull-left">
+                                            <strong> Post code:</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('address',$company_profile->postcode,['class'=>'form-control']) !!}
+                                        </div>
+                                    </div>
+
+                                  
+
+                                    <div class="form-group row">
+
+                                        <div class="col-md-2 pull-left">
+                                            <strong> Joined at:</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('join',$company_profile->created_at->toDateString(),['class'=>'form-control','disabled']) !!}
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+                                  <div class="form-group">
+                                      <div class="col-md-2 pull-left">
+
+                                      </div>
+                                      <div class="col-md-10">
+                                          <button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Profile</button>
+                                          </div>
+
+
                                   </div>
 
                                 </div>
