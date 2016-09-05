@@ -20,6 +20,13 @@ class ProfileController extends Controller
             ->with('company_profile',$company_profile);
 
 }
+    public function editcompany(){
+        $company=Auth::User()->company()->first();
+        $company_profile=$company->profile()->first();
+
+        return view('profile.editcompany')->with('company',$company)->with('company_profile',$company_profile);
+
+    }
 
 //Return the edit page for the company profile
 public function editCompanyProfile(){

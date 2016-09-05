@@ -28,8 +28,6 @@
                 <a href="#"><i class="fa fa-building-o" aria-hidden="true"></i> <span>Company</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{!! url('admin/company') !!}"><i class="fa fa-list-alt" aria-hidden="true"></i>View Company Profile</a></li>
-                    <li><a href="{!! url('admin/editCompanyProfile') !!}"><i class="fa fa-list-alt" aria-hidden="true"></i>Edit Company Profile</a></li>
-                    <li><a href="{!! url('admin/deleteCompanyProfile') !!}"><i class="fa fa-list-alt" aria-hidden="true"></i>Delete Company Profile</a></li>
                     <li><a href="{!! url('admin/members') !!}"><i class="fa fa-spinner" aria-hidden="true"></i>Members</a></li>
                 </ul>
             </li>
