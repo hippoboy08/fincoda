@@ -16,7 +16,7 @@
                         <th>Email Address</th>
                         <th>Role</th>
                         <th>Registered at</th>
-                        <th>Survey participated</th>
+
 
                     </tr>
                     </thead>
@@ -28,7 +28,7 @@
                             <td>{!! $member->email !!}</td>
                            <td> {!! $member->display_name !!}</td>
                             <td>{!! $member->created_at !!}</td>
-                            <td> --</td>
+
 
                         </tr>
                         @endforeach
@@ -41,7 +41,7 @@
                         <th>Email Address</th>
                         <th>Role</th>
                         <th>Registered at</th>
-                        <th>Survey participated</th>
+
                     </tr>
                     </tfoot>
                 </table>

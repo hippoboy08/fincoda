@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Query;
 use App\User_Profile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 
 class MembersController extends Controller
@@ -88,7 +89,7 @@ class MembersController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('profile.edituser')->with('profile',Auth::User()->profile)->with('user',Auth::User());
     }
 
     /**
@@ -100,7 +101,36 @@ class MembersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       if(Auth::id()==$id){
+
+           $validation=Validator::make($request->all(),[
+               'name'=>'required|max:255'
+           ]);
+
+           if($validation->fails()){
+               return redirect()->back()->withErrors($validation)->withInput();
+           }else{
+
+               $user=Auth::User()->first();
+               $user->name=$request->name;
+               $user->save();
+
+
+               $profile=Auth::User()->profile()->first();
+               $profile->gender=$request->gender;
+               $profile->country=$request->country;
+               $profile->city=$request->city;
+               $profile->street=$request->street;
+               $profile->phone=$request->phone;
+               $profile->save();
+
+               return redirect()->back()->with('success','Your profile has been updated successfully');
+           }
+
+
+       }else{
+           return 'Unauthentic user. The profile could not be updated';
+       }
     }
 
     /**

@@ -43,11 +43,7 @@ Route::group(['middleware'=>'admin',
     Route::get('company','ProfileController@company');
     Route::get('company/update','ProfileController@editcompany');
     Route::post('company/update','ProfileController@updatecompany');
-    //This returns the edit blade
-    Route::get('editCompanyProfile','ProfileController@editCompanyProfile');
-    //This posts back the edit blade to action updateCompanyProfile
-    Route::post('updateCompanyProfile','ProfileController@updateCompanyProfile');
-    Route::post('deleteCompanyProfile','ProfileController@deleteCompanyProfile');
+
     Route::resource('members','MembersController');
     Route::resource('roles','RolesController');
     Route::post('getParticipantDetails','SurveyController@getParticipantDetails');
@@ -61,7 +57,7 @@ Route::group(['middleware'=>'basic',
                 'namespace'=>'basic',
                 'prefix'=>'basic'],function(){
     Route::get('/','DashboardController@index');
-    Route::resource('profile','ProfileController@index');
+    Route::resource('profile','ProfileController');
     Route::resource('survey','SurveyController');
     Route::resource('usergroup','UserGroupController');
 
@@ -72,7 +68,7 @@ Route::group(['middleware'=>'special',
                'namespace'=>'special',
                'prefix'=>'special'],function(){
     Route::get('/','DashboardController@index');
-    Route::get('profile','ProfileController@index');
+    Route::resource('profile','ProfileController');
     Route::resource('survey','CompanySurveyController');
     Route::resource('usergroup','UserGroupController');
     Route::resource('groupsurvey','GroupSurveyController');

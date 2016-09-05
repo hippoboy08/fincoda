@@ -26,7 +26,18 @@
                             <p><label>Hired Date : </label> {!! $profile->hired_date->toDateString() !!}</p>
                             @if(Auth::id()==$user->id)
 
-                           <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button>
+                            @role('admin')
+                              <a href="{!! url('admin/members/'.Auth::id().'/edit') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button></a>
+                                @endrole
+
+                                @role('special')
+                                <a href="{!! url('special/profile/'.Auth::id().'/edit') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button></a>
+                                @endrole
+
+                                @role('basic')
+                                <a href="{!! url('basic/profile/'.Auth::id().'/edit') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button></a>
+                                @endrole
+
                             @else
                              <button class="btn  btn-info btn-flat" disabled><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button>
                             @endif
