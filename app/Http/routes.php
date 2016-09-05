@@ -42,7 +42,7 @@ Route::group(['middleware'=>'admin',
     Route::get('/','DashboardController@index');
     Route::get('company','ProfileController@company');
     Route::get('company/update','ProfileController@editcompany');
-    
+    Route::post('company/update','ProfileController@updatecompany');
     //This returns the edit blade
     Route::get('editCompanyProfile','ProfileController@editCompanyProfile');
     //This posts back the edit blade to action updateCompanyProfile

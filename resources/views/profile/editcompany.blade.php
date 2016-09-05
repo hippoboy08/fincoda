@@ -10,7 +10,8 @@
                         <p><i>The company has been registered to the <strong>Fincoda Survey System.</strong> </i></p>
                         <p>Below is the details you had provided to Fincoda upon registration. </p>
                     </div>
-                    {!! Form::open(array('method'=>'post', 'action'=>'admin\ProfileController@updateCompanyProfile')) !!}
+                    {!! Form::open(array('method'=>'post')) !!}
+                    {{ csrf_field() }}
                       <div class="box box-primary">
                         <div class="box-body">
                             <div class="panel panel-default">
@@ -38,9 +39,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group{!! $errors->has('type') ? ' has-error':'' !!} has-feedback row">
-                                        @if($errors->has('type'))
-                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_name') !!}</label>
+                                    <div class="form-group{!! $errors->has('company_type') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('company_type'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_type') !!}</label>
                                         @endif
                                         <div class="col-md-2 pull-left">
                                             <strong> Type* :</strong>
@@ -65,7 +66,7 @@
 
                                     <div class="form-group{!! $errors->has('city') ? ' has-error':'' !!} has-feedback row">
                                         @if($errors->has('city'))
-                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_name') !!}</label>
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('city') !!}</label>
                                         @endif
                                         <div class="col-md-2 pull-left">
                                             <strong> City* :</strong>
@@ -78,7 +79,7 @@
 
                                     <div class="form-group{!! $errors->has('address') ? ' has-error':'' !!} has-feedback row">
                                         @if($errors->has('address'))
-                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_name') !!}</label>
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('address') !!}</label>
                                         @endif
                                         <div class="col-md-2 pull-left">
                                             <strong> Address* :</strong>
@@ -108,7 +109,7 @@
                                             <strong> Phone:</strong>
                                         </div>
                                         <div class="col-md-10 pull-right">
-                                            {!! Form::text('address',$company_profile->phone,['class'=>'form-control']) !!}
+                                            {!! Form::text('phone',$company_profile->phone,['class'=>'form-control']) !!}
                                         </div>
                                     </div>
 
@@ -121,7 +122,7 @@
                                             <strong> Post code:</strong>
                                         </div>
                                         <div class="col-md-10 pull-right">
-                                            {!! Form::text('address',$company_profile->postcode,['class'=>'form-control']) !!}
+                                            {!! Form::text('postcode',$company_profile->postcode,['class'=>'form-control']) !!}
                                         </div>
                                     </div>
 

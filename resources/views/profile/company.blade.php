@@ -6,6 +6,8 @@
                 <div class="col-md-8 col-md-offset-2">
                     <!-- general form elements -->
 
+                    @include('message.success')
+
                     <div class="box-header with-border">
                         <h3 class="box-title"><b>{!! $company->name !!}</b></h3>
                         <p><i>The company has been registered to the <strong>Fincoda Survey System.</strong> </i></p>

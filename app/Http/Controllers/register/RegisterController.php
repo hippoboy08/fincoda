@@ -62,7 +62,8 @@ class RegisterController extends Controller
                 'country'=>$request->country,
                 'city'=>$request->city,
                 'street'=>$request->street,
-                'phone'=>$request->phone
+                'phone'=>$request->phone,
+                'postcode'=>$request->postcode
 
             ]));
             //create admin
