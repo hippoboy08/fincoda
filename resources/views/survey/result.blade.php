@@ -39,7 +39,71 @@
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
-                                    Overview
+                                    <div class="report-caption">
+                                      <h4><b>Description</b></h4>
+                                      <p>The bar graph shows your answers in this survey.
+                          							The table underneath this graph displayed the same data in table format.
+                          							Alternate between the two buttons to view your scores only or in comparison with the group average.
+                          							Only your score are shown by default.</p>
+                                    </div>
+                                    <div>
+                                      <table class="table table-bordered table-striped text-center">
+                                        <h4><b>Score</b></h4>
+                                          <thead>
+                                          <tr>
+                                              <th>0</th>
+                                              <th>1</th>
+                                              <th>2</th>
+                                              <th>3</th>
+                                              <th>4</th>
+                                              <th>5</th>
+                                          </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                                <td>Not observed</td>
+                                                <td>Very poor</td>
+                                                <td>Need to improve</td>
+                                                <td>Pass</td>
+                                                <td>Good</td>
+                                                <td>Excellent</td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div>
+                                      <table class="table table-bordered table-striped text-center">
+                                        <h4><b>Indicators</b></h4>
+                                          <thead>
+                                          <tr>
+                                              <th>ID</th>
+                                              <th>Indicator</th>
+                                              <th>Group_Average</th>
+                                          </tr>
+                                          </thead>
+                                          <tbody>
+                                            @if(count($surveyScoreAllUsers)==0)
+                                              <div>You have no surveys results to display</div>
+                                            @else
+                                              @foreach($surveyScoreAllUsers as $result)
+
+
+                                                    <tr>
+                                                      <td>{!! $result->Indicator_ID !!}</td>
+                                                      <td>{!! $result->Indicator !!}</td>
+
+                                                    </tr>
+
+                                              @endforeach
+                                            @endif
+                                          </tbody>
+                                      </table>
+                                    </div>
+                                    <!--
+                                    <div>
+                                      @include ('survey.resultContent.surveyScorePerIndicatorGroup')
+                                    </div> -->
                                   </div>
 
 
@@ -63,38 +127,42 @@
                                            <div class="row pull-right" >
                                               <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                            </div>
-                                           <table id="Participants" class="table table-bordered table-striped">
-                                               <thead>
-                                               <tr>
-                                                   <th>Full Name</th>
-                                                   <th>Email Address</th>
-                                                   <th>Survey Status</th>
-                                               </tr>
-                                               </thead>
-                                               <tbody>
-                                               @foreach($participants as $participant)
-                                                   <tr>
-                                                   <td>{!! \App\User::find($participant->user_id)->name !!}</td>
-                                                   <td>{!! \App\User::find($participant->user_id)->email  !!}</td>
-                                                       @if($participant->completed==0)
-                                                           <td><span class="label label-danger">Not completed</span></td>
-                                                           @else
-                                                           <td><span class="label label-success">Completed</span></td>
-                                                       @endif
-                                                   </tr>
-                                                   @endforeach
-                                               </tbody>
-                                           </table>
 
+                                           <div>
+                                             <table id="Participants" class="table table-bordered table-striped text-center">
+                                                 <thead>
+                                                 <tr>
+                                                     <th>Full Name</th>
+                                                     <th>Email Address</th>
+                                                     <th>Survey Status</th>
+                                                 </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                 @foreach($participants as $participant)
+                                                     <tr>
+                                                     <td>{!! \App\User::find($participant->user_id)->name !!}</td>
+                                                     <td>{!! \App\User::find($participant->user_id)->email  !!}</td>
+                                                         @if($participant->completed==0)
+                                                             <td><span class="label label-danger">Not completed</span></td>
+                                                             @else
+                                                             <td><span class="label label-success">Completed</span></td>
+                                                         @endif
+                                                     </tr>
+                                                     @endforeach
+                                                 </tbody>
+                                             </table>
+                                         </div>
                                         </div>
                                         <div id="menu1" class="tab-pane fade">
                                            <div class="row pull-right" >
                                               <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                            </div>
-                                            <table id="Participants_scores" class="table table-bordered table-striped">
+
+                                           <div>
+                                            <table id="Participants_scores" class="table table-bordered table-striped text-center">
                                                 <thead>
                                                 <tr>
-                                                    <th>Group ID</th>
+
                                                     <th>Survey ID</th>
                                                     <th>User ID</th>
                                                     <th>Indicator ID</th>
@@ -104,115 +172,125 @@
                                                 </thead>
                                                 <tbody>
                                                   @if(count($surveyScoreAllUsers)==0)
-                                                    You have no surveys results to display
+                                                    <div>You have no surveys results to display</div>
                                                   @else
                                                   @foreach($surveyScoreAllUsers as $result)
                                                   <tr>
-                                                  <td><b>{!! $result->Group_ID !!}</b></td>
-                                                  <td><b>{!! $result->Survey_ID !!}</b></td>
-                                                  <td><b>{!! $result->User_ID !!}</b></td>
-                                                  <td><b>{!! $result->Indicator_ID !!}</b></td>
-                                                  <td><b>{!! $result->Indicator !!}</b></td>
-                                                  <td><b>{!! $result->Answer !!}</b></td>
+
+                                                    <td>{!! $result->Survey_ID !!}</td>
+                                                    <td>{!! $result->User_ID !!}</td>
+                                                    <td>{!! $result->Indicator_ID !!}</td>
+                                                    <td>{!! $result->Indicator !!}</td>
+                                                    <td>{!! $result->Answer !!}</td>
                                                   </tr>
                                                   @endforeach
                                                   @endif
                                                 </tbody>
                                             </table>
+                                          </div>
                                         </div>
 
                                         <div id="menu2" class="tab-pane fade">
                                             <div class="row pull-right" >
                                                 <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                             </div>
-                                            <table id="user_group_scores" class="table table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th>Group ID</th>
-                                                    <th>Survey ID</th>
-                                                    <th>Indicator ID</th>
-                                                    <th>Indicator</th>
-                                                    <th>Group_Average</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                  @if(count($surveyGroupAveragePerIndicatorAllUsers)==0)
-                                                    You have no surveys results to display
-                                                  @else
-                                                  @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
+
+                                            <div>
+                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
                                                   <tr>
-                                                  <td><b>{!! $result->Group_ID !!}</b></td>
-                                                  <td><b>{!! $result->Survey_ID !!}</b></td>
-                                                  <td><b>{!! $result->Indicator_ID !!}</b></td>
-                                                  <td><b>{!! $result->Indicator !!}</b></td>
-                                                  <td><b>{!! $result->Group_Average !!}</b></td>
+
+                                                      <th>Survey ID</th>
+                                                      <th>Indicator ID</th>
+                                                      <th>Indicator</th>
+                                                      <th>Group_Average</th>
                                                   </tr>
-                                                  @endforeach
-                                                  @endif
-                                                </tbody>
-                                            </table>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyGroupAveragePerIndicatorAllUsers)==0)
+                                                      You have no surveys results to display
+                                                    @else
+                                                    @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Survey_ID !!}</td>
+                                                    <td>{!! $result->Indicator_ID !!}</td>
+                                                    <td>{!! $result->Indicator !!}</td>
+                                                    <td>{!! $result->Group_Average !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
                                         </div>
 
                                         <div id="menu3" class="tab-pane fade">
                                             <div class="row pull-right" >
                                                 <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                             </div>
-                                            <table id="indicator_group_scores" class="table table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th>Group ID</th>
-                                                    <th>Survey ID</th>
-                                                    <th>User ID</th>
-                                                    <th>Indicator Group</th>
-                                                    <th>Indicator Group Average</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                  @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
-                                                    You have no surveys results to Display
-                                                  @else
-                                                  @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
+
+                                            <div>
+                                              <table id="indicator_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
                                                   <tr>
-                                                  <td><b>{!! $result->Group_ID !!}</b></td>
-                                                  <td><b>{!! $result->Survey_ID !!}</b></td>
-                                                  <td><b>{!! $result->User_ID !!}</b></td>
-                                                  <td><b>{!! $result->Indicator_Group !!}</b></td>
-                                                  <td><b>{!! $result->Indicator_Group_Average !!}</b></td>
+
+                                                      <th>Survey ID</th>
+                                                      <th>User ID</th>
+                                                      <th>Indicator Group</th>
+                                                      <th>Indicator Group Average</th>
                                                   </tr>
-                                                  @endforeach
-                                                  @endif
-                                                </tbody>
-                                            </table>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
+                                                      You have no surveys results to Display
+                                                    @else
+                                                    @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Survey_ID !!}</td>
+                                                    <td>{!! $result->User_ID !!}</td>
+                                                    <td>{!! $result->Indicator_Group !!}</td>
+                                                    <td>{!! $result->Indicator_Group_Average !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
                                         </div>
 
                                         <div id="menu4" class="tab-pane fade">
                                             <div class="row pull-right" >
                                                 <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                             </div>
-                                            <table id="indicator_group_average_scores" class="table table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th>Group ID</th>
-                                                    <th>Survey ID</th>
-                                                    <th>Indicator Group</th>
-                                                    <th>Indicator Group Average</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                  @if(count($surveyScorePerIndicatorGroup)==0)
-                                                    <div>You have no surveys results to Display</div>
-                                                  @else
-                                                  @foreach($surveyScorePerIndicatorGroup as $result)
+
+                                            <div>
+                                              <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
                                                   <tr>
-                                                  <td><b>{!! $result->Group_ID !!}</b></td>
-                                                  <td><b>{!! $result->Survey_ID !!}</b></td>
-                                                  <td><b>{!! $result->Indicator_Group !!}</b></td>
-                                                  <td><b>{!! $result->Indicator_Group_Average !!}</b></td>
+
+                                                      <th>Survey ID</th>
+                                                      <th>Indicator Group</th>
+                                                      <th>Indicator Group Average</th>
                                                   </tr>
-                                                  @endforeach
-                                                  @endif
-                                                </tbody>
-                                            </table>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyScorePerIndicatorGroup)==0)
+                                                      <div>You have no surveys results to Display</div>
+                                                    @else
+                                                    @foreach($surveyScorePerIndicatorGroup as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Survey_ID !!}</td>
+                                                    <td>{!! $result->Indicator_Group !!}</td>
+                                                    <td>{!! $result->Indicator_Group_Average !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
                                         </div>
 
                                         <div id="menu5" class="tab-pane fade">
@@ -252,10 +330,12 @@
                                          <div class="pull-right" >
                                             <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                          </div>
-                                            <table id="Participants_scores" class="table table-bordered table-striped table-responsive" >
+
+                                         <div>
+                                            <table id="Participants_scores" class="table table-bordered table-striped table-responsive text-center" >
                                                 <thead>
                                                 <tr>
-                                                    <th>Group ID</th>
+
                                                     <th>Survey ID</th>
                                                     <th>User ID</th>
                                                     <th>Indicator ID</th>
@@ -275,12 +355,12 @@
                                                   @else
                                                   @foreach($surveyScoreAllUsers as $results)
                                                     <tr>
-                                                      <td><b>{!! $results->Group_ID !!}</b></td>
-                                                      <td><b>{!! $results->Survey_ID !!}</b></td>
-                                                      <td><b>{!! $results->User_ID !!}</b></td>
-                                                      <td><b>{!! $results->Indicator_ID !!}</b></td>
-                                                      <td><b>{!! $results->Indicator !!}</b></td>
-                                                      <td><b>{!! $results->Answer !!}</b></td>
+
+                                                      <td>{!! $results->Survey_ID !!}</td>
+                                                      <td>{!! $results->User_ID !!}</td>
+                                                      <td>{!! $results->Indicator_ID !!}</td>
+                                                      <td>{!! $results->Indicator !!}</td>
+                                                      <td>{!! $results->Answer !!}</td>
 
                                                         <!--This is group average per indicator -->
                                                         @if(count($surveyGroupAveragePerIndicatorAllUsers)==0)
@@ -288,7 +368,7 @@
                                                         @else
                                                         @foreach($surveyGroupAveragePerIndicatorAllUsers as $resulti)
                                                           @if($results->Indicator_ID==$resulti->Indicator_ID)
-                                                            <td><b>{!! $resulti->Group_Average !!}</b></td>
+                                                            <td>{!! $resulti->Group_Average !!}</td>
                                                             <?php break; ?>
                                                           @endif
                                                         @endforeach
@@ -296,26 +376,26 @@
 
 
                                                         <!--This is group average per indicator -->
-                                                        <td><b>{!! $results->Indicator_Group !!}</b></td>
+                                                        <td>{!! $results->Indicator_Group !!}</td>
                                                         @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
                                                           You have no surveys indicator group averages to display
                                                         @else
                                                         @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
                                                           @if($results->Indicator_Group_ID==$result->Indicator_Group_ID)
-                                                            <td><b>{!! $result->Indicator_Group_Average !!}</b></td>
+                                                            <td>{!! $result->Indicator_Group_Average !!}</td>
                                                             <?php break; ?>
                                                           @endif
                                                         @endforeach
                                                         @endif
 
 
-                                                        <td><b>{!! $results->Indicator_Group !!}</b></td>
+                                                        <td>{!! $results->Indicator_Group !!}</td>
                                                         @if(count($surveyScorePerIndicatorGroup)==0)
                                                           You have no surveys indicator group averages to display
                                                         @else
                                                         @foreach($surveyScorePerIndicatorGroup as $resulte)
                                                           @if($results->Indicator_Group_ID==$resulte->Indicator_Group_ID)
-                                                            <td><b>{!! $resulte->Indicator_Group_Average !!}</b></td>
+                                                            <td>{!! $resulte->Indicator_Group_Average !!}</td>
                                                             <?php break; ?>
                                                           @endif
                                                         @endforeach
@@ -326,6 +406,7 @@
                                                   @endif
                                                 </tbody>
                                             </table>
+                                          </div>
                                         </div>
                                     </div>
                                     @endrole
