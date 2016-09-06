@@ -30,10 +30,18 @@
                 @endrole
 
                 @role('special')
+
+                @if(Route::current()->getName()=='special.groupsurvey.index')
+                    <td><a href="{!! url('special/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
+                @elseif(Route::current()->getName()=='special.groupsurveyresult.index')
+                    <td><a href="{!! url('special/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
+                @else
+
                 @if(Auth::User()->participate_survey->where('survey_id',$closed->id)->first()->completed==0)
                     <td>{!! $closed->title !!}</td>
                 @else
                     <td><a href="{!! url('special/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
+                @endif
                 @endif
 
                 @endrole
