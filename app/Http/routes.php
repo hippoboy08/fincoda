@@ -8,6 +8,13 @@ Route::get('/', function () {
 Route::get('login', function () {
     return view('login');
 });
+
+Route::get('about', function(){
+
+    return view('about');
+
+});
+
 Route::get('password/reset','Auth\PasswordController@showLinkRequestForm');
 Route::post('password/reset','Auth\passwordController@postReset');
 Route::post('password/email','Auth\PasswordController@sendResetLinkEmail');

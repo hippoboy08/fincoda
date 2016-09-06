@@ -52,7 +52,15 @@
                                     @if($closed->completed=='0')
                                       <td> {!! $closed->title !!}</td>
                                     @else
-                                     <td><a href="{!! url('basic/survey/'.$closed->id) !!}"> {!! $closed->title !!}</a></td>
+                                        @role('basic')
+                                        <td><a href="{!! url('basic/survey/'.$closed->id) !!}"> {!! $closed->title !!}</a></td>
+                                    @endrole
+
+                                    @role('special')
+                                        <td><a href="{!! url('special/survey/'.$closed->id) !!}"> {!! $closed->title !!}</a></td>
+                                    @endrole
+
+
                                     @endif
 
                                     <td>{!! \App\Survey_Type::find($closed->type_id)->name !!}</td>
