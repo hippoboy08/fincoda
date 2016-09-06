@@ -32,19 +32,10 @@
                                   <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
                                 </ul>
 
-                                @role ('basic')
-                                <ul class="nav nav-tabs">
-                                  <li class="active"><a data-toggle="tab" href="#myAnswer">My Answer</a></li>
-                                  <li><a data-toggle="tab" href="#compared">Compared</a></li>
-                                </ul>
-                                @endrole
-
-                                @role ('admin')
                                 <ul class="nav nav-tabs">
                                   <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
                                 </ul>
-                                @endrole
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
