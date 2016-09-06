@@ -20,7 +20,7 @@
                 <div class="box-body">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <div>
+                            <p>
                                 <h2>Survey Results</h2><br>
                                 <!-- <label id="surveyId">{!! $survey->title !!}</label> -->
                                 <ul>
@@ -32,6 +32,7 @@
                                   <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
                                 </ul>
 
+                                @role ('admin')
                                 <ul class="nav nav-tabs">
                                   <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
@@ -420,6 +421,12 @@
                                   </div>
                                   @endrole
                                 </div>
+                                    @else
+                                    <ul>
+                                        <li class="list-group-item list-group-item-danger"> <p style="font-size: 20px;">No any response has been received for this survey.</p></li>
+                                    </ul>
+
+                                    @endif
                             </div>
                             </div>
                         </div>
