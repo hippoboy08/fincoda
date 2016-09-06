@@ -32,12 +32,24 @@
                                   <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
                                 </ul>
 
+
                                 @if($answers>0)
+
+
+                                @role ('basic')
+                                <ul class="nav nav-tabs">
+                                  <li class="active"><a data-toggle="tab" href="#myAnswer">My Answer</a></li>
+                                  <li><a data-toggle="tab" href="#compared">Compared</a></li>
+                                </ul>
+                                @endrole
+
+                                @role ('admin')
 
                                 <ul class="nav nav-tabs">
                                   <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
                                 </ul>
+                                @endrole
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
@@ -50,84 +62,41 @@
                                     </div>
 
                                     <div>
-                                      <table class="table table-bordered table-striped text-center">
-                                        <h4><b>Score</b></h4>
-                                          <thead>
-                                          <tr>
-                                              <th>0</th>
-                                              <th>1</th>
-                                              <th>2</th>
-                                              <th>3</th>
-                                              <th>4</th>
-                                              <th>5</th>
-                                          </tr>
-                                          </thead>
-                                          <tbody>
-                                            <tr>
-                                                <td>Not observed</td>
-                                                <td>Very poor</td>
-                                                <td>Need to improve</td>
-                                                <td>Pass</td>
-                                                <td>Good</td>
-                                                <td>Excellent</td>
-                                            </tr>
-                                          </tbody>
-                                        </table>
+                                      @include ('survey.resultContent.scoreTable')
                                     </div>
+
+                                    @role ('admin')
                                     <!-- Company average graph -->
                                     <canvas id="companyAverage" width="800" height="400"></canvas>
-                                    <script>
-                                    var chartArea = document.getElementById("companyAverage");
-                                    var newChart = new Chart(chartArea, {
-                                        type: 'bar',
-                                        data: {
-                                          <!-- x axis -->
-                                            labels: ["Ind 1", "Ind 2", "Ind 3", "Ind 4", "Ind 5", "Ind 6", "Ind 7", "Ind 8", "Ind 9", "Ind 10", "Ind 11", "Ind 12",
-                                                    "Ind 13", "Ind 14", "Ind 15", "Ind 16", "Ind 17", "Ind 18", "Ind 19", "Ind 20", "Ind 21", "Ind 22", "Ind 23", "Ind 24",
-                                                    "Ind 25", "Ind 26", "Ind 27", "Ind 28", "Ind 29", "Ind 30", "Ind 31", "Ind 32", "Ind 33", "Ind 34"],
-                                            datasets: [{
-                                                label: 'Company Average Score Of Each Indicator',
-                                                <!-- y axis -->
-                                                data: [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Group_Average!!},
-                                                      {!!$surveyGroupAveragePerIndicatorAllUsers[5]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[6]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[7]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[8]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[9]->Group_Average!!},
-                                                    {!!$surveyGroupAveragePerIndicatorAllUsers[10]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[11]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[12]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[13]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[14]->Group_Average!!},
-                                                  {!!$surveyGroupAveragePerIndicatorAllUsers[15]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[16]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[17]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[18]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[19]->Group_Average!!},
-                                                {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
-                                              {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
-                                            {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
-                                                backgroundColor: [
-                                                  <!-- define group average background colors equal to the nummber of indictors you have  -->
-                                                    'rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)',
-                                                    'rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)',
-                                                    'rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)',
-                                                    'rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)',
-                                                    'rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)',
-                                                    'rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)',
-                                                    'rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)', 'rgba(255,99,132,1)',
-                                                ],
-                                            }]
-                                        },
-                                        options: {
-                                            scales: {
-                                                yAxes: [{
-                                                    ticks: {
-                                                        beginAtZero:true
-                                                    }
-                                                }]
-                                            }
-                                        }
-                                    });
+                                    <script src="{{URL::asset('js/displayChart.js')}}">
                                     </script>
+                                    <script>
+                                      createChart(
+                                        document.getElementById("companyAverage"),
+                                        ["Ind 1", "Ind 2", "Ind 3", "Ind 4", "Ind 5", "Ind 6", "Ind 7", "Ind 8", "Ind 9", "Ind 10", "Ind 11", "Ind 12",
+                                                "Ind 13", "Ind 14", "Ind 15", "Ind 16", "Ind 17", "Ind 18", "Ind 19", "Ind 20", "Ind 21", "Ind 22", "Ind 23", "Ind 24",
+                                                "Ind 25", "Ind 26", "Ind 27", "Ind 28", "Ind 29", "Ind 30", "Ind 31", "Ind 32", "Ind 33", "Ind 34"],
+                                        'Company average score of each indicator',
+                                        [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Group_Average!!},
+                                          {!!$surveyGroupAveragePerIndicatorAllUsers[5]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[6]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[7]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[8]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[9]->Group_Average!!},
+                                           {!!$surveyGroupAveragePerIndicatorAllUsers[10]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[11]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[12]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[13]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[14]->Group_Average!!},
+                                            {!!$surveyGroupAveragePerIndicatorAllUsers[15]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[16]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[17]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[18]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[19]->Group_Average!!},
+                                              {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
+                                                {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
+                                                  {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
+                                        'rgba(255,99,132,1)'
+                                      );
+                                    </script>
+
                                     <div>
                                       <table class="table table-bordered table-striped text-center">
                                         <h4><b>Indicators Table</b></h4>
                                           <thead>
-                                          <tr>
-
-                                              <th>ID</th>
-                                              <th>Indicator</th>
-                                              <th>Company Average</th>
-                                          </tr>
+                                            <tr>
+                                                <th>Indicator ID</th>
+                                                <th>Indicator</th>
+                                                <th>Company Average</th>
+                                            </tr>
                                           </thead>
                                           <tbody>
                                             @if(count($surveyScoreAllUsers)==0)
@@ -135,7 +104,6 @@
                                             @else
                                               @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
                                                 <tr>
-
                                                   <td>{!! $result->Indicator_ID !!}</td>
                                                   <td>{!! $result->Indicator !!}</td>
                                                   <td>{!! $result->Group_Average !!}</td>
@@ -146,47 +114,27 @@
                                       </table>
                                     </div>
 
+
                                     <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
-                                    <script>
-                                    var chartArea = document.getElementById("indicatorGroupAverage");
-                                    var newChart = new Chart(chartArea, {
-                                        type: 'bar',
-                                        data: {
-                                          <!-- x axis -->
-                                            labels: ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
-                                            datasets: [{
-                                                label: 'Company Average Score Of Each Indicator Group',
-                                                <!-- y axis -->
-                                                data: [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
-                                                backgroundColor: [
-                                                  <!-- define group average background colors equal to the nummber of indictors you have  -->
-                                                    'rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)','rgba(255,99,132,1)',
-                                                ],
-                                            }]
-                                        },
-                                        options: {
-                                            scales: {
-                                                yAxes: [{
-                                                    ticks: {
-                                                        beginAtZero:true
-                                                    }
-                                                }]
-                                            }
-                                        }
-                                    });
+                                    <script src="{{URL::asset('js/displayChart.js')}}">
                                     </script>
+                                    <script>
+                                      createChart(
+                                        document.getElementById("indicatorGroupAverage"),
+                                        ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
+                                        'Company average score of each indicator group',
+                                        [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
+                                          {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
+                                        'rgba(255,99,132,1)'
+                                      );
+                                    </script>
+
                                     <div>
                                       @include ('survey.resultContent.surveyScorePerIndicatorGroup')
                                     </div>
                                   </div>
 
-
                                   <div id="detailedview" class="tab-pane fade">
-                                    @role ('basic')
-                                      <div>This content is available only for Administrators.</div>
-                                    @endrole
-
-                                    @role ('admin')
                                       <ul class="nav nav-tabs">
                                           <li class="active"><a data-toggle="tab" href="#participants">Participants</a></li>
                                           <li><a data-toggle="tab" href="#menu1">Participants Scores</a></li>
@@ -483,8 +431,8 @@
                                           </div>
                                         </div>
                                     </div>
-                                    @endrole
                                   </div>
+                                  @endrole
                                 </div>
                                     @else
                                     <ul>
@@ -497,6 +445,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 @stop
