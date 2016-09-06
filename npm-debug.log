@@ -2,8 +2,8 @@
 1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
 1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
 1 verbose cli   'install',
-1 verbose cli   '--save',
-1 verbose cli   'paradigms.js' ]
+1 verbose cli   'paradigms.js',
+1 verbose cli   '--save' ]
 2 info using npm@2.15.5
 3 info using node@v4.4.6
 4 verbose install initial load of C:\xampp\htdocs\Finnnew\package.json
@@ -34,36 +34,36 @@
 17 verbose addNameTag registry:https://registry.npmjs.org/paradigms.js not in flight; fetching
 18 verbose request uri https://registry.npmjs.org/paradigms.js
 19 verbose request no auth needed
-20 info attempt registry request try #1 at 22:26:30
-21 verbose request id d9ab45d64638b114
+20 info attempt registry request try #1 at 11:04:07
+21 verbose request id 480d4f280260481a
 22 http request GET https://registry.npmjs.org/paradigms.js
 23 http 404 https://registry.npmjs.org/paradigms.js
 24 verbose headers { 'content-type': 'application/json',
 24 verbose headers   'cache-control': 'max-age=0',
 24 verbose headers   'content-length': '2',
 24 verbose headers   'accept-ranges': 'bytes',
-24 verbose headers   date: 'Mon, 05 Sep 2016 19:26:25 GMT',
+24 verbose headers   date: 'Tue, 06 Sep 2016 08:04:02 GMT',
 24 verbose headers   via: '1.1 varnish',
 24 verbose headers   age: '0',
 24 verbose headers   connection: 'keep-alive',
-24 verbose headers   'x-served-by': 'cache-bma7022-BMA',
+24 verbose headers   'x-served-by': 'cache-bma7032-BMA',
 24 verbose headers   'x-cache': 'MISS',
 24 verbose headers   'x-cache-hits': '0',
-24 verbose headers   'x-timer': 'S1473103585.255196,VS0,VE137',
+24 verbose headers   'x-timer': 'S1473149042.012396,VS0,VE130',
 24 verbose headers   vary: 'Accept-Encoding' }
 25 silly get cb [ 404,
 25 silly get   { 'content-type': 'application/json',
 25 silly get     'cache-control': 'max-age=0',
 25 silly get     'content-length': '2',
 25 silly get     'accept-ranges': 'bytes',
-25 silly get     date: 'Mon, 05 Sep 2016 19:26:25 GMT',
+25 silly get     date: 'Tue, 06 Sep 2016 08:04:02 GMT',
 25 silly get     via: '1.1 varnish',
 25 silly get     age: '0',
 25 silly get     connection: 'keep-alive',
-25 silly get     'x-served-by': 'cache-bma7022-BMA',
+25 silly get     'x-served-by': 'cache-bma7032-BMA',
 25 silly get     'x-cache': 'MISS',
 25 silly get     'x-cache-hits': '0',
-25 silly get     'x-timer': 'S1473103585.255196,VS0,VE137',
+25 silly get     'x-timer': 'S1473149042.012396,VS0,VE130',
 25 silly get     vary: 'Accept-Encoding' } ]
 26 verbose stack Error: Registry returned 404 for GET on https://registry.npmjs.org/paradigms.js
 26 verbose stack     at makeError (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:264:12)
@@ -80,7 +80,7 @@
 28 verbose pkgid paradigms.js
 29 verbose cwd C:\xampp\htdocs\Finnnew
 30 error Windows_NT 10.0.10586
-31 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "--save" "paradigms.js"
+31 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "paradigms.js" "--save"
 32 error node v4.4.6
 33 error npm  v2.15.5
 34 error code E404

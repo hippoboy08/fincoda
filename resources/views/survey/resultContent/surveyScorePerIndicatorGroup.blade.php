@@ -1,4 +1,5 @@
 <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
+  <h4><b>Indicator Groups Table</b></h4>
   <thead>
     <tr>
       <th>Indicator Group ID</th>
