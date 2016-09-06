@@ -41,6 +41,11 @@
         </div>
         <div class="navbar-collapse collapse">
 
+            <ul class="nav navbar-nav">
+                <li><a href="{{url('/')}}" class="smothscroll">Home</a></li>
+
+            </ul>
+
 
             <ul class="nav navbar-nav pull-right">
                 <li><a href="login" class="smothscroll">Login</a></li>
@@ -112,10 +117,8 @@
                 <h4><strong>Survey results and the analysis.</strong> </h4>
 
                 <p>
-                    Admin and special users can create surveys. Survey created by an admin is accessible to all special and basic users of the company.
-                    But the survey created by a special user can be accessible only by the members of the group. <br><br>
-                    Once the survey is created, members are notified about the new survey. The survey will be opened and closed to the users on the specified date. Once the survey is closed,
-                    users can no longer answer the survey.
+                    After survey has been completed or closed, the result can be viewed. The result is presented statically as well as in bar graphs. Comparing the results
+                    from different groups and categories reflects the overall progress and status of the participants.
                 </p>
 
                 </div>
