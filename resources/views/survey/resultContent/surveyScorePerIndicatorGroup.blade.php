@@ -1,7 +1,7 @@
 <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
   <thead>
     <tr>
-      <th>Survey ID</th>
+      <th>Indicator Group ID</th>
       <th>Indicator Group</th>
       <th>Indicator Group Average</th>
     </tr>
@@ -12,7 +12,7 @@
     @else
       @foreach($surveyScorePerIndicatorGroup as $result)
         <tr>
-          <td>{!! $result->Survey_ID !!}</td>
+          <td>{!! $result->Indicator_Group_ID !!}</td>
           <td>{!! $result->Indicator_Group !!}</td>
           <td>{!! $result->Indicator_Group_Average !!}</td>
         </tr>

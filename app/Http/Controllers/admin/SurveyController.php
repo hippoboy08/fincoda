@@ -157,7 +157,7 @@ use EmailTrait;
                                 ->where('results.survey_id',$id)
                                 ->groupBy('results.survey_id', 'results.user_id', 'indicators.id')
                                 ->get();
-
+                                
                                 //This returns the paginated results for survey score all users
                                 $page = LengthAwarePaginator::resolveCurrentPage();
                                 $collection = new Collection($surveyScoreAllUsers);

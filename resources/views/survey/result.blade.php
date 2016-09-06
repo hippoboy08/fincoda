@@ -77,6 +77,7 @@
                                         <h4><b>Indicators</b></h4>
                                           <thead>
                                           <tr>
+
                                               <th>ID</th>
                                               <th>Indicator</th>
                                               <th>Group_Average</th>
@@ -86,24 +87,22 @@
                                             @if(count($surveyScoreAllUsers)==0)
                                               <div>You have no surveys results to display</div>
                                             @else
-                                              @foreach($surveyScoreAllUsers as $result)
+                                              @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
+                                                <tr>
 
-
-                                                    <tr>
-                                                      <td>{!! $result->Indicator_ID !!}</td>
-                                                      <td>{!! $result->Indicator !!}</td>
-
-                                                    </tr>
-
+                                                  <td>{!! $result->Indicator_ID !!}</td>
+                                                  <td>{!! $result->Indicator !!}</td>
+                                                  <td>{!! $result->Group_Average !!}</td>
+                                                </tr>
                                               @endforeach
                                             @endif
                                           </tbody>
                                       </table>
                                     </div>
-                                    <!--
+
                                     <div>
                                       @include ('survey.resultContent.surveyScorePerIndicatorGroup')
-                                    </div> -->
+                                    </div> 
                                   </div>
 
 
