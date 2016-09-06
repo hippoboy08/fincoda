@@ -157,13 +157,13 @@ use EmailTrait;
                                 ->where('results.survey_id',$id)
                                 ->groupBy('results.survey_id', 'results.user_id', 'indicators.id')
                                 ->get();
-                                
+
                                 //This returns the paginated results for survey score all users
                                 $page = LengthAwarePaginator::resolveCurrentPage();
                                 $collection = new Collection($surveyScoreAllUsers);
                                 $itemsPerPage = 5;
                                 $slicedCollection = $collection->slice(($page-1)*$itemsPerPage,$page)->all();
-                                $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);
+                                $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);              
 
               //This returns the average of the user group per indicator in this survey
               $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
