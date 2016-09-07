@@ -25,3 +25,25 @@ function createChart(chartArea, labelArr, dataLabelStr, dataArr, bgColor) {
       }
   });
 };
+
+function createComparedChart(chartArea, labelArr, dataset1, dataset2) {
+
+  return new Chart(chartArea, {
+      type: 'bar',
+      data: {
+          labels: labelArr,
+          datasets: [dataset1, dataset2]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero:true
+                  }
+              }]
+          }
+      }
+  });
+};
+
+console.log('been here');
