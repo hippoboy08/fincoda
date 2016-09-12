@@ -63,7 +63,7 @@
                                             {!!$surveyScoreAllUsers[15]->Indicator_ID!!}, {!!$surveyScoreAllUsers[16]->Indicator_ID!!}, {!!$surveyScoreAllUsers[17]->Indicator_ID!!}, {!!$surveyScoreAllUsers[18]->Indicator_ID!!}, {!!$surveyScoreAllUsers[19]->Indicator_ID!!},
                                               {!!$surveyScoreAllUsers[20]->Indicator_ID!!}, {!!$surveyScoreAllUsers[21]->Indicator_ID!!}, {!!$surveyScoreAllUsers[22]->Indicator_ID!!}, {!!$surveyScoreAllUsers[23]->Indicator_ID!!}, {!!$surveyScoreAllUsers[24]->Indicator_ID!!},
                                                 {!!$surveyScoreAllUsers[25]->Indicator_ID!!}, {!!$surveyScoreAllUsers[26]->Indicator_ID!!}, {!!$surveyScoreAllUsers[27]->Indicator_ID!!}, {!!$surveyScoreAllUsers[28]->Indicator_ID!!}, {!!$surveyScoreAllUsers[29]->Indicator_ID!!},
-                                                  {!!$surveyScoreAllUsers[30]->Indicator_ID!!}, {!!$surveyScoreAllUsers[31]->Indicator_ID!!}, {!!$surveyScoreAllUsers[32]->Indicator_ID!!}, {!!$surveyScoreAllUsers[33]->Indicator_ID!!}],
+                                                  {!!$surveyScoreAllUsers[30]->Indicator_ID!!}, {!!$surveyScoreAllUsers[31]->Indicator_ID!!}, {!!$surveyScoreAllUsers[32]->Indicator_ID!!}, {!!$surveyScoreAllUsers[33]->Indicator_ID!!}],                                        
                                         'Your score for each indicator',
                                         [{!!$surveyScoreAllUsers[0]->Answer!!}, {!!$surveyScoreAllUsers[1]->Answer!!}, {!!$surveyScoreAllUsers[2]->Answer!!}, {!!$surveyScoreAllUsers[3]->Answer!!}, {!!$surveyScoreAllUsers[4]->Answer!!},
                                           {!!$surveyScoreAllUsers[5]->Answer!!}, {!!$surveyScoreAllUsers[6]->Answer!!}, {!!$surveyScoreAllUsers[7]->Answer!!}, {!!$surveyScoreAllUsers[8]->Answer!!}, {!!$surveyScoreAllUsers[9]->Answer!!},
@@ -160,20 +160,28 @@
                                             <tr>
                                                 <th class="text-center">Indicator ID</th>
                                                 <th class="text-center">Indicator</th>
+                                                <th class="text-center">Your Score</th>
                                                 <th class="text-center">Company average</th>
                                             </tr>
                                           </thead>
                                           <tbody>
                                             @if(count($surveyScoreAllUsers)==0)
                                               <div>You have no surveys results to display</div>
+
                                             @else
-                                              @foreach ($surveyGroupAveragePerIndicatorAllUsers as $result)
+                                              @foreach ($surveyGroupAveragePerIndicatorAllUsers as $avgResult)
                                                 <tr>
-                                                  <td class="text-center">{!! $result->Indicator_ID !!}</td>
-                                                  <td>{!! $result->Indicator !!}</td>
-                                                  <td class="text-center">{!! $result->Group_Average !!}</td>
+                                                  <td class="text-center">{!! $avgResult->Indicator_ID !!}</td>
+                                                  <td>{!! $avgResult->Indicator !!}</td>
+                                                  @foreach ($surveyScoreAllUsers as $result)
+                                                    @if(($result->Indicator_ID)==($avgResult->Indicator_ID))
+                                                        <td class="text-center">{!! $result->Answer !!}</td>
+                                                    @endif
+                                                  @endforeach
+                                                  <td class="text-center">{!! $avgResult->Group_Average !!}</td>
                                                 </tr>
                                               @endforeach
+
                                             @endif
                                           </tbody>
                                       </table>
