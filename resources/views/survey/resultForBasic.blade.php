@@ -43,7 +43,7 @@
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
                           							The table underneath this graph displayed the same data in table format.
-                          							Alternate between the two buttons to view your scores only or in comparison with the group average.
+                          							Alternate between the two buttons to view your scores only or in comparison with the company average score.
                           							Only your score are shown by default.</p>
                                     </div>
 
@@ -57,9 +57,13 @@
                                     <script>
                                       createChart(
                                         document.getElementById("myAnswerGraph"),
-                                        ["Ind 1", "Ind 2", "Ind 3", "Ind 4", "Ind 5", "Ind 6", "Ind 7", "Ind 8", "Ind 9", "Ind 10", "Ind 11", "Ind 12",
-                                                "Ind 13", "Ind 14", "Ind 15", "Ind 16", "Ind 17", "Ind 18", "Ind 19", "Ind 20", "Ind 21", "Ind 22", "Ind 23", "Ind 24",
-                                                "Ind 25", "Ind 26", "Ind 27", "Ind 28", "Ind 29", "Ind 30", "Ind 31", "Ind 32", "Ind 33", "Ind 34"],
+                                        [{!!$surveyScoreAllUsers[0]->Indicator_ID!!}, {!!$surveyScoreAllUsers[1]->Indicator_ID!!}, {!!$surveyScoreAllUsers[2]->Indicator_ID!!}, {!!$surveyScoreAllUsers[3]->Indicator_ID!!}, {!!$surveyScoreAllUsers[4]->Indicator_ID!!},
+                                          {!!$surveyScoreAllUsers[5]->Indicator_ID!!}, {!!$surveyScoreAllUsers[6]->Indicator_ID!!}, {!!$surveyScoreAllUsers[7]->Indicator_ID!!}, {!!$surveyScoreAllUsers[8]->Indicator_ID!!}, {!!$surveyScoreAllUsers[9]->Indicator_ID!!},
+                                           {!!$surveyScoreAllUsers[10]->Indicator_ID!!}, {!!$surveyScoreAllUsers[11]->Indicator_ID!!}, {!!$surveyScoreAllUsers[12]->Indicator_ID!!}, {!!$surveyScoreAllUsers[13]->Indicator_ID!!}, {!!$surveyScoreAllUsers[14]->Indicator_ID!!},
+                                            {!!$surveyScoreAllUsers[15]->Indicator_ID!!}, {!!$surveyScoreAllUsers[16]->Indicator_ID!!}, {!!$surveyScoreAllUsers[17]->Indicator_ID!!}, {!!$surveyScoreAllUsers[18]->Indicator_ID!!}, {!!$surveyScoreAllUsers[19]->Indicator_ID!!},
+                                              {!!$surveyScoreAllUsers[20]->Indicator_ID!!}, {!!$surveyScoreAllUsers[21]->Indicator_ID!!}, {!!$surveyScoreAllUsers[22]->Indicator_ID!!}, {!!$surveyScoreAllUsers[23]->Indicator_ID!!}, {!!$surveyScoreAllUsers[24]->Indicator_ID!!},
+                                                {!!$surveyScoreAllUsers[25]->Indicator_ID!!}, {!!$surveyScoreAllUsers[26]->Indicator_ID!!}, {!!$surveyScoreAllUsers[27]->Indicator_ID!!}, {!!$surveyScoreAllUsers[28]->Indicator_ID!!}, {!!$surveyScoreAllUsers[29]->Indicator_ID!!},
+                                                  {!!$surveyScoreAllUsers[30]->Indicator_ID!!}, {!!$surveyScoreAllUsers[31]->Indicator_ID!!}, {!!$surveyScoreAllUsers[32]->Indicator_ID!!}, {!!$surveyScoreAllUsers[33]->Indicator_ID!!}],
                                         'Your score for each indicator',
                                         [{!!$surveyScoreAllUsers[0]->Answer!!}, {!!$surveyScoreAllUsers[1]->Answer!!}, {!!$surveyScoreAllUsers[2]->Answer!!}, {!!$surveyScoreAllUsers[3]->Answer!!}, {!!$surveyScoreAllUsers[4]->Answer!!},
                                           {!!$surveyScoreAllUsers[5]->Answer!!}, {!!$surveyScoreAllUsers[6]->Answer!!}, {!!$surveyScoreAllUsers[7]->Answer!!}, {!!$surveyScoreAllUsers[8]->Answer!!}, {!!$surveyScoreAllUsers[9]->Answer!!},
@@ -68,18 +72,18 @@
                                               {!!$surveyScoreAllUsers[20]->Answer!!}, {!!$surveyScoreAllUsers[21]->Answer!!}, {!!$surveyScoreAllUsers[22]->Answer!!}, {!!$surveyScoreAllUsers[23]->Answer!!}, {!!$surveyScoreAllUsers[24]->Answer!!},
                                                 {!!$surveyScoreAllUsers[25]->Answer!!}, {!!$surveyScoreAllUsers[26]->Answer!!}, {!!$surveyScoreAllUsers[27]->Answer!!}, {!!$surveyScoreAllUsers[28]->Answer!!}, {!!$surveyScoreAllUsers[29]->Answer!!},
                                                   {!!$surveyScoreAllUsers[30]->Answer!!}, {!!$surveyScoreAllUsers[31]->Answer!!}, {!!$surveyScoreAllUsers[32]->Answer!!}, {!!$surveyScoreAllUsers[33]->Answer!!}],
-                                        'rgba(255,99,132,1)'
+                                        'rgba(60,141,188,1)'
                                       );
                                     </script>
 
                                     <div>
-                                      <table class="table table-bordered table-striped text-center">
+                                      <table class="table table-bordered table-striped">
                                         <h4><b>Indicators Table</b></h4>
                                           <thead>
                                             <tr>
-                                                <th>Indicator ID</th>
-                                                <th>Indicator</th>
-                                                <th>Your Score</th>
+                                                <th class="text-center">Indicator ID</th>
+                                                <th class="text-center">Indicator</th>
+                                                <th class="text-center">Your Score</th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -88,9 +92,9 @@
                                             @else
                                               @foreach($surveyScoreAllUsers as $result)
                                                 <tr>
-                                                  <td>{!! $result->Indicator_ID !!}</td>
+                                                  <td class="text-center">{!! $result->Indicator_ID !!}</td>
                                                   <td>{!! $result->Indicator !!}</td>
-                                                  <td>{!! $result->Answer !!}</td>
+                                                  <td class="text-center">{!! $result->Answer !!}</td>
                                                 </tr>
                                               @endforeach
                                             @endif
@@ -102,8 +106,8 @@
                                   <div id="compared" class="tab-pane fade">
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
-                                      <p>The bar graph shows Company average score in this survey.
-                          							The table underneath this graph displayed the same data in table format.
+                                      <p>The bar graph shows a comparison between your score and company average score in this survey.
+                          							The table underneath this graph displays company average score in table format.
                           						</p>
                                     </div>
 
@@ -125,10 +129,10 @@
                                             {!!$surveyScoreAllUsers[20]->Answer!!}, {!!$surveyScoreAllUsers[21]->Answer!!}, {!!$surveyScoreAllUsers[22]->Answer!!}, {!!$surveyScoreAllUsers[23]->Answer!!}, {!!$surveyScoreAllUsers[24]->Answer!!},
                                               {!!$surveyScoreAllUsers[25]->Answer!!}, {!!$surveyScoreAllUsers[26]->Answer!!}, {!!$surveyScoreAllUsers[27]->Answer!!}, {!!$surveyScoreAllUsers[28]->Answer!!}, {!!$surveyScoreAllUsers[29]->Answer!!},
                                                 {!!$surveyScoreAllUsers[30]->Answer!!}, {!!$surveyScoreAllUsers[31]->Answer!!}, {!!$surveyScoreAllUsers[32]->Answer!!}, {!!$surveyScoreAllUsers[33]->Answer!!}],
-                                       backgroundColor: 'rgba(255,99,132,1)'
+                                       backgroundColor: 'rgba(60,141,188,1)'
                                     };
                                     var datasetGroupAvg = {
-                                      label: 'Group average',
+                                      label: 'Company average',
                                       data: [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Group_Average!!},
                                         {!!$surveyGroupAveragePerIndicatorAllUsers[5]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[6]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[7]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[8]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[9]->Group_Average!!},
                                          {!!$surveyGroupAveragePerIndicatorAllUsers[10]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[11]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[12]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[13]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[14]->Group_Average!!},
@@ -136,23 +140,27 @@
                                             {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
                                               {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
                                                 {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
-                                      backgroundColor: 'rgba(51,139,228,1)'
+                                      backgroundColor: 'rgba(34,45,50,1)'
                                     };
-                                    var labelArr = ["Ind 1", "Ind 2", "Ind 3", "Ind 4", "Ind 5", "Ind 6", "Ind 7", "Ind 8", "Ind 9", "Ind 10", "Ind 11", "Ind 12",
-                                            "Ind 13", "Ind 14", "Ind 15", "Ind 16", "Ind 17", "Ind 18", "Ind 19", "Ind 20", "Ind 21", "Ind 22", "Ind 23", "Ind 24",
-                                            "Ind 25", "Ind 26", "Ind 27", "Ind 28", "Ind 29", "Ind 30", "Ind 31", "Ind 32", "Ind 33", "Ind 34"];
+                                    var labelArr = [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Indicator_ID!!},
+                                      {!!$surveyGroupAveragePerIndicatorAllUsers[5]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[6]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[7]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[8]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[9]->Indicator_ID!!},
+                                       {!!$surveyGroupAveragePerIndicatorAllUsers[10]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[11]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[12]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[13]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[14]->Indicator_ID!!},
+                                        {!!$surveyGroupAveragePerIndicatorAllUsers[15]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[16]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[17]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[18]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[19]->Indicator_ID!!},
+                                          {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Indicator_ID!!},
+                                            {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Indicator_ID!!},
+                                              {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Indicator_ID!!}];
                                     createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
 
                                   </script>
 
                                     <div>
-                                      <table class="table table-bordered table-striped text-center">
+                                      <table class="table table-bordered table-striped">
                                         <h4><b>Indicators Table</b></h4>
                                           <thead>
                                             <tr>
-                                                <th>Indicator ID</th>
-                                                <th>Indicator</th>
-                                                <th>Company average</th>
+                                                <th class="text-center">Indicator ID</th>
+                                                <th class="text-center">Indicator</th>
+                                                <th class="text-center">Company average</th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -161,9 +169,9 @@
                                             @else
                                               @foreach ($surveyGroupAveragePerIndicatorAllUsers as $result)
                                                 <tr>
-                                                  <td>{!! $result->Indicator_ID !!}</td>
+                                                  <td class="text-center">{!! $result->Indicator_ID !!}</td>
                                                   <td>{!! $result->Indicator !!}</td>
-                                                  <td>{!! $result->Group_Average !!}</td>
+                                                  <td class="text-center">{!! $result->Group_Average !!}</td>
                                                 </tr>
                                               @endforeach
                                             @endif
