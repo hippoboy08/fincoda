@@ -33,7 +33,7 @@
                                   <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
                                 </ul>
 
-                                @role ('admin')
+                                @role ('special')
                                 <ul class="nav nav-tabs">
                                   <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
@@ -53,7 +53,7 @@
                                       @include ('survey.resultContent.scoreTable')
                                     </div>
 
-                                    @role ('admin')
+                                    @role ('special')
                                     <!-- Company average graph -->
                                     <canvas id="companyAverage" width="800" height="400"></canvas>
                                     <script src="{{URL::asset('js/displayChart.js')}}">

@@ -136,9 +136,6 @@ class GroupSurveyController extends Controller
             }else{//Its assumed that in this function only group surveys will be handled or given as parameters
               //Its also assumed that only Surveys belonging to the concerned special user will be given as parameters
               //The function should return the results of the survey in the group
-                /*return view('survey.result')->with('survey',Survey::find($id))
-                    ->with('participants',Survey::find($id)->participants)
-                    ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));*/
                     $surveyScoreAllUsers = DB::table('indicators')
                             ->join('results','results.indicator_id','=','indicators.id')
                             ->join('user_in_groups','results.user_id','=','user_in_groups.user_id')
@@ -198,7 +195,7 @@ class GroupSurveyController extends Controller
                             GROUP BY results.survey_id, indicators.group_id"),
                             array("surveyId"=>$id));
 
-                    return view('survey.resultForBasic')->with('survey',Survey::find($id))
+                    return view('survey.resultForSpecial')->with('survey',Survey::find($id))
                     ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
                     ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                     ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])

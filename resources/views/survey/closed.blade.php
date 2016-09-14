@@ -32,9 +32,9 @@
                 @role('special')
 
                 @if(Route::current()->getName()=='special.groupsurvey.index')
-                    <td><a href="{!! url('special/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
+                    <td><a href="{!! url('special/groupsurvey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
                 @elseif(Route::getCurrentRoute()->getPath()=='special/groupsurveyresult')
-                    <td><a href="{!! url('special/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
+                    <td><a href="{!! url('special/groupsurvey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
                 @else
 
 
