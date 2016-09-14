@@ -82,7 +82,7 @@ class SurveyController extends Controller
                             //This returns the average of the user group per indicator in this survey
                             $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
                                               "SELECT results.survey_id as Survey_ID,
-                                              indicators.id as Indicator_ID, indicators.indicator as Indicator,
+                                              indicators.id as Indicator_ID, indicators.indicator as Indicator, 
                                               ROUND (AVG(results.answer), 2) as Group_Average
                                               FROM indicators
                                               join results on results.indicator_id = indicators.id

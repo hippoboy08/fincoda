@@ -32,3 +32,20 @@ h4 {
   margin-top: 50px;
   margin-bottom: 30px;
 }
+
+/*Graphs*/
+#myAnswerGraph {
+  margin-top: 50px;
+}
+
+#comparedGraph {
+  margin-top: 50px;
+}
+
+#indicatorGroupAverage {
+  margin-top: 50px;
+}
+
+#companyAverage {
+  margin-top: 50px;
+}
