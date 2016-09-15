@@ -332,7 +332,7 @@
                                                   data: {'participantId':$(this).val(),'surveyId':$('#surveyId').text()},
 												  success: function(data){
 													window.location.replace(data.stri);
-													alert(data.stri);
+													//alert(data.stri);
 												  },
 												  error: function(result){
 													var errors = result.responseJSON;

@@ -69,8 +69,10 @@ Route::group(['middleware'=>'special',
     Route::get('/','DashboardController@index');
     Route::get('profile','ProfileController@index');
     Route::resource('survey','CompanySurveyController');
-    Route::resource('usergroup','UserGroupController');
+    Route::get('survey/getParticipant/{surveyId}/{participantId}','GroupSurveyController@getParticipant');
     Route::resource('groupsurvey','GroupSurveyController');
+    Route::match(['get','post'],'survey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'GroupSurveyController@lookForParticipant']);
+    Route::resource('usergroup','UserGroupController');
     Route::get('groupsurveyresult','GroupSurveyResultController@index');
 
 });
