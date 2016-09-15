@@ -440,36 +440,7 @@ use EmailTrait;
                                   GROUP BY k.Surveys_ID, k.Users_ID"),
                                 array("surveyId1"=>$id,"surveyId2"=>$id));
 								
-								
-								
-				//This selects the indicator groups on which all the participants scored maximum averages: the query becomes complex because of the possibility of 
-				//different indicator groups having the same value	
-			  $surveyScorePerIndicatorGroupMaximum = DB::select(DB::raw("SELECT k.Surveys_ID, d.Indicator_Group_ID, d.Indicator_Group, k.Maximum_Company_Indicator_Group_Average FROM
-						(SELECT results.survey_id as Survey_ID,
-                                indicators.group_id as Indicator_Group_ID,
-                                indicator_groups.name as Indicator_Group,
-                                AVG(results.answer) as Indicator_Group_Average
-                                FROM indicators
-                                JOIN results on results.indicator_id = indicators.id
-                                JOIN indicator_groups on indicators.group_id = indicator_groups.id
-                         		WHERE results.survey_id = :surveyId1  
-                                GROUP BY results.survey_id, indicators.group_id) AS d
-						JOIN (SELECT Max_Company_Indicator_Group_Average.Survey_ID as Surveys_ID, 
-								MAX(Max_Company_Indicator_Group_Average.Indicator_Group_Average) as Maximum_Company_Indicator_Group_Average 
-                                FROM(SELECT results.survey_id as Survey_ID,
-                                		indicators.group_id as Indicator_Group_ID,
-                                		indicator_groups.name as Indicator_Group,
-                                		AVG(results.answer) as Indicator_Group_Average
-                                		FROM indicators
-                                		JOIN results on results.indicator_id = indicators.id
-                                		JOIN indicator_groups on indicators.group_id = indicator_groups.id
-                                     	WHERE results.survey_id = :surveyId2   
-                                		GROUP BY results.survey_id, indicators.group_id)as Max_Company_Indicator_Group_Average 
-                                		GROUP BY Max_Company_Indicator_Group_Average.Survey_ID) AS k
-						on d.Survey_ID = k.Surveys_ID
-						WHERE d.Indicator_Group_Average = k.Maximum_Company_Indicator_Group_Average
-						GROUP BY k.Surveys_ID"),
-                                array("surveyId1"=>$id,"surveyId2"=>$id));
+				
 								
 								
                                 $company=Auth::User()->company()->first();
