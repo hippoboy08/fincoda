@@ -30,7 +30,6 @@
                                     </div>
 
                                     <div class="form-group row">
-
                                         <div class="col-md-2 pull-left">
                                             <strong>Company code* :</strong>
                                         </div>

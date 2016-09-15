@@ -54,9 +54,6 @@ class SurveyController extends Controller
                       //This is an issue that will be resolved later when comapny survey logic is cleanly separated from group survey logic
                       if($surveyCategoryId==1){//This is report for company survey because the aggregates or averages differ when its group survey
                         //or company survey
-                        /*view('survey.result')->with('survey',Survey::find($id))
-                            ->with('participants',Survey::find($id)->participants)
-                            ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));*/
                             //This returns the indicator scores for each user that took part in the survey
                             //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                             //In other words it will always return a single result
@@ -82,7 +79,7 @@ class SurveyController extends Controller
                             //This returns the average of the user group per indicator in this survey
                             $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
                                               "SELECT results.survey_id as Survey_ID,
-                                              indicators.id as Indicator_ID, indicators.indicator as Indicator, 
+                                              indicators.id as Indicator_ID, indicators.indicator as Indicator,
                                               ROUND (AVG(results.answer), 2) as Group_Average
                                               FROM indicators
                                               join results on results.indicator_id = indicators.id

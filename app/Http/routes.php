@@ -9,17 +9,6 @@ Route::get('login', function () {
     return view('login');
 });
 
-Route::get('about', function(){
-
-    return view('about');
-
-});
-
-Route::get('password/reset','Auth\PasswordController@showLinkRequestForm');
-Route::post('password/reset','Auth\passwordController@postReset');
-Route::post('password/email','Auth\PasswordController@sendResetLinkEmail');
-Route::get('password/reset/{var}','Auth\PasswordController@showResetForm');
-
 /*
 Route::get('/','home\HomeController@homepage');
 Route::get('login','home\HomeController@loginpage');*/
@@ -48,13 +37,16 @@ Route::group(['middleware'=>'admin',
 
     Route::get('/','DashboardController@index');
     Route::get('company','ProfileController@company');
-    Route::get('company/update','ProfileController@editcompany');
-    Route::post('company/update','ProfileController@updatecompany');
-
+    //This returns the edit blade
+    Route::get('editCompanyProfile','ProfileController@editCompanyProfile');
+    //This posts back the edit blade to action updateCompanyProfile
+    Route::post('updateCompanyProfile',['as'=>'updateCompanyProfile','uses' => 'ProfileController@updateCompanyProfile']);
+    Route::post('deleteCompanyProfile','ProfileController@deleteCompanyProfile');
     Route::resource('members','MembersController');
     Route::resource('roles','RolesController');
-    Route::post('getParticipantDetails','SurveyController@getParticipantDetails');
+    Route::get('survey/getParticipant/{surveyId}/{participantId}','SurveyController@getParticipant');
     Route::resource('survey','SurveyController');
+    Route::match(['get','post'],'survey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'SurveyController@lookForParticipant']);
     Route::resource('usergroup','UserGroupController');
 
 });
@@ -64,7 +56,7 @@ Route::group(['middleware'=>'basic',
                 'namespace'=>'basic',
                 'prefix'=>'basic'],function(){
     Route::get('/','DashboardController@index');
-    Route::resource('profile','ProfileController');
+    Route::resource('profile','ProfileController@index');
     Route::resource('survey','SurveyController');
     Route::resource('usergroup','UserGroupController');
 
@@ -75,10 +67,12 @@ Route::group(['middleware'=>'special',
                'namespace'=>'special',
                'prefix'=>'special'],function(){
     Route::get('/','DashboardController@index');
-    Route::resource('profile','ProfileController');
+    Route::get('profile','ProfileController@index');
     Route::resource('survey','CompanySurveyController');
-    Route::resource('usergroup','UserGroupController');
+    Route::get('survey/getParticipant/{surveyId}/{participantId}','GroupSurveyController@getParticipant');
     Route::resource('groupsurvey','GroupSurveyController');
+    Route::match(['get','post'],'survey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'GroupSurveyController@lookForParticipant']);
+    Route::resource('usergroup','UserGroupController');
     Route::get('groupsurveyresult','GroupSurveyResultController@index');
 
 });

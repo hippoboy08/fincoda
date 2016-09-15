@@ -24,17 +24,16 @@
                                 <h2>Survey Results</h2><br>
                                 <!-- <label id="surveyId">{!! $survey->title !!}</label> -->
                                 <ul>
-
 								  <li><h5><label>Id : </label> {!! $survey->id !!}</h5></li>
-                                  <li><h5 class="text-capitalize"><label>Title : </label> {!! $survey->title !!}</h5></li>
-                                  <li><h5 class="text-capitalize"><label>Type : </label> {!! \App\Survey_Type::find($survey->type_id)->name !!}</h5></li>
+                                  <li><h5><label>Title : </label> {!! $survey->title !!}</h5></li>
+                                  <li><h5><label>Type : </label> {!! \App\Survey_Type::find($survey->type_id)->name !!}</h5></li>
                                   <li><h5><label>Start time : </label> {!! $survey->start_time !!}</h5></li>
                                   <li><h5><label>Deadline : </label> {!! $survey->end_time !!}</h5></li>
                                   <li><h5><label>Total Participants : </label> {!! count($participants)!!}</h5></li>
                                   <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
                                 </ul>
 
-                                @role ('admin')
+                                @role ('special')
                                 <ul class="nav nav-tabs">
                                   <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
@@ -54,7 +53,7 @@
                                       @include ('survey.resultContent.scoreTable')
                                     </div>
 
-                                    @role ('admin')
+                                    @role ('special')
                                     <!-- Company average graph -->
                                     <canvas id="companyAverage" width="800" height="400"></canvas>
                                     <script src="{{URL::asset('js/displayChart.js')}}">
@@ -73,7 +72,7 @@
                                               {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
                                                 {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
                                                   {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
-                                        'rgba(153,195,191,1)'
+                                        'rgba(255,99,132,1)'
                                       );
                                     </script>
 
@@ -114,7 +113,7 @@
                                         'Company average score of each indicator group',
                                         [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
                                           {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
-                                        'rgba(153,195,191,1)'
+                                        'rgba(255,99,132,1)'
                                       );
                                     </script>
 
@@ -340,7 +339,7 @@
 													console.log(result);
 													console.log(errors);
 												  }
-
+                                                  
                                                 });
                                                 }
                                               });

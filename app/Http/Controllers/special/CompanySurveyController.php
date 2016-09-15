@@ -48,9 +48,6 @@ class CompanySurveyController extends Controller
                 if (Auth::User()->participate_survey()->where('survey_id', $id)->first()->completed == 1) {
                     if ($this->SurveyType($id) == 'self') {//This case can only occur when the special user takes a company survey
                       //Here its still an open survey but he has already participated in it and so wants to see his results
-                        /*return view('survey.result')->with('survey', Survey::find($id))
-                            ->with('participants', Survey::find($id)->participants)
-                            ->with('answers', count(Survey::find($id)->participants()->where('completed', 1)->get()));*/
                             //This returns the indicator scores for each user that took part in the survey
                             //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                             //In other words it will always return a single result
@@ -113,7 +110,7 @@ class CompanySurveyController extends Controller
                                               GROUP BY results.survey_id, indicators.group_id"),
                                               array("surveyId"=>$id));
 
-                            return view('survey.resultForBasic')->with('survey',Survey::find($id))
+                            return view('survey.resultForSpecial')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
                             ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                             ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
@@ -139,9 +136,6 @@ class CompanySurveyController extends Controller
                     if ($this->SurveyType($id) == 'self') {//This is a company scoped survey and the case when the survey is closed
                       //And a special user has taken it because it appears in his list of closed surveys
                       //but now wants to see his report
-                        /*return view('survey.result')->with('survey', Survey::find($id))
-                            ->with('participants', Survey::find($id)->participants)
-                            ->with('answers', count(Survey::find($id)->participants()->where('completed', 1)->get()));*/
                             //This returns the indicator scores for each user that took part in the survey
                             //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                             //In other words it will always return a single result
@@ -204,7 +198,7 @@ class CompanySurveyController extends Controller
                                               GROUP BY results.survey_id, indicators.group_id"),
                                               array("surveyId"=>$id));
 
-                            return view('survey.resultForBasic')->with('survey',Survey::find($id))
+                            return view('survey.resultForSpecial')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
                             ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                             ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
