@@ -24,8 +24,8 @@
                                 <h2>Survey Results</h2><br>
                                 <!-- <label id="surveyId">{!! $survey->title !!}</label> -->
                                 <ul>
-                                  <li><h5><label>Title : </label> {!! $survey->title !!}</h5></li>
-                                  <li><h5><label>Type : </label> {!! \App\Survey_Type::find($survey->type_id)->name !!}</h5></li>
+                                  <li><h5 class="text-capitalize"><label>Title : </label> {!! $survey->title !!}</h5></li>
+                                  <li><h5 class="text-capitalize"><label>Type : </label> {!! \App\Survey_Type::find($survey->type_id)->name !!}</h5></li>
                                   <li><h5><label>Start time : </label> {!! $survey->start_time !!}</h5></li>
                                   <li><h5><label>Deadline : </label> {!! $survey->end_time !!}</h5></li>
                                   <li><h5><label>Total Participants : </label> {!! count($participants)!!}</h5></li>
@@ -63,7 +63,7 @@
                                             {!!$surveyScoreAllUsers[15]->Indicator_ID!!}, {!!$surveyScoreAllUsers[16]->Indicator_ID!!}, {!!$surveyScoreAllUsers[17]->Indicator_ID!!}, {!!$surveyScoreAllUsers[18]->Indicator_ID!!}, {!!$surveyScoreAllUsers[19]->Indicator_ID!!},
                                               {!!$surveyScoreAllUsers[20]->Indicator_ID!!}, {!!$surveyScoreAllUsers[21]->Indicator_ID!!}, {!!$surveyScoreAllUsers[22]->Indicator_ID!!}, {!!$surveyScoreAllUsers[23]->Indicator_ID!!}, {!!$surveyScoreAllUsers[24]->Indicator_ID!!},
                                                 {!!$surveyScoreAllUsers[25]->Indicator_ID!!}, {!!$surveyScoreAllUsers[26]->Indicator_ID!!}, {!!$surveyScoreAllUsers[27]->Indicator_ID!!}, {!!$surveyScoreAllUsers[28]->Indicator_ID!!}, {!!$surveyScoreAllUsers[29]->Indicator_ID!!},
-                                                  {!!$surveyScoreAllUsers[30]->Indicator_ID!!}, {!!$surveyScoreAllUsers[31]->Indicator_ID!!}, {!!$surveyScoreAllUsers[32]->Indicator_ID!!}, {!!$surveyScoreAllUsers[33]->Indicator_ID!!}],                                        
+                                                  {!!$surveyScoreAllUsers[30]->Indicator_ID!!}, {!!$surveyScoreAllUsers[31]->Indicator_ID!!}, {!!$surveyScoreAllUsers[32]->Indicator_ID!!}, {!!$surveyScoreAllUsers[33]->Indicator_ID!!}],
                                         'Your score for each indicator',
                                         [{!!$surveyScoreAllUsers[0]->Answer!!}, {!!$surveyScoreAllUsers[1]->Answer!!}, {!!$surveyScoreAllUsers[2]->Answer!!}, {!!$surveyScoreAllUsers[3]->Answer!!}, {!!$surveyScoreAllUsers[4]->Answer!!},
                                           {!!$surveyScoreAllUsers[5]->Answer!!}, {!!$surveyScoreAllUsers[6]->Answer!!}, {!!$surveyScoreAllUsers[7]->Answer!!}, {!!$surveyScoreAllUsers[8]->Answer!!}, {!!$surveyScoreAllUsers[9]->Answer!!},
@@ -72,7 +72,7 @@
                                               {!!$surveyScoreAllUsers[20]->Answer!!}, {!!$surveyScoreAllUsers[21]->Answer!!}, {!!$surveyScoreAllUsers[22]->Answer!!}, {!!$surveyScoreAllUsers[23]->Answer!!}, {!!$surveyScoreAllUsers[24]->Answer!!},
                                                 {!!$surveyScoreAllUsers[25]->Answer!!}, {!!$surveyScoreAllUsers[26]->Answer!!}, {!!$surveyScoreAllUsers[27]->Answer!!}, {!!$surveyScoreAllUsers[28]->Answer!!}, {!!$surveyScoreAllUsers[29]->Answer!!},
                                                   {!!$surveyScoreAllUsers[30]->Answer!!}, {!!$surveyScoreAllUsers[31]->Answer!!}, {!!$surveyScoreAllUsers[32]->Answer!!}, {!!$surveyScoreAllUsers[33]->Answer!!}],
-                                        'rgba(60,141,188,1)'
+                                        'rgba(153,195,191,1)'
                                       );
                                     </script>
 
@@ -129,7 +129,7 @@
                                             {!!$surveyScoreAllUsers[20]->Answer!!}, {!!$surveyScoreAllUsers[21]->Answer!!}, {!!$surveyScoreAllUsers[22]->Answer!!}, {!!$surveyScoreAllUsers[23]->Answer!!}, {!!$surveyScoreAllUsers[24]->Answer!!},
                                               {!!$surveyScoreAllUsers[25]->Answer!!}, {!!$surveyScoreAllUsers[26]->Answer!!}, {!!$surveyScoreAllUsers[27]->Answer!!}, {!!$surveyScoreAllUsers[28]->Answer!!}, {!!$surveyScoreAllUsers[29]->Answer!!},
                                                 {!!$surveyScoreAllUsers[30]->Answer!!}, {!!$surveyScoreAllUsers[31]->Answer!!}, {!!$surveyScoreAllUsers[32]->Answer!!}, {!!$surveyScoreAllUsers[33]->Answer!!}],
-                                       backgroundColor: 'rgba(60,141,188,1)'
+                                       backgroundColor: 'rgba(153,195,191,1)'
                                     };
                                     var datasetGroupAvg = {
                                       label: 'Company average',
@@ -140,7 +140,7 @@
                                             {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
                                               {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
                                                 {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
-                                      backgroundColor: 'rgba(34,45,50,1)'
+                                      backgroundColor: 'rgba(40,45,70,1)'
                                     };
                                     var labelArr = [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Indicator_ID!!},
                                       {!!$surveyGroupAveragePerIndicatorAllUsers[5]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[6]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[7]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[8]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[9]->Indicator_ID!!},
