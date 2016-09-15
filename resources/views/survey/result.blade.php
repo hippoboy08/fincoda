@@ -131,6 +131,14 @@
                                           <li><a data-toggle="tab" href="#menu3">Participants Scores On Indicator Groups</a></li>
                                           <li><a data-toggle="tab" href="#menu4">User Groups And Indicator Group Averages</a></li>
                                           <li><a data-toggle="tab" href="#menu5">Admin View</a></li>
+										  <li><a data-toggle="tab" href="#menu6">Users Min Scores</a></li>
+										  <li><a data-toggle="tab" href="#menu7">Users Max Scores</a></li>
+										  <li><a data-toggle="tab" href="#menu8">Users Min Average Scores</a></li>
+										  <li><a data-toggle="tab" href="#menu9">Users Max Average Scores</a></li>
+										  <li><a data-toggle="tab" href="#menu10">Users Min Average Indicator Group Scores</a></li>
+										  <li><a data-toggle="tab" href="#menu11">Users Max Average Indicator Group Scores</a></li>
+										  <li><a data-toggle="tab" href="#menu12">Company Min Average Indicator Group Scores</a></li>
+										  <li><a data-toggle="tab" href="#menu13">Company Max Average Indicator Group Scores</a></li>
                                       </ul>
 
                                     <div class="tab-content">
@@ -428,6 +436,306 @@
                                             </table>
                                           </div>
                                         </div>
+										
+										<div id="menu6" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                            </div>
+
+                                            <div>
+                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
+                                                  <tr>
+
+                                                      <th>Survey ID</th>
+													  <th>User ID</th>
+                                                      <th>Indicator ID</th>
+                                                      <th>Indicator</th>
+                                                      <th>Minimum Answer</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyScoreAllUsersMinimum)==0)
+                                                      You have no surveys results to display
+                                                    @else
+                                                    @foreach($surveyScoreAllUsersMinimum as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Surveys_ID !!}</td>
+													<td>{!! $result->Users_ID !!}</td>
+                                                    <td>{!! $result->Indicator_ID !!}</td>
+                                                    <td>{!! $result->Indicator !!}</td>
+                                                    <td>{!! $result->Minimum_Answer !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
+                                        </div>
+										
+										
+										<div id="menu7" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                            </div>
+
+                                            <div>
+                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
+                                                  <tr>
+
+                                                      <th>Survey ID</th>
+													  <th>User ID</th>
+                                                      <th>Indicator ID</th>
+                                                      <th>Indicator</th>
+                                                      <th>Maximum Answer</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyScoreAllUsersMaximum)==0)
+                                                      You have no surveys results to display
+                                                    @else
+                                                    @foreach($surveyScoreAllUsersMaximum as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Surveys_ID !!}</td>
+													<td>{!! $result->Users_ID !!}</td>
+                                                    <td>{!! $result->Indicator_ID !!}</td>
+                                                    <td>{!! $result->Indicator !!}</td>
+                                                    <td>{!! $result->Maximum_Answer !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
+                                        </div>
+										
+										
+										<div id="menu8" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                            </div>
+
+                                            <div>
+                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
+                                                  <tr>
+
+                                                      <th>Survey ID</th>
+													  <th>Indicator ID</th>
+                                                      <th>Indicator</th>
+                                                      <th>Minimum Average</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyGroupAveragePerIndicatorAllUsersMinimum)==0)
+                                                      You have no surveys results to display
+                                                    @else
+                                                    @foreach($surveyGroupAveragePerIndicatorAllUsersMinimum as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Surveys_ID !!}</td>
+													<td>{!! $result->Indicator_ID !!}</td>
+                                                    <td>{!! $result->Indicator !!}</td>
+                                                    <td>{!! $result->Minimum_Average !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
+                                        </div>
+										
+										
+										<div id="menu9" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                            </div>
+
+                                            <div>
+                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
+                                                  <tr>
+
+                                                      <th>Survey ID</th>
+													  <th>Indicator ID</th>
+                                                      <th>Indicator</th>
+                                                      <th>Maximum Average</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyGroupAveragePerIndicatorAllUsersMaximum)==0)
+                                                      You have no surveys results to display
+                                                    @else
+                                                    @foreach($surveyGroupAveragePerIndicatorAllUsersMaximum as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Surveys_ID !!}</td>
+													<td>{!! $result->Indicator_ID !!}</td>
+                                                    <td>{!! $result->Indicator !!}</td>
+                                                    <td>{!! $result->Maximum_Average !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
+                                        </div>
+										
+										
+										
+										<div id="menu10" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                            </div>
+
+                                            <div>
+                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
+                                                  <tr>
+
+                                                      <th>Survey ID</th>
+													  <th>User ID</th>
+													  <th>Indicator Group ID</th>
+                                                      <th>Indicator Group</th>
+                                                      <th>Minimum Indicator_Group Average</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyScoreGroupAvgPerIndicatorGroupMinimum)==0)
+                                                      You have no surveys results to display
+                                                    @else
+                                                    @foreach($surveyScoreGroupAvgPerIndicatorGroupMinimum as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Surveys_ID !!}</td>
+													<td>{!! $result->Users_ID !!}</td>
+													<td>{!! $result->Indicator_Group_ID !!}</td>
+                                                    <td>{!! $result->Indicator_Group !!}</td>
+                                                    <td>{!! $result->Minimum_Indicator_Group_Average !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
+                                        </div>
+										
+										
+										
+										<div id="menu11" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                            </div>
+
+                                            <div>
+                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
+                                                  <tr>
+
+                                                      <th>Survey ID</th>
+													  <th>User ID</th>
+													  <th>Indicator Group ID</th>
+                                                      <th>Indicator Group</th>
+                                                      <th>Maximum Indicator_Group Average</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyScoreGroupAvgPerIndicatorGroupMaximum)==0)
+                                                      You have no surveys results to display
+                                                    @else
+                                                    @foreach($surveyScoreGroupAvgPerIndicatorGroupMaximum as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Surveys_ID !!}</td>
+													<td>{!! $result->Users_ID !!}</td>
+													<td>{!! $result->Indicator_Group_ID !!}</td>
+                                                    <td>{!! $result->Indicator_Group !!}</td>
+                                                    <td>{!! $result->Maximum_Indicator_Group_Average !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
+                                        </div>
+										
+										
+										
+										<div id="menu12" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                            </div>
+
+                                            <div>
+                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
+                                                  <tr>
+
+                                                      <th>Survey ID</th>
+													  <th>Indicator Group ID</th>
+                                                      <th>Indicator Group</th>
+                                                      <th>Minimum Company Indicator_Group Average</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyScorePerIndicatorGroupMinimum)==0)
+                                                      You have no surveys results to display
+                                                    @else
+                                                    @foreach($surveyScorePerIndicatorGroupMinimum as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Surveys_ID !!}</td>
+													<td>{!! $result->Indicator_Group_ID !!}</td>
+                                                    <td>{!! $result->Indicator_Group !!}</td>
+                                                    <td>{!! $result->Minimum_Company_Indicator_Group_Average !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
+                                        </div>
+										
+										
+										<div id="menu13" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                            </div>
+
+                                            <div>
+                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
+                                                  <thead>
+                                                  <tr>
+
+                                                      <th>Survey ID</th>
+													  <th>Indicator Group ID</th>
+                                                      <th>Indicator Group</th>
+                                                      <th>Maximum Company Indicator_Group Average</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    @if(count($surveyScorePerIndicatorGroupMaximum)==0)
+                                                      You have no surveys results to display
+                                                    @else
+                                                    @foreach($surveyScorePerIndicatorGroupMaximum as $result)
+                                                    <tr>
+
+                                                    <td>{!! $result->Surveys_ID !!}</td>
+													<td>{!! $result->Indicator_Group_ID !!}</td>
+                                                    <td>{!! $result->Indicator_Group !!}</td>
+                                                    <td>{!! $result->Maximum_Company_Indicator_Group_Average !!}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                  </tbody>
+                                              </table>
+                                            </div>
+                                        </div>
+										
+										
                                     </div>
                                   </div>
                                   @endrole
