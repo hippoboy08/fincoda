@@ -51,6 +51,12 @@ class CompanySurveyController extends Controller
                             //This returns the indicator scores for each user that took part in the survey
                             //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                             //In other words it will always return a single result
+							
+							$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
+                                              ->select('results.user_id as User_ID')
+                                              ->where('results.survey_id',$id)
+                                              ->distinct()->get();
+							
                             $surveyScoreAllUsers = DB::table('indicators')
                                               ->join('results','results.indicator_id','=','indicators.id')
                                               ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
@@ -63,12 +69,6 @@ class CompanySurveyController extends Controller
                                               ->groupBy('results.survey_id', 'results.user_id', 'indicators.id')
                                               ->get();
 
-                                              //This returns the paginated results for survey score all users
-                                              $page = LengthAwarePaginator::resolveCurrentPage();
-                                              $collection = new Collection($surveyScoreAllUsers);
-                                              $itemsPerPage = 5;
-                                              $slicedCollection = $collection->slice(($page-1)*$itemsPerPage,$page)->all();
-                                              $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);
 
                             //This returns the average of the user group per indicator in this survey
                             $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
@@ -109,14 +109,23 @@ class CompanySurveyController extends Controller
                                               AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.group_id"),
                                               array("surveyId"=>$id));
+							
+							
+							//This is a company survey in which the special user participated so has no access to minimum and 
+							//And maximum averages: only the admin has access to that
+							$surveyScoreGroupAvgPerIndicatorGroupMinAndMax = [];
+					
+						  
 
-                            return view('survey.resultForSpecial')->with('survey',Survey::find($id))
+                            return view('survey.resultForSpecialInCompanySurvey')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
-                            ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
+                            ->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
+							->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                             ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
                             ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
                             ->with('participants',Survey::find($id)->participants)
-                            ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+                            ->with(['surveyScoreGroupAvgPerIndicatorGroupMinAndMax' => $surveyScoreGroupAvgPerIndicatorGroupMinAndMax])
+							->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
                     } else {
                         return 'peer evaluation not yet implemented';
                     }
@@ -139,6 +148,13 @@ class CompanySurveyController extends Controller
                             //This returns the indicator scores for each user that took part in the survey
                             //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                             //In other words it will always return a single result
+							
+							$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
+                                              ->select('results.user_id as User_ID')
+                                              ->where('results.survey_id',$id)
+                                              ->distinct()->get();
+							
+							
                             $surveyScoreAllUsers = DB::table('indicators')
                                               ->join('results','results.indicator_id','=','indicators.id')
                                               ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
@@ -150,13 +166,6 @@ class CompanySurveyController extends Controller
                                               ->where('results.user_id',$userId)
                                               ->groupBy('results.survey_id', 'results.user_id', 'indicators.id')
                                               ->get();
-
-                                              //This returns the paginated results for survey score all users
-                                              $page = LengthAwarePaginator::resolveCurrentPage();
-                                              $collection = new Collection($surveyScoreAllUsers);
-                                              $itemsPerPage = 5;
-                                              $slicedCollection = $collection->slice(($page-1)*$itemsPerPage,$page)->all();
-                                              $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);
 
                             //This returns the average of the user group per indicator in this survey
                             $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
@@ -197,13 +206,23 @@ class CompanySurveyController extends Controller
                                               AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.group_id"),
                                               array("surveyId"=>$id));
+											  
+											  
+							//This is a company survey in which the special user participated so has no access to minimum and 
+							//And maximum averages: only the admin has access to that
+							$surveyScoreGroupAvgPerIndicatorGroupMinAndMax = [];
+					
+							
+							
 
-                            return view('survey.resultForSpecial')->with('survey',Survey::find($id))
+                            return view('survey.resultForSpecialInCompanySurvey')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
-                            ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
+                            ->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
+							->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                             ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
                             ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
-                            ->with('participants',Survey::find($id)->participants)
+                            ->with(['surveyScoreGroupAvgPerIndicatorGroupMinAndMax' => $surveyScoreGroupAvgPerIndicatorGroupMinAndMax])
+							->with('participants',Survey::find($id)->participants)
                             ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
 
                     } else {

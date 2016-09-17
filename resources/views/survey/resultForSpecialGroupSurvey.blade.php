@@ -362,6 +362,7 @@
                                             <table id="Participants_scores" class="table table-bordered table-striped table-responsive text-center" >
                                                 <thead>
                                                 <tr>
+
                                                     <th>Survey ID</th>
                                                     <th>User ID</th>
                                                     <th>Indicator ID</th>
@@ -381,6 +382,7 @@
                                                   @else
                                                   @foreach($surveyScoreAllUsers as $results)
                                                     <tr>
+
                                                       <td>{!! $results->Survey_ID !!}</td>
                                                       <td>{!! $results->User_ID !!}</td>
                                                       <td>{!! $results->Indicator_ID !!}</td>

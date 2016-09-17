@@ -313,47 +313,6 @@
 
                                         <div id="menu5" class="tab-pane fade">
 
-                                          <div class="pull-left" >
-										  <label id="surveyId">{!! $survey->id !!}</label>
-                                            <h5 class="select-users"><label>Select User</label>
-                                              <select id="participantsIds">
-													  @foreach($participants as $participant)
-														<option value="{!! \App\User::find($participant->user_id)->id !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
-													  @endforeach
-											  </select>
-                                            </h5>
-                                          <script>
-											$(document).ready(function(){
-											  $('#participantsIds').change(function(){
-												  if($(this).val()==""){
-												  return;
-                                                }else{
-                                                $.ajaxSetup({
-                                                  headers:{
-                                                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-                                                  }
-                                                });
-                                                $.ajax({
-												  method: 'POST',
-                                                  url: 'lookForParticipant',
-												  dataType: 'json',
-                                                  data: {'participantId':$(this).val(),'surveyId':$('#surveyId').text()},
-												  success: function(data){
-													window.location.replace(data.stri);
-													//alert(data.stri);
-												  },
-												  error: function(result){
-													var errors = result.responseJSON;
-													console.log(result);
-													console.log(errors);
-												  }
-                                                  
-                                                });
-                                                }
-                                              });
-                                            });
-                                          </script>
-										</div>
                                          <div class="pull-right" >
                                             <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                          </div>
@@ -362,6 +321,7 @@
                                             <table id="Participants_scores" class="table table-bordered table-striped table-responsive text-center" >
                                                 <thead>
                                                 <tr>
+
                                                     <th>Survey ID</th>
                                                     <th>User ID</th>
                                                     <th>Indicator ID</th>
@@ -381,6 +341,7 @@
                                                   @else
                                                   @foreach($surveyScoreAllUsers as $results)
                                                     <tr>
+
                                                       <td>{!! $results->Survey_ID !!}</td>
                                                       <td>{!! $results->User_ID !!}</td>
                                                       <td>{!! $results->Indicator_ID !!}</td>

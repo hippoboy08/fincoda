@@ -57,6 +57,12 @@ class SurveyController extends Controller
                             //This returns the indicator scores for each user that took part in the survey
                             //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                             //In other words it will always return a single result
+							
+							$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
+                                              ->select('results.user_id as User_ID')
+                                              ->where('results.survey_id',$id)
+                                              ->distinct()->get();
+							
                             $surveyScoreAllUsers = DB::table('indicators')
                                               ->join('results','results.indicator_id','=','indicators.id')
                                               ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
@@ -84,7 +90,6 @@ class SurveyController extends Controller
                                               FROM indicators
                                               join results on results.indicator_id = indicators.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.id"),
                                               array("surveyId"=>$id));
 
@@ -98,7 +103,6 @@ class SurveyController extends Controller
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, results.user_id, indicators.group_id"),
                                               array("surveyId"=>$id));
 
@@ -112,17 +116,20 @@ class SurveyController extends Controller
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.group_id"),
                                               array("surveyId"=>$id));
-
-                            return view('survey.resultForBasic')->with('survey',Survey::find($id))
-                            ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
-                            ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
-                            ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
-                            ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
-                            ->with('participants',Survey::find($id)->participants)
-                            ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+							
+							
+									return view('survey.resultForBasic')->with('survey',Survey::find($id))
+									->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
+									->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
+									->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
+									->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+									->with('participants',Survey::find($id)->participants)
+									->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
+									->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+									
+									
                       }
 
                       if($surveyCategoryId==2){//This is report for group survey because the aggregates or averages differ when its group survey
@@ -130,6 +137,13 @@ class SurveyController extends Controller
                         //This returns the indicator scores for each user that took part in the survey
                         //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                         //In other words it will always return a single result
+						
+						$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
+                                              ->select('results.user_id as User_ID')
+                                              ->where('results.survey_id',$id)
+                                              ->distinct()->get();
+						
+						
                         $surveyScoreAllUsers = DB::table('indicators')
                                 ->join('results','results.indicator_id','=','indicators.id')
                                 ->join('user_in_groups','results.user_id','=','user_in_groups.user_id')
@@ -160,8 +174,7 @@ class SurveyController extends Controller
                                 join results on results.indicator_id = indicators.id
                                 join user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
-								                AND results.user_id = $userId
-                                AND user_in_groups.user_group_id = $surveyGroupId
+								AND user_in_groups.user_group_id = $surveyGroupId
                                 GROUP BY user_in_groups.user_group_id, results.survey_id, indicators.id"),
                                 array("surveyId"=>$id));
 
@@ -176,8 +189,7 @@ class SurveyController extends Controller
                                 JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                 JOIN user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
-								                AND results.user_id = $userId
-                                AND user_in_groups.user_group_id = $surveyGroupId
+								AND user_in_groups.user_group_id = $surveyGroupId
                                 GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id"),
                                 array("surveyId"=>$id));
 
@@ -192,18 +204,20 @@ class SurveyController extends Controller
                                 JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                 JOIN user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
-                                AND results.user_id = $userId
                                 AND user_in_groups.user_group_id = $surveyGroupId
                                 GROUP BY results.survey_id, indicators.group_id"),
                                 array("surveyId"=>$id));
-
-                        return view('survey.resultForBasic')->with('survey',Survey::find($id))
-                        ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
-                        ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
-                        ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
-                        ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
-                        ->with('participants',Survey::find($id)->participants)
-                        ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+								
+					
+									return view('survey.resultForBasic')->with('survey',Survey::find($id))
+									->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
+									->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
+									->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
+									->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+									->with('participants',Survey::find($id)->participants)
+									->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
+									->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+							
                       }
 
                     }else{
@@ -233,6 +247,12 @@ class SurveyController extends Controller
                             //This returns the indicator scores for each user that took part in the survey
                             //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                             //In other words it will always return a single result
+							
+							$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
+                                              ->select('results.user_id as User_ID')
+                                              ->where('results.survey_id',$id)
+                                              ->distinct()->get();
+							
                             $surveyScoreAllUsers = DB::table('indicators')
                                               ->join('results','results.indicator_id','=','indicators.id')
                                               ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
@@ -260,7 +280,6 @@ class SurveyController extends Controller
                                               FROM indicators
                                               join results on results.indicator_id = indicators.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.id"),
                                               array("surveyId"=>$id));
 
@@ -274,7 +293,6 @@ class SurveyController extends Controller
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, results.user_id, indicators.group_id"),
                                               array("surveyId"=>$id));
 
@@ -288,17 +306,19 @@ class SurveyController extends Controller
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.group_id"),
                                               array("surveyId"=>$id));
-
-                            return view('survey.resultForBasic')->with('survey',Survey::find($id))
-                            ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
-                            ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
-                            ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
-                            ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
-                            ->with('participants',Survey::find($id)->participants)
-                            ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+						
+                            
+									return view('survey.resultForBasic')->with('survey',Survey::find($id))
+									->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
+									->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
+									->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
+									->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+									->with('participants',Survey::find($id)->participants)
+									->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
+									->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+							
                       }
 
                       if($surveyCategoryId==2){//This is report for group survey because the aggregates or averages differ when its group survey
@@ -306,6 +326,12 @@ class SurveyController extends Controller
                         //This returns the indicator scores for each user that took part in the survey
                         //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                         //In other words it will always return a single result
+						
+						$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
+                                              ->select('results.user_id as User_ID')
+                                              ->where('results.survey_id',$id)
+                                              ->distinct()->get();
+											  
                         $surveyScoreAllUsers = DB::table('indicators')
                                 ->join('results','results.indicator_id','=','indicators.id')
                                 ->join('user_in_groups','results.user_id','=','user_in_groups.user_id')
@@ -336,8 +362,7 @@ class SurveyController extends Controller
                                 join results on results.indicator_id = indicators.id
                                 join user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
-								                AND results.user_id = $userId
-                                AND user_in_groups.user_group_id = $surveyGroupId
+								AND user_in_groups.user_group_id = $surveyGroupId
                                 GROUP BY user_in_groups.user_group_id, results.survey_id, indicators.id"),
                                 array("surveyId"=>$id));
 
@@ -352,8 +377,7 @@ class SurveyController extends Controller
                                 JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                 JOIN user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
-								                AND results.user_id = $userId
-                                AND user_in_groups.user_group_id = $surveyGroupId
+								AND user_in_groups.user_group_id = $surveyGroupId
                                 GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id"),
                                 array("surveyId"=>$id));
 
@@ -368,18 +392,20 @@ class SurveyController extends Controller
                                 JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                 JOIN user_in_groups on results.user_id = user_in_groups.user_id
                                 WHERE results.survey_id = :surveyId
-                                AND results.user_id = $userId
                                 AND user_in_groups.user_group_id = $surveyGroupId
                                 GROUP BY results.survey_id, indicators.group_id"),
                                 array("surveyId"=>$id));
-
-                        return view('survey.resultForBasic')->with('survey',Survey::find($id))
-                        ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
-                        ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
-                        ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
-                        ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
-                        ->with('participants',Survey::find($id)->participants)
-                        ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+								
+					
+                        			return view('survey.resultForBasic')->with('survey',Survey::find($id))
+									->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
+									->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
+									->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
+									->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+									->with('participants',Survey::find($id)->participants)
+									->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
+									->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+							
                       }
 
                     }else{

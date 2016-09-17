@@ -51,6 +51,7 @@
                                       @include ('survey.resultContent.scoreTable')
                                     </div>
 
+									@if(count($surveyGroupAveragePerIndicatorAllUsers)==34)
                                     <canvas id="myAnswerGraph" width="800" height="400"></canvas>
                                     <script src="{{URL::asset('js/displayChart.js')}}">
                                     </script>
@@ -75,7 +76,9 @@
                                         'rgba(153,195,191,1)'
                                       );
                                     </script>
-
+									@else
+										<div>You have no surveys results to display or your indicators count is not equal 34</div>
+									@endif
                                     <div>
                                       <table class="table table-bordered table-striped">
                                         <h4><b>Indicators Table</b></h4>
@@ -103,8 +106,9 @@
                                     </div>
                                   </div>
 
-                                  <div id="compared" class="tab-pane fade">
-                                    <div class="report-caption">
+								  <div id="compared" class="tab-pane fade">
+                                  @if(count($surveyScoreAllUsersCheckThreeParticipants)>3)
+                                  <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows a comparison between your score and company average score in this survey.
                           							The table underneath this graph displays company average score in table format.
@@ -114,7 +118,8 @@
                                     <div>
                                       @include ('survey.resultContent.scoreTable')
                                     </div>
-
+								@if(count($surveyGroupAveragePerIndicatorAllUsers)==34)
+									@if(count($surveyScorePerIndicatorGroup)==5)
                                   <canvas id="comparedGraph" width="800" height="400"></canvas>
                                   <script src="{{URL::asset('js/displayChart.js')}}">
                                   </script>
@@ -152,7 +157,13 @@
                                     createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
 
                                   </script>
-
+										@else
+											<div>You have no surveys results to display or your indicators group count is not equal 5</div>
+										@endif
+									@else
+										<div>You have no surveys results to display or your indicators count is not equal 34</div>
+									@endif	
+									
                                     <div>
                                       <table class="table table-bordered table-striped">
                                         <h4><b>Indicators Table</b></h4>
@@ -186,7 +197,12 @@
                                           </tbody>
                                       </table>
                                     </div>
+									@else
+										<div>You have no survey results with enough participants to compare</div>
+									@endif	
                                   </div>
+								 
+								  
                                 </div>
                             </div>
                         </div>

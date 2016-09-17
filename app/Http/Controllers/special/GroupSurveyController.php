@@ -174,12 +174,6 @@ class GroupSurveyController extends Controller
                             ->groupBy('user_in_groups.user_group_id', 'results.user_id', 'results.survey_id', 'indicators.id')
                             ->get();
 
-                                      //This returns the paginated results for survey score all users
-                                      $page = LengthAwarePaginator::resolveCurrentPage();
-                                      $collection = new Collection($surveyScoreAllUsers);
-                                      $itemsPerPage = 5;
-                                      $slicedCollection = $collection->slice(($page-1)*$itemsPerPage,$page)->all();
-                                      $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);
 
                     //This returns the average of the user group per indicator in this survey
                     $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
@@ -220,14 +214,34 @@ class GroupSurveyController extends Controller
                             WHERE results.survey_id = :surveyId
                             GROUP BY results.survey_id, indicators.group_id"),
                             array("surveyId"=>$id));
+							
+					//This returns the average of each user per indicator group for this survey
+                    $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
+                            "SELECT p.Group_ID, p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group, 
+									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average , 
+									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM 
+										(SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
+                                            results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
+                                            indicator_groups.name as Indicator_Group,
+                                            AVG(results.answer) as Indicator_Group_Average
+                                            FROM indicators
+                                            JOIN results on results.indicator_id = indicators.id
+                                            JOIN indicator_groups on indicators.group_id = indicator_groups.id
+                                            JOIN user_in_groups on results.user_id = user_in_groups.user_id
+                                            WHERE results.survey_id = :surveyId
+                                            GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id)
+									AS p GROUP BY p.Indicator_Group_ID"),
+                            array("surveyId"=>$id));
 
-                    return view('survey.resultForSpecial')->with('survey',Survey::find($id))
+
+                    return view('survey.resultForSpecialGroupSurvey')->with('survey',Survey::find($id))
                     ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
                     ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                     ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
                     ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
                     ->with('participants',Survey::find($id)->participants)
-                    ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+                    ->with(['surveyScoreGroupAvgPerIndicatorGroupMinAndMax' => $surveyScoreGroupAvgPerIndicatorGroupMinAndMax])
+					->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
             }
 
         }else{
@@ -251,6 +265,12 @@ class GroupSurveyController extends Controller
               //This returns the indicator scores for each user that took part in the survey
               //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
               //In other words it will always return a single result
+			  
+			  $surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
+                                              ->select('results.user_id as User_ID')
+                                              ->where('results.survey_id',$id)
+                                              ->distinct()->get();
+			  
               $surveyScoreAllUsers = DB::table('indicators')
                             ->join('results','results.indicator_id','=','indicators.id')
                             ->join('user_in_groups','results.user_id','=','user_in_groups.user_id')
@@ -264,12 +284,6 @@ class GroupSurveyController extends Controller
                             ->groupBy('user_in_groups.user_group_id', 'results.user_id', 'results.survey_id', 'indicators.id')
                             ->get();
 
-                                      //This returns the paginated results for survey score all users
-                                      $page = LengthAwarePaginator::resolveCurrentPage();
-                                      $collection = new Collection($surveyScoreAllUsers);
-                                      $itemsPerPage = 5;
-                                      $slicedCollection = $collection->slice(($page-1)*$itemsPerPage,$page)->all();
-                                      $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);
 
                     //This returns the average of the user group per indicator in this survey
                     $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
@@ -285,16 +299,20 @@ class GroupSurveyController extends Controller
 
                     //This returns the average of each user per indicator group for this survey
                     $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
-                            "SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
-                            results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
-                            indicator_groups.name as Indicator_Group,
-                            AVG(results.answer) as Indicator_Group_Average
-                            FROM indicators
-                            JOIN results on results.indicator_id = indicators.id
-                            JOIN indicator_groups on indicators.group_id = indicator_groups.id
-                            JOIN user_in_groups on results.user_id = user_in_groups.user_id
-                            WHERE results.survey_id = :surveyId
-                            GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id"),
+                            "SELECT p.Group_ID, p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group, 
+									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average , 
+									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM 
+										(SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
+                                            results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
+                                            indicator_groups.name as Indicator_Group,
+                                            AVG(results.answer) as Indicator_Group_Average
+                                            FROM indicators
+                                            JOIN results on results.indicator_id = indicators.id
+                                            JOIN indicator_groups on indicators.group_id = indicator_groups.id
+                                            JOIN user_in_groups on results.user_id = user_in_groups.user_id
+                                            WHERE results.survey_id = :surveyId
+                                            GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id)
+									AS p GROUP BY p.Indicator_Group_ID"),
                             array("surveyId"=>$id));
 
                     //This returns the average of each user group per indicator group in this survey
@@ -310,19 +328,40 @@ class GroupSurveyController extends Controller
                             WHERE results.survey_id = :surveyId
                             GROUP BY results.survey_id, indicators.group_id"),
                             array("surveyId"=>$id));
-                                
+							
+					//This returns the average of each user per indicator group for this survey
+                    $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
+                            "SELECT p.Group_ID, p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group, 
+									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average , 
+									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM 
+										(SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
+                                            results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
+                                            indicator_groups.name as Indicator_Group,
+                                            AVG(results.answer) as Indicator_Group_Average
+                                            FROM indicators
+                                            JOIN results on results.indicator_id = indicators.id
+                                            JOIN indicator_groups on indicators.group_id = indicator_groups.id
+                                            JOIN user_in_groups on results.user_id = user_in_groups.user_id
+                                            WHERE results.survey_id = :surveyId
+                                            GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id)
+									AS p GROUP BY p.Indicator_Group_ID"),
+                            array("surveyId"=>$id));
 
               $company=Auth::User()->company()->first();
               $company_profile=$company->profile()->first();
 
-              return view('survey.result')->with('survey',Survey::find($id))
+              return view('survey.resultForIndividualInSpecial')->with('survey',Survey::find($id))
               ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
               ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
               ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
               ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
-              ->with('participants',Survey::find($id)->participants)
+              ->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
+			  ->with('participants',Survey::find($id)->participants)
               ->with('company',$company)
               ->with('company_profile',$company->profile()->first())
+			  
+              ->with(['surveyScoreGroupAvgPerIndicatorGroupMinAndMax' => $surveyScoreGroupAvgPerIndicatorGroupMinAndMax])
+			  
               ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
 
           }
