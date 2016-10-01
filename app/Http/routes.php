@@ -47,7 +47,7 @@ Route::group(['middleware'=>'admin',
     Route::resource('roles','RolesController');
     Route::get('survey/getParticipant/{surveyId}/{participantId}','SurveyController@getParticipant');
     Route::resource('survey','SurveyController');
-    Route::get('survey/downloadExcel/{surveyId}',['as'=>'downloadExcel','uses'=>'SurveyController@downloadCsv']);
+    Route::get('survey/downloadExcel/{surveyId}',['as'=>'downloadExcelAdmin','uses'=>'SurveyController@downloadCsv']);
     Route::match(['get','post'],'survey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'SurveyController@lookForParticipant']);
     Route::resource('usergroup','UserGroupController');
 
@@ -73,7 +73,7 @@ Route::group(['middleware'=>'special',
     Route::resource('survey','CompanySurveyController');
     Route::get('survey/getParticipant/{surveyId}/{participantId}','GroupSurveyController@getParticipant');
     Route::resource('groupsurvey','GroupSurveyController');
-    Route::get('survey/downloadExcel/{surveyId}',['as'=>'downloadExcel','uses'=>'GroupSurveyController@downloadCsv']);
+    Route::get('survey/downloadExcel/{surveyId}',['as'=>'downloadExcelSpecial','uses'=>'GroupSurveyController@downloadCsv']);
     Route::match(['get','post'],'survey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'GroupSurveyController@lookForParticipant']);
     Route::resource('usergroup','UserGroupController');
     Route::get('groupsurveyresult','GroupSurveyResultController@index');

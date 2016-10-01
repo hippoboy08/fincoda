@@ -788,7 +788,7 @@
 										
 										<div id="menu15" class="tab-pane fade">
                                             <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcel',$survey->id)}}">Download Excel</a></u>
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelAdmin',$survey->id)}}">Download Excel</a></u>
                                             </div>
                                         </div>
 										
