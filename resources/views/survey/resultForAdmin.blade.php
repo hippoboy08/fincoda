@@ -148,6 +148,7 @@
 										  <li><a data-toggle="tab" href="#menu12">Company Min Average Indicator Group Scores</a></li>
 										  <li><a data-toggle="tab" href="#menu13">Company Max Average Indicator Group Scores</a></li>
 										  <li><a data-toggle="tab" href="#menu14">Minimum And Maximum User Indicator Group Average</a></li>
+										  <li><a data-toggle="tab" href="#menu15">Downloads</a></li>
                                       </ul>
 
                                     <div class="tab-content">
@@ -784,6 +785,12 @@
                                             </div>
                                         </div>
 										
+										
+										<div id="menu15" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcel',$survey->id)}}">Download Excel</a></u>
+                                            </div>
+                                        </div>
 										
 										
                                     </div>
