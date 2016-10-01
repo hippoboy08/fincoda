@@ -9,10 +9,9 @@
 
                 <div class="panel-body">
                     <form  role="form" method="POST" action="{{ url('/password/reset') }}">
-                        {!! csrf_field() !!}
-
-                        <input type="hidden" name="token" value="{{ $token }}">
-
+                        
+						<input type="hidden" name="_token" value="{{ csrf_token()}}">
+                        
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
 
 
