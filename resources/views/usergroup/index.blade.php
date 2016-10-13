@@ -36,7 +36,7 @@
                                     <tr>
                                         <th>Group Name</th>
                                         <th>Created by</th>
-                                        <th>Administrator</th>
+                                        <th>Group Administrator</th>
                                         <th>Total members</th>
                                         <th>Date Created</th>
                                     </tr>
@@ -46,6 +46,11 @@
                                         <tr>
                                             @role('admin')
                                             <td><a href="{{url('admin/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
+                                            <td><a href="{{url('admin/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
+                                            <td><a href="{{url('admin/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
+                                            @endrole
+                                            @role('special')
+                                            <td><a href="{{url('special/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
                                             @endrole
                                             @role('basic')
                                             <td><a href="{{url('basic/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>

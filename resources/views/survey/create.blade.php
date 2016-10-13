@@ -6,7 +6,7 @@
             <!-- general form elements -->
 
             @role('admin')
-            {!! Form::open(['method'=>'POST','action'=>'admin\SurveyController@lookForParticipant']) !!}
+            {!! Form::open(['method'=>'POST','action'=>'admin\SurveyController@store']) !!}
             @endrole
             @role('special')
             {!! Form::open(['method'=>'POST','action'=>'special\GroupSurveyController@store']) !!}
@@ -164,7 +164,7 @@
             </div>
 
            {!! Form::close() !!}
-		   
+
     </div>
     </div>
 @stop

@@ -2644,13 +2644,13 @@ a:focus {
 table.text-center,
 table.text-center td,
 table.text-center th {
-  text-align: center;
+  text-align: left;
 }
 .table.align th {
   text-align: left;
 }
 .table.align td {
-  text-align: right;
+  text-align: left;
 }
 /*
  * Component: Label

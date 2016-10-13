@@ -79,7 +79,7 @@
 									@else
 										<div>You have no surveys results to display or your indicators count is not equal 34</div>
 									@endif
-									
+
                                     <div>
                                       <table class="table table-bordered table-striped text-center">
                                         <h4><b>Indicators Table</b></h4>
@@ -123,7 +123,7 @@
 									@else
 										<div>You have no surveys results to display or your indicators group count is not equal 5</div>
 									@endif
-									
+
                                     <div>
                                       @include ('survey.resultContent.surveyScorePerIndicatorGroup')
                                     </div>
@@ -394,9 +394,9 @@
                                             </table>
                                           </div>
                                         </div>
-										
-										
-										
+
+
+
 										<div id="menu6" class="tab-pane fade">
                                             <div class="row pull-right" >
                                                 <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
@@ -433,9 +433,9 @@
                                               </table>
                                             </div>
                                         </div>
-										
-										
-										
+
+
+
                                     </div>
                                   </div>
                                   @endrole
