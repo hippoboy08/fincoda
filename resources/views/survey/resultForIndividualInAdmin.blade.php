@@ -7,7 +7,7 @@
 
 
             <div class="box-header with-border">
-                <h3 class="box-title"><b>Survey Result.</b></h3>
+                <h1 class="box-title"><b>Survey Result.</b></h1>
                 <p><i>Below is the information about the pending survey you requested.
                         You can make changes or abort it before it is open to the participants.</i></p>
             </div>

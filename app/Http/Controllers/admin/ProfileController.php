@@ -23,7 +23,7 @@ class ProfileController extends Controller
             ->with('company_profile',$company_profile);
 
 }
-    public function editcompany(){
+    public function editCompany(){
         $company=Auth::User()->company()->first();
         $company_profile=$company->profile()->first();
 
@@ -31,7 +31,7 @@ class ProfileController extends Controller
 
     }
 
-    public function updatecompany(Request $request){
+    public function updateCompany(Request $request){
        $user_company=Auth::User()->company()->first();
        $company=Company::find($user_company->id);
 
@@ -75,28 +75,6 @@ class ProfileController extends Controller
 
     }
 
-//Return the edit page for the company profile
-public function editCompanyProfile(){
-
-  $company=Auth::User()->company()->first();
-  $company_profile=$company->profile()->first();
-  return view('profile.companyEdit',compact('company','company_profile'));
-}
-
-//Carry out the actual update
-public function updateCompanyProfile(){
-    $input=Input::all();
-      //  return $input["country"];
-    $company=Auth::User()->company()->first();
-    $company->name=$input["company_name"];
-    $company->save();
-
-  //  $company_profile=CompanyProfile::find();
-    return "the company profiles updated";
-}
-
-//Delete Company Profile; this means a cascading delete that removes all surveys and members
-//and everything pertaining to the company
 public function deleteCompanyProfile(){
 
   $company=Auth::User()->company()->first();

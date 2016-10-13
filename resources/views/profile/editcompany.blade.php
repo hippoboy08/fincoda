@@ -10,8 +10,8 @@
                         <p><i>The company has been registered to the <strong>Fincoda Survey System.</strong> </i></p>
                         <p>Below is the details you had provided to Fincoda upon registration. </p>
                     </div>
-                    {!! Form::open(array('method'=>'post')) !!}
-                    {{ csrf_field() }}
+                    {!! Form::open(['method'=>'POST','action'=>'admin\ProfileController@updateCompany']) !!}
+					{{ csrf_field() }}
                       <div class="box box-primary">
                         <div class="box-body">
                             <div class="panel panel-default">
