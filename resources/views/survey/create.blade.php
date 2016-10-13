@@ -6,7 +6,7 @@
             <!-- general form elements -->
 
             @role('admin')
-            {!! Form::open(['method'=>'POST','action'=>'admin\SurveyController@lookForParticipant']) !!}
+            {!! Form::open(['method'=>'POST','action'=>'admin\SurveyController@store']) !!}
             @endrole
             @role('special')
             {!! Form::open(['method'=>'POST','action'=>'special\GroupSurveyController@store']) !!}
@@ -164,53 +164,7 @@
             </div>
 
            {!! Form::close() !!}
-										<div class="pull-left" >
-                                            <h5 class="select-users">
-											<label id="surveyId">1</label>
-											<label>Select User</label>
-                                                <select id="participants">
-													  <option value="1">basic</option>
-													  <option value="2">special</option>
-													  <option value="3">admin</option>
-												  </select>
-                                            </h5>
-                                          </div>
-
-										<script>
-											$(document).ready(function(){
-                                              $('#participants').change(function(){
-                                                if($(this).val()==""){
-                                                  return;
-                                                }else{
-                                                
-                                                $.ajaxSetup({
-                                                  headers:{
-                                                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-                                                  }
-                                                });
-                                                $.ajax({
-												  method: 'POST',
-                                                  url: 'lookForParticipant',
-												  dataType: 'json',
-                                                  data: {'participantId':$(this).val(),'surveyId':$('#surveyId').text()},
-												  success: function(data){
-													window.location.replace(data.stri);
-													//alert(data.stri);
-												  },
-												  error: function(result){
-													var errors = result.responseJSON;
-													console.log(result);
-													console.log(errors);
-												  }
-                                                  
-                                                });
-                                                }
-                                              });
-                                            });
-                                          </script>
-											
-                                          
-		   
+										
     </div>
     </div>
 @stop
