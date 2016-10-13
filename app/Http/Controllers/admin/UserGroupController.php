@@ -44,11 +44,10 @@ class UserGroupController extends Controller
             $id[]=$special_users[$i]->administrator;
         }
 
-        return view('usergroup.create')->with('administrators',
+        return view('usergroup.createAdmin')->with('administrators',
             DB::table('users')->where('company_id',Auth::User()->company_id)
                 ->join('role_user','role_user.user_id','=','users.id')
                 ->where('role_user.role_id','=',2)
-                ->whereNotIn('users.id',$id)
                 ->lists('users.name','users.id'))
             ->with('users',DB::table('users')->where('company_id',Auth::User()->company_id)
             ->join('role_user','role_user.user_id','=','users.id')
@@ -71,6 +70,7 @@ class UserGroupController extends Controller
         if($validation->fails()){
             return redirect()->back()->withErrors($validation)->withInput();
         }else{
+			//This query is costly coz this unique key constraint could have been put at the database level
            if(Company::find(Auth::User()->company_id)->hasUserGroups()->where(strtoupper('name'),strtoupper($request->name))->exists()){
                return redirect()->back()->with('fail','A group with same name already exists in your company. Please create a group with different name.')->withInput();
            }else{
@@ -107,7 +107,7 @@ class UserGroupController extends Controller
       if($this->validateUserGroup($id)=='true'){
 
 
-          return view('usergroup.show')->with('group',User_Group::find($id))
+          return view('usergroup.showAdmin')->with('group',User_Group::find($id))
               ->with('members',User_Group::find($id)->hasMembers);
 
       }else{
@@ -122,9 +122,61 @@ class UserGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function editUserGroup($id)
     {
-        //
+	 if($this->validateUserGroup($id)=='true'){
+		//This was checking for the administrators of the group so that in case one had already been assigned a group
+		//then there would not be any need to return them to administer another group, but this design approach was dropped
+		//and a user can now administer multiple groups
+		$special_users=Company::find(Auth::User()->company_id)->hasUserGroups()->get();
+        $groupAdmins[]='';
+        for($i=0; $i<count($special_users); $i++){
+            $groupAdmins[]=$special_users[$i]->administrator;
+        }
+		
+		$group = User_Group::find($id);
+		
+		$administratorUser = DB::table('users')->where('id',$group->administrator)->first();
+		
+		
+        $administrators = DB::table('users')
+							->join('role_user','role_user.user_id','=','users.id')
+							->where('company_id',Auth::User()->company_id)
+							->where('role_user.role_id','=',2)
+							->orderByRaw("CASE WHEN users.name='$administratorUser->name' THEN -1 ELSE users.name END")
+							->lists('users.name','users.id');
+							
+		//This returns the group members
+		$members = DB::table('users')
+							->join('role_user','role_user.user_id','=','users.id')
+							->join('user_in_groups','user_in_groups.user_id','=','users.id')
+							->select('users.id as user_id','users.name','users.email')
+							->where('company_id',Auth::User()->company_id)
+							->where('role_user.role_id','=',3)
+							->where('user_in_groups.user_group_id','=',$id)
+							->get();
+		//This returns all users so that the front end developer can manage presentation issues related to members and non members
+		//of groups
+		$users = DB::table('users')
+							->join('role_user','role_user.user_id','=','users.id')
+							->join('user_in_groups','user_in_groups.user_id','=','users.id')
+							->select('users.id as user_id','users.name','users.email')
+							->where('company_id',Auth::User()->company_id)
+							->where('role_user.role_id','=',3)
+							->where('user_in_groups.user_group_id','!=',$id)
+							->distinct()
+							->get();
+		
+        return view('usergroup.editAdmin')
+						->with('administrators',$administrators)
+						->with('group',$group)
+						->with('users',$users)
+						->with('members',$members);
+
+      }else{
+          return view('errors.404')->with('title',' User group not found. ')
+              ->with('message','The group you requested does not belong to your company.');
+      }
     }
 
     /**
@@ -134,9 +186,50 @@ class UserGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateUserGroup(Request $request)
     {
-        //
+		$validation=Validator::make($request->all(),[
+            'name'=>'required|max:255',
+            'editor1'=>'required',
+            'users'=>'required'
+        ]);
+        if($validation->fails()){
+            return redirect()->back()->withErrors($validation)->withInput();
+        }else{
+           if(Company::find(Auth::User()->company_id)->hasUserGroups()->where(strtoupper('name'),strtoupper($request->name))->exists()){
+			   DB::table('user_groups')
+						->where('id',$request->id)
+						->update([
+							'name'=>$request->name,
+							'description'=>$request->editor1,
+							'company_id'=>Auth::User()->company_id,
+							'created_by'=>Auth::id(),
+							'administrator'=>$request->administrator
+                ]);
+
+               foreach($request->users as $user){
+				$userGroupId = DB::table('user_in_groups')->where('user_id',$user)->where('user_group_id',$request->id)->get();
+				
+				if($userGroupId != null){
+					DB::table('user_in_groups')
+						->where('id', $userGroupId[0]->id)
+						->update([
+							'user_id'=>$user,
+							'user_group_id'=>$request->id
+						]);
+				}else{
+					User_In_Group::create([
+                    'user_id'=>$user,
+                    'user_group_id'=>$request->id
+                ]);
+				}
+               }
+
+               return Redirect::to('admin/usergroup')->with('success','A new user group has been edited successfully.');
+           }else{
+               return redirect()->back()->with('fail','A group with that name does not exist in your company. Please try a group with different name.')->withInput();   
+           }
+        }
     }
 
     /**

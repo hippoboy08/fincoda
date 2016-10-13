@@ -620,6 +620,7 @@ use EmailTrait;
     }
 	
 	
+	//The requirement specs were that this should return the basic user view hence the aggregates are not viewable
     public function getParticipantDetails($surveyId, $participantId){
 	  $id = $surveyId;
       $userId = $participantId;

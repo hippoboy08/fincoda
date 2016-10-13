@@ -138,6 +138,7 @@
                                           <li><a data-toggle="tab" href="#menu4">User Groups And Indicator Group Averages</a></li>
                                           <li><a data-toggle="tab" href="#menu5">Admin View</a></li>
 										  <li><a data-toggle="tab" href="#menu6">Minimum And Maximum User Indicator Group Average</a></li>
+										  <li><a data-toggle="tab" href="#menu7">Downloads</a></li>
                                       </ul>
 
                                     <div class="tab-content">
@@ -150,6 +151,9 @@
                                              <table id="Participants" class="table table-bordered table-striped text-center">
                                                  <thead>
                                                  <tr>
+                                                     <th>Survey ID</th>
+                                                     <th>Group ID</th>
+                                                     <th>User ID</th>
                                                      <th>Full Name</th>
                                                      <th>Email Address</th>
                                                      <th>Survey Status</th>
@@ -158,8 +162,11 @@
                                                  <tbody>
                                                  @foreach($participants as $participant)
                                                      <tr>
-                                                     <td>{!! \App\User::find($participant->user_id)->name !!}</td>
-                                                     <td>{!! \App\User::find($participant->user_id)->email  !!}</td>
+														<td>{!! $participant->Survey_ID !!}</td>
+														<td>{!! $participant->Group_ID !!}</td>
+														<td>{!! $participant->User_ID !!}</td>
+														<td>{!! $participant->name !!}</td>
+														<td>{!! $participant->email  !!}</td>
                                                          @if($participant->completed==0)
                                                              <td><span class="label label-danger">Not completed</span></td>
                                                              @else
@@ -171,18 +178,19 @@
                                              </table>
                                          </div>
                                         </div>
+										
+										
                                         <div id="menu1" class="tab-pane fade">
                                            <div class="row pull-right" >
                                               <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                            </div>
-
                                            <div>
                                             <table id="Participants_scores" class="table table-bordered table-striped text-center">
                                                 <thead>
                                                 <tr>
-
                                                     <th>Survey ID</th>
-                                                    <th>User ID</th>
+                                                    <th>User Group ID</th>
+													<th>User ID</th>
                                                     <th>Indicator ID</th>
                                                     <th>Indicator </th>
                                                     <th>Answer</th>
@@ -194,8 +202,8 @@
                                                   @else
                                                   @foreach($surveyScoreAllUsers as $result)
                                                   <tr>
-
                                                     <td>{!! $result->Survey_ID !!}</td>
+													<td>{!! $result->Group_ID !!}</td>
                                                     <td>{!! $result->User_ID !!}</td>
                                                     <td>{!! $result->Indicator_ID !!}</td>
                                                     <td>{!! $result->Indicator !!}</td>
@@ -207,6 +215,7 @@
                                             </table>
                                           </div>
                                         </div>
+										
 
                                         <div id="menu2" class="tab-pane fade">
                                             <div class="row pull-right" >
@@ -219,6 +228,7 @@
                                                   <tr>
 
                                                       <th>Survey ID</th>
+													  <th>User Group ID</th>
                                                       <th>Indicator ID</th>
                                                       <th>Indicator</th>
                                                       <th>Group_Average</th>
@@ -232,6 +242,7 @@
                                                     <tr>
 
                                                     <td>{!! $result->Survey_ID !!}</td>
+													<td>{!! $result->Group_ID !!}</td>
                                                     <td>{!! $result->Indicator_ID !!}</td>
                                                     <td>{!! $result->Indicator !!}</td>
                                                     <td>{!! $result->Group_Average !!}</td>
@@ -254,6 +265,7 @@
                                                   <tr>
 
                                                       <th>Survey ID</th>
+													  <th>User Group ID</th>
                                                       <th>User ID</th>
                                                       <th>Indicator Group</th>
                                                       <th>Indicator Group Average</th>
@@ -267,6 +279,7 @@
                                                     <tr>
 
                                                     <td>{!! $result->Survey_ID !!}</td>
+													<td>{!! $result->Group_ID !!}</td>
                                                     <td>{!! $result->User_ID !!}</td>
                                                     <td>{!! $result->Indicator_Group !!}</td>
                                                     <td>{!! $result->Indicator_Group_Average !!}</td>
@@ -289,6 +302,7 @@
                                                   <tr>
 
                                                       <th>Survey ID</th>
+													  <th>User Group ID</th>
                                                       <th>Indicator Group</th>
                                                       <th>Indicator Group Average</th>
                                                   </tr>
@@ -301,6 +315,7 @@
                                                     <tr>
 
                                                     <td>{!! $result->Survey_ID !!}</td>
+													<td>{!! $result->Group_ID !!}</td>
                                                     <td>{!! $result->Indicator_Group !!}</td>
                                                     <td>{!! $result->Indicator_Group_Average !!}</td>
                                                     </tr>
@@ -318,7 +333,7 @@
                                             <h5 class="select-users"><label>Select User</label>
                                               <select id="participantsIds">
 													  @foreach($participants as $participant)
-														<option value="{!! \App\User::find($participant->user_id)->id !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
+														<option value="{$participant->User_ID !!}">{!! $participant->email !!}</option>
 													  @endforeach
 											  </select>
                                             </h5>
@@ -364,6 +379,7 @@
                                                 <tr>
 
                                                     <th>Survey ID</th>
+													<th>User Group ID</th>
                                                     <th>User ID</th>
                                                     <th>Indicator ID</th>
                                                     <th>Indicator </th>
@@ -384,6 +400,7 @@
                                                     <tr>
 
                                                       <td>{!! $results->Survey_ID !!}</td>
+													  <td>{!! $results->Group_ID !!}</td>
                                                       <td>{!! $results->User_ID !!}</td>
                                                       <td>{!! $results->Indicator_ID !!}</td>
                                                       <td>{!! $results->Indicator !!}</td>
@@ -449,6 +466,7 @@
                                                   <tr>
 
                                                       <th>Survey ID</th>
+													  <th>User Group ID</th>
 													  <th>Indicator Group ID</th>
                                                       <th>Indicator Group</th>
                                                       <th>Minimum User Indicator_Group Average</th>
@@ -463,6 +481,7 @@
                                                     <tr>
 
                                                     <td>{!! $result->Survey_ID !!}</td>
+													<td>{!! $result->Group_ID !!}</td>
 													<td>{!! $result->Indicator_Group_ID !!}</td>
                                                     <td>{!! $result->Indicator_Group !!}</td>
 													<td>{!! $result->Minimum_User_Indicator_Group_Average !!}</td>
@@ -475,6 +494,12 @@
                                             </div>
                                         </div>
 										
+										
+										<div id="menu7" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelSpecial',$survey->id)}}">Download Excel</a></u>
+                                            </div>
+                                        </div>
 										
 										
                                     </div>
