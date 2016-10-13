@@ -20,6 +20,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Response;
+use PHPExcel;
+use PHPExcel_IOFactory;
+use PHPExcel_Worksheet;
 
 
 class SurveyController extends Controller
@@ -156,6 +160,132 @@ use EmailTrait;
 		return $this->getParticipantDetails($surveyId, $participantId);
     }
 
+	//Tight coupling the seemingly similar queries or functions may look feasible at first sight, but remember they cater for different situations and functionality which may 
+	//dynamically change: abstract class implementations in laravel may possibly be okay but we opted for a self contained implementation
+	//Also another assumption has been made that an unbuffered query of say 500 to 2000 records can be easily processed by the available server resources within a loop
+	//The practical aspect of survey respondents being more than 500 to 2000 participants is unlikely yet even in the case of 10,000 respondents,
+	// the server should be able to handle that. if we are talking bigger respondents than that here, then a new design approach 
+	//May have to be looked into.
+	public function downloadCsv($surveyId){
+		$id = $surveyId;
+		if($this->ValidateSurvey($id)=='true'){
+          if($this->SurveyStatus($id)=='pending'){
+              return view('survey.update')->with('survey',Survey::find($id))
+                  ->with('indicators',Indicator::all())
+                  ->with('participants',Survey::find($id)->participants);
+          }else{
+              //This returns the indicator scores for each user that took part in the survey
+              //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
+              //In other words it will always return a single result
+              $surveyScoreAllUsers = DB::table('indicators')
+                                ->join('results','results.indicator_id','=','indicators.id')
+                                ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
+                                ->select('results.survey_id as Survey_ID',
+                                         'results.user_id as User_ID','indicators.id as Indicator_ID',
+                                         'indicators.indicator as Indicator', 'results.answer as Answer'
+                                         )
+                                ->where('results.survey_id',$id)
+                                ->groupBy('results.survey_id','results.user_id', 'indicators.id')
+                                ->get();
+								
+			   $participants = DB::table('participants')
+                                ->join('users','users.id','=','participants.user_id')
+                                ->select('users.id as User_ID',
+                                         'users.name as Name','users.email as Email',
+                                         'participants.completed as Completed'
+                                         )
+                                ->where('participants.survey_id',$id)
+                                ->groupBy('participants.survey_id','participants.user_id')
+                                ->get();
+								
+				$surveys = DB::table('surveys')
+                                ->select('surveys.id as Survey_ID',
+                                         'surveys.title as Title','surveys.description as Description',
+                                         'surveys.start_time as Start_Time','surveys.end_time as End_Time'
+                                         )
+                                ->where('surveys.id',$id)
+                                ->get();
+
+              $company = Auth::User()->company()->first();
+			  $company_profile=$company->profile()->first();
+			  $participantsNumber = count(Survey::find($id)->participants()->get());
+			  $participantsCompletedNumber = count(Survey::find($id)->participants()->where('completed',1)->get());
+			  
+			  $headers = array(
+					'Content-Type' 	=> 'application/vnd.ms-excel',
+					'Content-Disposition'	=>	'attachment;filename="dav.xlsx"'
+				);
+				
+			  $workBook = new PHPExcel();
+			  $workSheet1 = new PHPExcel_Worksheet($workBook, 'Survey');
+			  $workBook->addSheet($workSheet1,0);
+			  $workSheet2 = new PHPExcel_Worksheet($workBook, 'Participants');
+			  $workBook->addSheet($workSheet2,1);
+			  $workSheet3 = new PHPExcel_Worksheet($workBook, 'Results');
+			  $workBook->addSheet($workSheet3,2);
+			  
+			  //Write the survey details to the excel sheet
+			  $surveyArray = array();
+			  $surveyArray[] = ['Survey_ID','Title','Description','Start_Time','End_Time'
+                                         ];
+			  foreach ($surveys as $survey){
+				  $surveyArray[] = get_object_vars($survey);
+			  }
+			  $workBook->getSheet(0)->fromArray(
+					$surveyArray,
+					NULL,
+					'A1'
+			  );
+			  
+			  
+			  //Write the participants to the excel sheet
+			  $surveyParticipantsArray = array();
+			  $surveyParticipantsArray[] = ['User_ID','Name','Email','Completed'
+                                         ];
+			  foreach ($participants as $participant){
+				  $surveyParticipantsArray[] = get_object_vars($participant);
+			  }
+			  $workBook->getSheet(1)->fromArray(
+					$surveyParticipantsArray,
+					NULL,
+					'A1'
+			  );
+			  
+			  //Write the results to the excel sheet
+			  $surveyScoreAllUsersArray = array();
+			  $surveyScoreAllUsersArray[] = ['Survey_ID','User_ID','Indicator_ID',
+                                         'Indicator', 'Answer'
+                                         ];
+			  foreach ($surveyScoreAllUsers as $surveyScoreAllUser){
+				  $surveyScoreAllUsersArray[] = get_object_vars($surveyScoreAllUser);
+			  }
+			  $workBook->getSheet(2)->fromArray(
+					$surveyScoreAllUsersArray,
+					NULL,
+					'A1'
+			  );
+			  
+			  //Get a php object writer coz we want to write objects to file
+			  $objectWriter = PHPExcel_IOFactory::createWriter($workBook,'Excel2007');
+			  ob_end_clean();
+			  
+			  //Provide a callback to be used by the response stream
+			  $callback = function() use($objectWriter){
+				  //Write the objects to a php output
+				  $objectWriter->save('php://output');
+			  };
+			  //return the stream
+			  return response()->stream($callback, 200, $headers);
+			  
+          }
+
+      }else{
+          return view('errors.404')->with('title',' Survey Not found')
+              ->with('message','The survey you requested doe not belong to your company or does not exists in the Fincoda Survey System.');
+      }
+    }
+	
+	
     /**
      * Display the specified resource.
      *

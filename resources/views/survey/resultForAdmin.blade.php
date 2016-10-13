@@ -42,6 +42,9 @@
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
+                                    <div class="row pull-right" >
+                                        <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelAdmin',$survey->id)}}">Download Excel</a></u>
+                                    </div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
@@ -187,6 +190,7 @@
 
                                   </div>
                                   @endrole
+
 
 
 

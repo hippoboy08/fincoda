@@ -141,6 +141,7 @@
                                           <li><a data-toggle="tab" href="#menu4">User Groups And Indicator Group Averages</a></li>
                                           <li><a data-toggle="tab" href="#menu5">Admin View</a></li>
 										  <li><a data-toggle="tab" href="#menu6">Minimum And Maximum User Indicator Group Average</a></li>
+										  <li><a data-toggle="tab" href="#menu7">Downloads</a></li>
                                       </ul>
 
                                     <div class="tab-content">
@@ -479,7 +480,11 @@
                                             </div>
                                         </div>
 
-
+										<div id="menu7" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelSpecial',$survey->id)}}">Download Excel</a></u>
+                                            </div>
+                                        </div>
 
                                     </div>
                                   </div>

@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "laravelcollective/html": "~5.0",
         "zizaco/entrust": "5.2.x-dev",
-        "greggilbert/recaptcha": "dev-master"
+        "phpoffice/phpexcel": "dev-master",
+		"greggilbert/recaptcha": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
