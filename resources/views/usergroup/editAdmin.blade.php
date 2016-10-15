@@ -56,11 +56,11 @@
 
                             </div>
 							
-							<div class="form-group{!! $errors->has('users') ? ' has-error':'' !!} has-feedback">
+							<div class="form-group{!! $errors->has('usersToRemove') ? ' has-error':'' !!} has-feedback">
                                 <label><h3>Remove users from the group*:</h3></label>
                                 <p>Please select users to remove from this group.</p>
-                                @if($errors->has('users'))
-                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('users') !!}</label>
+                                @if($errors->has('usersToRemove'))
+                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('usersToRemove') !!}</label>
                                 @endif
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
@@ -73,7 +73,7 @@
                                 <tbody>
                                 @foreach($members as $user)
                                     <tr>
-                                        <td>{!! Form::checkbox('users[]',$user->user_id, true) !!} | {!! $user->user_id !!}</td>
+                                        <td>{!! Form::checkbox('usersToRemove[]',$user->user_id) !!} | {!! $user->user_id !!}</td>
 										<td>{!! $user->name !!}</td>
                                         <td>{!! $user->email !!}</td>
 
@@ -85,11 +85,11 @@
                                 </table>
                                 </div>
 
-                            <div class="form-group{!! $errors->has('users') ? ' has-error':'' !!} has-feedback">
+                            <div class="form-group{!! $errors->has('usersToAdd') ? ' has-error':'' !!} has-feedback">
                                 <label><h3>Add users to this group*:</h3></label>
                                 <p>Please select users to add to this group.</p>
-                                @if($errors->has('users'))
-                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('users') !!}</label>
+                                @if($errors->has('usersToAdd'))
+                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('usersToAdd') !!}</label>
                                 @endif
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
@@ -102,7 +102,7 @@
                                 <tbody>
                                 @foreach($users as $user)
                                     <tr>
-                                        <td>{!! Form::checkbox('users[]',$user->user_id) !!} | {!! $user->user_id !!}</td>
+                                        <td>{!! Form::checkbox('usersToAdd[]',$user->user_id) !!} | {!! $user->user_id !!}</td>
 										<td>{!! $user->name !!}</td>
                                         <td>{!! $user->email !!}</td>
 

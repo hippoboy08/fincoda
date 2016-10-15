@@ -48,8 +48,14 @@ class GroupSurveyController extends Controller
 
     public function create()
     {
-
-        return view('survey.create')->with('indicators',Indicator::all())
+		$group = DB::table('user_groups')
+							->where('company_id',Auth::User()->company_id)
+							->where('administrator','=',Auth::id())
+							->get();
+		
+        return view('survey.createSpecial')
+			->with('groups',$group)
+            ->with('indicators',Indicator::all())
             ->with('participants',DB::table('users')
                 ->join('role_user','role_user.user_id','=','users.id')
                 ->where('role_id','=',3)
@@ -132,6 +138,20 @@ class GroupSurveyController extends Controller
 
         }
 
+		
+		public function lookForGroupMembers(Request $request){
+					$members = DB::table('users')
+							->join('role_user','role_user.user_id','=','users.id')
+							->join('user_in_groups','user_in_groups.user_id','=','users.id')
+							->select('users.id as user_id','users.name','users.email')
+							->where('company_id',Auth::User()->company_id)
+							->where('role_user.role_id','=',3)
+							->where('user_in_groups.user_group_id','=',$request['groupId'])
+							->get();       
+							
+					return response()->json(array('stri'=>$request['groupId']));
+		}
+		
 
 		//Notes: Ajax does a post but knows nothing about rendering complex blades smoothly without using complex code
 	//To achieve smooth redirection in a simple way you have to call a route in the ajax window.replace function

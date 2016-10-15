@@ -60,16 +60,17 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th><i class="fa fa-check-square-o" aria-hidden="true"></i> | Full Name</th>
+                                    <th><i class="fa fa-check-square-o" aria-hidden="true"></i> | | User ID</th>
+									<th>Full Name</th>
                                     <th>Email Address</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($users as $user)
                                     <tr>
-                                        <td>{!! Form::checkbox('users[]',$user->id) !!} | {!! $user->name !!}</td>
-                                        <td>{!! $user->email !!}</td>
-
+                                        <td>{!! Form::checkbox('users[]',$user->id) !!} | {!! $user->id !!}</td>
+                                        <td>{!! $user->name !!}</td>
+										<td>{!! $user->email !!}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

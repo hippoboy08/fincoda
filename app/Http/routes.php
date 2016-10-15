@@ -89,6 +89,7 @@ Route::group(['middleware'=>'special',
     Route::resource('groupsurvey','GroupSurveyController');
     Route::get('groupsurvey/downloadExcel/{surveyId}',['as'=>'downloadExcelSpecial','uses'=>'GroupSurveyController@downloadCsv']);
     Route::match(['get','post'],'groupsurvey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'GroupSurveyController@lookForParticipant']);
+    Route::match(['get','post'],'groupsurvey/lookForGroupMembers',['as'=>'lookForGroupMembers','uses'=> 'GroupSurveyController@lookForGroupMembers']);
     Route::get('usergroup/edit/{id}','UserGroupController@editUserGroup');
     Route::post('usergroup/update','UserGroupController@updateUserGroup');
 	Route::resource('usergroup','UserGroupController');

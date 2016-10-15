@@ -155,8 +155,8 @@ class UserGroupController extends Controller
 							->where('role_user.role_id','=',3)
 							->where('user_in_groups.user_group_id','=',$id)
 							->get();
-		//This returns all users so that the front end developer can manage presentation issues related to members and non members
-		//of groups
+		//This returns all users that are not in this group, but will always have duplicated users coz the schema does not have a one to many mapping
+		//between users and groups and instead has user_in_groups with what you would call a composite key on user_id and group_id
 		$users = DB::table('users')
 							->join('role_user','role_user.user_id','=','users.id')
 							->join('user_in_groups','user_in_groups.user_id','=','users.id')
@@ -166,6 +166,17 @@ class UserGroupController extends Controller
 							->where('user_in_groups.user_group_id','!=',$id)
 							->distinct()
 							->get();
+		//This is needed to remove duplicated user id: here it is assumed the server will have enough resources to process this in a loop
+		//And also records have been asummed to be small in the range of 1 to 10,000 users in a group.
+		if(!empty($members)&&!empty($users)){
+			foreach($users as $key => $user){
+				foreach($members as $member){
+					if($user->user_id === $member->user_id){
+						unset($users[$key]);
+					}
+				}
+			}
+		}
 		
         return view('usergroup.editAdmin')
 						->with('administrators',$administrators)
@@ -191,7 +202,6 @@ class UserGroupController extends Controller
 		$validation=Validator::make($request->all(),[
             'name'=>'required|max:255',
             'editor1'=>'required',
-            'users'=>'required'
         ]);
         if($validation->fails()){
             return redirect()->back()->withErrors($validation)->withInput();
@@ -207,24 +217,25 @@ class UserGroupController extends Controller
 							'administrator'=>$request->administrator
                 ]);
 
-               foreach($request->users as $user){
-				$userGroupId = DB::table('user_in_groups')->where('user_id',$user)->where('user_group_id',$request->id)->get();
-				
-				if($userGroupId != null){
+			if(!empty($request->usersToRemove)){
+               foreach($request->usersToRemove as $user){
 					DB::table('user_in_groups')
-						->where('id', $userGroupId[0]->id)
-						->update([
+						->where('user_id', $user)
+						->where('user_group_id', $request->id)
+						->delete();
+				}
+			}
+				
+			if(!empty($request->usersToAdd)){
+				foreach($request->usersToAdd as $user){
+					DB::table('user_in_groups')
+						->insert([
 							'user_id'=>$user,
 							'user_group_id'=>$request->id
 						]);
-				}else{
-					User_In_Group::create([
-                    'user_id'=>$user,
-                    'user_group_id'=>$request->id
-                ]);
 				}
-               }
-
+			}
+				
                return Redirect::to('admin/usergroup')->with('success','A new user group has been edited successfully.');
            }else{
                return redirect()->back()->with('fail','A group with that name does not exist in your company. Please try a group with different name.')->withInput();   
