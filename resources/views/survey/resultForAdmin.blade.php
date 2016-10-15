@@ -133,7 +133,6 @@
 
                                   <div id="detailedview" class="tab-pane fade">
 
-
                                     <div class="tab-content">
                                         <div id="participants" class="tab-pane fade in active">
                                            <div class="row pull-right" >
@@ -186,10 +185,15 @@
                                     </div>
 
                                   </div>
+								  <div id="menu15" class="tab-pane fade">
+                                            <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelAdmin',$survey->id)}}">Download Excel</a></u>
+                                            </div>
+                                        </div>
                                   @endrole
-
-
-
+										
+										
+										
                                 </div>
                                     @else
                                     <ul>

@@ -9,6 +9,7 @@ Route::get('login', function () {
     return view('login');
 });
 
+
 /*
 Route::get('/','home\HomeController@homepage');
 Route::get('login','home\HomeController@loginpage');*/
@@ -38,14 +39,15 @@ Route::group(['middleware'=>'admin',
     Route::get('/','DashboardController@index');
     Route::get('company','ProfileController@company');
     //This returns the edit blade
-    Route::get('editCompanyProfile','ProfileController@editCompanyProfile');
+    Route::get('company/update','ProfileController@editCompany');
     //This posts back the edit blade to action updateCompanyProfile
-    Route::post('updateCompanyProfile',['as'=>'updateCompanyProfile','uses' => 'ProfileController@updateCompanyProfile']);
+    Route::post('company/update','ProfileController@updateCompany');
     Route::post('deleteCompanyProfile','ProfileController@deleteCompanyProfile');
     Route::resource('members','MembersController');
     Route::resource('roles','RolesController');
     Route::get('survey/getParticipant/{surveyId}/{participantId}','SurveyController@getParticipant');
     Route::resource('survey','SurveyController');
+    Route::get('survey/downloadExcel/{surveyId}',['as'=>'downloadExcelAdmin','uses'=>'SurveyController@downloadCsv']);
     Route::match(['get','post'],'survey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'SurveyController@lookForParticipant']);
     Route::resource('usergroup','UserGroupController');
 
@@ -74,6 +76,8 @@ Route::group(['middleware'=>'special',
     Route::resource('groupsurvey','GroupSurveyController');
     //changes here - survey -> groupsurvey
     Route::match(['get','post'],'groupsurvey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'GroupSurveyController@lookForParticipant']);
+    Route::get('survey/downloadExcel/{surveyId}',['as'=>'downloadExcelSpecial','uses'=>'GroupSurveyController@downloadCsv']);
+    Route::match(['get','post'],'survey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'GroupSurveyController@lookForParticipant']);
     Route::resource('usergroup','UserGroupController');
     Route::get('groupsurveyresult','GroupSurveyResultController@index');
 
