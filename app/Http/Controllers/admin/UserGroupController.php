@@ -155,8 +155,8 @@ class UserGroupController extends Controller
 							->where('role_user.role_id','=',3)
 							->where('user_in_groups.user_group_id','=',$id)
 							->get();
-		//This returns all users that are not in this group, but will always have duplicated users coz the schema does not have a one to many mapping
-		//between users and groups and instead has user_in_groups with what you would call a composite key on user_id and group_id
+							
+		//This returns all users that are not in this group
 		$users = DB::table('users')
 							->join('role_user','role_user.user_id','=','users.id')
 							->join('user_in_groups','user_in_groups.user_id','=','users.id')
@@ -166,7 +166,8 @@ class UserGroupController extends Controller
 							->where('user_in_groups.user_group_id','!=',$id)
 							->distinct()
 							->get();
-		//This is needed to remove duplicated user id: here it is assumed the server will have enough resources to process this in a loop
+							
+		//This is needed to remove duplicated user ids: here it is assumed the server will have enough resources to process this in a loop
 		//And also records have been asummed to be small in the range of 1 to 10,000 users in a group.
 		if(!empty($members)&&!empty($users)){
 			foreach($users as $key => $user){
