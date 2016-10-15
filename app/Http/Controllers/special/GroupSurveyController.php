@@ -131,16 +131,16 @@ class GroupSurveyController extends Controller
 
 
         }
-		
-		
+
+
 		//Notes: Ajax does a post but knows nothing about rendering complex blades smoothly without using complex code
 	//To achieve smooth redirection in a simple way you have to call a route in the ajax window.replace function
 	//A sensible approach here would be to get post results, put them in private variables and then use them in a function
 	//that serves the desired blade through a get route other than a post route
 	//That approach failed as the variables were not available in the next function call
-	//A new approach had to be adapted as below in other words post through ajax  
+	//A new approach had to be adapted as below in other words post through ajax
 	// and then parameter passing via routes
-	
+
 	public function lookForParticipant(Request $request){
 		$selectedUserIdGroupId = explode("|",$request['participantId']);
 		$participantId = $selectedUserIdGroupId[0];
@@ -159,7 +159,7 @@ class GroupSurveyController extends Controller
 		return $this->getParticipantDetails($surveyId, $groupId, $participantId);
     }
 
-	
+
 	//Tight coupling the seemingly similar queries or functions may look feasible at first sight, but remember they cater for different situations and functionality which may 
 	//dynamically change: abstract class implementations in laravel may possibly be okay but we opted for a self contained implementation
 	//Also another assumption has been made that an unbuffered query of say 500 to 2000 records can be easily processed by the available server resources within a loop
@@ -367,12 +367,12 @@ class GroupSurveyController extends Controller
                             GROUP BY results.survey_id, user_in_groups.user_group_id, indicators.group_id"),
                             array("surveyId"=>$id));
 							
-					//This returns the average min/max per indicator group for this survey
+					//This returns the average of each user per indicator group for this survey
                     $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
-                            "SELECT p.Survey_ID, p.Group_ID, p.Indicator_Group_ID, p.Indicator_Group, 
-									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average , 
-									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM 
-										(SELECT results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
+                            "SELECT p.Group_ID, p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,
+									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
+									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
+										(SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
                                             results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
                                             indicator_groups.name as Indicator_Group,
                                             AVG(results.answer) as Indicator_Group_Average
@@ -418,7 +418,7 @@ class GroupSurveyController extends Controller
               //This returns the indicator scores for each user that took part in the survey
               //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
               //In other words it will always return a single result
-			  
+
 			  $surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
                                               ->select('results.user_id as User_ID')
                                               ->where('results.survey_id',$id)
@@ -503,10 +503,10 @@ class GroupSurveyController extends Controller
 							
 					//This returns the average of each user per indicator group for this survey
                     $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
-                            "SELECT p.Survey_ID, p.Group_ID, p.Indicator_Group_ID, p.Indicator_Group, 
-									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average , 
-									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM 
-										(SELECT results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
+                            "SELECT p.Group_ID, p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,
+									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
+									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
+										(SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
                                             results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
                                             indicator_groups.name as Indicator_Group,
                                             AVG(results.answer) as Indicator_Group_Average
@@ -532,9 +532,9 @@ class GroupSurveyController extends Controller
 			  ->with('participants',$participants)
               ->with('company',$company)
               ->with('company_profile',$company->profile()->first())
-			  
+
               ->with(['surveyScoreGroupAvgPerIndicatorGroupMinAndMax' => $surveyScoreGroupAvgPerIndicatorGroupMinAndMax])
-			  
+
               ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
 
           }
@@ -543,10 +543,10 @@ class GroupSurveyController extends Controller
           return view('errors.404')->with('title',' Survey Not found')
               ->with('message','The survey you requested doe not belong to your company or does not exists in the Fincoda Survey System.');
       }
-      
+
     }
 
-	
+
     public function update(Request $request,$id){
         $validation=Validator::make($request->all(),[
             'title'=>'required|max:255',
