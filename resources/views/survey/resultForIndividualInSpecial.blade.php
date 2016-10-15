@@ -477,21 +477,13 @@
                                               </table>
                                             </div>
                                         </div>
-<<<<<<< HEAD
-										
 										
 										<div id="menu7" class="tab-pane fade">
                                             <div class="row pull-right" >
                                                 <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelSpecial',$survey->id)}}">Download Excel</a></u>
                                             </div>
                                         </div>
-										
-										
-=======
 
-
-
->>>>>>> 5c5bb84db50b0d628861ff7b81784bbc4753aa2a
                                     </div>
                                   </div>
                                   @endrole

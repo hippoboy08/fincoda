@@ -138,7 +138,6 @@ class GroupSurveyController extends Controller
 
         }
 
-		
 		public function lookForGroupMembers(Request $request){
 					$members = DB::table('users')
 							->join('role_user','role_user.user_id','=','users.id')
@@ -177,14 +176,15 @@ class GroupSurveyController extends Controller
 	
 	public function getParticipant($surveyId, $groupId, $participantId){
 		return $this->getParticipantDetails($surveyId, $groupId, $participantId);
+
     }
 
 
-	//Tight coupling the seemingly similar queries or functions may look feasible at first sight, but remember they cater for different situations and functionality which may 
+	//Tight coupling the seemingly similar queries or functions may look feasible at first sight, but remember they cater for different situations and functionality which may
 	//dynamically change: abstract class implementations in laravel may possibly be okay but we opted for a self contained implementation
 	//Also another assumption has been made that an unbuffered query of say 500 to 2000 records can be easily processed by the available server resources within a loop
 	//The practical aspect of survey respondents being more than 500 to 2000 participants is unlikely yet even in the case of 10,000 respondents,
-	// the server should be able to handle that. if we are talking bigger respondents than that here, then a new design approach 
+	// the server should be able to handle that. if we are talking bigger respondents than that here, then a new design approach
 	//May have to be looked into.
 	public function downloadCsv($surveyId){
 		$id = $surveyId;
@@ -207,7 +207,7 @@ class GroupSurveyController extends Controller
                                 ->where('results.survey_id',$id)
                                 ->groupBy('results.survey_id','results.user_id', 'indicators.id')
                                 ->get();
-								
+
 			   $participants = DB::table('participants')
                                 ->join('users','users.id','=','participants.user_id')
                                 ->select('users.id as User_ID',
@@ -217,7 +217,7 @@ class GroupSurveyController extends Controller
                                 ->where('participants.survey_id',$id)
                                 ->groupBy('participants.survey_id','participants.user_id')
                                 ->get();
-								
+
 				$surveys = DB::table('surveys')
                                 ->select('surveys.id as Survey_ID',
                                          'surveys.title as Title','surveys.description as Description',
@@ -230,12 +230,12 @@ class GroupSurveyController extends Controller
 			  $company_profile=$company->profile()->first();
 			  $participantsNumber = count(Survey::find($id)->participants()->get());
 			  $participantsCompletedNumber = count(Survey::find($id)->participants()->where('completed',1)->get());
-			  
+
 			  $headers = array(
 					'Content-Type' 	=> 'application/vnd.ms-excel',
 					'Content-Disposition'	=>	'attachment;filename="dav.xlsx"'
 				);
-				
+
 			  $workBook = new PHPExcel();
 			  $workSheet1 = new PHPExcel_Worksheet($workBook, 'Survey');
 			  $workBook->addSheet($workSheet1,0);
@@ -243,7 +243,7 @@ class GroupSurveyController extends Controller
 			  $workBook->addSheet($workSheet2,1);
 			  $workSheet3 = new PHPExcel_Worksheet($workBook, 'Results');
 			  $workBook->addSheet($workSheet3,2);
-			  
+
 			  //Write the survey details to the excel sheet
 			  $surveyArray = array();
 			  $surveyArray[] = ['Survey_ID','Title','Description','Start_Time','End_Time'
@@ -256,8 +256,8 @@ class GroupSurveyController extends Controller
 					NULL,
 					'A1'
 			  );
-			  
-			  
+
+
 			  //Write the participants to the excel sheet
 			  $surveyParticipantsArray = array();
 			  $surveyParticipantsArray[] = ['User_ID','Name','Email','Completed'
@@ -270,7 +270,7 @@ class GroupSurveyController extends Controller
 					NULL,
 					'A1'
 			  );
-			  
+
 			  //Write the results to the excel sheet
 			  $surveyScoreAllUsersArray = array();
 			  $surveyScoreAllUsersArray[] = ['Survey_ID','User_ID','Indicator_ID',
@@ -284,11 +284,11 @@ class GroupSurveyController extends Controller
 					NULL,
 					'A1'
 			  );
-			  
+
 			  //Get a php object writer coz we want to write objects to file
 			  $objectWriter = PHPExcel_IOFactory::createWriter($workBook,'Excel2007');
 			  ob_end_clean();
-			  
+
 			  //Provide a callback to be used by the response stream
 			  $callback = function() use($objectWriter){
 				  //Write the objects to a php output
@@ -296,7 +296,7 @@ class GroupSurveyController extends Controller
 			  };
 			  //return the stream
 			  return response()->stream($callback, 200, $headers);
-			  
+
           }
 
       }else{
@@ -304,8 +304,7 @@ class GroupSurveyController extends Controller
               ->with('message','The survey you requested doe not belong to your company or does not exists in the Fincoda Survey System.');
       }
     }
-	
-		
+
     public function show($id){
 
         if($this->ValidateSurvey($id)){
@@ -521,6 +520,7 @@ class GroupSurveyController extends Controller
 							GROUP BY results.survey_id, user_in_groups.user_group_id, indicators.group_id"),
                             array("surveyId"=>$id,"groupId"=>$groupId));
 							
+
 					//This returns the average of each user per indicator group for this survey
                     $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
                             "SELECT p.Group_ID, p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,

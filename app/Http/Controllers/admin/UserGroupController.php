@@ -178,7 +178,7 @@ class UserGroupController extends Controller
 				}
 			}
 		}
-		
+
         return view('usergroup.editAdmin')
 						->with('administrators',$administrators)
 						->with('group',$group)
@@ -217,6 +217,7 @@ class UserGroupController extends Controller
 							'created_by'=>Auth::id(),
 							'administrator'=>$request->administrator
                 ]);
+
 
 			if(!empty($request->usersToRemove)){
                foreach($request->usersToRemove as $user){

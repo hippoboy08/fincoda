@@ -42,6 +42,9 @@
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
+                                    <div class="row pull-right" >
+                                        <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelAdmin',$survey->id)}}">Download Excel</a></u>
+                                    </div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
@@ -145,27 +148,27 @@
                                                <select id="participantsIds">
                                                  <option>Select a user</option>
  													  @foreach($participants as $participant)
- 		<option value="{!! \App\User::find($participant->user_id)->id !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
+														<option value="{!! \App\User::find($participant->user_id)->id !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
  													  @endforeach
  											  </select>
                                              </h5>
-                       <script>
+										<script>
  											$(document).ready(function(){
  											  $('#participantsIds').change(function(){
  												  if($(this).val()==""){
  												  return;
-                           }
-                           else{
-                           $.ajaxSetup({
-                             headers:{
-                               'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-                             }
-                           });
-                           $.ajax({
-   												  method: 'POST',
-                             url: 'lookForParticipant',
-   												  dataType: 'json',
-                             data: {'participantId':$(this).val(),'surveyId':$('#surveyId').text()},
+												   }
+												   else{
+												   $.ajaxSetup({
+													 headers:{
+													   'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+													 }
+												   });
+												   $.ajax({
+																		  method: 'POST',
+													 url: 'lookForParticipant',
+																		  dataType: 'json',
+													 data: {'participantId':$(this).val(),'surveyId':$('#surveyId').text()},
    												  success: function(data){
    												  window.location.replace(data.stri);
    													},
@@ -175,11 +178,11 @@
      													console.log(errors);
    												  }
 
-                           });
-                           }
-                         });
-                       });
-                     </script>
+											   });
+											   }
+											 });
+										   });
+										 </script>
  										</div>
                                         </div>
                                     </div>
@@ -191,9 +194,7 @@
                                             </div>
                                         </div>
                                   @endrole
-										
-										
-										
+
                                 </div>
                                     @else
                                     <ul>

@@ -116,8 +116,6 @@
 									<a href="{!! url('admin/usergroup/edit/'.$group->id) !!}"><button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Group</button></a>
                                 </div><br>
 
-
-
                         </div>
                      </div>
                 </div>

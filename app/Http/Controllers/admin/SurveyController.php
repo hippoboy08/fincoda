@@ -619,8 +619,7 @@ use EmailTrait;
       }
     }
 
-	
-	public function getParticipantDetails($surveyId, $participantId){
+public function getParticipantDetails($surveyId, $participantId){
 	  $id = $surveyId;
       $userId = $participantId;
 	  if($this->ValidateSurvey($id)=='true'){

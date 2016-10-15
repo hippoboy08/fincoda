@@ -125,8 +125,6 @@
                                         </div>
                                     </div>
 
-
-
                                     <div class="form-group row">
 
                                         <div class="col-md-2 pull-left">
@@ -138,12 +136,6 @@
                                     </div>
 
 
-
-
-
-
-
-
                                   <div class="form-group">
                                       <div class="col-md-2 pull-left">
 
@@ -151,8 +143,6 @@
                                       <div class="col-md-10">
                                           <button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Profile</button>
                                           </div>
-
-
                                   </div>
 
                                 </div>

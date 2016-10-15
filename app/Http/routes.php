@@ -85,14 +85,18 @@ Route::group(['middleware'=>'special',
     Route::get('/','DashboardController@index');
     Route::get('profile','ProfileController@index');
     Route::resource('survey','CompanySurveyController');
+
     Route::get('groupsurvey/getParticipant/{surveyId}/{groupId}/{participantId}','GroupSurveyController@getParticipant');
     Route::resource('groupsurvey','GroupSurveyController');
     Route::get('groupsurvey/downloadExcel/{surveyId}',['as'=>'downloadExcelSpecial','uses'=>'GroupSurveyController@downloadCsv']);
     Route::match(['get','post'],'groupsurvey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'GroupSurveyController@lookForParticipant']);
-    Route::match(['get','post'],'groupsurvey/lookForGroupMembers',['as'=>'lookForGroupMembers','uses'=> 'GroupSurveyController@lookForGroupMembers']);
+
+	Route::match(['get','post'],'groupsurvey/lookForGroupMembers',['as'=>'lookForGroupMembers','uses'=> 'GroupSurveyController@lookForGroupMembers']);
+    
     Route::get('usergroup/edit/{id}','UserGroupController@editUserGroup');
     Route::post('usergroup/update','UserGroupController@updateUserGroup');
 	Route::resource('usergroup','UserGroupController');
+
     Route::get('groupsurveyresult','GroupSurveyResultController@index');
 
 });

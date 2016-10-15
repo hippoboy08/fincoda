@@ -75,12 +75,6 @@ class SurveyController extends Controller
                                               ->groupBy('results.survey_id', 'results.user_id', 'indicators.id')
                                               ->get();
 
-                                              //This returns the paginated results for survey score all users
-                                              $page = LengthAwarePaginator::resolveCurrentPage();
-                                              $collection = new Collection($surveyScoreAllUsers);
-                                              $itemsPerPage = 5;
-                                              $slicedCollection = $collection->slice(($page-1)*$itemsPerPage,$page)->all();
-                                              $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);
 
                             //This returns the average of the user group per indicator in this survey
                             $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
@@ -128,7 +122,6 @@ class SurveyController extends Controller
 									->with('participants',Survey::find($id)->participants)
 									->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
 									->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
-									
 									
                       }
 
@@ -265,13 +258,6 @@ class SurveyController extends Controller
                                               ->groupBy('results.survey_id', 'results.user_id', 'indicators.id')
                                               ->get();
 
-                                              //This returns the paginated results for survey score all users
-                                              $page = LengthAwarePaginator::resolveCurrentPage();
-                                              $collection = new Collection($surveyScoreAllUsers);
-                                              $itemsPerPage = 5;
-                                              $slicedCollection = $collection->slice(($page-1)*$itemsPerPage,$page)->all();
-                                              $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);
-
                             //This returns the average of the user group per indicator in this survey
                             $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
                                               "SELECT results.survey_id as Survey_ID,
@@ -345,13 +331,6 @@ class SurveyController extends Controller
                                 ->where('user_in_groups.user_group_id',$surveyGroupId)
                                 ->groupBy('user_in_groups.user_group_id', 'results.user_id', 'results.survey_id', 'indicators.id')
                                 ->get();
-
-                                          //This returns the paginated results for survey score all users
-                                          $page = LengthAwarePaginator::resolveCurrentPage();
-                                          $collection = new Collection($surveyScoreAllUsers);
-                                          $itemsPerPage = 5;
-                                          $slicedCollection = $collection->slice(($page-1)*$itemsPerPage,$page)->all();
-                                          $paginatedCollection = new LengthAwarePaginator($slicedCollection,count($collection),$itemsPerPage);
 
                         //This returns the average of the user group per indicator in this survey
                         $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(

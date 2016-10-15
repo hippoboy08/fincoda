@@ -476,13 +476,13 @@
                                               </table>
                                             </div>
                                         </div>
-								
+
 										<div id="menu7" class="tab-pane fade">
                                             <div class="row pull-right" >
                                                 <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcel',$survey->id)}}">Download Excel</a></u>
                                             </div>
                                         </div>
-										
+
                                     </div>
                                   </div>
                                   @endrole
