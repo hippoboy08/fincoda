@@ -53,7 +53,7 @@ Route::group(['middleware'=>'admin',
     Route::get('company/update','ProfileController@editCompany');
     //This posts back the edit blade to action updateCompanyProfile
     Route::post('company/update','ProfileController@updateCompany');
-	
+
     Route::post('deleteCompanyProfile','ProfileController@deleteCompanyProfile');
     Route::resource('members','MembersController');
     Route::resource('roles','RolesController');
@@ -92,7 +92,7 @@ Route::group(['middleware'=>'special',
     Route::match(['get','post'],'groupsurvey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'GroupSurveyController@lookForParticipant']);
 
 	Route::match(['get','post'],'groupsurvey/lookForGroupMembers',['as'=>'lookForGroupMembers','uses'=> 'GroupSurveyController@lookForGroupMembers']);
-    
+
     Route::get('usergroup/edit/{id}','UserGroupController@editUserGroup');
     Route::post('usergroup/update','UserGroupController@updateUserGroup');
 	Route::resource('usergroup','UserGroupController');

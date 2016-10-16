@@ -10,6 +10,9 @@
                 <h3 class="box-title"><b>Survey Result.</b></h3>
                 <p><i>Below is the information about the pending survey you requested.
                         You can make changes or abort it before it is open to the participants.</i></p>
+                        <p>
+                          <?php echo 'ehyyy'; ?>
+                        </p>
             </div>
 
             @include('message.fail')
@@ -35,12 +38,12 @@
 
                                 @role ('special')
                                 <ul class="nav nav-tabs">
-                                  <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
-                                  <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
+                                  <li><a data-toggle="tab" href="#overview">Overview</a></li>
+                                  <li class="active"><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
                                 </ul>
 
                                 <div class="tab-content">
-                                  <div id="overview" class="tab-pane fade in active">
+                                  <div id="overview" class="tab-pane fade">
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
@@ -73,7 +76,7 @@
                                               {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
                                                 {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
                                                   {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
-                                        'rgba(255,99,132,1)'
+                                        'rgba(0,0,255,1)'
                                       );
                                     </script>
 									@else
@@ -117,7 +120,7 @@
                                         'Company average score of each indicator group',
                                         [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
                                           {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
-                                        'rgba(255,99,132,1)'
+                                        'rgba(0,0,255,1)'
                                       );
                                     </script>
 									@else
@@ -129,360 +132,199 @@
                                     </div>
                                   </div>
 
-                                  <div id="detailedview" class="tab-pane fade">
-                                      <ul class="nav nav-tabs">
-                                          <li class="active"><a data-toggle="tab" href="#participants">Participants</a></li>
-                                          <li><a data-toggle="tab" href="#menu1">Participants Scores</a></li>
-                                          <li><a data-toggle="tab" href="#menu2">User Groups Indicator Averages</a></li>
-                                          <li><a data-toggle="tab" href="#menu3">Participants Scores On Indicator Groups</a></li>
-                                          <li><a data-toggle="tab" href="#menu4">User Groups And Indicator Group Averages</a></li>
-                                          <li><a data-toggle="tab" href="#menu5">Admin View</a></li>
-										  <li><a data-toggle="tab" href="#menu6">Minimum And Maximum User Indicator Group Average</a></li>
-										  <li><a data-toggle="tab" href="#menu7">Downloads</a></li>
-                                      </ul>
+                                  <div id="detailedview" class="tab-pane fade in active">
 
                                     <div class="tab-content">
                                         <div id="participants" class="tab-pane fade in active">
-                                           <div class="row pull-right" >
-                                              <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                           </div>
 
-                                           <div>
-                                             <table id="Participants" class="table table-bordered table-striped text-center">
+
+
+                                             <div class="pull-left" >
+   										  <label id="surveyId">{!! $survey->id !!}</label>
+                                               <h5 class="select-users"><label>Select User</label>
+                                                 <select id="participantsIds">
+   													  @foreach($participants as $participant)
+   														<option value="{$participant->User_ID !!}">{!! $participant->email !!}</option>
+   													  @endforeach
+   											  </select>
+                                               </h5>
+                                             <script>
+   											$(document).ready(function(){
+   											  $('#participantsIds').change(function(){
+   												  if($(this).val()==""){
+   												  return;
+                                                   }else{
+                                                     var participant = $(this).val();
+                                                     var url = window.location.pathname;
+                                                     var value = url.substring(url.lastIndexOf('/')+1);
+                                                     url = url.replace(value, participant);
+                                                     window.location = url;
+                                                   }
+                                                 });
+                                               });
+                                             </script>
+   										</div>
+                       <div class="row pull-right" >
+                           <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelSpecial',$survey->id)}}">Download Excel</a></u>
+                       </div>
+
+                                            <div>
+                                              <br><br><br>
+                                              <h5>User name: <label>{!! \App\User::find($user)->name !!}</label></h5>
+                                              <h5>Email: <label>{!! \App\User::find($user)->email !!}</label><h5>
+                                              <br>
+                                               <table id="Participants_scores" class="table table-bordered table-striped table-responsive text-center" >
+                                                 <caption style="text-align:center;">User score per indicator compared with group average score per indicator</caption>
+                                                   <thead>
+                                                   <tr>
+                                                       <th>Indicator ID</td>
+                                                       <th>Indicator Name</th>
+                                                       <th>User Answer Indicator</th>
+                                                       <th>Group Average Each Indicator</th>
+                                                       <th>Category ID</th>
+
+
+                                                   </tr>
+                                                   </thead>
+
+                                                   <tbody>
+                                                     @if(count($surveyScoreAllUsers)==0)
+                                                       <div>You have no surveys results to display</div>
+                                                     @else
+                                                     @foreach($surveyScoreAllUsers as $results)
+                                                       <tr>
+                                                         <td>{!! $results->Indicator_ID !!}</td>
+                                                         <td>{!! $results->Indicator !!}</td>
+                                                         <td>{!! $results->Answer !!}</td>
+
+                                                         @if(count($surveyGroupAveragePerIndicatorAllUsers)==0)
+                                                           You have no surveys indicator averages to display
+                                                         @else
+                                                         @foreach($surveyGroupAveragePerIndicatorAllUsers as $resulti)
+                                                           @if($results->Indicator_ID==$resulti->Indicator_ID)
+                                                             <td>{!! $resulti->Group_Average !!}</td>
+                                                             <?php break; ?>
+                                                           @endif
+                                                         @endforeach
+                                                         @endif
+                                                         <td>{!! $results->Indicator_Group_ID !!}</td>
+                                                       </tr>
+                                                     @endforeach
+                                                     @endif
+                                                   </tbody>
+                                               </table>
+                                             </div>
+                                             <div>
+                                               <br>
+                                               <h3 style="text-align: center">User score per indicator VS Company average per indicator</h3>
+                                               <canvas id="comparedGraphIndicator" width="800" height="400"></canvas>
+                                               <script src="{{URL::asset('js/displayChart.js')}}">
+                                               </script>
+
+                                               <script>
+                                                 var chartArea = document.getElementById('comparedGraphIndicator');
+                                                 var datasetOwnScore = {
+                                                   label: 'User score per indicator',
+                                                   data: [{!!$surveyScoreAllUsers[0]->Answer!!}, {!!$surveyScoreAllUsers[1]->Answer!!}, {!!$surveyScoreAllUsers[2]->Answer!!}, {!!$surveyScoreAllUsers[3]->Answer!!}, {!!$surveyScoreAllUsers[4]->Answer!!},
+                                                     {!!$surveyScoreAllUsers[5]->Answer!!}, {!!$surveyScoreAllUsers[6]->Answer!!}, {!!$surveyScoreAllUsers[7]->Answer!!}, {!!$surveyScoreAllUsers[8]->Answer!!}, {!!$surveyScoreAllUsers[9]->Answer!!},
+                                                      {!!$surveyScoreAllUsers[10]->Answer!!}, {!!$surveyScoreAllUsers[11]->Answer!!}, {!!$surveyScoreAllUsers[12]->Answer!!}, {!!$surveyScoreAllUsers[13]->Answer!!}, {!!$surveyScoreAllUsers[14]->Answer!!},
+                                                       {!!$surveyScoreAllUsers[15]->Answer!!}, {!!$surveyScoreAllUsers[16]->Answer!!}, {!!$surveyScoreAllUsers[17]->Answer!!}, {!!$surveyScoreAllUsers[18]->Answer!!}, {!!$surveyScoreAllUsers[19]->Answer!!},
+                                                         {!!$surveyScoreAllUsers[20]->Answer!!}, {!!$surveyScoreAllUsers[21]->Answer!!}, {!!$surveyScoreAllUsers[22]->Answer!!}, {!!$surveyScoreAllUsers[23]->Answer!!}, {!!$surveyScoreAllUsers[24]->Answer!!},
+                                                           {!!$surveyScoreAllUsers[25]->Answer!!}, {!!$surveyScoreAllUsers[26]->Answer!!}, {!!$surveyScoreAllUsers[27]->Answer!!}, {!!$surveyScoreAllUsers[28]->Answer!!}, {!!$surveyScoreAllUsers[29]->Answer!!},
+                                                             {!!$surveyScoreAllUsers[30]->Answer!!}, {!!$surveyScoreAllUsers[31]->Answer!!}, {!!$surveyScoreAllUsers[32]->Answer!!}, {!!$surveyScoreAllUsers[33]->Answer!!}],
+                                                    backgroundColor: 'rgba(255,0,0,1)'
+                                                 };
+                                                 var datasetGroupAvg = {
+                                                   label: 'Company average per indicator',
+                                                   data: [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Group_Average!!},
+                                                     {!!$surveyGroupAveragePerIndicatorAllUsers[5]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[6]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[7]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[8]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[9]->Group_Average!!},
+                                                      {!!$surveyGroupAveragePerIndicatorAllUsers[10]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[11]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[12]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[13]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[14]->Group_Average!!},
+                                                       {!!$surveyGroupAveragePerIndicatorAllUsers[15]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[16]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[17]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[18]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[19]->Group_Average!!},
+                                                         {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
+                                                           {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
+                                                             {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
+                                                   backgroundColor: 'rgba(0,0,255,1)'
+                                                 };
+                                                 var labelArr = [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Indicator_ID!!},
+                                                   {!!$surveyGroupAveragePerIndicatorAllUsers[5]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[6]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[7]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[8]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[9]->Indicator_ID!!},
+                                                    {!!$surveyGroupAveragePerIndicatorAllUsers[10]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[11]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[12]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[13]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[14]->Indicator_ID!!},
+                                                     {!!$surveyGroupAveragePerIndicatorAllUsers[15]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[16]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[17]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[18]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[19]->Indicator_ID!!},
+                                                       {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Indicator_ID!!},
+                                                         {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Indicator_ID!!},
+                                                           {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Indicator_ID!!}];
+                                                 createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
+
+                                               </script>
+                                             </div>
+
+                                             <div>
+                                               <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
+                                                 <caption style="text-align: center;">User average score per category compared with group average score per category</caption>
                                                  <thead>
-                                                 <tr>
-                                                     <th>Survey ID</th>
-                                                     <th>Group ID</th>
-                                                     <th>User ID</th>
-                                                     <th>Full Name</th>
-                                                     <th>Email Address</th>
-                                                     <th>Survey Status</th>
-                                                 </tr>
+                                                   <tr>
+                                                     <th>Indicator Group ID</th>
+                                                     <th>Indicator Group</th>
+                                                     <th>User Answer Category Average</th>
+                                                     <th>Indicator Group Average</th>
+                                                   </tr>
                                                  </thead>
                                                  <tbody>
-                                                 @foreach($participants as $participant)
-                                                     <tr>
-														<td>{!! $participant->Survey_ID !!}</td>
-														<td>{!! $participant->Group_ID !!}</td>
-														<td>{!! $participant->User_ID !!}</td>
-														<td>{!! $participant->name !!}</td>
-														<td>{!! $participant->email  !!}</td>
-                                                         @if($participant->completed==0)
-                                                             <td><span class="label label-danger">Not completed</span></td>
-                                                             @else
-                                                             <td><span class="label label-success">Completed</span></td>
-                                                         @endif
-                                                     </tr>
+                                                   @if(count($surveyScorePerIndicatorGroup)==0)
+                                                     <div>You have no surveys results to Display</div>
+                                                   @else
+                                                     @foreach($surveyScorePerIndicatorGroup as $results)
+                                                       <tr>
+                                                         <td>{!! $results->Indicator_Group_ID !!}</td>
+                                                         <td>{!! $results->Indicator_Group !!}</td>
+
+                                                         @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
+                                                           @if($results->Indicator_Group_ID==$result->Indicator_Group_ID)
+                                                             <td>{!! $result->Indicator_Group_Average !!}</td>
+                                                             <?php break; ?>
+                                                           @endif
+                                                         @endforeach
+
+                                                         <td>{!! $results->Indicator_Group_Average !!}</td>
+                                                       </tr>
                                                      @endforeach
+                                                   @endif
                                                  </tbody>
-                                             </table>
-                                         </div>
-                                        </div>
-										
-										
-                                        <div id="menu1" class="tab-pane fade">
-                                           <div class="row pull-right" >
-                                              <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                           </div>
-                                           <div>
-                                            <table id="Participants_scores" class="table table-bordered table-striped text-center">
-                                                <thead>
-                                                <tr>
-                                                    <th>Survey ID</th>
-                                                    <th>User Group ID</th>
-													<th>User ID</th>
-                                                    <th>Indicator ID</th>
-                                                    <th>Indicator </th>
-                                                    <th>Answer</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                  @if(count($surveyScoreAllUsers)==0)
-                                                    <div>You have no surveys results to display</div>
-                                                  @else
-                                                  @foreach($surveyScoreAllUsers as $result)
-                                                  <tr>
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-                                                    <td>{!! $result->User_ID !!}</td>
-                                                    <td>{!! $result->Indicator_ID !!}</td>
-                                                    <td>{!! $result->Indicator !!}</td>
-                                                    <td>{!! $result->Answer !!}</td>
-                                                  </tr>
-                                                  @endforeach
-                                                  @endif
-                                                </tbody>
-                                            </table>
-                                          </div>
-                                        </div>
-										
+                                               </table>
 
-                                        <div id="menu2" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                            </div>
+                                             </div>
+                                             <div>
+                                               <br>
+                                               <h3 style="text-align: center">User average per category VS Company average per category
+                                               <canvas id="comparedGraphCategory" width="800" height="400"></canvas>
+                                               <script src="{{URL::asset('js/displayChart.js')}}"></script>
+                                               <script>
+                                                 var chartArea = document.getElementById('comparedGraphCategory');
+                                                 var datasetOwnScore = {
+                                                   label: 'User average score per category',
+                                                   data: [{!! $surveyScoreGroupAvgPerIndicatorGroup[0]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[1]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[2]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[3]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[4]->Indicator_Group_Average !!}],
+                                                    backgroundColor: 'rgba(255,0,0,1)'
+                                                 };
+                                                 var datasetGroupAvg = {
+                                                   label: 'Company average per category',
+                                                   data: [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
+                                                   backgroundColor: 'rgba(0,0,255,1)'
+                                                 };
+                                                 var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
+                                                 createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
 
-                                            <div>
-                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
-                                                  <thead>
-                                                  <tr>
-
-                                                      <th>Survey ID</th>
-													  <th>User Group ID</th>
-                                                      <th>Indicator ID</th>
-                                                      <th>Indicator</th>
-                                                      <th>Group_Average</th>
-                                                  </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    @if(count($surveyGroupAveragePerIndicatorAllUsers)==0)
-                                                      You have no surveys results to display
-                                                    @else
-                                                    @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
-                                                    <tr>
-
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-                                                    <td>{!! $result->Indicator_ID !!}</td>
-                                                    <td>{!! $result->Indicator !!}</td>
-                                                    <td>{!! $result->Group_Average !!}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                    @endif
-                                                  </tbody>
-                                              </table>
-                                            </div>
-                                        </div>
-
-                                        <div id="menu3" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                            </div>
-
-                                            <div>
-                                              <table id="indicator_group_scores" class="table table-bordered table-striped text-center">
-                                                  <thead>
-                                                  <tr>
-
-                                                      <th>Survey ID</th>
-													  <th>User Group ID</th>
-                                                      <th>User ID</th>
-                                                      <th>Indicator Group</th>
-                                                      <th>Indicator Group Average</th>
-                                                  </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
-                                                      You have no surveys results to Display
-                                                    @else
-                                                    @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
-                                                    <tr>
-
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-                                                    <td>{!! $result->User_ID !!}</td>
-                                                    <td>{!! $result->Indicator_Group !!}</td>
-                                                    <td>{!! $result->Indicator_Group_Average !!}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                    @endif
-                                                  </tbody>
-                                              </table>
-                                            </div>
-                                        </div>
-
-                                        <div id="menu4" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                            </div>
-
-                                            <div>
-                                              <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                                                  <thead>
-                                                  <tr>
-
-                                                      <th>Survey ID</th>
-													  <th>User Group ID</th>
-                                                      <th>Indicator Group</th>
-                                                      <th>Indicator Group Average</th>
-                                                  </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    @if(count($surveyScorePerIndicatorGroup)==0)
-                                                      <div>You have no surveys results to Display</div>
-                                                    @else
-                                                    @foreach($surveyScorePerIndicatorGroup as $result)
-                                                    <tr>
-
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-                                                    <td>{!! $result->Indicator_Group !!}</td>
-                                                    <td>{!! $result->Indicator_Group_Average !!}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                    @endif
-                                                  </tbody>
-                                              </table>
-                                            </div>
-                                        </div>
-
-                                        <div id="menu5" class="tab-pane fade">
-
-                                          <div class="pull-left" >
-										  <label id="surveyId">{!! $survey->id !!}</label>
-                                            <h5 class="select-users"><label>Select User</label>
-                                              <select id="participantsIds">
-													  @foreach($participants as $participant)
-														<option value="{$participant->User_ID !!}">{!! $participant->email !!}</option>
-													  @endforeach
-											  </select>
-                                            </h5>
-                                          <script>
-											$(document).ready(function(){
-											  $('#participantsIds').change(function(){
-												  if($(this).val()==""){
-												  return;
-                                                }else{
-                                                  var participant = $(this).val();
-                                                  var url = window.location.pathname;
-                                                  var value = url.substring(url.lastIndexOf('/')+1);
-                                                  url = url.replace(value, participant);
-                                                  window.location = url;
-                                                }
-                                              });
-                                            });
-                                          </script>
-										</div>
-                                         <div class="pull-right" >
-                                            <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                         </div>
-
-                                         <div>
-                                            <table id="Participants_scores" class="table table-bordered table-striped table-responsive text-center" >
-                                                <thead>
-                                                <tr>
-
-                                                    <th>Survey ID</th>
-													<th>User Group ID</th>
-                                                    <th>User ID</th>
-                                                    <th>Indicator ID</th>
-                                                    <th>Indicator </th>
-                                                    <th>Answer</th>
-                                                    <th>Group Average</th>
-                                                    <th>Indicator Group</th>
-                                                    <th>Indicator Group Average</th>
-                                                    <th>Indicator Group</th>
-                                                    <th>Survey Indicator Group Average</th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                  @if(count($surveyScoreAllUsers)==0)
-                                                    <div>You have no surveys results to display</div>
-                                                  @else
-                                                  @foreach($surveyScoreAllUsers as $results)
-                                                    <tr>
-
-                                                      <td>{!! $results->Survey_ID !!}</td>
-													  <td>{!! $results->Group_ID !!}</td>
-                                                      <td>{!! $results->User_ID !!}</td>
-                                                      <td>{!! $results->Indicator_ID !!}</td>
-                                                      <td>{!! $results->Indicator !!}</td>
-                                                      <td>{!! $results->Answer !!}</td>
-
-                                                        <!--This is group average per indicator -->
-                                                        @if(count($surveyGroupAveragePerIndicatorAllUsers)==0)
-                                                          You have no surveys indicator averages to display
-                                                        @else
-                                                        @foreach($surveyGroupAveragePerIndicatorAllUsers as $resulti)
-                                                          @if($results->Indicator_ID==$resulti->Indicator_ID)
-                                                            <td>{!! $resulti->Group_Average !!}</td>
-                                                            <?php break; ?>
-                                                          @endif
-                                                        @endforeach
-                                                        @endif
+                                               </script>
+                                             </div>
 
 
-                                                        <!--This is group average per indicator -->
-                                                        <td>{!! $results->Indicator_Group !!}</td>
-                                                        @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
-                                                          You have no surveys indicator group averages to display
-                                                        @else
-                                                        @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
-                                                          @if($results->Indicator_Group_ID==$result->Indicator_Group_ID)
-                                                            <td>{!! $result->Indicator_Group_Average !!}</td>
-                                                            <?php break; ?>
-                                                          @endif
-                                                        @endforeach
-                                                        @endif
-
-
-                                                        <td>{!! $results->Indicator_Group !!}</td>
-                                                        @if(count($surveyScorePerIndicatorGroup)==0)
-                                                          You have no surveys indicator group averages to display
-                                                        @else
-                                                        @foreach($surveyScorePerIndicatorGroup as $resulte)
-                                                          @if($results->Indicator_Group_ID==$resulte->Indicator_Group_ID)
-                                                            <td>{!! $resulte->Indicator_Group_Average !!}</td>
-                                                            <?php break; ?>
-                                                          @endif
-                                                        @endforeach
-                                                        @endif
-                                                    </tr>
-
-                                                  @endforeach
-                                                  @endif
-                                                </tbody>
-                                            </table>
-                                          </div>
                                         </div>
 
 
 
-										<div id="menu6" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                            </div>
 
-                                            <div>
-                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
-                                                  <thead>
-                                                  <tr>
 
-                                                      <th>Survey ID</th>
-													  <th>User Group ID</th>
-													  <th>Indicator Group ID</th>
-                                                      <th>Indicator Group</th>
-                                                      <th>Minimum User Indicator_Group Average</th>
-													  <th>Maximum User Indicator_Group Average</th>
-                                                  </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    @if(count($surveyScoreGroupAvgPerIndicatorGroupMinAndMax)==0)
-                                                      You have no surveys results to display
-                                                    @else
-                                                    @foreach($surveyScoreGroupAvgPerIndicatorGroupMinAndMax as $result)
-                                                    <tr>
 
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-													<td>{!! $result->Indicator_Group_ID !!}</td>
-                                                    <td>{!! $result->Indicator_Group !!}</td>
-													<td>{!! $result->Minimum_User_Indicator_Group_Average !!}</td>
-                                                    <td>{!! $result->Maximum_User_Indicator_Group_Average !!}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                    @endif
-                                                  </tbody>
-                                              </table>
-                                            </div>
-                                        </div>
-										
-										<div id="menu7" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelSpecial',$survey->id)}}">Download Excel</a></u>
-                                            </div>
-                                        </div>
+
+
 
                                     </div>
                                   </div>

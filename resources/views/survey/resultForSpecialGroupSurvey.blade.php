@@ -10,9 +10,7 @@
                 <h3 class="box-title"><b>Survey Result.</b></h3>
                 <p><i>Below is the information about the pending survey you requested.
                         You can make changes or abort it before it is open to the participants.</i></p>
-                        <p>
-                          <?php echo 123; ?>
-                        </p>
+
             </div>
 
             @include('message.fail')
@@ -76,7 +74,7 @@
                                               {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
                                                 {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
                                                   {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
-                                        'rgba(255,99,132,1)'
+                                        'rgba(0,0,255,1)'
                                       );
                                     </script>
 									@else
@@ -120,7 +118,7 @@
                                         'Company average score of each indicator group',
                                         [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
                                           {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
-                                        'rgba(255,99,132,1)'
+                                        'rgba(0,0,255,1)'
                                       );
                                     </script>
 									@else
@@ -181,8 +179,8 @@
                                              </table>
                                          </div>
                                         </div>
-										
-										
+
+
                                         <div id="menu1" class="tab-pane fade">
                                            <div class="row pull-right" >
                                               <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
@@ -218,7 +216,7 @@
                                             </table>
                                           </div>
                                         </div>
-										
+
 
                                         <div id="menu2" class="tab-pane fade">
                                             <div class="row pull-right" >
@@ -377,84 +375,7 @@
                                             <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                          </div>
 
-                                         <div>
-                                            <table id="Participants_scores" class="table table-bordered table-striped table-responsive text-center" >
-                                                <thead>
-                                                <tr>
 
-                                                    <th>Survey ID</th>
-													<th>User Group ID</th>
-                                                    <th>User ID</th>
-                                                    <th>Indicator ID</th>
-                                                    <th>Indicator </th>
-                                                    <th>Answer</th>
-                                                    <th>Group Average</th>
-                                                    <th>Indicator Group</th>
-                                                    <th>Indicator Group Average</th>
-                                                    <th>Indicator Group</th>
-                                                    <th>Survey Indicator Group Average</th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                  @if(count($surveyScoreAllUsers)==0)
-                                                    <div>You have no surveys results to display</div>
-                                                  @else
-                                                  @foreach($surveyScoreAllUsers as $results)
-                                                    <tr>
-
-                                                      <td>{!! $results->Survey_ID !!}</td>
-													  <td>{!! $results->Group_ID !!}</td>
-                                                      <td>{!! $results->User_ID !!}</td>
-                                                      <td>{!! $results->Indicator_ID !!}</td>
-                                                      <td>{!! $results->Indicator !!}</td>
-                                                      <td>{!! $results->Answer !!}</td>
-
-                                                        <!--This is group average per indicator -->
-                                                        @if(count($surveyGroupAveragePerIndicatorAllUsers)==0)
-                                                          You have no surveys indicator averages to display
-                                                        @else
-                                                        @foreach($surveyGroupAveragePerIndicatorAllUsers as $resulti)
-                                                          @if($results->Indicator_ID==$resulti->Indicator_ID)
-                                                            <td>{!! $resulti->Group_Average !!}</td>
-                                                            <?php break; ?>
-                                                          @endif
-                                                        @endforeach
-                                                        @endif
-
-
-                                                        <!--This is group average per indicator -->
-                                                        <td>{!! $results->Indicator_Group !!}</td>
-                                                        @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
-                                                          You have no surveys indicator group averages to display
-                                                        @else
-                                                        @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
-                                                          @if($results->Indicator_Group_ID==$result->Indicator_Group_ID)
-                                                            <td>{!! $result->Indicator_Group_Average !!}</td>
-                                                            <?php break; ?>
-                                                          @endif
-                                                        @endforeach
-                                                        @endif
-
-
-                                                        <td>{!! $results->Indicator_Group !!}</td>
-                                                        @if(count($surveyScorePerIndicatorGroup)==0)
-                                                          You have no surveys indicator group averages to display
-                                                        @else
-                                                        @foreach($surveyScorePerIndicatorGroup as $resulte)
-                                                          @if($results->Indicator_Group_ID==$resulte->Indicator_Group_ID)
-                                                            <td>{!! $resulte->Indicator_Group_Average !!}</td>
-                                                            <?php break; ?>
-                                                          @endif
-                                                        @endforeach
-                                                        @endif
-                                                    </tr>
-
-                                                  @endforeach
-                                                  @endif
-                                                </tbody>
-                                            </table>
-                                          </div>
                                         </div>
 
 
