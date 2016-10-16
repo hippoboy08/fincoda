@@ -19,12 +19,15 @@ class UserGroupController extends Controller
 {
  public function index(){
 
- $group=Auth::User()->group_administrator;
+ $group = DB::table('user_groups')
+							->where('company_id',Auth::User()->company_id)
+							->where('administrator','=',Auth::id())
+							->get();
   if(!$group){
    return view('errors.404')->with('title',' Group not found')
-       ->with('message','You have not been assigned any group. Please contact your company administrator.');
+       ->with('message','You have not been assigned any groups. Please contact your company administrator.');
   }else{
-	  return view('usergroup.index')->with('groups',DB::table('user_groups')->where('created_by',Auth::user()->id)->get());
+	  return view('usergroup.index')->with('groups',$group);
 
   }
 
@@ -43,15 +46,9 @@ class UserGroupController extends Controller
             $id[]=$special_users[$i]->administrator;
         }
 
-        return view('usergroup.createSpecial')->with('administrators',
-            DB::table('users')->where('company_id',Auth::User()->company_id)
-                ->join('role_user','role_user.user_id','=','users.id')
-                ->where('role_user.role_id','=',2)
-                ->whereNotIn('users.id',$id)
-                ->lists('users.name','users.id'))
-            ->with('users',DB::table('users')->where('company_id',Auth::User()->company_id)
-            ->join('role_user','role_user.user_id','=','users.id')
-            ->where('role_user.role_id','=',3)->get());
+        
+			
+			return Redirect::to('special/usergroup')->with('success','Special user does not have the ability to create a group.');
     }
 	
 	
@@ -145,7 +142,7 @@ class UserGroupController extends Controller
       if($this->validateUserGroup($id)=='true'){
 
 
-          return view('usergroup.show')->with('group',User_Group::find($id))
+          return view('usergroup.showSpecial')->with('group',User_Group::find($id))
               ->with('members',User_Group::find($id)->hasMembers);
 
       }else{
