@@ -332,8 +332,8 @@
 										  <label id="surveyId">{!! $survey->id !!}</label>
                                             <h5 class="select-users"><label>Select User</label>
                                               <select id="participantsIds">
-													  @foreach($participants as $participant)
-														<option value="{$participant->User_ID !!}">{!! $participant->email !!}</option>
+													  @foreach($participantsSelect as $participant)
+														<option value="{!!$participant->User_ID !!}">{!! $participant->email !!}</option>
 													  @endforeach
 											  </select>
                                             </h5>
@@ -345,9 +345,8 @@
                                                 }else{
                                                   var participant = $(this).val();
                                                   var url = window.location.pathname;
-                                                  var value = url.substring(url.lastIndexOf('/')+1);
-                                                  url = url.replace(value, participant);
-                                                  window.location = url;
+                                                  var value = url.substring(0,url.lastIndexOf('/')+1);
+                                                  window.location.replace(value+$(this).val());
                                                 }
                                               });
                                             });

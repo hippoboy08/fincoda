@@ -43,15 +43,9 @@ class UserGroupController extends Controller
             $id[]=$special_users[$i]->administrator;
         }
 
-        return view('usergroup.createSpecial')->with('administrators',
-            DB::table('users')->where('company_id',Auth::User()->company_id)
-                ->join('role_user','role_user.user_id','=','users.id')
-                ->where('role_user.role_id','=',2)
-                ->whereNotIn('users.id',$id)
-                ->lists('users.name','users.id'))
-            ->with('users',DB::table('users')->where('company_id',Auth::User()->company_id)
-            ->join('role_user','role_user.user_id','=','users.id')
-            ->where('role_user.role_id','=',3)->get());
+        
+			
+			return Redirect::to('special/usergroup')->with('success','Special user does not have the ability to create a group.');
     }
 	
 	

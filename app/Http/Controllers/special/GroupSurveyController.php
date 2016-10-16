@@ -442,6 +442,25 @@ class GroupSurveyController extends Controller
                                               ->select('results.user_id as User_ID')
                                               ->where('results.survey_id',$id)
                                               ->distinct()->get();
+											  
+											  
+			  $participantsSelect = DB::select(DB::raw(
+                            "select results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID, 
+								results.user_id as User_ID, users.name as name,
+								users.email as email, participants.reminder as reminder,
+                                participants.completed as completed
+                                from indicators 
+								join results on results.indicator_id = indicators.id
+								join users on results.user_id = users.id
+								join participants on results.user_id = participants.user_id
+								join user_in_groups on results.user_id = user_in_groups.user_id
+								join indicator_groups on indicators.group_id = indicator_groups.id
+								where results.survey_id = :surveyId
+								and user_in_groups.user_group_id = :groupId
+								group by results.survey_id, user_in_groups.user_group_id, results.user_id"),
+                            array("surveyId"=>$id,"groupId"=>$groupId));
+							
+							
 			  
 			  $participants = DB::select(DB::raw(
                             "select results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID, 
@@ -550,6 +569,7 @@ class GroupSurveyController extends Controller
               ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
               ->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
 			  ->with('participants',$participants)
+              ->with('participantsSelect',$participantsSelect)
               ->with('company',$company)
               ->with('company_profile',$company->profile()->first())
 
