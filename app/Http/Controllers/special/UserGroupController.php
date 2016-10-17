@@ -19,15 +19,12 @@ class UserGroupController extends Controller
 {
  public function index(){
 
- $group = DB::table('user_groups')
-							->where('company_id',Auth::User()->company_id)
-							->where('administrator','=',Auth::id())
-							->get();
+ $group=Auth::User()->group_administrator;
   if(!$group){
    return view('errors.404')->with('title',' Group not found')
-       ->with('message','You have not been assigned any groups. Please contact your company administrator.');
+       ->with('message','You have not been assigned any group. Please contact your company administrator.');
   }else{
-	  return view('usergroup.index')->with('groups',$group);
+	  return view('usergroup.index')->with('groups',DB::table('user_groups')->where('created_by',Auth::user()->id)->get());
 
   }
 
@@ -142,7 +139,7 @@ class UserGroupController extends Controller
       if($this->validateUserGroup($id)=='true'){
 
 
-          return view('usergroup.showSpecial')->with('group',User_Group::find($id))
+          return view('usergroup.show')->with('group',User_Group::find($id))
               ->with('members',User_Group::find($id)->hasMembers);
 
       }else{
