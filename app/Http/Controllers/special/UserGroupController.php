@@ -20,11 +20,12 @@ class UserGroupController extends Controller
  public function index(){
 
  $group=Auth::User()->group_administrator;
+ 
   if(!$group){
    return view('errors.404')->with('title',' Group not found')
        ->with('message','You have not been assigned any group. Please contact your company administrator.');
   }else{
-	  return view('usergroup.index')->with('groups',DB::table('user_groups')->where('created_by',Auth::user()->id)->get());
+	  return view('usergroup.index')->with('groups',DB::table('user_groups')->where('administrator',Auth::user()->id)->get());
 
   }
 
@@ -45,7 +46,7 @@ class UserGroupController extends Controller
 
         
 			
-			return Redirect::to('special/usergroup')->with('success','Special user does not have the ability to create a group.');
+			return Redirect::to('special/usergroup')->with('success','Special user does not have the ability to create a group. Below are the existing groups that you administer');
     }
 	
 	
@@ -139,7 +140,7 @@ class UserGroupController extends Controller
       if($this->validateUserGroup($id)=='true'){
 
 
-          return view('usergroup.show')->with('group',User_Group::find($id))
+          return view('usergroup.showSpecial')->with('group',User_Group::find($id))
               ->with('members',User_Group::find($id)->hasMembers);
 
       }else{

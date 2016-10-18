@@ -143,8 +143,8 @@
    										  <label id="surveyId">{!! $survey->id !!}</label>
                                                <h5 class="select-users"><label>Select User</label>
                                                  <select id="participantsIds">
-   													  @foreach($participants as $participant)
-   														<option value="{$participant->User_ID !!}">{!! $participant->email !!}</option>
+   													  @foreach($participantsSelect as $participant)
+   														<option value="{!!$participant->User_ID !!}">{!! $participant->email !!}</option>
    													  @endforeach
    											  </select>
                                                </h5>
@@ -156,9 +156,8 @@
                                                    }else{
                                                      var participant = $(this).val();
                                                      var url = window.location.pathname;
-                                                     var value = url.substring(url.lastIndexOf('/')+1);
-                                                     url = url.replace(value, participant);
-                                                     window.location = url;
+                                                     var value = url.substring(0,url.lastIndexOf('/')+1+$(this).val());
+													 window.location.replace(value);
                                                    }
                                                  });
                                                });
@@ -182,8 +181,6 @@
                                                        <th>User Answer Indicator</th>
                                                        <th>Group Average Each Indicator</th>
                                                        <th>Category ID</th>
-
-
                                                    </tr>
                                                    </thead>
 
@@ -220,7 +217,12 @@
                                                <canvas id="comparedGraphIndicator" width="800" height="400"></canvas>
                                                <script src="{{URL::asset('js/displayChart.js')}}">
                                                </script>
-
+											@if(count($surveyScoreAllUsers)==0)
+                                              <div>You have no surveys results to display</div>
+                                            @else
+											@if(count($surveyGroupAveragePerIndicatorAllUsers)!=34)
+												<div>You have no surveys results to display or your indicators count is not equal 34</div>
+											@else
                                                <script>
                                                  var chartArea = document.getElementById('comparedGraphIndicator');
                                                  var datasetOwnScore = {
@@ -253,8 +255,9 @@
                                                          {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Indicator_ID!!},
                                                            {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Indicator_ID!!}];
                                                  createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
-
                                                </script>
+											@endif
+											@endif
                                              </div>
 
                                              <div>

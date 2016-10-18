@@ -73,6 +73,7 @@ Route::group(['middleware'=>'basic',
                 'prefix'=>'basic'],function(){
     Route::get('/','DashboardController@index');
     Route::resource('profile','ProfileController@index');
+	Route::resource('profile','ProfileController');
     Route::resource('survey','SurveyController');
     Route::resource('usergroup','UserGroupController');
 
@@ -84,6 +85,8 @@ Route::group(['middleware'=>'special',
                'prefix'=>'special'],function(){
     Route::get('/','DashboardController@index');
     Route::get('profile','ProfileController@index');
+	Route::resource('profile','ProfileController');
+    
     Route::resource('survey','CompanySurveyController');
 
     Route::get('groupsurvey/getParticipant/{surveyId}/{groupId}/{participantId}','GroupSurveyController@getParticipant');

@@ -219,7 +219,12 @@
                                               <canvas id="comparedGraphIndicator" width="800" height="400"></canvas>
                                               <script src="{{URL::asset('js/displayChart.js')}}">
                                               </script>
-
+											@if(count($surveyScoreAllUsers)==0)
+                                              <div>You have no surveys results to display</div>
+                                            @else
+											@if(count($surveyGroupAveragePerIndicatorAllUsers)!=34)
+												<div>You have no surveys results to display or your indicators count is not equal 34</div>
+											@else
                                               <script>
                                                 var chartArea = document.getElementById('comparedGraphIndicator');
                                                 var datasetOwnScore = {
@@ -252,8 +257,9 @@
                                                         {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Indicator_ID!!},
                                                           {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Indicator_ID!!}];
                                                 createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
-
                                               </script>
+											@endif
+											@endif
                                             </div>
 
                                             <div>
@@ -296,6 +302,9 @@
                                               <h3 style="text-align: center">User average per category VS Company average per category
                                               <canvas id="comparedGraphCategory" width="800" height="400"></canvas>
                                               <script src="{{URL::asset('js/displayChart.js')}}"></script>
+											@if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
+                                              <div>You have no surveys results to display</div>
+                                            @else
                                               <script>
                                                 var chartArea = document.getElementById('comparedGraphCategory');
                                                 var datasetOwnScore = {
@@ -310,8 +319,8 @@
                                                 };
                                                 var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
                                                 createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
-
                                               </script>
+											  @endif
                                             </div>
 
 

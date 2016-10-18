@@ -64,7 +64,7 @@ class UserGroupController extends Controller
     {
 
         if($this->ValidateGroup($id)){
-          return view('usergroup.show')->with('group',User_Group::find($id))
+          return view('usergroup.showBasic')->with('group',User_Group::find($id))
               ->with('members',User_Group::find($id)->hasMembers);
       }else  {
             return view('errors.404')->with('title',' User group not found ')
