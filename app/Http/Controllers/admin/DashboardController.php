@@ -43,4 +43,5 @@ public function index(){
 
     return view('dashboard')->with('open',$open)->with('closed',$closed)->with('pending',$pending);
 }
+
 }

@@ -137,7 +137,12 @@ use EmailTrait;
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
+	
+	//This is because setting a global route to do this was giving inconsistencies when one would navigate from page to page
+	public function switchLanguage(Request $request){
+		return response()->json(array('stri'=>'success'));
+	}
+	 
 	//Notes: Ajax does a post but knows nothing about rendering complex blades smoothly without using complex code
 	//To achieve smooth redirection in a simple way you have to call a route in the ajax window.replace function
 	//A sensible approach here would be to get post results, put them in private variables and then use them in a function
@@ -293,7 +298,7 @@ use EmailTrait;
      * @return \Illuminate\Http\Response
      */
     public function show($id){
-
+		
       if($this->ValidateSurvey($id)=='true'){
           if($this->SurveyStatus($id)=='pending'){
               return view('survey.update')->with('survey',Survey::find($id))
@@ -620,6 +625,7 @@ use EmailTrait;
     }
 
 public function getParticipantDetails($surveyId, $participantId){
+	  \App::setLocale('de');
 	  $id = $surveyId;
       $userId = $participantId;
 	  if($this->ValidateSurvey($id)=='true'){

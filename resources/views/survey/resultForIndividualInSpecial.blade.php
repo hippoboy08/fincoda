@@ -10,9 +10,7 @@
                 <h3 class="box-title"><b>Survey Result.</b></h3>
                 <p><i>Below is the information about the pending survey you requested.
                         You can make changes or abort it before it is open to the participants.</i></p>
-                        <p>
-                          <?php echo 'ehyyy'; ?>
-                        </p>
+
             </div>
 
             @include('message.fail')
@@ -44,6 +42,9 @@
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade">
+                                    <div class="row pull-right" >
+                                       <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                    </div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
@@ -117,7 +118,7 @@
                                       createChart(
                                         document.getElementById("indicatorGroupAverage"),
                                         ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
-                                        'Company average score of each indicator group',
+                                        'Company average score of each dimension',
                                         [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
                                           {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
                                         'rgba(0,0,255,1)'
@@ -143,6 +144,7 @@
    										  <label id="surveyId">{!! $survey->id !!}</label>
                                                <h5 class="select-users"><label>Select User</label>
                                                  <select id="participantsIds">
+                                                   <option>Select a user</option>
    													  @foreach($participantsSelect as $participant)
    														<option value="{!!$participant->User_ID !!}">{!! $participant->email !!}</option>
    													  @endforeach
@@ -156,8 +158,8 @@
                                                    }else{
                                                      var participant = $(this).val();
                                                      var url = window.location.pathname;
-                                                     var value = url.substring(0,url.lastIndexOf('/')+1+$(this).val());
-													 window.location.replace(value);
+                                                     var value = url.substring(0,url.lastIndexOf('/')+1);
+													 window.location.replace(value+participant);
                                                    }
                                                  });
                                                });
@@ -180,7 +182,6 @@
                                                        <th>Indicator Name</th>
                                                        <th>User Answer Indicator</th>
                                                        <th>Group Average Each Indicator</th>
-                                                       <th>Category ID</th>
                                                    </tr>
                                                    </thead>
 
@@ -204,7 +205,6 @@
                                                            @endif
                                                          @endforeach
                                                          @endif
-                                                         <td>{!! $results->Indicator_Group_ID !!}</td>
                                                        </tr>
                                                      @endforeach
                                                      @endif
@@ -259,16 +259,15 @@
 											@endif
 											@endif
                                              </div>
-
+                                             <br>
                                              <div>
                                                <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                                                 <caption style="text-align: center;">User average score per category compared with group average score per category</caption>
+                                                 <caption style="text-align: center;">User average score per dimension compared with group average score per dimension</caption>
                                                  <thead>
                                                    <tr>
-                                                     <th>Indicator Group ID</th>
-                                                     <th>Indicator Group</th>
-                                                     <th>User Answer Category Average</th>
-                                                     <th>Indicator Group Average</th>
+                                                     <th>Dimension</th>
+                                                     <th>User Dimension Average</th>
+                                                     <th>Group Dimension Average</th>
                                                    </tr>
                                                  </thead>
                                                  <tbody>
@@ -277,7 +276,6 @@
                                                    @else
                                                      @foreach($surveyScorePerIndicatorGroup as $results)
                                                        <tr>
-                                                         <td>{!! $results->Indicator_Group_ID !!}</td>
                                                          <td>{!! $results->Indicator_Group !!}</td>
 
                                                          @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
@@ -297,18 +295,18 @@
                                              </div>
                                              <div>
                                                <br>
-                                               <h3 style="text-align: center">User average per category VS Company average per category
+                                               <h3 style="text-align: center">User average per dimension VS Company average per dimension
                                                <canvas id="comparedGraphCategory" width="800" height="400"></canvas>
                                                <script src="{{URL::asset('js/displayChart.js')}}"></script>
                                                <script>
                                                  var chartArea = document.getElementById('comparedGraphCategory');
                                                  var datasetOwnScore = {
-                                                   label: 'User average score per category',
+                                                   label: 'User average score per dimension',
                                                    data: [{!! $surveyScoreGroupAvgPerIndicatorGroup[0]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[1]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[2]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[3]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[4]->Indicator_Group_Average !!}],
                                                     backgroundColor: 'rgba(255,0,0,1)'
                                                  };
                                                  var datasetGroupAvg = {
-                                                   label: 'Company average per category',
+                                                   label: 'Company average per dimension',
                                                    data: [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
                                                    backgroundColor: 'rgba(0,0,255,1)'
                                                  };

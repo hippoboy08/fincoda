@@ -41,6 +41,8 @@ Route::post('register/user','register\RegisterController@registeruser');
 Route::post('login','Auth\AuthController@postLogin');
 Route::get('logout','Auth\AuthController@logout');
 
+//Route::get('language/{locale}',function($locale){App::setLocale($locale); return $locale;});
+
 //admin route
 Route::group(['middleware'=>'admin',
                 'namespace'=>'admin',
@@ -48,6 +50,7 @@ Route::group(['middleware'=>'admin',
 
 
     Route::get('/','DashboardController@index');
+	
     Route::get('company','ProfileController@company');
     //This returns the edit blade
     Route::get('company/update','ProfileController@editCompany');

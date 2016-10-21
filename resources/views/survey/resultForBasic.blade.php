@@ -73,7 +73,7 @@
                                               {!!$surveyScoreAllUsers[20]->Answer!!}, {!!$surveyScoreAllUsers[21]->Answer!!}, {!!$surveyScoreAllUsers[22]->Answer!!}, {!!$surveyScoreAllUsers[23]->Answer!!}, {!!$surveyScoreAllUsers[24]->Answer!!},
                                                 {!!$surveyScoreAllUsers[25]->Answer!!}, {!!$surveyScoreAllUsers[26]->Answer!!}, {!!$surveyScoreAllUsers[27]->Answer!!}, {!!$surveyScoreAllUsers[28]->Answer!!}, {!!$surveyScoreAllUsers[29]->Answer!!},
                                                   {!!$surveyScoreAllUsers[30]->Answer!!}, {!!$surveyScoreAllUsers[31]->Answer!!}, {!!$surveyScoreAllUsers[32]->Answer!!}, {!!$surveyScoreAllUsers[33]->Answer!!}],
-                                        'rgba(153,195,191,1)'
+                                        'rgba(0,0,255,1)'
                                       );
                                     </script>
 									@else
@@ -84,9 +84,9 @@
                                         <h4><b>Indicators Table</b></h4>
                                           <thead>
                                             <tr>
-                                                <th class="text-center">Indicator ID</th>
-                                                <th class="text-center">Indicator</th>
-                                                <th class="text-center">Your Score</th>
+                                                <th>Indicator ID</th>
+                                                <th>Indicator</th>
+                                                <th>Your Score</th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -95,9 +95,9 @@
                                             @else
                                               @foreach($surveyScoreAllUsers as $result)
                                                 <tr>
-                                                  <td class="text-center">{!! $result->Indicator_ID !!}</td>
+                                                  <td>{!! $result->Indicator_ID !!}</td>
                                                   <td>{!! $result->Indicator !!}</td>
-                                                  <td class="text-center">{!! $result->Answer !!}</td>
+                                                  <td>{!! $result->Answer !!}</td>
                                                 </tr>
                                               @endforeach
                                             @endif
@@ -134,7 +134,7 @@
                                             {!!$surveyScoreAllUsers[20]->Answer!!}, {!!$surveyScoreAllUsers[21]->Answer!!}, {!!$surveyScoreAllUsers[22]->Answer!!}, {!!$surveyScoreAllUsers[23]->Answer!!}, {!!$surveyScoreAllUsers[24]->Answer!!},
                                               {!!$surveyScoreAllUsers[25]->Answer!!}, {!!$surveyScoreAllUsers[26]->Answer!!}, {!!$surveyScoreAllUsers[27]->Answer!!}, {!!$surveyScoreAllUsers[28]->Answer!!}, {!!$surveyScoreAllUsers[29]->Answer!!},
                                                 {!!$surveyScoreAllUsers[30]->Answer!!}, {!!$surveyScoreAllUsers[31]->Answer!!}, {!!$surveyScoreAllUsers[32]->Answer!!}, {!!$surveyScoreAllUsers[33]->Answer!!}],
-                                       backgroundColor: 'rgba(153,195,191,1)'
+                                       backgroundColor: 'rgba(255,0,0,1)'
                                     };
                                     var datasetGroupAvg = {
                                       label: 'Company average',
@@ -145,7 +145,7 @@
                                             {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
                                               {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
                                                 {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
-                                      backgroundColor: 'rgba(40,45,70,1)'
+                                      backgroundColor: 'rgba(0,0,255,1)'
                                     };
                                     var labelArr = [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Indicator_ID!!},
                                       {!!$surveyGroupAveragePerIndicatorAllUsers[5]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[6]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[7]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[8]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[9]->Indicator_ID!!},
@@ -162,17 +162,17 @@
 										@endif
 									@else
 										<div>You have no surveys results to display or your indicators count is not equal 34</div>
-									@endif	
-									
+									@endif
+
                                     <div>
                                       <table class="table table-bordered table-striped">
                                         <h4><b>Indicators Table</b></h4>
                                           <thead>
                                             <tr>
-                                                <th class="text-center">Indicator ID</th>
-                                                <th class="text-center">Indicator</th>
-                                                <th class="text-center">Your Score</th>
-                                                <th class="text-center">Company average</th>
+                                                <th>Indicator ID</th>
+                                                <th>Indicator</th>
+                                                <th>Your Score</th>
+                                                <th>Company average</th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -182,14 +182,14 @@
                                             @else
                                               @foreach ($surveyGroupAveragePerIndicatorAllUsers as $avgResult)
                                                 <tr>
-                                                  <td class="text-center">{!! $avgResult->Indicator_ID !!}</td>
+                                                  <td>{!! $avgResult->Indicator_ID !!}</td>
                                                   <td>{!! $avgResult->Indicator !!}</td>
                                                   @foreach ($surveyScoreAllUsers as $result)
                                                     @if(($result->Indicator_ID)==($avgResult->Indicator_ID))
-                                                        <td class="text-center">{!! $result->Answer !!}</td>
+                                                        <td>{!! $result->Answer !!}</td>
                                                     @endif
                                                   @endforeach
-                                                  <td class="text-center">{!! $avgResult->Group_Average !!}</td>
+                                                  <td>{!! $avgResult->Group_Average !!}</td>
                                                 </tr>
                                               @endforeach
 
@@ -199,10 +199,10 @@
                                     </div>
 									@else
 										<div>You have no survey results with enough participants to compare</div>
-									@endif	
+									@endif
                                   </div>
-								 
-								  
+
+
                                 </div>
                             </div>
                         </div>
