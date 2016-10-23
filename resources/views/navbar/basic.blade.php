@@ -20,6 +20,50 @@
         </a>
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
+		
+			<div class="pull-right" >
+							<h5 class="select-users"><label></label>
+								<select id="languageId">
+									<option value="">language</option>
+									<option value="en">en</option>
+									<option value="de">de</option>
+								</select>
+							</h5>
+							
+							<script>
+								  $(document).ready(function(){
+								  $('#languageId').change(function(){
+								  if($(this).val()==""){
+								  return;
+								  }
+								  else{
+										   $.ajaxSetup({
+											 headers:{
+											   'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+											 }
+										   });
+										   $.ajax({
+											 method: 'POST',
+											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-system/public/basic/language",
+											 dataType: 'json',
+											 data: {'languageId':$(this).val()},
+											 success: function(data){
+												 alert(data.stri);
+											 window.location.replace(window.location);
+											},
+										  error: function(result){
+												var errors = result.responseJSON;
+												console.log(result);
+												console.log(errors);
+										  }
+
+									   });
+									   }
+									 });
+								   });
+							</script>
+					</div>
+		
             <ul class="nav navbar-nav">
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">

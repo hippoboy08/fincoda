@@ -625,7 +625,6 @@ use EmailTrait;
     }
 
 public function getParticipantDetails($surveyId, $participantId){
-	  \App::setLocale('de');
 	  $id = $surveyId;
       $userId = $participantId;
 	  if($this->ValidateSurvey($id)=='true'){

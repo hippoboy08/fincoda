@@ -14,6 +14,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Session;
+
 
 class DashboardController extends Controller
 {
@@ -42,6 +44,14 @@ public function index(){
         ->where('end_time','>',Carbon::now()->addHour(1))->get();
 
     return view('dashboard')->with('open',$open)->with('closed',$closed)->with('pending',$pending);
+}
+
+public function switchLanguage(Request $request){
+		Session::put('language',$request['languageId']);
+		Session::save();
+		\App::setLocale($request['languageId']);
+	
+	return response()->json(array('stri'=>$request['languageId']));
 }
 
 }

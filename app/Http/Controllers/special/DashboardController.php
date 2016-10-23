@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Session;
 
 class DashboardController extends Controller
 {
@@ -27,4 +28,12 @@ class DashboardController extends Controller
             ->get())
             ->with('closed',DB::table('surveys')->whereIn('id',$closed)->get());
     }
+	
+	public function switchLanguage(Request $request){
+		Session::put('language',$request['languageId']);
+		Session::save();
+		\App::setLocale($request['languageId']);
+	
+	return response()->json(array('stri'=>$request['languageId']));
+	}
 }
