@@ -21,7 +21,7 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
 		
-			<div class="pull-right" >
+					<div class="pull-right" >
 							<h5 class="select-users"><label></label>
 								<select id="languageId">
 									<option value="">language</option>
@@ -48,7 +48,7 @@
 											 dataType: 'json',
 											 data: {'languageId':$(this).val()},
 											 success: function(data){
-												 alert(data.stri);
+												 //alert(data.stri);
 											 window.location.replace(window.location);
 											},
 										  error: function(result){

@@ -48,7 +48,7 @@
 											 dataType: 'json',
 											 data: {'languageId':$(this).val()},
 											 success: function(data){
-												 alert(data.stri);
+												 //alert(data.stri);
 											 window.location.replace(window.location);
 											},
 										  error: function(result){
