@@ -25,6 +25,7 @@
                                 <h2>Survey Results</h2><br>
                                 <!-- <label id="surveyId">{!! $survey->title !!}</label> -->
                                 <ul>
+								  {{App::setLocale(Session::get('language'))}}
 								  <li><h5><label>Id : </label> {!! $survey->id !!}</h5></li>
                                   <li><h5><label>Title : </label> {!! $survey->title !!}</h5></li>
                                   <li><h5><label>Type : </label> {!! \App\Survey_Type::find($survey->type_id)->name !!}</h5></li>
@@ -42,9 +43,12 @@
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
-                                    <div class="row pull-right" >
-                                       <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                    </div>
+
+								  <div class="pull-right" >
+                                            <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                         </div>
+
+
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
@@ -101,7 +105,7 @@
                                               @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
                                                 <tr>
                                                   <td>{!! $result->Indicator_ID !!}</td>
-                                                  <td>{!! $result->Indicator !!}</td>
+                                                  <td>{{Lang::get('indicators.'.$result->Indicator_ID,array(),App::getLocale())}}</td>
                                                   <td>{!! $result->Group_Average !!}</td>
                                                 </tr>
                                               @endforeach
@@ -134,6 +138,7 @@
                                   </div>
 
                                   <div id="detailedview" class="tab-pane fade">
+<<<<<<< HEAD
 
 
                                     <div class="tab-content">
@@ -141,6 +146,11 @@
 
                                           <div class="pull-left" >
                                                       <label id="surveyId">{!! $survey->id !!}</label>
+=======
+
+									<div class="pull-left" >
+										                                  <label id="surveyId">{!! $survey->id !!}</label>
+>>>>>>> cf4aa6ac6abd4f47b71dc23eb19d9ac8fc064291
                                             <h5 class="select-users"><label>Select User</label>
                                               <select id="participantsIds">
                                                 <option value="default">Select a user</option>
@@ -180,23 +190,14 @@
                                               });
                                             });
                                           </script>
-                    </div>
 
+										</div>
+
+										    <div class="row pull-right" >
+                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelSpecial',$survey->id)}}">Download Excel</a></u>
+                                            </div>
 
                                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                                     </div>
                                   </div>

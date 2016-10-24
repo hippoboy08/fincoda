@@ -25,7 +25,7 @@
                                 <h2>Survey Results</h2><br>
                                 <!-- <label id="surveyId">{!! $survey->title !!}</label> -->
                                 <ul>
-
+								  {{App::setLocale(Session::get('language'))}}
 								  <li><h5><label>Id : </label> {!! $survey->id !!}</h5></li>
                                   <li><h5 class="text-capitalize"><label>Title : </label> {!! $survey->title !!}</h5></li>
                                   <li><h5 class="text-capitalize"><label>Type : </label> {!! \App\Survey_Type::find($survey->type_id)->name !!}</h5></li>
@@ -102,7 +102,7 @@
                                               @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
                                                 <tr>
                                                   <td>{!! $result->Indicator_ID !!}</td>
-                                                  <td>{!! $result->Indicator !!}</td>
+                                                  <td>{{Lang::get('indicators.'.$result->Indicator_ID,array(),App::getLocale())}}</td>
                                                   <td>{!! $result->Group_Average !!}</td>
                                                 </tr>
                                               @endforeach

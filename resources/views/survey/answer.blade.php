@@ -13,7 +13,7 @@
             </div>
             <div class="box box-primary">
                 <div class="box-body">
-
+					{{App::setLocale(Session::get('language'))}}
                     <h2>{!! $survey->title !!}</h2>
                     <p>Created by : {!! \App\User::find($survey->user_id)->name !!}</p>
                     <p>Open duration : {!! $survey->start_time.' - '.$survey->end_time !!}</p>
@@ -51,7 +51,7 @@
 
                                 <tr>
                                     <td>{!! $indicator->id !!}</td>
-                                    <td>{!! $indicator->indicator !!}</td>
+									<td>{{Lang::get('indicators.'.$indicator->id,array(),App::getLocale())}}</td>
                                     <td>{!! Form::radio('radio['.$indicator->id.']',0) !!}</td>
                                     <td>{!! Form::radio('radio['.$indicator->id.']',1) !!}</td>
                                     <td>{!! Form::radio('radio['.$indicator->id.']',2) !!}</td>

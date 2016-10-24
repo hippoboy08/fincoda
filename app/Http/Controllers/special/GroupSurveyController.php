@@ -137,6 +137,12 @@ class GroupSurveyController extends Controller
 
 
         }
+		
+		
+	public function switchLanguage(Request $request){
+		return response()->json(array('stri'=>'success'));
+	}
+		
 
 		public function lookForGroupMembers(Request $request){
 					$members = DB::table('users')

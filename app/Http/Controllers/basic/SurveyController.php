@@ -38,6 +38,12 @@ class SurveyController extends Controller
 
 
     }
+	
+	
+	public function switchLanguage(Request $request){
+		return response()->json(array('stri'=>'success'));
+	}
+	
     public function show($id){
       $email = Auth::user()->email;
       $userId = DB::table('users')->where('email',$email)->value('id');

@@ -36,6 +36,11 @@ class CompanySurveyController extends Controller
 
         return view('survey.complete')->with('completed', $completed_survey)->with('closed', $closed_survey);
     }
+	
+	
+	public function switchLanguage(Request $request){
+		return response()->json(array('stri'=>'success'));
+	}
 
     public function show($id)
     {
@@ -185,7 +190,6 @@ class CompanySurveyController extends Controller
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, results.user_id, indicators.group_id"),
                                               array("surveyId"=>$id));
 

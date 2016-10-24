@@ -41,6 +41,8 @@ Route::post('register/user','register\RegisterController@registeruser');
 Route::post('login','Auth\AuthController@postLogin');
 Route::get('logout','Auth\AuthController@logout');
 
+//Route::get('language/{locale}',function($locale){App::setLocale($locale); return $locale;});
+
 //admin route
 Route::group(['middleware'=>'admin',
                 'namespace'=>'admin',
@@ -48,6 +50,8 @@ Route::group(['middleware'=>'admin',
 
 
     Route::get('/','DashboardController@index');
+	Route::post('language','DashboardController@switchLanguage');
+	
     Route::get('company','ProfileController@company');
     //This returns the edit blade
     Route::get('company/update','ProfileController@editCompany');
@@ -72,7 +76,8 @@ Route::group(['middleware'=>'basic',
                 'namespace'=>'basic',
                 'prefix'=>'basic'],function(){
     Route::get('/','DashboardController@index');
-    Route::resource('profile','ProfileController@index');
+    Route::post('language','DashboardController@switchLanguage');
+	Route::resource('profile','ProfileController@index');
 	Route::resource('profile','ProfileController');
     Route::resource('survey','SurveyController');
     Route::resource('usergroup','UserGroupController');
@@ -84,7 +89,8 @@ Route::group(['middleware'=>'special',
                'namespace'=>'special',
                'prefix'=>'special'],function(){
     Route::get('/','DashboardController@index');
-    Route::get('profile','ProfileController@index');
+    Route::post('language','DashboardController@switchLanguage');
+	Route::get('profile','ProfileController@index');
 	Route::resource('profile','ProfileController');
     
     Route::resource('survey','CompanySurveyController');

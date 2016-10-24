@@ -2,10 +2,18 @@
 
 @section('content')
 
+
+
     <div class="row col-md-12">
 
             <div class="panel panel-default">
                 <div class="panel-heading">Reset Password</div>
+
+				 @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+				@endif
 
                 <div class="panel-body">
                     <form  role="form" method="POST" action="{{ url('/password/reset') }}">

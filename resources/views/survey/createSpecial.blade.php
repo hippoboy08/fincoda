@@ -71,7 +71,7 @@
                                 <p>Please select a group. The special users of the company are the administrators for the user groups.</p>
                                <select id="groupId">
 													  @foreach($groups as $group)
-														<option value="{!! $group->id !!}">{!! $group->name !!}</option>
+														<option value="{!! $group->id !!}">{!! $group->id !!}</option>
 													  @endforeach
 								</select>
 								<script>
@@ -166,6 +166,7 @@
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
+											<th>User ID</th>
                                             <th>Full Name</th>
                                             <th>Email Address</th>
                                          </tr>
@@ -173,6 +174,7 @@
                                         <tbody>
                                         @foreach($participants as $participant)
                                             <tr>
+                                                <td>{!! $participant->user_id !!}</td>
                                                 <td>{!! $participant->name !!}</td>
                                                 <td>{!! $participant->email !!}</td>
                                             </tr>
