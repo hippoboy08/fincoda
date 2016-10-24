@@ -42,6 +42,9 @@
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
+                                    <div class="row pull-right" >
+                                       <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                    </div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
@@ -115,7 +118,7 @@
                                       createChart(
                                         document.getElementById("indicatorGroupAverage"),
                                         ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
-                                        'Company average score of each indicator group',
+                                        'Company average score of each dimension',
                                         [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
                                           {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
                                         'rgba(0,0,255,1)'
@@ -131,219 +134,26 @@
                                   </div>
 
                                   <div id="detailedview" class="tab-pane fade">
-                                      <ul class="nav nav-tabs">
-                                          <li class="active"><a data-toggle="tab" href="#participants">Participants</a></li>
-                                          <li><a data-toggle="tab" href="#menu1">Participants Scores</a></li>
-                                          <li><a data-toggle="tab" href="#menu2">User Groups Indicator Averages</a></li>
-                                          <li><a data-toggle="tab" href="#menu3">Participants Scores On Indicator Groups</a></li>
-                                          <li><a data-toggle="tab" href="#menu4">User Groups And Indicator Group Averages</a></li>
-                                          <li><a data-toggle="tab" href="#menu5">Admin View</a></li>
-										  <li><a data-toggle="tab" href="#menu6">Minimum And Maximum User Indicator Group Average</a></li>
-										  <li><a data-toggle="tab" href="#menu7">Downloads</a></li>
-                                      </ul>
+
 
                                     <div class="tab-content">
                                         <div id="participants" class="tab-pane fade in active">
-                                           <div class="row pull-right" >
-                                              <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                           </div>
-
-                                           <div>
-                                             <table id="Participants" class="table table-bordered table-striped text-center">
-                                                 <thead>
-                                                 <tr>
-                                                     <th>Survey ID</th>
-                                                     <th>Group ID</th>
-                                                     <th>User ID</th>
-                                                     <th>Full Name</th>
-                                                     <th>Email Address</th>
-                                                     <th>Survey Status</th>
-                                                 </tr>
-                                                 </thead>
-                                                 <tbody>
-                                                 @foreach($participants as $participant)
-                                                     <tr>
-														<td>{!! $participant->Survey_ID !!}</td>
-														<td>{!! $participant->Group_ID !!}</td>
-														<td>{!! $participant->User_ID !!}</td>
-														<td>{!! $participant->name !!}</td>
-														<td>{!! $participant->email  !!}</td>
-                                                         @if($participant->completed==0)
-                                                             <td><span class="label label-danger">Not completed</span></td>
-                                                             @else
-                                                             <td><span class="label label-success">Completed</span></td>
-                                                         @endif
-                                                     </tr>
-                                                     @endforeach
-                                                 </tbody>
-                                             </table>
-                                         </div>
-                                        </div>
-
-
-                                        <div id="menu1" class="tab-pane fade">
-                                           <div class="row pull-right" >
-                                              <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                           </div>
-                                           <div>
-                                            <table id="Participants_scores" class="table table-bordered table-striped text-center">
-                                                <thead>
-                                                <tr>
-                                                    <th>Survey ID</th>
-                                                    <th>User Group ID</th>
-													<th>User ID</th>
-                                                    <th>Indicator ID</th>
-                                                    <th>Indicator </th>
-                                                    <th>Answer</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                  @if(count($surveyScoreAllUsers)==0)
-                                                    <div>You have no surveys results to display</div>
-                                                  @else
-                                                  @foreach($surveyScoreAllUsers as $result)
-                                                  <tr>
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-                                                    <td>{!! $result->User_ID !!}</td>
-                                                    <td>{!! $result->Indicator_ID !!}</td>
-                                                    <td>{!! $result->Indicator !!}</td>
-                                                    <td>{!! $result->Answer !!}</td>
-                                                  </tr>
-                                                  @endforeach
-                                                  @endif
-                                                </tbody>
-                                            </table>
-                                          </div>
-                                        </div>
-
-
-                                        <div id="menu2" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                            </div>
-
-                                            <div>
-                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
-                                                  <thead>
-                                                  <tr>
-
-                                                      <th>Survey ID</th>
-													  <th>User Group ID</th>
-                                                      <th>Indicator ID</th>
-                                                      <th>Indicator</th>
-                                                      <th>Group_Average</th>
-                                                  </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    @if(count($surveyGroupAveragePerIndicatorAllUsers)==0)
-                                                      You have no surveys results to display
-                                                    @else
-                                                    @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
-                                                    <tr>
-
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-                                                    <td>{!! $result->Indicator_ID !!}</td>
-                                                    <td>{!! $result->Indicator !!}</td>
-                                                    <td>{!! $result->Group_Average !!}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                    @endif
-                                                  </tbody>
-                                              </table>
-                                            </div>
-                                        </div>
-
-                                        <div id="menu3" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                            </div>
-
-                                            <div>
-                                              <table id="indicator_group_scores" class="table table-bordered table-striped text-center">
-                                                  <thead>
-                                                  <tr>
-
-                                                      <th>Survey ID</th>
-													  <th>User Group ID</th>
-                                                      <th>User ID</th>
-                                                      <th>Indicator Group</th>
-                                                      <th>Indicator Group Average</th>
-                                                  </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
-                                                      You have no surveys results to Display
-                                                    @else
-                                                    @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
-                                                    <tr>
-
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-                                                    <td>{!! $result->User_ID !!}</td>
-                                                    <td>{!! $result->Indicator_Group !!}</td>
-                                                    <td>{!! $result->Indicator_Group_Average !!}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                    @endif
-                                                  </tbody>
-                                              </table>
-                                            </div>
-                                        </div>
-
-                                        <div id="menu4" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                            </div>
-
-                                            <div>
-                                              <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                                                  <thead>
-                                                  <tr>
-
-                                                      <th>Survey ID</th>
-													  <th>User Group ID</th>
-                                                      <th>Indicator Group</th>
-                                                      <th>Indicator Group Average</th>
-                                                  </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    @if(count($surveyScorePerIndicatorGroup)==0)
-                                                      <div>You have no surveys results to Display</div>
-                                                    @else
-                                                    @foreach($surveyScorePerIndicatorGroup as $result)
-                                                    <tr>
-
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-                                                    <td>{!! $result->Indicator_Group !!}</td>
-                                                    <td>{!! $result->Indicator_Group_Average !!}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                    @endif
-                                                  </tbody>
-                                              </table>
-                                            </div>
-                                        </div>
-
-                                        <div id="menu5" class="tab-pane fade">
 
                                           <div class="pull-left" >
-										                                  <label id="surveyId">{!! $survey->id !!}</label>
+                                                      <label id="surveyId">{!! $survey->id !!}</label>
                                             <h5 class="select-users"><label>Select User</label>
                                               <select id="participantsIds">
                                                 <option value="default">Select a user</option>
-													  @foreach($participants as $participant)
-														<option value="{!!$participant->User_ID !!}|{!!$participant->Group_ID !!}">{!! $participant->email !!}</option>
-													@endforeach
-											  </select>
+                            @foreach($participants as $participant)
+                            <option value="{!!$participant->User_ID !!}|{!!$participant->Group_ID !!}">{!! $participant->email !!}</option>
+                          @endforeach
+                        </select>
                                             </h5>
                                           <script>
-											$(document).ready(function(){
-											  $('#participantsIds').change(function(){
-												  if($(this).val()==""){
-												  return;
+                      $(document).ready(function(){
+                        $('#participantsIds').change(function(){
+                          if($(this).val()==""){
+                          return;
                                                 }else{
                                                 $.ajaxSetup({
                                                   headers:{
@@ -351,79 +161,42 @@
                                                   }
                                                 });
                                                 $.ajax({
-												  method: 'POST',
+                          method: 'POST',
                                                   url: 'lookForParticipant',
-												  dataType: 'json',
+                          dataType: 'json',
                                                   data: {'participantId':$(this).val(),'surveyId':$('#surveyId').text()},
-												  success: function(data){
-													window.location.replace(data.stri);
-													//alert(data.stri);
-												  },
-												  error: function(result){
-													var errors = result.responseJSON;
-													console.log(result);
-													console.log(errors);
-												  }
+                          success: function(data){
+                          window.location.replace(data.stri);
+                          //alert(data.stri);
+                          },
+                          error: function(result){
+                          var errors = result.responseJSON;
+                          console.log(result);
+                          console.log(errors);
+                          }
 
                                                 });
                                                 }
                                               });
                                             });
                                           </script>
-										</div>
-                                         <div class="pull-right" >
-                                            <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                         </div>
+                    </div>
 
 
                                         </div>
 
 
 
-										<div id="menu6" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                            </div>
 
-                                            <div>
-                                              <table id="user_group_scores" class="table table-bordered table-striped text-center">
-                                                  <thead>
-                                                  <tr>
 
-                                                      <th>Survey ID</th>
-													  <th>User Group ID</th>
-													  <th>Indicator Group ID</th>
-                                                      <th>Indicator Group</th>
-                                                      <th>Minimum User Indicator_Group Average</th>
-													  <th>Maximum User Indicator_Group Average</th>
-                                                  </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    @if(count($surveyScoreGroupAvgPerIndicatorGroupMinAndMax)==0)
-                                                      You have no surveys results to display
-                                                    @else
-                                                    @foreach($surveyScoreGroupAvgPerIndicatorGroupMinAndMax as $result)
-                                                    <tr>
 
-                                                    <td>{!! $result->Survey_ID !!}</td>
-													<td>{!! $result->Group_ID !!}</td>
-													<td>{!! $result->Indicator_Group_ID !!}</td>
-                                                    <td>{!! $result->Indicator_Group !!}</td>
-													<td>{!! $result->Minimum_User_Indicator_Group_Average !!}</td>
-                                                    <td>{!! $result->Maximum_User_Indicator_Group_Average !!}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                    @endif
-                                                  </tbody>
-                                              </table>
-                                            </div>
-                                        </div>
 
-										<div id="menu7" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelSpecial',$survey->id)}}">Download Excel</a></u>
-                                            </div>
-                                        </div>
+
+
+
+
+
+
 
                                     </div>
                                   </div>

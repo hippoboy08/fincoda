@@ -51,12 +51,12 @@ class CompanySurveyController extends Controller
                             //This returns the indicator scores for each user that took part in the survey
                             //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                             //In other words it will always return a single result
-							
+
 							$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
                                               ->select('results.user_id as User_ID')
                                               ->where('results.survey_id',$id)
                                               ->distinct()->get();
-							
+
                             $surveyScoreAllUsers = DB::table('indicators')
                                               ->join('results','results.indicator_id','=','indicators.id')
                                               ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
@@ -78,7 +78,6 @@ class CompanySurveyController extends Controller
                                               FROM indicators
                                               join results on results.indicator_id = indicators.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.id"),
                                               array("surveyId"=>$id));
 
@@ -92,7 +91,6 @@ class CompanySurveyController extends Controller
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, results.user_id, indicators.group_id"),
                                               array("surveyId"=>$id));
 
@@ -106,16 +104,15 @@ class CompanySurveyController extends Controller
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.group_id"),
                                               array("surveyId"=>$id));
-							
-							
-							//This is a company survey in which the special user participated so has no access to minimum and 
+
+
+							//This is a company survey in which the special user participated so has no access to minimum and
 							//And maximum averages: only the admin has access to that
 							$surveyScoreGroupAvgPerIndicatorGroupMinAndMax = [];
-					
-						  
+
+
 
                             return view('survey.resultForSpecialInCompanySurvey')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
@@ -148,13 +145,13 @@ class CompanySurveyController extends Controller
                             //This returns the indicator scores for each user that took part in the survey
                             //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
                             //In other words it will always return a single result
-							
+
 							$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
                                               ->select('results.user_id as User_ID')
                                               ->where('results.survey_id',$id)
                                               ->distinct()->get();
-							
-							
+
+
                             $surveyScoreAllUsers = DB::table('indicators')
                                               ->join('results','results.indicator_id','=','indicators.id')
                                               ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
@@ -175,7 +172,6 @@ class CompanySurveyController extends Controller
                                               FROM indicators
                                               join results on results.indicator_id = indicators.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.id"),
                                               array("surveyId"=>$id));
 
@@ -203,17 +199,16 @@ class CompanySurveyController extends Controller
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                               WHERE results.survey_id = :surveyId
-                                              AND results.user_id = $userId
                                               GROUP BY results.survey_id, indicators.group_id"),
                                               array("surveyId"=>$id));
-											  
-											  
-							//This is a company survey in which the special user participated so has no access to minimum and 
+
+
+							//This is a company survey in which the special user participated so has no access to minimum and
 							//And maximum averages: only the admin has access to that
 							$surveyScoreGroupAvgPerIndicatorGroupMinAndMax = [];
-					
-							
-							
+
+
+
 
                             return view('survey.resultForSpecialInCompanySurvey')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])

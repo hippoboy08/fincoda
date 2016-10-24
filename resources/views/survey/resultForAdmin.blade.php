@@ -10,6 +10,7 @@
                 <h3 class="box-title"><b>Survey Result.</b></h3>
                 <p><i>Below is the information about the pending survey you requested.
                         You can make changes or abort it before it is open to the participants.</i></p>
+
             </div>
 
             @include('message.fail')
@@ -43,7 +44,7 @@
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
                                     <div class="row pull-right" >
-                                        <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelAdmin',$survey->id)}}">Download Excel</a></u>
+                                       <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
                                     </div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
@@ -118,7 +119,7 @@
                                       createChart(
                                         document.getElementById("indicatorGroupAverage"),
                                         ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
-                                        'Company average score of each indicator group',
+                                        'Company average score of each dimension',
                                         [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
                                           {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
                                         'rgba(0,0,255,1)'
@@ -138,9 +139,6 @@
 
                                     <div class="tab-content">
                                         <div id="participants" class="tab-pane fade in active">
-                                           <div class="row pull-right" >
-                                              <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                           </div>
 
                                            <div class="pull-left" >
  										  <span style="visibility: hidden;"><label id="surveyId">{!! $survey->id !!}</label></span>
@@ -188,11 +186,7 @@
                                     </div>
 
                                   </div>
-								  <div id="menu15" class="tab-pane fade">
-                                            <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelAdmin',$survey->id)}}">Download Excel</a></u>
-                                            </div>
-                                        </div>
+
                                   @endrole
 
                                 </div>

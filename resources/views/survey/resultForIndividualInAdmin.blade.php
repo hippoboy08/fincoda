@@ -42,6 +42,9 @@
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade">
+                                    <div class="row pull-right" >
+                                       <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                    </div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
@@ -116,7 +119,7 @@
                                       createChart(
                                         document.getElementById("indicatorGroupAverage"),
                                         ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
-                                        'Company average score of each indicator group',
+                                        'Company average score of each dimension',
                                         [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
                                           {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
                                         'rgba(0,0,255,1)'
@@ -136,9 +139,9 @@
 
                                     <div class="tab-content">
                                         <div id="participants" class="tab-pane fade in active">
-                                           <div class="row pull-right" >
-                                              <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                           </div>
+                                          <div class="row pull-right" >
+                                              <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelAdmin',$survey->id)}}">Download Excel</a></u>
+                                          </div>
 
                                            <div class="pull-left" >
                                              <h5 class="select-users"><label>Select User</label>
@@ -179,8 +182,7 @@
                                                       <th>Indicator ID</td>
                                                       <th>Indicator Name</th>
                                                       <th>User Answer Indicator</th>
-                                                      <th>Group Average Each Indicator</th>
-                                                      <th>Category ID</th>
+                                                      <th>Group Average Indicator</th>
 
 
                                                   </tr>
@@ -206,7 +208,6 @@
                                                           @endif
                                                         @endforeach
                                                         @endif
-                                                        <td>{!! $results->Indicator_Group_ID !!}</td>
                                                       </tr>
                                                     @endforeach
                                                     @endif
@@ -261,16 +262,15 @@
 											@endif
 											@endif
                                             </div>
-
+                                            <br>
                                             <div>
                                               <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                                                <caption style="text-align: center;">User average score per category compared with group average score per category</caption>
+                                                <caption style="text-align: center;">User average score per dimension compared with group average score per dimension</caption>
                                                 <thead>
                                                   <tr>
-                                                    <th>Indicator Group ID</th>
-                                                    <th>Indicator Group</th>
-                                                    <th>User Answer Category Average</th>
-                                                    <th>Indicator Group Average</th>
+                                                    <th>Dimension</th>
+                                                    <th>User Dimension Average</th>
+                                                    <th>Group Dimension Average</th>
                                                   </tr>
                                                 </thead>
                                                 <tbody>
@@ -279,7 +279,6 @@
                                                   @else
                                                     @foreach($surveyScorePerIndicatorGroup as $results)
                                                       <tr>
-                                                        <td>{!! $results->Indicator_Group_ID !!}</td>
                                                         <td>{!! $results->Indicator_Group !!}</td>
 
                                                         @foreach($surveyScoreGroupAvgPerIndicatorGroup as $result)
@@ -299,7 +298,7 @@
                                             </div>
                                             <div>
                                               <br>
-                                              <h3 style="text-align: center">User average per category VS Company average per category
+                                              <h3 style="text-align: center">User average per dimension VS Company average per dimension
                                               <canvas id="comparedGraphCategory" width="800" height="400"></canvas>
                                               <script src="{{URL::asset('js/displayChart.js')}}"></script>
 											@if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
@@ -308,12 +307,12 @@
                                               <script>
                                                 var chartArea = document.getElementById('comparedGraphCategory');
                                                 var datasetOwnScore = {
-                                                  label: 'User average score per category',
+                                                  label: 'User average score per dimension',
                                                   data: [{!! $surveyScoreGroupAvgPerIndicatorGroup[0]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[1]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[2]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[3]->Indicator_Group_Average !!},{!! $surveyScoreGroupAvgPerIndicatorGroup[4]->Indicator_Group_Average !!}],
                                                    backgroundColor: 'rgba(255,0,0,1)'
                                                 };
                                                 var datasetGroupAvg = {
-                                                  label: 'Company average per category',
+                                                  label: 'Company average per dimension',
                                                   data: [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!},{!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
                                                   backgroundColor: 'rgba(0,0,255,1)'
                                                 };
