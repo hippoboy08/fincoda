@@ -18,10 +18,12 @@
         <tr>
             @role('admin')
             <td><a href="{!! url('admin/survey/'.$pending->id) !!}"> {!! $pending->title !!}</a></td>
+            <td><a href="{!! url('admin/survey/edit/'.$pending->id) !!}">edit</a></td>
             @endrole
 
             @role('special')
             <td><a href="{!! url('special/groupsurvey/'.$pending->id) !!}"> {!! $pending->title !!}</a></td>
+            <td><a href="{!! url('special/groupsurvey/edit/'.$pending->id) !!}">edit</a></td>
             @endrole
 
             <td>{!! \App\Survey_Type::find($pending->type_id)->name !!}</td>

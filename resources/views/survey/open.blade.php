@@ -34,6 +34,7 @@
     <tr>
         @role('admin')
         <td><a href="{!! url('admin/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
+        <td><a href="{!! url('admin/survey/edit/'.$open->id) !!}">edit</a></td>
         @endrole
         @role('basic')
         @if($open->completed=='0')
@@ -49,7 +50,8 @@
         @role('special')
         @if(Route::current()->getName()=='special.groupsurvey.index')
             <td><a href="{!! url('special/groupsurvey/'.$open->id) !!}">{!! $open->title !!}</a></td>
-         @else
+			<td><a href="{!! url('special/groupsurvey/edit/'.$open->id) !!}">edit</a></td>
+        @else
         @if($open->completed=='0')
             <td><a href="{!! url('special/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
         @else

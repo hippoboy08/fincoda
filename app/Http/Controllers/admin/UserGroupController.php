@@ -147,38 +147,20 @@ class UserGroupController extends Controller
 							->lists('users.name','users.id');
 							
 		//This returns the group members
-		$members = DB::table('users')
-							->join('role_user','role_user.user_id','=','users.id')
-							->join('user_in_groups','user_in_groups.user_id','=','users.id')
-							->select('users.id as user_id','users.name','users.email')
-							->where('company_id',Auth::User()->company_id)
-							->where('role_user.role_id','=',3)
-							->where('user_in_groups.user_group_id','=',$id)
-							->get();
+		$members = DB::select(DB::raw(
+                            "select users.id as user_id, users.name, users.email from users 
+							where users.id in (select user_in_groups.user_id from user_in_groups 
+								where user_in_groups.user_group_id = :groupId)"),
+                            array("groupId"=>$id));
+
 							
 		//This returns all users that are not in this group
-		$users = DB::table('users')
-							->join('role_user','role_user.user_id','=','users.id')
-							->join('user_in_groups','user_in_groups.user_id','=','users.id')
-							->select('users.id as user_id','users.name','users.email')
-							->where('company_id',Auth::User()->company_id)
-							->where('role_user.role_id','=',3)
-							->where('user_in_groups.user_group_id','!=',$id)
-							->distinct()
-							->get();
-							
-		//This is needed to remove duplicated user ids: here it is assumed the server will have enough resources to process this in a loop
-		//And also records have been asummed to be small in the range of 1 to 10,000 users in a group.
-		if(!empty($members)&&!empty($users)){
-			foreach($users as $key => $user){
-				foreach($members as $member){
-					if($user->user_id === $member->user_id){
-						unset($users[$key]);
-					}
-				}
-			}
-		}
-
+		$users = DB::select(DB::raw(
+                            "select users.id as user_id, users.name, users.email from users 
+							where users.id not in (select user_in_groups.user_id from user_in_groups 
+								where user_in_groups.user_group_id = :groupId)"),
+                            array("groupId"=>$id));
+		
         return view('usergroup.editAdmin')
 						->with('administrators',$administrators)
 						->with('group',$group)
