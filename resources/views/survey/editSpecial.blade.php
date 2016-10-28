@@ -9,7 +9,7 @@
             {!! Form::open(['method'=>'POST','action'=>'admin\SurveyController@updateSurvey']) !!}
             @endrole
             @role('special')
-            {!! Form::open(['method'=>'POST','action'=>'special\GroupSurveyController@store']) !!}
+            {!! Form::open(['method'=>'POST','action'=>'special\GroupSurveyController@updateSurvey']) !!}
             @endrole
 
             <div class="box-header with-border">

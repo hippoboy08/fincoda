@@ -5,11 +5,8 @@
         <div class="col-md-12 col-md-offset-0">
             <!-- general form elements -->
 
-            @role('admin')
-            {!! Form::open(['method'=>'POST','action'=>'admin\SurveyController@store']) !!}
-            @endrole
             @role('special')
-            {!! Form::open(['method'=>'POST','action'=>'special\GroupSurveyController@store']) !!}
+            {!! Form::open(['method'=>'POST','action'=>'special\groupsurvey\GroupSurveyController@store']) !!}
             @endrole
 
             <div class="box-header with-border">

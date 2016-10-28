@@ -623,11 +623,11 @@ class GroupSurveyController extends Controller
 		//These are the ones who have not been invited to take part in the survey						
 		$participantsNot = DB::select(DB::raw(
                             "select user_in_groups.user_group_id as Group_ID, users.id, users.name, users.email from users 
-							join user_in_groups on user_in_groups.user_id = users.id where users.id not in 
+							join user_in_groups on user_in_groups.user_id = users.id where users.company_id = :companyId and users.id not in 
 								(select participants.user_id from participants 
 									where participants.survey_id = :surveyId)
 									GROUP BY user_in_groups.user_group_id, users.id"),
-								array("surveyId"=>$id));
+								array("surveyId"=>$id,"companyId"=>Auth::User()->company_id));
 		
         return view('survey.editSpecial')
 				->with('survey',$survey)

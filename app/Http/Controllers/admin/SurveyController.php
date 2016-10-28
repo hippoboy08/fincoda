@@ -985,10 +985,11 @@ public function getParticipantDetails($surveyId, $participantId){
 		
 		//These are the ones who have not been invited to take part in the survey						
 		$participantsNot = DB::select(DB::raw(
-                            "select users.id, users.name, users.email from users where users.id not in 
+                            "select users.id, users.name, users.email from users where users.company_id = :companyId and users.id not in 
 								(select participants.user_id from participants 
 									where participants.survey_id = :surveyId)"),
-								array("surveyId"=>$id));
+								array("surveyId"=>$id,"companyId"=>Auth::User()->company_id));
+
 		
         return view('survey.editAdmin')
 				->with('survey',$survey)
