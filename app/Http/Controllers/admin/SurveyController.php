@@ -1008,7 +1008,6 @@ public function getParticipantDetails($surveyId, $participantId){
      * @return \Illuminate\Http\Response
      */
     public function updateSurvey(Request $request){
-		//dd($request);
 		$survey = Survey::find($request->id);
         $validation=Validator::make($request->all(),[
             'title'=>'required|max:255',

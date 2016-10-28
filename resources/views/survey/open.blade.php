@@ -8,6 +8,7 @@
         <thead>
         <tr>
             <th>Title</th>
+			<th>Edit</th>
             <th>Survey Type</th>
             <th>Open Date</th>
             <th>Close Date</th>

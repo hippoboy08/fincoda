@@ -30,12 +30,15 @@ class GroupSurveyController extends Controller
     use EmailTrait;
     public function index(){
         //group dashboard
+		//But this query is likely to cause problems for instance what if the user was once an admin and then became a special user
+		//The current model does not specify if a survey is group survey except by checking who created it and then assume its a group survey 
+		//or an admin survey
     $open=Auth::User()->creates_survey()
         ->where('start_time','<',Carbon::now()->addHour(1))
         ->where('end_time','>',Carbon::now()->addHour(1))
         ->where('category_id',2)->get();
-    $pending=Auth::User()->creates_survey()->
-    where('start_time','>',Carbon::now()->addHour(1))
+    $pending=Auth::User()->creates_survey()
+		->where('start_time','>',Carbon::now()->addHour(1))
         ->where('end_time','>',Carbon::now()->addHour(1))
         ->where('category_id',2)->get();
     $closed=Auth::User()->creates_survey()
@@ -51,7 +54,7 @@ class GroupSurveyController extends Controller
 		$group = DB::table('user_groups')
 							->where('company_id',Auth::User()->company_id)
 							->where('administrator','=',Auth::id())
-							->get();
+							->lists('user_groups.name','user_groups.id');
 
         return view('survey.createSpecial')
 			->with('groups',$group)
@@ -70,12 +73,13 @@ class GroupSurveyController extends Controller
 
         public function store(Request $request)
         {
-
+			//dd($request);
             $validation=Validator::make($request->all(),[
                 'title'=>'required|max:255',
                 'editor1'=>'required|max:500',
                 'date'=>'required',
                 'survey_type'=>'required',
+                'group'=>'required',
                 'editor2'=>'required|max:500'
 
             ]);
@@ -86,7 +90,8 @@ class GroupSurveyController extends Controller
                 $date=explode('-',$request->date);
                 $from=new Carbon($date[0]);
                 $to=new Carbon($date[1]);
-
+			
+				//The date management still needs to be worked on especially at 24:00 or 12:00 AM
                 if($from<Carbon::now()->addHour(1) || $to<Carbon::now()->addHour(1)){
                     return redirect()->back()
                         ->with('fail','The Survey open and close date should not be before the current date and time. Please fix the date range before creating the survey.')
@@ -107,25 +112,26 @@ class GroupSurveyController extends Controller
                         'end_time'=>$to
                     ]);
 
-                    $participants=User_Group::find(Auth::User()->group_administrator->id)->hasMembers;
-
-                    for($i=0; $i<count($participants); $i++){
-
-                        $survey->participants()->create([
-                            'user_id'=>$participants[$i]->user_id
-                        ]);
-
-                    }
-
-
-                    //send email to the participants
-                    foreach($participants as $participant){
-                        $member_email[]=User::find($participant->user_id)->email;
-                    }
-
-                    $this->email('email.newsurvey',['owner'=>$owner->name, 'title'=>$survey->title],$member_email);
-
-
+                    $participants = DB::select(DB::raw(
+									"select user_in_groups.user_id from user_in_groups where user_in_groups.user_group_id = :groupId"),
+										array("groupId"=>$request->group));
+					
+					if(!empty($participants)){
+						foreach($participants as $user){
+							DB::table('participants')
+								->insert([
+									'survey_id'=>$survey->id,
+									'user_id'=>$user->user_id,
+									'created_at'=>Carbon::now(),
+									'updated_at'=>Carbon::now()
+								]);
+							$userEmail = DB::table('users')->where('id',$user->user_id)->value('email');
+							$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'title'=>$survey->title],$userEmail);
+						}
+					}
+					
+					//This piece of code was inherited 
+                    //$this->email('email.newsurvey',['owner'=>$owner->name, 'title'=>$survey->title],$member_email);
 
                     return Redirect::to('special')->with('success','The survey has been created successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
@@ -604,35 +610,34 @@ class GroupSurveyController extends Controller
     {
 		$survey = Survey::find($id);
 		$indicators = Indicator::all();
+		
+		//All these queries are relying upon one thing that during creating a group survey, the creator selects only one group
+		//and only members of that group are selected as participant
+		//otherwise the model does not provide for this
 		$participantsCompleted = DB::select(DB::raw(
-                            "select user_in_groups.user_group_id as Group_ID, users.id, users.name, users.email from users 
-							join user_in_groups on user_in_groups.user_id = users.id  where users.id in 
+                            "select users.id, users.name, users.email from users where users.id in 
 								(select participants.user_id from participants 
-									where participants.survey_id = :surveyId and participants.completed = 1)
-									GROUP BY user_in_groups.user_group_id, users.id"),
+									where participants.survey_id = :surveyId and participants.completed = 1)"),
 								array("surveyId"=>$id));
 								
 		$participantsNotCompleted = DB::select(DB::raw(
-                            "select user_in_groups.user_group_id as Group_ID, users.id, users.name, users.email from users 
-							join user_in_groups on user_in_groups.user_id = users.id where users.id in 
+                            "select users.id, users.name, users.email from users where users.id in 
 								(select participants.user_id from participants 
-									where participants.survey_id = :surveyId and participants.completed != 1)
-									GROUP BY user_in_groups.user_group_id, users.id"),
+									where participants.survey_id = :surveyId and participants.completed != 1)"),
 								array("surveyId"=>$id));
 		
-		//These are the ones who have not been invited to take part in the survey						
-		$participantsNot = DB::select(DB::raw(
-                            "select user_in_groups.user_group_id as Group_ID, users.id, users.name, users.email from users 
-							join user_in_groups on user_in_groups.user_id = users.id where users.company_id = :companyId and users.id not in 
+		//These are the ones who have not been invited to take part in the survey, but this query is impractical because we do not
+		//know the group to which the survey belongs: the model does not provide for this: all we know is that the participant has
+		//a group and can belong to multiple groups.
+		/*$participantsNot = DB::select(DB::raw(
+                            "select users.id, users.name, users.email from users where users.company_id = :companyId and users.id not in 
 								(select participants.user_id from participants 
-									where participants.survey_id = :surveyId)
-									GROUP BY user_in_groups.user_group_id, users.id"),
-								array("surveyId"=>$id,"companyId"=>Auth::User()->company_id));
+									where participants.survey_id = :surveyId)"),
+								array("surveyId"=>$id,"companyId"=>Auth::User()->company_id));*/
 		
         return view('survey.editSpecial')
 				->with('survey',$survey)
 				->with('indicators',$indicators)
-				->with('participantsNot',$participantsNot)
 				->with('participantsNotCompleted',$participantsNotCompleted)
 				->with('participantsCompleted',$participantsCompleted);
 
@@ -647,7 +652,7 @@ class GroupSurveyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function updateSurvey(Request $request){
-		//dd($request);
+		
 		$survey = Survey::find($request->id);
         $validation=Validator::make($request->all(),[
             'title'=>'required|max:255',
@@ -656,8 +661,8 @@ class GroupSurveyController extends Controller
             'editor2'=>'required|max:500'
 
         ]);
-        if($validation->fails()){
-            return redirect()->back()->withErrors($validation)->withInput();
+		if($validation->fails()){
+			return redirect()->back()->withErrors($validation)->withInput();
         }else{
 			if(!empty($request->date)){
 				$date=explode('-',$request->date);
@@ -669,7 +674,6 @@ class GroupSurveyController extends Controller
                     ->with('fail','The Survey open and close date should not be before the current date and time. Please fix the date range before creating the survey.')
                     ->withInput();
 				}
-				
 				DB::table('surveys')
 							->where('id',$request->id)
 							->update([
@@ -688,12 +692,13 @@ class GroupSurveyController extends Controller
 								'title'=>$request->title,
 								'description'=>$request->editor1,
 								'end_message'=>$request->editor2,
-								'type_id'=>$request->survey_type,
-								'updated_at'=>Carbon::now()
+								'type_id'=>$request->survey_type
 					]);
 			}
-            
-			if(!empty($request->usersToRemove)){
+            	
+			//These are inactive at the moment coz addition and removal are group scoped yet the survey has no way of
+			//telling to which group it belongs
+			/*if(!empty($request->usersToRemove)){
                foreach($request->usersToRemove as $user){
 					DB::table('participants')
 						->where('user_id', $user)
@@ -704,6 +709,7 @@ class GroupSurveyController extends Controller
 				}
 			}
 			
+			//Same problem as above the model was not set up for this
 			if(!empty($request->usersToAdd)){
 				foreach($request->usersToAdd as $user){
 					DB::table('participants')
@@ -715,9 +721,9 @@ class GroupSurveyController extends Controller
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
 						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'title'=>$survey->title],$userEmail);
 				}
-			}
+			}*/
             
-            return Redirect::to('admin')->with('success','The survey has been updated successfully.
+            return Redirect::to('special\groupsurvey')->with('success','The survey has been updated successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
            
         }

@@ -5,6 +5,7 @@
         <thead>
         <tr>
             <th>Title</th>
+			<th>Edit</th>
             <th>Survey Type</th>
             <th>Open Date</th>
             <th>Close Date</th>
@@ -19,7 +20,7 @@
                 @role('admin')
                 <td><a href="{!! url('admin/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
 				<td><a href="{!! url('admin/survey/edit/'.$closed->id) !!}">edit</a></td>
-                @endrole
+				@endrole
 
                 @role('basic')
                 @if(Auth::User()->participate_survey->where('survey_id',$closed->id)->first()->completed==0)

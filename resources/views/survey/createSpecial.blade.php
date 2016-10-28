@@ -5,8 +5,11 @@
         <div class="col-md-12 col-md-offset-0">
             <!-- general form elements -->
 
+            @role('admin')
+            {!! Form::open(['method'=>'POST','action'=>'admin\SurveyController@store']) !!}
+            @endrole
             @role('special')
-            {!! Form::open(['method'=>'POST','action'=>'special\groupsurvey\GroupSurveyController@store']) !!}
+            {!! Form::open(['method'=>'POST','action'=>'special\GroupSurveyController@store']) !!}
             @endrole
 
             <div class="box-header with-border">
@@ -62,47 +65,11 @@
                             <label>Self Evaluation Survey</label><br>
                             {!! Form::radio('survey_type','2','',['class'=>'form-group']) !!}
                             <label>Peer Evaluation Survey</label><br><br>
-
+							
 							<div class="form-group">
                                 <label><h3>Select a group for this survey*:</h3></label>
                                 <p>Please select a group. The special users of the company are the administrators for the user groups.</p>
-                               <select id="groupId">
-													  @foreach($groups as $group)
-														<option value="{!! $group->id !!}">{!! $group->id !!}</option>
-													  @endforeach
-								</select>
-								<script>
-									$(document).ready(function(){
-									  $('#groupId').change(function(){
-										  if($(this).val()==""){
-										  return;
-										}else{
-										$.ajaxSetup({
-										  headers:{
-											'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-										  }
-										});
-										$.ajax({
-										  method: 'POST',
-										  url: 'lookForGroupMembers',
-										  dataType: 'json',
-										  data: {'groupId':$(this).val()},
-										  success: function(data){
-											//window.location.replace(data.stri);
-											alert(data.stri);
-											//alert('success');
-										  },
-										  error: function(result){
-											var errors = result.responseJSON;
-											console.log(result);
-											console.log(errors);
-										  }
-
-										});
-										}
-									  });
-									});
-								  </script>
+                               {!! Form::select('group',$groups,null,['class'=>'form-control']) !!}
 
                             </div>
 
@@ -121,9 +88,6 @@
                                         <th>S.No</th>
                                         <th>Indicators</th>
                                         <th>Indicator Category</th>
-
-
-
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -133,7 +97,6 @@
                                         <td>{!! $question->indicator !!}</td>
                                         <td>{!! strtoupper(\App\Indicator_Group::find($question->group_id)->name) !!}</td>
                                     </tr>
-
                                     @endforeach
                                     </tbody>
                                     <tfoot>
@@ -141,50 +104,17 @@
                                         <th>S.No</th>
                                         <th>Indicators</th>
                                         <th>Indicator Category</th>
-
-
                                     </tr>
                                     </tfoot>
                                 </table>
-
                             </div>
-
                         </div><br>
 
                             <p class="panel-title">
                              <a data-toggle="collapse" href="#collapse2"><i class="fa fa-sort-desc" aria-hidden="true"></i>
                                     <label>Participants of the survey</label></a>
-                            <p>By default, all the basic and special users of your company will be invited to participate in the survey. Click above to see the list of participants.</p>
+                            <p>By default, all the basic and special users in the selected group above will be invited to participate in the survey.</p>
                             </p>
-
-
-                            <div id="collapse2" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <table id="example1" class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr>
-											<th>User ID</th>
-                                            <th>Full Name</th>
-                                            <th>Email Address</th>
-                                         </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($participants as $participant)
-                                            <tr>
-                                                <td>{!! $participant->user_id !!}</td>
-                                                <td>{!! $participant->name !!}</td>
-                                                <td>{!! $participant->email !!}</td>
-                                            </tr>
-                                            <p></p>
-                                        @endforeach
-
-                                        </tbody>
-                                        </table>
-
-
-                                </div>
-
-                            </div>
                             <br>
 
                             <div class="form-group{!! $errors->has('editor2') ? ' has-error':'' !!} has-feedback">
