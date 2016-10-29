@@ -119,14 +119,31 @@
                                     <script src="{{URL::asset('js/displayChart.js')}}">
                                     </script>
                                     <script>
-                                      createChart(
-                                        document.getElementById("indicatorGroupAverage"),
-                                        ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
-                                        'Company average score of each dimension',
-                                        [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
-                                          {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
-                                        'rgba(0,0,255,1)'
-                                      );
+                                    var chartArea = document.getElementById('indicatorGroupAverage');
+                                    var datasetOwnScore = {
+                                      label: 'Minimum Company Average Score Each Dimension',
+                                      data: [
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average!!},
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average!!},
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Minimum_User_Indicator_Group_Average!!},
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Minimum_User_Indicator_Group_Average!!},
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Minimum_User_Indicator_Group_Average!!}
+                                            ],
+                                       backgroundColor: 'rgba(255,0,0,1)'
+                                    };
+                                    var datasetGroupAvg = {
+                                      label: 'Maximum Company Average Score Each Dimension',
+                                      data: [
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Maximum_User_Indicator_Group_Average!!},
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Maximum_User_Indicator_Group_Average!!},
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Maximum_User_Indicator_Group_Average!!},
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Maximum_User_Indicator_Group_Average!!},
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Maximum_User_Indicator_Group_Average!!}
+                                      ],
+                                      backgroundColor: 'rgba(0,0,255,1)'
+                                    };
+                                    var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
+                                    createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
                                     </script>
 									@else
 										<div>You have no surveys results to display or your indicators group count is not equal 5</div>
@@ -138,7 +155,6 @@
                                   </div>
 
                                   <div id="detailedview" class="tab-pane fade">
-<<<<<<< HEAD
 
 
                                     <div class="tab-content">
@@ -146,11 +162,7 @@
 
                                           <div class="pull-left" >
                                                       <label id="surveyId">{!! $survey->id !!}</label>
-=======
 
-									<div class="pull-left" >
-										                                  <label id="surveyId">{!! $survey->id !!}</label>
->>>>>>> cf4aa6ac6abd4f47b71dc23eb19d9ac8fc064291
                                             <h5 class="select-users"><label>Select User</label>
                                               <select id="participantsIds">
                                                 <option value="default">Select a user</option>

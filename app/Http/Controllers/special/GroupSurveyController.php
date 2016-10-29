@@ -137,12 +137,12 @@ class GroupSurveyController extends Controller
 
 
         }
-		
-		
+
+
 	public function switchLanguage(Request $request){
 		return response()->json(array('stri'=>'success'));
 	}
-		
+
 
 		public function lookForGroupMembers(Request $request){
 					$members = DB::table('users')
@@ -356,7 +356,7 @@ class GroupSurveyController extends Controller
                     $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
                             "SELECT results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
                             indicators.id as Indicator_ID, indicators.indicator as Indicator,
-                            AVG(results.answer) as Group_Average
+                            ROUND( AVG(results.answer), 2) as Group_Average
                             FROM indicators
                             join results on results.indicator_id = indicators.id
                             join user_in_groups on results.user_id = user_in_groups.user_id
@@ -369,7 +369,7 @@ class GroupSurveyController extends Controller
                             "SELECT results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
                             results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
                             indicator_groups.name as Indicator_Group,
-                            AVG(results.answer) as Indicator_Group_Average
+                            ROUND( AVG(results.answer), 2) as Indicator_Group_Average
                             FROM indicators
                             JOIN results on results.indicator_id = indicators.id
                             JOIN indicator_groups on indicators.group_id = indicator_groups.id
@@ -383,7 +383,7 @@ class GroupSurveyController extends Controller
                             "SELECT results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
                             indicators.group_id as Indicator_Group_ID,
                             indicator_groups.name as Indicator_Group,
-                            AVG(results.answer) as Indicator_Group_Average
+                            ROUND( AVG(results.answer), 2) as Indicator_Group_Average
                             FROM indicators
                             JOIN results on results.indicator_id = indicators.id
                             JOIN indicator_groups on indicators.group_id = indicator_groups.id
@@ -449,7 +449,7 @@ class GroupSurveyController extends Controller
                                               ->where('results.survey_id',$id)
                                               ->distinct()->get();
 
-											  						  
+
 			  $participantsSelect = DB::select(DB::raw(
                             "select results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
 								results.user_id as User_ID, users.name as name,
@@ -506,7 +506,7 @@ class GroupSurveyController extends Controller
                     $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
                             "SELECT results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
                             indicators.id as Indicator_ID, indicators.indicator as Indicator,
-                            AVG(results.answer) as Group_Average
+                            ROUND( AVG(results.answer), 2) as Group_Average
                             FROM indicators
                             join results on results.indicator_id = indicators.id
                             join user_in_groups on results.user_id = user_in_groups.user_id
@@ -520,7 +520,7 @@ class GroupSurveyController extends Controller
                             "SELECT results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
                             results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
                             indicator_groups.name as Indicator_Group,
-                            AVG(results.answer) as Indicator_Group_Average
+                            ROUND(AVG(results.answer), 2) as Indicator_Group_Average
                             FROM indicators
                             JOIN results on results.indicator_id = indicators.id
                             JOIN indicator_groups on indicators.group_id = indicator_groups.id
@@ -535,7 +535,7 @@ class GroupSurveyController extends Controller
                             "SELECT results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
                             indicators.group_id as Indicator_Group_ID,
                             indicator_groups.name as Indicator_Group,
-                            AVG(results.answer) as Indicator_Group_Average
+                            ROUND( AVG(results.answer), 2) as Indicator_Group_Average
                             FROM indicators
                             JOIN results on results.indicator_id = indicators.id
                             JOIN indicator_groups on indicators.group_id = indicator_groups.id

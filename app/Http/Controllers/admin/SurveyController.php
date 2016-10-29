@@ -137,12 +137,12 @@ use EmailTrait;
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-	
+
 	//This is because setting a global route to do this was giving inconsistencies when one would navigate from page to page
 	public function switchLanguage(Request $request){
 		return response()->json(array('stri'=>'success'));
 	}
-	 
+
 	//Notes: Ajax does a post but knows nothing about rendering complex blades smoothly without using complex code
 	//To achieve smooth redirection in a simple way you have to call a route in the ajax window.replace function
 	//A sensible approach here would be to get post results, put them in private variables and then use them in a function
@@ -165,11 +165,11 @@ use EmailTrait;
 		return $this->getParticipantDetails($surveyId, $participantId);
     }
 
-	//Tight coupling the seemingly similar queries or functions may look feasible at first sight, but remember they cater for different situations and functionality which may 
+	//Tight coupling the seemingly similar queries or functions may look feasible at first sight, but remember they cater for different situations and functionality which may
 	//dynamically change: abstract class implementations in laravel may possibly be okay but we opted for a self contained implementation
 	//Also another assumption has been made that an unbuffered query of say 500 to 2000 records can be easily processed by the available server resources within a loop
 	//The practical aspect of survey respondents being more than 500 to 2000 participants is unlikely yet even in the case of 10,000 respondents,
-	// the server should be able to handle that. if we are talking bigger respondents than that here, then a new design approach 
+	// the server should be able to handle that. if we are talking bigger respondents than that here, then a new design approach
 	//May have to be looked into.
 	public function downloadCsv($surveyId){
 		$id = $surveyId;
@@ -192,7 +192,7 @@ use EmailTrait;
                                 ->where('results.survey_id',$id)
                                 ->groupBy('results.survey_id','results.user_id', 'indicators.id')
                                 ->get();
-								
+
 			   $participants = DB::table('participants')
                                 ->join('users','users.id','=','participants.user_id')
                                 ->select('users.id as User_ID',
@@ -202,7 +202,7 @@ use EmailTrait;
                                 ->where('participants.survey_id',$id)
                                 ->groupBy('participants.survey_id','participants.user_id')
                                 ->get();
-								
+
 				$surveys = DB::table('surveys')
                                 ->select('surveys.id as Survey_ID',
                                          'surveys.title as Title','surveys.description as Description',
@@ -215,12 +215,12 @@ use EmailTrait;
 			  $company_profile=$company->profile()->first();
 			  $participantsNumber = count(Survey::find($id)->participants()->get());
 			  $participantsCompletedNumber = count(Survey::find($id)->participants()->where('completed',1)->get());
-			  
+
 			  $headers = array(
 					'Content-Type' 	=> 'application/vnd.ms-excel',
 					'Content-Disposition'	=>	'attachment;filename="dav.xlsx"'
 				);
-				
+
 			  $workBook = new PHPExcel();
 			  $workSheet1 = new PHPExcel_Worksheet($workBook, 'Survey');
 			  $workBook->addSheet($workSheet1,0);
@@ -228,7 +228,7 @@ use EmailTrait;
 			  $workBook->addSheet($workSheet2,1);
 			  $workSheet3 = new PHPExcel_Worksheet($workBook, 'Results');
 			  $workBook->addSheet($workSheet3,2);
-			  
+
 			  //Write the survey details to the excel sheet
 			  $surveyArray = array();
 			  $surveyArray[] = ['Survey_ID','Title','Description','Start_Time','End_Time'
@@ -241,8 +241,8 @@ use EmailTrait;
 					NULL,
 					'A1'
 			  );
-			  
-			  
+
+
 			  //Write the participants to the excel sheet
 			  $surveyParticipantsArray = array();
 			  $surveyParticipantsArray[] = ['User_ID','Name','Email','Completed'
@@ -255,7 +255,7 @@ use EmailTrait;
 					NULL,
 					'A1'
 			  );
-			  
+
 			  //Write the results to the excel sheet
 			  $surveyScoreAllUsersArray = array();
 			  $surveyScoreAllUsersArray[] = ['Survey_ID','User_ID','Indicator_ID',
@@ -269,11 +269,11 @@ use EmailTrait;
 					NULL,
 					'A1'
 			  );
-			  
+
 			  //Get a php object writer coz we want to write objects to file
 			  $objectWriter = PHPExcel_IOFactory::createWriter($workBook,'Excel2007');
 			  ob_end_clean();
-			  
+
 			  //Provide a callback to be used by the response stream
 			  $callback = function() use($objectWriter){
 				  //Write the objects to a php output
@@ -281,7 +281,7 @@ use EmailTrait;
 			  };
 			  //return the stream
 			  return response()->stream($callback, 200, $headers);
-			  
+
           }
 
       }else{
@@ -289,8 +289,8 @@ use EmailTrait;
               ->with('message','The survey you requested doe not belong to your company or does not exists in the Fincoda Survey System.');
       }
     }
-	
-	
+
+
     /**
      * Display the specified resource.
      *
@@ -298,7 +298,7 @@ use EmailTrait;
      * @return \Illuminate\Http\Response
      */
     public function show($id){
-		
+
       if($this->ValidateSurvey($id)=='true'){
           if($this->SurveyStatus($id)=='pending'){
               return view('survey.update')->with('survey',Survey::find($id))
@@ -324,7 +324,7 @@ use EmailTrait;
               $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
                                 "SELECT results.survey_id as Survey_ID,
                                 indicators.id as Indicator_ID, indicators.indicator as Indicator,
-                                AVG(results.answer) as Group_Average
+                                ROUND( AVG(results.answer), 2) as Group_Average
                                 FROM indicators
                                 join results on results.indicator_id = indicators.id
                                 WHERE results.survey_id = :surveyId
@@ -336,7 +336,7 @@ use EmailTrait;
                                 "SELECT results.survey_id as Survey_ID,
                                 results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
                                 indicator_groups.name as Indicator_Group,
-                                AVG(results.answer) as Indicator_Group_Average
+                                ROUND( AVG(results.answer), 2) as Indicator_Group_Average
                                 FROM indicators
                                 JOIN results on results.indicator_id = indicators.id
                                 JOIN indicator_groups on indicators.group_id = indicator_groups.id
@@ -349,7 +349,7 @@ use EmailTrait;
                                 "SELECT results.survey_id as Survey_ID,
                                 indicators.group_id as Indicator_Group_ID,
                                 indicator_groups.name as Indicator_Group,
-                                AVG(results.answer) as Indicator_Group_Average
+                                ROUND( AVG(results.answer), 2) as Indicator_Group_Average
                                 FROM indicators
                                 JOIN results on results.indicator_id = indicators.id
                                 JOIN indicator_groups on indicators.group_id = indicator_groups.id
@@ -654,7 +654,7 @@ public function getParticipantDetails($surveyId, $participantId){
               $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
                                 "SELECT results.survey_id as Survey_ID,
                                 indicators.id as Indicator_ID, indicators.indicator as Indicator,
-                                AVG(results.answer) as Group_Average
+                                ROUND( AVG(results.answer), 2) as Group_Average
                                 FROM indicators
                                 join results on results.indicator_id = indicators.id
                                 WHERE results.survey_id = :surveyId
@@ -666,7 +666,7 @@ public function getParticipantDetails($surveyId, $participantId){
                                 "SELECT results.survey_id as Survey_ID,
                                 results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
                                 indicator_groups.name as Indicator_Group,
-                                AVG(results.answer) as Indicator_Group_Average
+                                ROUND( AVG(results.answer), 2) as Indicator_Group_Average
                                 FROM indicators
                                 JOIN results on results.indicator_id = indicators.id
                                 JOIN indicator_groups on indicators.group_id = indicator_groups.id
@@ -679,7 +679,7 @@ public function getParticipantDetails($surveyId, $participantId){
                                 "SELECT results.survey_id as Survey_ID,
                                 indicators.group_id as Indicator_Group_ID,
                                 indicator_groups.name as Indicator_Group,
-                                AVG(results.answer) as Indicator_Group_Average
+                                ROUND( AVG(results.answer), 2) as Indicator_Group_Average
                                 FROM indicators
                                 JOIN results on results.indicator_id = indicators.id
                                 JOIN indicator_groups on indicators.group_id = indicator_groups.id
