@@ -40,10 +40,10 @@
         @role('basic')
         @if($open->completed=='0')
         <td><a href="{!! url('basic/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
+		<td> </td>
         @else
-            <td>{!! $open->title !!}
-
-            </td>
+            <td>{!! $open->title !!}</td>
+			<td> </td>
             @endif
 
         @endrole
@@ -55,10 +55,10 @@
         @else
         @if($open->completed=='0')
             <td><a href="{!! url('special/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
+			<td> </td>
         @else
-            <td>{!! $open->title !!}
-
-            </td>
+            <td>{!! $open->title !!}</td>
+			<td> </td>
         @endif
         @endif
 
