@@ -5,11 +5,8 @@
         <div class="col-md-12 col-md-offset-0">
             <!-- general form elements -->
 
-            @role('admin')
-            {!! Form::open(['method'=>'POST','action'=>'admin\SurveyController@store']) !!}
-            @endrole
             @role('special')
-            {!! Form::open(['method'=>'POST','action'=>'special\GroupSurveyController@store']) !!}
+            {!! Form::open(['method'=>'POST','action'=>'special\GroupSurveyController@updateSurvey']) !!}
             @endrole
 
             <div class="box-header with-border">
@@ -23,13 +20,19 @@
                 <div class="box-body">
                     <div class="panel panel-default">
                         <div class="panel-body">
+						
+						<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
+                                <label><h3>Survey Id*:</h3></label>
+                                 {!! Form::text('id',$survey->id,['class'=>'form-control','readonly']) !!}
+                            </div><br>
+						
                             <div class="form-group{!! $errors->has('title') ? ' has-error':'' !!} has-feedback">
                         <label><h3>Survey Title*:</h3></label>
                             <p>Provide a name/title for your survey</p>
                          @if($errors->has('title'))
                               <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('title') !!}</label>
                          @endif
-                        {!! Form::text('title',old('title'),['class'=>'form-control','placeholder'=>'Title of your Survey']) !!}
+                        {!! Form::text('title',$survey->title,['class'=>'form-control']) !!}
                                 </div><br>
 
                             <div class="form-group{!! $errors->has('editor1') ? ' has-error':'' !!} has-feedback">
@@ -38,13 +41,24 @@
                                 @if($errors->has('editor1'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('editor1') !!}</label>
                                 @endif
-                                {!! Form::textarea('editor1',old('editor1'),['id'=>'editor1','rows'=>'10','cols'=>'80']) !!}
+                                {!! Form::textarea('editor1',$survey->description,['id'=>'editor1','rows'=>'10','cols'=>'80']) !!}
                             </div><br>
 
                             <div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
                             <label><h3>Open data ane time range*:</h3></label>
-                            <p>Please choose the date and time range of the start and end of the survey.</p>
-                                @if($errors->has('date'))
+							
+							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
+                                <label><h3>Current Start Time:</h3></label>
+                                 {!! Form::text('currentStartTime',$survey->start_time,['class'=>'form-control','readonly']) !!}
+                            </div><br>
+							
+							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
+                                <label><h3>Current End Time:</h3></label>
+                                 {!! Form::text('currentEndTime',$survey->end_time,['class'=>'form-control','readonly']) !!}
+                            </div><br>
+							
+                            <p>Please choose the date and time range of the start and end of the survey: Current Date And Time On Server: {{\Carbon\Carbon::now()}}</p>
+								@if($errors->has('date'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('date') !!}</label>
                                 @endif
                             <div class="form-group">
@@ -61,17 +75,20 @@
 
                             <br>
                             <label><h3>Select a Survey Type*:</h3></label><br>
-                            {!! Form::radio('survey_type','1',true,['class'=>'form-group']) !!}
+							@if($survey->type_id == 1)
+								{!! Form::radio('survey_type','1',true,['class'=>'form-group']) !!}
+							@else
+								{!! Form::radio('survey_type','1','',['class'=>'form-group']) !!}
+							@endif
                             <label>Self Evaluation Survey</label><br>
-                            {!! Form::radio('survey_type','2','',['class'=>'form-group']) !!}
+							@if($survey->type_id == 2)
+								{!! Form::radio('survey_type','2','true',['class'=>'form-group']) !!}
+							@else
+								{!! Form::radio('survey_type','2','',['class'=>'form-group']) !!}
+							@endif
                             <label>Peer Evaluation Survey</label><br><br>
-							
-							<div class="form-group">
-                                <label><h3>Select a group for this survey*:</h3></label>
-                                <p>Please select a group. The special users of the company are the administrators for the user groups.</p>
-                               {!! Form::select('group',$groups,null,['class'=>'form-control']) !!}
 
-                            </div>
+
 
                             <p class="panel-title">
                                 <a data-toggle="collapse" href="#collapse1"><i class="fa fa-sort-desc" aria-hidden="true"></i>
@@ -97,6 +114,7 @@
                                         <td>{!! $question->indicator !!}</td>
                                         <td>{!! strtoupper(\App\Indicator_Group::find($question->group_id)->name) !!}</td>
                                     </tr>
+
                                     @endforeach
                                     </tbody>
                                     <tfoot>
@@ -104,18 +122,70 @@
                                         <th>S.No</th>
                                         <th>Indicators</th>
                                         <th>Indicator Category</th>
-                                    </tr>
+										</tr>
                                     </tfoot>
                                 </table>
                             </div>
                         </div><br>
+						
+						 <p class="panel-title">
+                             <a data-toggle="collapse" href="#collapse4"><i class="fa fa-sort-desc" aria-hidden="true"></i>
+                                    <label>Participants who have completed the survey</label></a>
+                            </p>
+                            <div id="collapse4" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+											<th>User ID</th>
+											<th>Full Name</th>
+                                            <th>Email Address</th>
+                                         </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($participantsCompleted as $participant)
+                                            <tr>
+												<td>{!! $participant->id !!}</td>
+												<td>{!! $participant->name !!}</td>
+                                                <td>{!! $participant->email !!}</td>
+                                            </tr>
+                                            <p></p>
+                                        @endforeach
+                                        </tbody>
+                                        </table>
+                                </div>
+                            </div>
+							
+							
 
                             <p class="panel-title">
                              <a data-toggle="collapse" href="#collapse2"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>Participants of the survey</label></a>
-                            <p>By default, all the basic and special users in the selected group above will be invited to participate in the survey.</p>
+                                    <label>Participants who have not yet completed the survey (you cannot remove from these coz you do not know which group the survey belongs)</label></a>
                             </p>
-                            <br>
+                            <div id="collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+											<th>User ID</th>
+											<th>Full Name</th>
+                                            <th>Email Address</th>
+                                         </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($participantsNotCompleted as $participant)
+                                            <tr>
+												<td>{!! $participant->id !!}</td>
+												<td>{!! $participant->name !!}</td>
+                                                <td>{!! $participant->email !!}</td>
+                                            </tr>
+                                            <p></p>
+                                        @endforeach
+                                        </tbody>
+                                        </table>
+                                </div>
+                            </div>
+						     <br>
 
                             <div class="form-group{!! $errors->has('editor2') ? ' has-error':'' !!} has-feedback">
                             <label><h3>Survey completion text*:</h3></label>
@@ -123,10 +193,10 @@
                                 @if($errors->has('editor2'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('editor2') !!}</label>
                                 @endif
-                                {!! Form::textarea('editor2',old('editor2'),['id'=>'editor2','rows'=>'10','cols'=>'80']) !!}</div><br>
+                                {!! Form::textarea('editor2',$survey->end_message,['id'=>'editor2','rows'=>'10','cols'=>'80']) !!}</div><br>
 
 
-                            <button type="submit" class="btn btn-info btn-flat" > Create Survey</button>
+                            <button type="submit" class="btn btn-info btn-flat" > Update Survey</button>
 
                         </div>
                     </div>

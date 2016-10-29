@@ -967,9 +967,37 @@ public function getParticipantDetails($surveyId, $participantId){
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function editSurvey($id)
     {
-        //
+		$survey = Survey::find($id);
+		$indicators = Indicator::all();
+		$participantsCompleted = DB::select(DB::raw(
+                            "select users.id, users.name, users.email from users where users.id in 
+								(select participants.user_id from participants 
+									where participants.survey_id = :surveyId and participants.completed = 1)"),
+								array("surveyId"=>$id));
+								
+		$participantsNotCompleted = DB::select(DB::raw(
+                            "select users.id, users.name, users.email from users where users.id in 
+								(select participants.user_id from participants 
+									where participants.survey_id = :surveyId and participants.completed != 1)"),
+								array("surveyId"=>$id));
+		
+		//These are the ones who have not been invited to take part in the survey						
+		$participantsNot = DB::select(DB::raw(
+                            "select users.id, users.name, users.email from users where users.company_id = :companyId and users.id not in 
+								(select participants.user_id from participants 
+									where participants.survey_id = :surveyId)"),
+								array("surveyId"=>$id,"companyId"=>Auth::User()->company_id));
+
+		
+        return view('survey.editAdmin')
+				->with('survey',$survey)
+				->with('indicators',$indicators)
+				->with('participantsNot',$participantsNot)
+				->with('participantsNotCompleted',$participantsNotCompleted)
+				->with('participantsCompleted',$participantsCompleted);
+
     }
 
     /**
@@ -979,46 +1007,79 @@ public function getParticipantDetails($surveyId, $participantId){
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function updateSurvey(Request $request){
+		$survey = Survey::find($request->id);
         $validation=Validator::make($request->all(),[
             'title'=>'required|max:255',
             'editor1'=>'required|max:500',
-            'date'=>'required',
             'survey_type'=>'required',
             'editor2'=>'required|max:500'
 
         ]);
         if($validation->fails()){
             return redirect()->back()->withErrors($validation)->withInput();
-        }
-        else{
-
-           $date=explode('-',$request->date);
-            $from=new Carbon($date[0]);
-            $to=new Carbon($date[1]);
-
-            if($from<Carbon::now()->addHour(1) || $to<Carbon::now()->addHour(1)){
-                return redirect()->back()
+        }else{
+			if(!empty($request->date)){
+				$date=explode('-',$request->date);
+				$from=new Carbon($date[0]);
+				$to=new Carbon($date[1]);
+				
+				if($from<Carbon::now()->addHour(1) || $to<Carbon::now()->addHour(1)){
+					return redirect()->back()
                     ->with('fail','The Survey open and close date should not be before the current date and time. Please fix the date range before creating the survey.')
                     ->withInput();
-            }else{
-                $survey=Survey::find($id);
-                $survey->title=$request->title;
-                $survey->description=$request->editor1;
-                $survey->end_message=$request->editor2;
-                $survey->type_id=$request->survey_type;
-                $survey->start_time=$from;
-                $survey->end_time=$to;
-                $survey->save();
-
-                return Redirect::to('admin')->with('success','The survey has been updated successfully.
+				}
+				
+				DB::table('surveys')
+							->where('id',$request->id)
+							->update([
+								'title'=>$request->title,
+								'description'=>$request->editor1,
+								'end_message'=>$request->editor2,
+								'type_id'=>$request->survey_type,
+								'start_time'=>$from,
+								'end_time'=>$to,
+								'updated_at'=>Carbon::now()
+					]);
+			}else{
+				DB::table('surveys')
+							->where('id',$request->id)
+							->update([
+								'title'=>$request->title,
+								'description'=>$request->editor1,
+								'end_message'=>$request->editor2,
+								'type_id'=>$request->survey_type,
+								'updated_at'=>Carbon::now()
+					]);
+			}
+            
+			if(!empty($request->usersToRemove)){
+               foreach($request->usersToRemove as $user){
+					DB::table('participants')
+						->where('user_id', $user)
+						->where('survey_id', $request->id)
+						->delete();
+						$userEmail = DB::table('users')->where('id',$user)->value('email');
+						$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name, 'title'=>$survey->title],$userEmail);
+				}
+			}
+			
+			if(!empty($request->usersToAdd)){
+				foreach($request->usersToAdd as $user){
+					DB::table('participants')
+						->insert([
+							'survey_id'=>$request->id,
+							'user_id'=>$user,
+							'updated_at'=>Carbon::now()
+						]);
+						$userEmail = DB::table('users')->where('id',$user)->value('email');
+						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'title'=>$survey->title],$userEmail);
+				}
+			}
+            
+            return Redirect::to('admin')->with('success','The survey has been updated successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
-
-
-            }
-
-
+           
         }
 
     }

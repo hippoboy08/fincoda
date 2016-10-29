@@ -5,6 +5,7 @@
         <thead>
         <tr>
             <th>Title</th>
+			<th>Edit</th>
             <th>Survey Type</th>
             <th>Open Date</th>
             <th>Close Date</th>
@@ -18,7 +19,8 @@
             <tr>
                 @role('admin')
                 <td><a href="{!! url('admin/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
-                @endrole
+				<td><a href="{!! url('admin/survey/edit/'.$closed->id) !!}">edit</a></td>
+				@endrole
 
                 @role('basic')
                 @if(Auth::User()->participate_survey->where('survey_id',$closed->id)->first()->completed==0)
@@ -26,16 +28,16 @@
                @else
                     <td><a href="{!! url('basic/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
                     @endif
-
                 @endrole
 
                 @role('special')
 
                 @if(Route::current()->getName()=='special.groupsurvey.index')
                     <td><a href="{!! url('special/groupsurvey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
+					<td><a href="{!! url('special/groupsurvey/edit/'.$closed->id) !!}">edit</a></td>
                 @elseif(Route::getCurrentRoute()->getPath()=='special/groupsurveyresult')
                     <td><a href="{!! url('special/groupsurvey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
-                @else
+				@else
 
 
                     @if(Auth::User()->participate_survey->where('survey_id',$closed->id)->first()->completed==0)
