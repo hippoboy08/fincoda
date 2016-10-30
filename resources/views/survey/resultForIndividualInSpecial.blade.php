@@ -197,6 +197,7 @@
                                                  <caption style="text-align:center;">User score per indicator compared with group average score per indicator</caption>
                                                    <thead>
                                                    <tr>
+                                                       <th>Indicator ID</th>
                                                        <th>Indicator Name</th>
                                                        <th>User Answer Indicator</th>
                                                        <th>Group Average Each Indicator</th>
@@ -209,6 +210,7 @@
                                                      @else
                                                      @foreach($surveyScoreAllUsers as $results)
                                                        <tr>
+                                                         <td>{!! $results->Indicator_ID !!}</td>
                                                          <td>{{Lang::get('indicators.'.$results->Indicator_ID,array(),App::getLocale())}}</td>
                                                          <td>{!! $results->Answer !!}</td>
 
