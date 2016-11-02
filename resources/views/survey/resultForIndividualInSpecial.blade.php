@@ -32,7 +32,7 @@
                                   <li><h5><label>Start time : </label> {!! $survey->start_time !!}</h5></li>
                                   <li><h5><label>Deadline : </label> {!! $survey->end_time !!}</h5></li>
                                   <li><h5><label>Total Participants : </label> {!! count($participants)!!}</h5></li>
-                                  <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
+                                  <li><h5><label>Total answers : </label> {!! count($answers)!!}</h5></li>
                                 </ul>
 
                                 @role ('special')
@@ -163,7 +163,7 @@
                                                <h5 class="select-users"><label>Select User</label>
                                                  <select id="participantsIds">
                                                    <option>Select a user</option>
-   													  @foreach($participantsSelect as $participant)
+   													  @foreach($answers as $participant)
    														<option value="{!!$participant->User_ID !!}">{!! $participant->email !!}</option>
    													  @endforeach
    											  </select>

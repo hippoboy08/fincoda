@@ -31,7 +31,7 @@
                                   <li><h5><label>Start time : </label> {!! $survey->start_time !!}</h5></li>
                                   <li><h5><label>Deadline : </label> {!! $survey->end_time !!}</h5></li>
                                   <li><h5><label>Total Participants : </label> {!! count($participants)!!}</h5></li>
-                                  <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
+                                  <li><h5><label>Total answers : </label> {!! count($answers)!!}</h5></li>
 								</ul>
 
                                 @role ('admin')
@@ -117,7 +117,7 @@
                                     </script>
                                     <script>
                                       var chartArea = document.getElementById('indicatorGroupAverage');
-                                      var datasetOwnScore = {
+                                      var datasetMinCompany = {
                                         label: 'Minimum Company Average Score Each Dimension',
                                         data: [
                                                 {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average!!},
@@ -128,7 +128,7 @@
                                               ],
                                          backgroundColor: 'rgba(255,0,0,1)'
                                       };
-                                      var datasetGroupAvg = {
+                                      var datasetMaxCompany = {
                                         label: 'Maximum Company Average Score Each Dimension',
                                         data: [
                                           {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Maximum_User_Indicator_Group_Average!!},
@@ -139,8 +139,16 @@
                                         ],
                                         backgroundColor: 'rgba(0,0,255,1)'
                                       };
+                                      var datasetAvgCompany = {
+                                        label: 'Company Average Score Each Dimension',
+                                        data: [
+                                          {!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
+                                            {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}
+                                        ],
+                                        backgroundColor: 'rgba(255,255,0,1)'
+                                      };
                                       var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
-                                      createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
+                                      createMaxMinChart(chartArea, labelArr, datasetMinCompany, datasetAvgCompany, datasetMaxCompany);
                                     </script>
 									@else
 										<div>You have no surveys results to display or your indicators group count is not equal 5</div>
@@ -164,7 +172,7 @@
                                              <h5 class="select-users"><label>Select User</label>
                                                <select id="participantsIds">
                                                  <option>Select a user</option>
-                                          @foreach($participants as $participant)
+                                          @foreach($answers as $participant)
                                           <option value="{!! \App\User::find($participant->user_id)->id !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
                                           @endforeach
                                           </select>

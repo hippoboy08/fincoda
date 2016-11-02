@@ -577,8 +577,8 @@ use EmailTrait;
 				//This returns the average of each user group per indicator group in this survey
               $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
                                 "SELECT p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,
-									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
-									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
+									ROUND(MIN(p.Indicator_Group_Average),2) as Minimum_User_Indicator_Group_Average ,
+									ROUND(MAX(p.Indicator_Group_Average),2) as Maximum_User_Indicator_Group_Average FROM
 										(SELECT results.survey_id as Survey_ID, results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
 											indicator_groups.name as Indicator_Group,
 											AVG(results.answer) as Indicator_Group_Average
@@ -615,7 +615,7 @@ use EmailTrait;
 			  ->with('participants',Survey::find($id)->participants)
               ->with('company',$company)
               ->with('company_profile',$company->profile()->first())
-              ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+              ->with('answers',Survey::find($id)->participants()->where('completed',1)->get());
           }
 
       }else{
@@ -910,8 +910,8 @@ public function getParticipantDetails($surveyId, $participantId){
 				//This returns the minimum and maximum average per indicator group in this survey
               $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
                                 "SELECT p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,
-									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
-									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
+									ROUND(MIN(p.Indicator_Group_Average), 2) as Minimum_User_Indicator_Group_Average ,
+									ROUND(MAX(p.Indicator_Group_Average), 2) as Maximum_User_Indicator_Group_Average FROM
 										(SELECT results.survey_id as Survey_ID, results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
 											indicator_groups.name as Indicator_Group,
 											AVG(results.answer) as Indicator_Group_Average
@@ -949,7 +949,7 @@ public function getParticipantDetails($surveyId, $participantId){
               ->with('company',$company)
               ->with('user',$userId)
               ->with('company_profile',$company->profile()->first())
-              ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+              ->with('answers',Survey::find($id)->participants()->where('completed',1)->get());
           }
 
       }else{
@@ -972,25 +972,25 @@ public function getParticipantDetails($surveyId, $participantId){
 		$survey = Survey::find($id);
 		$indicators = Indicator::all();
 		$participantsCompleted = DB::select(DB::raw(
-                            "select users.id, users.name, users.email from users where users.id in 
-								(select participants.user_id from participants 
+                            "select users.id, users.name, users.email from users where users.id in
+								(select participants.user_id from participants
 									where participants.survey_id = :surveyId and participants.completed = 1)"),
 								array("surveyId"=>$id));
-								
+
 		$participantsNotCompleted = DB::select(DB::raw(
-                            "select users.id, users.name, users.email from users where users.id in 
-								(select participants.user_id from participants 
+                            "select users.id, users.name, users.email from users where users.id in
+								(select participants.user_id from participants
 									where participants.survey_id = :surveyId and participants.completed != 1)"),
 								array("surveyId"=>$id));
-		
-		//These are the ones who have not been invited to take part in the survey						
+
+		//These are the ones who have not been invited to take part in the survey
 		$participantsNot = DB::select(DB::raw(
-                            "select users.id, users.name, users.email from users where users.company_id = :companyId and users.id not in 
-								(select participants.user_id from participants 
+                            "select users.id, users.name, users.email from users where users.company_id = :companyId and users.id not in
+								(select participants.user_id from participants
 									where participants.survey_id = :surveyId)"),
 								array("surveyId"=>$id,"companyId"=>Auth::User()->company_id));
 
-		
+
         return view('survey.editAdmin')
 				->with('survey',$survey)
 				->with('indicators',$indicators)
@@ -1023,13 +1023,13 @@ public function getParticipantDetails($surveyId, $participantId){
 				$date=explode('-',$request->date);
 				$from=new Carbon($date[0]);
 				$to=new Carbon($date[1]);
-				
-				if($from<Carbon::now()->addHour(1) || $to<Carbon::now()->addHour(1)){
+
+				if($to<Carbon::now()->addHour(1)){
 					return redirect()->back()
                     ->with('fail','The Survey open and close date should not be before the current date and time. Please fix the date range before creating the survey.')
                     ->withInput();
 				}
-				
+
 				DB::table('surveys')
 							->where('id',$request->id)
 							->update([
@@ -1037,7 +1037,6 @@ public function getParticipantDetails($surveyId, $participantId){
 								'description'=>$request->editor1,
 								'end_message'=>$request->editor2,
 								'type_id'=>$request->survey_type,
-								'start_time'=>$from,
 								'end_time'=>$to,
 								'updated_at'=>Carbon::now()
 					]);
@@ -1052,7 +1051,7 @@ public function getParticipantDetails($surveyId, $participantId){
 								'updated_at'=>Carbon::now()
 					]);
 			}
-            
+
 			if(!empty($request->usersToRemove)){
                foreach($request->usersToRemove as $user){
 					DB::table('participants')
@@ -1063,7 +1062,7 @@ public function getParticipantDetails($surveyId, $participantId){
 						$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name, 'title'=>$survey->title],$userEmail);
 				}
 			}
-			
+
 			if(!empty($request->usersToAdd)){
 				foreach($request->usersToAdd as $user){
 					DB::table('participants')
@@ -1076,10 +1075,10 @@ public function getParticipantDetails($surveyId, $participantId){
 						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'title'=>$survey->title],$userEmail);
 				}
 			}
-            
+
             return Redirect::to('admin')->with('success','The survey has been updated successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
-           
+
         }
 
     }
