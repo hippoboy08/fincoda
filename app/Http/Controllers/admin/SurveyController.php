@@ -895,8 +895,14 @@ use EmailTrait;
                                 array("surveyId"=>$id));
 
 
-                                $company=Auth::User()->company()->first();
-								$company_profile=$company->profile()->first();
+				$company=Auth::User()->company()->first();
+				$company_profile=$company->profile()->first();
+								
+				$answers = DB::select(DB::raw(
+					"select users.id, users.name, users.email from users where users.id in
+						(select participants.user_id from participants where participants.survey_id = :surveyId and participants.completed = 1)"),
+							array("surveyId"=>$id));
+								
 
               return view('survey.resultForAdmin')->with('survey',Survey::find($id))
               ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
@@ -919,7 +925,7 @@ use EmailTrait;
 			  ->with('participants',Survey::find($id)->participants)
               ->with('company',$company)
               ->with('company_profile',$company->profile()->first())
-              ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+              ->with('answers',$answers);
           }else{
 			  //This is peer
 			  $surveyScoreAllUsersCheckThreeParticipants = DB::select(DB::raw(
@@ -1024,7 +1030,7 @@ use EmailTrait;
                             ->with('company',$company)
 						    ->with('company_profile',$company->profile()->first())
 						    ->with(['surveyScoreGroupAvgPerIndicatorGroupMinAndMax' => $surveyScoreGroupAvgPerIndicatorGroupMinAndMax])
-							->with('answers',count($answers));
+							->with('answers',$answers);
 		  }
 		  }
 
@@ -1333,8 +1339,14 @@ public function getParticipantDetails($surveyId, $participantId){
                                 array("surveyId"=>$id));
 
 
-                                $company=Auth::User()->company()->first();
-								$company_profile=$company->profile()->first();
+				$company=Auth::User()->company()->first();
+				$company_profile=$company->profile()->first();
+				
+				$answers = DB::select(DB::raw(
+					"select users.id, users.name, users.email from users where users.id in
+						(select participants.user_id from participants where participants.survey_id = :surveyId and participants.completed = 1)"),
+							array("surveyId"=>$id));
+							
 
               return view('survey.resultForIndividualInAdmin')->with('survey',Survey::find($id))
               ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
@@ -1358,7 +1370,7 @@ public function getParticipantDetails($surveyId, $participantId){
               ->with('company',$company)
               ->with('user',$userId)
               ->with('company_profile',$company->profile()->first())
-              ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
+              ->with('answers',$answers);
           }else{
 			  //This is peer
 			  //In the peer survey results check if more than one peer have evaluated this user_id (also did this at the model level)
@@ -1471,7 +1483,7 @@ public function getParticipantDetails($surveyId, $participantId){
 							->with('company',$company)
 						    ->with('company_profile',$company->profile()->first())
 						    ->with(['surveyScoreGroupAvgPerIndicatorGroupMinAndMax' => $surveyScoreGroupAvgPerIndicatorGroupMinAndMax])
-							->with('answers',count($answers));
+							->with('answers',$answers);
 				
 		  }
 		  }

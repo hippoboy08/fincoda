@@ -731,7 +731,10 @@ class GroupSurveyController extends Controller
 					$company=Auth::User()->company()->first();
 					$company_profile=$company->profile()->first();
 
-					$answers = Survey::find($id)->participants()->where('completed',1)->get();
+					$answers = DB::select(DB::raw(
+									"select users.id, users.name, users.email from users where users.id in
+										(select participants.user_id from participants where participants.survey_id = :surveyId and participants.completed = 1)"),
+											array("surveyId"=>$id));
 
                     return view('survey.resultForSpecialGroupSurvey')->with('survey',Survey::find($id))
                     ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])

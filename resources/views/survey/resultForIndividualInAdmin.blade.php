@@ -31,7 +31,7 @@
                                   <li><h5><label>Start time : </label> {!! $survey->start_time !!}</h5></li>
                                   <li><h5><label>Deadline : </label> {!! $survey->end_time !!}</h5></li>
                                   <li><h5><label>Total Participants : </label> {!! count($participants)!!}</h5></li>
-                                  <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
+                                  <li><h5><label>Total answers : </label> {!! count($answers)!!}</h5></li>
 								</ul>
 
                                 @role ('admin')
@@ -147,8 +147,8 @@
                                              <h5 class="select-users"><label>Select User</label>
                                                <select id="participantsIds">
                                                  <option>Select a user</option>
-                                          @foreach($participants as $participant)
-                                          <option value="{!! \App\User::find($participant->user_id)->id !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
+                                          @foreach($answers as $participant)
+                                          <option value="{!! $participant->id !!}">{!! $participant->email !!}</option>
                                           @endforeach
                                           </select>
                                              </h5>
