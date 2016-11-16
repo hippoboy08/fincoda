@@ -10,6 +10,7 @@
         "laravelcollective/html": "~5.0",
         "zizaco/entrust": "5.2.x-dev",
         "phpoffice/phpexcel": "dev-master",
+		"barryvdh/laravel-dompdf":"0.6.*",
 		"greggilbert/recaptcha": "dev-master"
     },
     "require-dev": {

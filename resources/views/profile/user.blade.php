@@ -17,7 +17,6 @@
                         <div class="panel-body">
 
                             <p><label>Full name : </label> {!! $user->name !!}</p>
-                            <p><label>Email Aaddress : </label>{!! $user->email !!}</p>
                             <p><label>Gender : </label> {!! $profile->gender !!}</p>
                             <p><label>Country : </label> {!! $profile->country !!}</p>
                             <p><label>City : </label> {!! $profile->city !!}</p>

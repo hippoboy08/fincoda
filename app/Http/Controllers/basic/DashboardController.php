@@ -18,21 +18,30 @@ class DashboardController extends Controller
 {
     public function index(){
 
-
-      $survey_open=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<=',Carbon::now()->addHour(1))->where('end_time','>',Carbon::now()->addHour(1))->select('id')->get();
-      $open=Auth::User()->participate_survey()->whereIn('survey_id',$survey_open)->select('survey_id')->get();
-
-
-      $survey_closed=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<=',Carbon::now()->addHour(1))->where('end_time','<',Carbon::now()->addHour(1))->select('id')->get();
-      $closed=Auth::User()->participate_survey()->whereIn('survey_id',$survey_closed)->select('survey_id')->get();
-
-
-    return view('dashboard')->with('open',DB::table('surveys')->whereIn('surveys.id',$open)
-                                    ->join('participants','participants.survey_id','=','surveys.id')
-                                    ->where('participants.user_id','=',Auth::id())
-                                    ->select('surveys.id','surveys.start_time','surveys.end_time','surveys.title','surveys.type_id','surveys.user_id','participants.completed')
-                                    ->get())
-            ->with('closed',DB::table('surveys')->whereIn('id',$closed)->get());
+	  $companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
+		$open = DB::table('surveys')
+							->join('participants','participants.survey_id','=','surveys.id')
+							->select('surveys.id','surveys.user_id','surveys.type_id','surveys.company_id','surveys.category_id',
+							'participants.completed','surveys.title','surveys.description','surveys.end_message','surveys.start_time',
+							'surveys.end_time','surveys.created_at','surveys.updated_at')
+							->where('surveys.company_id',Auth::User()->company_id)
+							->where('participants.user_id','=',Auth::User()->id)
+							->where('surveys.start_time','<',Carbon::now($companyTimeZone))
+							->where('surveys.end_time','>',Carbon::now($companyTimeZone))
+							->get();
+							
+		$closed = DB::table('surveys')
+							->join('participants','participants.survey_id','=','surveys.id')
+							->select('surveys.id','surveys.user_id','surveys.type_id','surveys.company_id','surveys.category_id',
+							'participants.completed','surveys.title','surveys.description','surveys.end_message','surveys.start_time',
+							'surveys.end_time','surveys.created_at','surveys.updated_at')
+							->where('surveys.company_id',Auth::User()->company_id)
+							->where('participants.user_id','=',Auth::User()->id)
+							->where('surveys.start_time','<',Carbon::now($companyTimeZone))
+							->where('surveys.end_time','<',Carbon::now($companyTimeZone))
+							->get();
+		
+        return view('dashboard')->with('open',$open)->with('closed',$closed);
 
         }
 		

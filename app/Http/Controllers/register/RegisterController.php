@@ -17,15 +17,18 @@ class RegisterController extends Controller
     use EmailTrait;
     public function company()
     {
-        return view('register.company');
+		$timeZones = timezone_identifiers_list();
+        return view('register.company')->with('timeZones', $timeZones);
     }
 
     public function registercompany(Request $request)
     {
-       $validator = Validator::make($request->all(), [
+		$timeZones = timezone_identifiers_list();
+		$validator = Validator::make($request->all(), [
             'company_name' => 'required|max:255',
             'company_type' => 'required|max:225',
             'country' => 'required',
+			'time_zone' => 'required',
             'city' => 'required|max:255',
             'street' => 'required|max:255',
             'name' => 'required|max:255',
@@ -49,6 +52,8 @@ class RegisterController extends Controller
 
             $slug=str_slug($request->company_name,'_');
 
+			DB::beginTransaction();
+			try{
             //store company
            $company=Company::create([
                'name'=>$request->company_name,
@@ -63,7 +68,8 @@ class RegisterController extends Controller
                 'city'=>$request->city,
                 'street'=>$request->street,
                 'phone'=>$request->phone,
-                'postcode'=>$request->postcode
+                'postcode'=>$request->postcode,
+				'time_zone'=>$timeZones[$request->time_zone]
 
             ]));
             //create admin
@@ -84,7 +90,12 @@ class RegisterController extends Controller
             $name=$request->company_name;
             $code=$company_code;
             $this->email('email.registration',['name'=>$name,'code'=>$code],$admin->email);
-
+			DB::commit();
+			
+			}catch(\Exception $e){
+				DB::rollback();
+				return $e;
+			}
           }
 
        return view('register.success')->with('success','Your Organisation has bee registered successfully. An Email has been sent to you containing your

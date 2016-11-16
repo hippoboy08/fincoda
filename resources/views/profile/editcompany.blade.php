@@ -112,7 +112,7 @@
                                         </div>
                                     </div>
 
-
+									
                                     <div class="form-group{!! $errors->has('postcode') ? ' has-error':'' !!} has-feedback row">
                                         @if($errors->has('postcode'))
                                             <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('postcode') !!}</label>
@@ -124,6 +124,18 @@
                                             {!! Form::text('postcode',$company_profile->postcode,['class'=>'form-control']) !!}
                                         </div>
                                     </div>
+									
+									<div class="form-group{!! $errors->has('time_zone') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('time_zone'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('time_zone') !!}</label>
+                                        @endif
+										<div class="col-md-2 pull-left">
+                                            <strong> Time Zone*:</strong>
+                                        </div>
+										<div class="col-md-10 pull-right">
+											{!! Form::select('time_zone',$timeZones,null,['class'=>'form-control']) !!}
+										</div>
+									</div>
 
                                     <div class="form-group row">
 

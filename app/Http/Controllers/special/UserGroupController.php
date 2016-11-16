@@ -69,7 +69,8 @@ class UserGroupController extends Controller
            if(Company::find(Auth::User()->company_id)->hasUserGroups()->where(strtoupper('name'),strtoupper($request->name))->exists()){
                return redirect()->back()->with('fail','A group with same name already exists in your company. Please create a group with different name.')->withInput();
            }else{
-
+			DB::beginTransaction();
+			try{
                $group=User_Group::create([
                     'name'=>$request->name,
                     'description'=>$request->editor1,
@@ -84,10 +85,14 @@ class UserGroupController extends Controller
                     'user_group_id'=>$group->id
                 ]);
                }
-
-               return Redirect::to('special/usergroup')->with('success','A new user group has been created successfully.');
+			DB::commit();
+			 return Redirect::to('special/usergroup')->with('success','A new user group has been created successfully.');
+			}catch(\Exception $e){
+				DB::rollback();
+			}
 
            }
+		   
         }
     }
 

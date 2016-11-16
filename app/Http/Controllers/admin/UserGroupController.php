@@ -74,7 +74,8 @@ class UserGroupController extends Controller
            if(Company::find(Auth::User()->company_id)->hasUserGroups()->where(strtoupper('name'),strtoupper($request->name))->exists()){
                return redirect()->back()->with('fail','A group with same name already exists in your company. Please create a group with different name.')->withInput();
            }else{
-
+			DB::beginTransaction();
+			try{
                $group=User_Group::create([
                     'name'=>$request->name,
                     'description'=>$request->editor1,
@@ -89,11 +90,14 @@ class UserGroupController extends Controller
                     'user_group_id'=>$group->id
                 ]);
                }
-
+			DB::commit();
                return Redirect::to('admin/usergroup')->with('success','A new user group has been created successfully.');
-
+			}catch(\Exception $e){
+				DB::rollback();
+			}
            }
         }
+		
     }
 
     /**
@@ -148,18 +152,20 @@ class UserGroupController extends Controller
 							
 		//This returns the group members
 		$members = DB::select(DB::raw(
-                            "select users.id as user_id, users.name, users.email from users 
-							where users.id in (select user_in_groups.user_id from user_in_groups 
-								where user_in_groups.user_group_id = :groupId)"),
-                            array("groupId"=>$id));
+                            "select users.id as user_id, users.name, users.email from users
+								join role_user on role_user.user_id = users.id
+								where users.id in (select user_in_groups.user_id from user_in_groups 
+								where user_in_groups.user_group_id = :groupId) and role_user.role_id = 3 and users.company_id = :companyId"),
+                            array("groupId"=>$id,"companyId"=>Auth::User()->company_id));
 
 							
 		//This returns all users that are not in this group
 		$users = DB::select(DB::raw(
-                            "select users.id as user_id, users.name, users.email from users 
-							where users.id not in (select user_in_groups.user_id from user_in_groups 
-								where user_in_groups.user_group_id = :groupId)"),
-                            array("groupId"=>$id));
+                            "select users.id as user_id, users.name, users.email from users
+								join role_user on role_user.user_id = users.id
+								where users.id not in (select user_in_groups.user_id from user_in_groups 
+								where user_in_groups.user_group_id = :groupId) and role_user.role_id = 3 and users.company_id = :companyId"),
+                            array("groupId"=>$id,"companyId"=>Auth::User()->company_id));
 		
         return view('usergroup.editAdmin')
 						->with('administrators',$administrators)
@@ -189,7 +195,10 @@ class UserGroupController extends Controller
         if($validation->fails()){
             return redirect()->back()->withErrors($validation)->withInput();
         }else{
+			//Checks to see if the user group exists
            if(Company::find(Auth::User()->company_id)->hasUserGroups()->where(strtoupper('name'),strtoupper($request->name))->exists()){
+			DB::beginTransaction();
+			try{
 			   DB::table('user_groups')
 						->where('id',$request->id)
 						->update([
@@ -219,12 +228,86 @@ class UserGroupController extends Controller
 						]);
 				}
 			}
-				
+			DB::commit();
+			}catch(\Exception $e){
+				DB::rollback();
+			}	
                return Redirect::to('admin/usergroup')->with('success','A new user group has been edited successfully.');
            }else{
                return redirect()->back()->with('fail','A group with that name does not exist in your company. Please try a group with different name.')->withInput();   
            }
+		   
         }
+    }
+	
+	public function deleteGroup($id){
+		//Check that the user group exists and that it was created by the logged in user
+		//The downside to this approach is that in case you inherit the groups from another admin, you will not be able to delete them unless you are logged in with his or her credentials
+		//Yet the upside is that you cannot delete groups created by other admin accounts
+		$userGroup = DB::select(DB::raw(
+									"select user_groups.id from user_groups where user_groups.id = :groupId and user_groups.created_by = :createdBy"),
+										array("groupId"=>$id,"createdBy"=>Auth::User()->id));
+		//Check that there surveys in this group
+		$surveysInGroup = DB::select(DB::raw(
+									"select surveys.id, surveys.type_id from surveys where surveys.user_group_id = :groupId"),
+										array("groupId"=>$id));
+										
+				   if(!empty($userGroup)){//Means the group exists
+					   DB::beginTransaction();
+					   try{
+					   if(!empty($surveysInGroup)){//Means there are surveys in the group
+						   foreach($surveysInGroup as $survey){//Iterate over each survey in the group and delete it
+							   if ($survey->type_id == 1) {
+									DB::delete(DB::raw(
+													"delete from results where results.survey_id = :surveyId and results.survey_id is not null"),
+														array("surveyId"=>$survey->id));
+										
+									DB::delete(DB::raw(
+													"delete from participants where participants.survey_id = :surveyId and participants.survey_id is not null"),
+														array("surveyId"=>$survey->id));
+										
+									DB::delete(DB::raw(
+													"delete from surveys where surveys.id = :surveyId"),
+														array("surveyId"=>$survey->id));
+								}
+								if ($survey->type_id == 2) {
+									DB::delete(DB::raw(
+													"delete from peer_results where peer_results.peer_survey_id = :surveyId and peer_results.peer_survey_id is not null"),
+														array("surveyId"=>$survey->id));
+										
+									DB::delete(DB::raw(
+													"delete from peer_surveys where peer_surveys.survey_id = :surveyId and peer_surveys.survey_id is not null"),
+														array("surveyId"=>$survey->id));
+										
+									DB::delete(DB::raw(
+													"delete from participants where participants.survey_id = :surveyId and participants.survey_id is not null"),
+														array("surveyId"=>$survey->id));
+										
+									DB::delete(DB::raw(
+													"delete from surveys where surveys.id = :surveyId"),
+														array("surveyId"=>$survey->id));
+								}
+							}
+						}
+						//Now that you have removed the surveys you can delete the users in this group
+						DB::delete(DB::raw(
+										"delete from user_in_groups where user_in_groups.user_group_id = :groupId and user_in_groups.user_group_id is not null"),
+														array("groupId"=>$id));
+						//At this point it should be safe to delete the group								
+						DB::delete(DB::raw(
+										"delete from user_groups where user_groups.id = :groupId"),
+														array("groupId"=>$id));
+						
+						DB::commit();
+						return Redirect::to('admin/usergroup')->with('success','A user group has been deleted successfully.');
+						}catch(\Exception $e){
+							DB::rollback();
+							return $e;
+						}
+					}
+					
+					return Redirect::to('admin/usergroup')->with('warning','A user group could not be deleted: check if you are the one who created the group.');
+   	
     }
 
     /**

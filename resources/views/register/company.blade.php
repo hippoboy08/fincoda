@@ -83,6 +83,12 @@
                             {!! Form::text('postcode',old('postcode'),['class'=>'form-control','placeholder'=>'Postal Address']) !!}
 
                         </div>
+						
+						 <div class="form-group">
+                                <label>Time Zone*:</label>
+                                {!! Form::select('time_zone',array_merge([''=>'         '],$timeZones),null,['class'=>'form-control']) !!}
+
+                            </div>
 </div>
 </div>
                     </div>

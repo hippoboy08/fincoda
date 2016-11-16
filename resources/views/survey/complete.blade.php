@@ -28,12 +28,21 @@
                             <tbody>
                             @foreach($completed as $completed)
                             <tr>
-                                @role('basic')
-                                <td><a href="{!! url('basic/survey/'.$completed->id) !!}">{!! $completed->title !!}</a> </td>
-                                @endrole
-                                @role('special')
-                                <td><a href="{!! url('special/survey/'.$completed->id) !!}">{!! $completed->title !!}</a> </td>
-                                @endrole
+								@role('basic')
+									@if($completed->type_id=='1')
+										<td><a href="{!! url('basic/survey/'.$completed->id) !!}"> {!! $completed->title !!}</a></td>
+									@else
+										<td><a href="{!! url('basic/survey/viewPeerResults/'.$completed->id).'/'.Auth::User()->id !!}">{!! $completed->title !!}</a></td>
+									@endif
+								@endrole
+
+								@role('special')
+									@if($completed->type_id=='1')
+										<td><a href="{!! url('special/survey/'.$completed->id) !!}"> {!! $completed->title !!}</a></td>
+									@else
+										<td><a href="{!! url('special/survey/viewPeerResults/'.$completed->id).'/'.Auth::User()->id !!}">{!! $completed->title !!}</a></td>
+									@endif
+								@endrole
 
                                 <td>{!! \App\Survey_Type::find($completed->type_id)->name !!}</td>
                                 <td>{!! $completed->start_time !!}</td>
@@ -49,30 +58,39 @@
                             @endforeach
                             @foreach($closed as $closed)
                                 <tr>
-                                    @if($closed->completed=='0')
+								    @if($closed->completed=='0')
                                       <td> {!! $closed->title !!}</td>
                                     @else
                                         @role('basic')
-                                        <td><a href="{!! url('basic/survey/'.$closed->id) !!}"> {!! $closed->title !!}</a></td>
-                                    @endrole
+											@if($closed->type_id=='1')
+												<td><a href="{!! url('basic/survey/'.$closed->id) !!}"> {!! $closed->title !!}</a></td>
+											@else
+												<td><a href="{!! url('basic/survey/viewPeerResults/'.$closed->id).'/'.Auth::User()->id !!}">{!! $closed->type_id !!}</a></td>
+											@endif
+										@endrole
 
-                                    @role('special')
-                                        <td><a href="{!! url('special/survey/'.$closed->id) !!}"> {!! $closed->title !!}</a></td>
-                                    @endrole
-
-
-                                    @endif
-
+										@role('special')
+											@if($closed->type_id=='1')
+												<td><a href="{!! url('special/survey/'.$closed->id) !!}"> {!! $closed->title !!}</a></td>
+											@else
+												<td><a href="{!! url('special/survey/viewPeerResults/'.$closed->id).'/'.Auth::User()->id !!}">{!! $closed->title !!}</a></td>
+											@endif
+										@endrole
+									@endif
+                              
                                     <td>{!! \App\Survey_Type::find($closed->type_id)->name !!}</td>
                                    <td>{!! $closed->start_time !!}</td>
                                     <td>{!! $closed->end_time !!}</td>
                                     <td>{!! \App\User::find($closed->user_id)->name !!}</td>
                                     @if($closed->completed=='0')
                                         <td><span class="label label-danger">Not completed</span></td>
-                                    @else
+                                    @endif
+									@if($closed->completed=='1')
                                         <td><span class="label label-success">Completed</span></td>
                                     @endif
-
+									@if($closed->completed=='3')
+                                        <td><span class="label label-success">In progress</span></td>
+                                    @endif
                                 </tr>
                                 @endforeach
 

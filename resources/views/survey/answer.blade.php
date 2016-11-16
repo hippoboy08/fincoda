@@ -33,6 +33,9 @@
                     {!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@store']) !!}
                         @endrole
                         {!! Form::hidden('survey_id',$survey->id) !!}
+						@if(!empty($user_id))
+							{!! Form::hidden('user_id',$user_id) !!}
+						@endif
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                             <tr>

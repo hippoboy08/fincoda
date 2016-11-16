@@ -10,7 +10,6 @@
             <div class="box-header with-border">
 			
 			
-			
                 @if(Route::current()->getName()=='special.survey.index')
                     <h3 class="box-title"><b>Company Group Dashboard.</b></h3>
                     <p><i>Below is the list of all the surveys in your group.</i></p>

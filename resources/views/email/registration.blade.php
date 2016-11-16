@@ -6,6 +6,7 @@
 </p>
 <p><label>Registered company : </label><strong>{!! $name !!}</strong></p>
 <p><label>Company code : </label><strong>{!! $code !!}</strong></p>
+<p>You can access fincoda via this link : <strong> <a href="{!! $link !!}">{!! $link !!}</a></strong></p>
 
 <br>
 <p>Thank you for the registration,</p>

@@ -44,7 +44,7 @@
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade">
                                     <div class="row pull-right" >
-                                       <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
+                                       <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('special/groupsurvey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                                     </div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
@@ -116,62 +116,14 @@
                                     <script src="{{URL::asset('js/displayChart.js')}}">
                                     </script>
                                     <script>
-                                    var chartArea = document.getElementById('indicatorGroupAverage');
-                                    // var datasetOwnScore = {
-                                    //   label: 'Minimum Company Average Score Each Dimension',
-                                    //   data: [
-                                    //           {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average!!},
-                                    //           {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average!!},
-                                    //           {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Minimum_User_Indicator_Group_Average!!},
-                                    //           {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Minimum_User_Indicator_Group_Average!!},
-                                    //           {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Minimum_User_Indicator_Group_Average!!}
-                                    //         ],
-                                    //    backgroundColor: 'rgba(255,0,0,1)'
-                                    // };
-                                    // var datasetGroupAvg = {
-                                    //   label: 'Maximum Company Average Score Each Dimension',
-                                    //   data: [
-                                    //     {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Maximum_User_Indicator_Group_Average!!},
-                                    //     {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Maximum_User_Indicator_Group_Average!!},
-                                    //     {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Maximum_User_Indicator_Group_Average!!},
-                                    //     {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Maximum_User_Indicator_Group_Average!!},
-                                    //     {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Maximum_User_Indicator_Group_Average!!}
-                                    //   ],
-                                    //   backgroundColor: 'rgba(0,0,255,1)'
-                                    // };
-                                    var datasetMinCompany = {
-                                      label: 'Minimum Company Average Score Each Dimension',
-                                      data: [
-                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average!!},
-                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average!!},
-                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Minimum_User_Indicator_Group_Average!!},
-                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Minimum_User_Indicator_Group_Average!!},
-                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Minimum_User_Indicator_Group_Average!!}
-                                            ],
-                                       backgroundColor: 'rgba(255,0,0,1)'
-                                    };
-                                    var datasetMaxCompany = {
-                                      label: 'Maximum Company Average Score Each Dimension',
-                                      data: [
-                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Maximum_User_Indicator_Group_Average!!},
-                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Maximum_User_Indicator_Group_Average!!},
-                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Maximum_User_Indicator_Group_Average!!},
-                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Maximum_User_Indicator_Group_Average!!},
-                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Maximum_User_Indicator_Group_Average!!}
-                                      ],
-                                      backgroundColor: 'rgba(0,0,255,1)'
-                                    };
-                                    var datasetAvgCompany = {
-                                      label: 'Company Average Score Each Dimension',
-                                      data: [
-                                        {!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
-                                          {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}
-                                      ],
-                                      backgroundColor: 'rgba(255,255,0,1)'
-                                    };
-                                    var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
-                                    // createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
-                                    createMaxMinChart(chartArea, labelArr, datasetMinCompany, datasetAvgCompany, datasetMaxCompany);
+                                      createChart(
+                                        document.getElementById("indicatorGroupAverage"),
+                                        ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
+                                        'Company average score of each dimension',
+                                        [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
+                                          {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
+                                        'rgba(0,0,255,1)'
+                                      );
                                     </script>
 									@else
 										<div>You have no surveys results to display or your indicators group count is not equal 5</div>
@@ -195,7 +147,7 @@
                                                  <select id="participantsIds">
                                                    <option>Select a user</option>
    													  @foreach($answers as $participant)
-   														<option value="{!!$participant->User_ID !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
+   														<option value="{!!$participant->id !!}">{!! $participant->email !!}</option>
    													  @endforeach
    											  </select>
                                                </h5>
@@ -208,7 +160,6 @@
                                                      var participant = $(this).val();
                                                      var url = window.location.pathname;
                                                      var value = url.substring(0,url.lastIndexOf('/')+1);
-
 													 window.location.replace(value+participant);
                                                    }
                                                  });
@@ -228,7 +179,7 @@
                                                  <caption style="text-align:center;">User score per indicator compared with group average score per indicator</caption>
                                                    <thead>
                                                    <tr>
-                                                       <th>Indicator ID</th>
+                                                       <th>Indicator ID</td>
                                                        <th>Indicator Name</th>
                                                        <th>User Answer Indicator</th>
                                                        <th>Group Average Each Indicator</th>
@@ -344,6 +295,9 @@
 
                                              </div>
                                              <div>
+											 @if(count($surveyScorePerIndicatorGroup)==0)
+                                                     <div>You have no surveys results to Display</div>
+                                             @else
                                                <br>
                                                <h3 style="text-align: center">User average per dimension VS Company average per dimension
                                                <canvas id="comparedGraphCategory" width="800" height="400"></canvas>
@@ -364,6 +318,7 @@
                                                  createComparedChart(chartArea, labelArr, datasetOwnScore, datasetGroupAvg);
 
                                                </script>
+											    @endif
                                              </div>
 
 

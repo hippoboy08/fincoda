@@ -27,6 +27,7 @@
                             <p><label>Email : </label> {!! $company_profile->email !!}<br></p>
                             <p><label>Phone : </label> {!! $company_profile->phone !!}<br></p>
                             <p><label>Postal Code : </label> {!! $company_profile->postcode !!}<br></p>
+							<p><label>Time Zone : </label> {!! $company_profile->time_zone !!}<br></p>
                              <p><label>Joined at : </label> {!! $company->created_at->toDateString() !!}<br></p>
                                     <a href="{!! url('admin/company/update') !!}"><button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Profile</button></a>
                                 </div>

@@ -111,20 +111,28 @@ class MembersController extends Controller
                return redirect()->back()->withErrors($validation)->withInput();
            }else{
 
-               $user=Auth::User()->first();
-               $user->name=$request->name;
-               $user->save();
-
-
-               $profile=Auth::User()->profile()->first();
-               $profile->gender=$request->gender;
-               $profile->country=$request->country;
-               $profile->city=$request->city;
-               $profile->street=$request->street;
-               $profile->phone=$request->phone;
-               $profile->save();
-
-               return redirect()->back()->with('success','Your profile has been updated successfully');
+               DB::beginTransaction();
+				try{
+					DB::table('users')
+								->where('id',Auth::User()->id)
+								->update([
+									'name'=>$request->name
+						]);
+						
+					DB::table('user_profiles')
+								->where('user_id',Auth::User()->id)
+								->update([
+									'gender'=>$request->gender,
+									'country'=>$request->country,
+									'city'=>$request->city,
+									'street'=>$request->street,
+									'phone'=>$request->phone
+						]);
+					DB::commit();
+					return redirect()->back()->with('success','Your profile has been updated successfully');
+					}catch(\Exception $e){
+					DB::rollback();
+					}
            }
 
 

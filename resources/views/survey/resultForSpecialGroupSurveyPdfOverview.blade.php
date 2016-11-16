@@ -38,16 +38,10 @@
                                 @role ('special')
                                 <ul class="nav nav-tabs">
                                   <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
-                                  <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
                                 </ul>
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
-								  
-								  <div class="pull-right" >
-                                            <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('special/groupsurvey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
-                                         </div>
-
 								  
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
@@ -99,7 +93,7 @@
                                             </tr>
                                           </thead>
                                           <tbody>
-                                            @if(count($surveyGroupAveragePerIndicatorAllUsers)==0)
+                                            @if(count($surveyScoreAllUsers)==0)
                                               <div>You have no surveys results to display</div>
                                             @else
                                               @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
@@ -136,57 +130,6 @@
                                       @include ('survey.resultContent.surveyScorePerIndicatorGroup')
                                     </div>
                                   </div>
-
-                                  <div id="detailedview" class="tab-pane fade">
-								  
-									<div class="pull-left" >
-										                                  <label id="surveyId">{!! $survey->id !!}</label>
-                                            <h5 class="select-users"><label>Select User</label>
-                                              <select id="participantsIds">
-                                                <option value="default">Select a user</option>
-													  @foreach($participants as $participant)
-														<option value="{!!$participant->User_ID !!}|{!!$survey->user_group_id !!}">{!! $participant->email !!}</option>
-													@endforeach
-											  </select>
-                                            </h5>
-                                          <script>
-											$(document).ready(function(){
-											  $('#participantsIds').change(function(){
-												  if($(this).val()==""){
-												  return;
-                                                }else{
-                                                $.ajaxSetup({
-                                                  headers:{
-                                                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-                                                  }
-                                                });
-                                                $.ajax({
-												  method: 'POST',
-                                                  url: 'lookForParticipant',
-												  dataType: 'json',
-                                                  data: {'participantId':$(this).val(),'surveyId':$('#surveyId').text()},
-												  success: function(data){
-													window.location.replace(data.stri);
-													//alert(data.stri);
-												  },
-												  error: function(result){
-													var errors = result.responseJSON;
-													console.log(result);
-													console.log(errors);
-												  }
-
-                                                });
-                                                }
-                                              });
-                                            });
-                                          </script>
-										</div>
-										
-										    <div class="row pull-right" >
-                                                <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelSpecial',$survey->id)}}">Download Excel</a></u>
-                                            </div>
-                                        
-                                        </div>
 
                                     </div>
                                   </div>

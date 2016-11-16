@@ -97,7 +97,6 @@
                                               @foreach($surveyScoreAllUsers as $result)
                                                 <tr>
                                                   <td>{!! $result->Indicator_ID !!}</td>
-
                                                    <td>{{Lang::get('indicators.'.$result->Indicator_ID,array(),App::getLocale())}}</td>
                                                   <td>{!! $result->Answer !!}</td>
                                                 </tr>
@@ -185,7 +184,6 @@
                                               @foreach ($surveyGroupAveragePerIndicatorAllUsers as $avgResult)
                                                 <tr>
                                                   <td>{!! $avgResult->Indicator_ID !!}</td>
-
 												  <td>{{Lang::get('indicators.'.$avgResult->Indicator_ID,array(),App::getLocale())}}</td>
                                                   @foreach ($surveyScoreAllUsers as $result)
                                                     @if(($result->Indicator_ID)==($avgResult->Indicator_ID))

@@ -65,7 +65,7 @@
                             <label>Self Evaluation Survey</label><br>
                             {!! Form::radio('survey_type','2','',['class'=>'form-group']) !!}
                             <label>Peer Evaluation Survey</label><br><br>
-
+							
 							<div class="form-group">
                                 <label><h3>Select a group for this survey*:</h3></label>
                                 <p>Please select a group. The special users of the company are the administrators for the user groups.</p>
@@ -110,38 +110,7 @@
                             </div>
                         </div><br>
 
-                            <p class="panel-title">
-                             <a data-toggle="collapse" href="#collapse2"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>Participants of the survey</label></a>
-                            <p>By default, all the basic and special users in the selected group above will be invited to participate in the survey.</p>
-                            </p>
-
-                            <!-- Lists out the member in the selected group -->
-                            <div id="collapse2" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <table id="example1" class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Full Name</th>
-                                            <th>Email Address</th>
-                                         </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($participants as $participant)
-                                            <tr>
-                                                <td>{!! $participant->name
-                                                   !!}</td>
-                                                <td>{!! $participant->email !!}</td>
-                                            </tr>
-                                            <p></p>
-                                        @endforeach
-                                        </tbody>
-                                        </table>
-                                </div>
-                            </div>
-                            <br>
-
-                            <div class="form-group{!! $errors->has('editor2') ? ' has-error':'' !!} has-feedback">
+                           <div class="form-group{!! $errors->has('editor2') ? ' has-error':'' !!} has-feedback">
                             <label><h3>Survey completion text*:</h3></label>
                             <p>Survey Completion text is the text that appears after a participant has completed the survey. You could mention some thank you text for taking the survey. </p>
                                 @if($errors->has('editor2'))

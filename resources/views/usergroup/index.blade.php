@@ -34,33 +34,43 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
+										<th>Group ID</th>
                                         <th>Group Name</th>
+										<th>Edit</th>
+                                        <th>Delete</th>
+										<th>Total surveys</th>
                                         <th>Created by</th>
                                         <th>Group Administrator</th>
                                         <th>Total members</th>
-                                        <th>Date Created</th>
+										<th>Date Created</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($groups as $group)
                                         <tr>
+											<td>{!! $group->id !!}</td>
                                             @role('admin')
                                             <td><a href="{{url('admin/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
-                                            <td><a href="{{url('admin/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
-                                            <td><a href="{{url('admin/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
+											<td><a href="{{url('admin/usergroup/edit/'.$group->id)}}"> Edit </a></td>
+											<td><a href="{{url('admin/usergroup/deleteGroup/'.$group->id)}}"> Delete </a></td>
+                                            <td>{!! count(\App\Survey::where('user_group_id',$group->id)->get()) !!}</td>
                                             @endrole
                                             @role('special')
                                             <td><a href="{{url('special/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
+											<th></th>
+											<th></th>
+                                            <td>{!! count(\App\Survey::where('user_group_id',$group->id)->get()) !!}</td>
                                             @endrole
                                             @role('basic')
                                             <td><a href="{{url('basic/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
+											<th></th>
+											<th></th>
+											<th></th>
                                             @endrole
-                                            <td>{!! \App\User::find($group->created_by)->name  !!}</td>
-
+                                            <td>{!! $group->created_by !!}</td>
                                             <td>{!! \App\User::find($group->administrator)->name !!}</td>
                                             <td>{!! count(\App\User_In_Group::where('user_group_id',$group->id)->get()) !!}</td>
                                             <td>{!! $group->created_at !!}</td>
-
                                         </tr>
                                     @endforeach
                                     </tbody>

@@ -62,12 +62,16 @@ Route::group(['middleware'=>'admin',
     Route::resource('members','MembersController');
     Route::resource('roles','RolesController');
     Route::get('survey/getParticipant/{surveyId}/{participantId}','SurveyController@getParticipant');
+    Route::get('survey/surveyResults','SurveyController@surveyResults');
+    Route::get('survey/deleteSurvey/{id}','SurveyController@deleteSurvey');
+    Route::get('survey/downloadPdf/{id}','SurveyController@downloadPdf');
     Route::get('survey/edit/{id}','SurveyController@editSurvey');
     Route::post('survey/update','SurveyController@updateSurvey');
 	Route::resource('survey','SurveyController');
     Route::get('survey/downloadExcel/{surveyId}',['as'=>'downloadExcelAdmin','uses'=>'SurveyController@downloadCsv']);
     Route::match(['get','post'],'survey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'SurveyController@lookForParticipant']);
     Route::get('usergroup/edit/{id}','UserGroupController@editUserGroup');
+    Route::get('usergroup/deleteGroup/{id}','UserGroupController@deleteGroup');
     Route::post('usergroup/update','UserGroupController@updateUserGroup');
 	Route::resource('usergroup','UserGroupController');
 
@@ -81,7 +85,10 @@ Route::group(['middleware'=>'basic',
     Route::post('language','DashboardController@switchLanguage');
 	Route::resource('profile','ProfileController@index');
 	Route::resource('profile','ProfileController');
-    Route::resource('survey','SurveyController');
+    Route::get('survey/viewPeerResults/{surveyId}/{userId}','SurveyController@viewPeerResults');
+	Route::get('survey/evaluateUser/{surveyId}/{userId}','SurveyController@evaluateUser');
+	Route::post('survey/inviteEvaluators','SurveyController@inviteEvaluators');
+	Route::resource('survey','SurveyController');
     Route::resource('usergroup','UserGroupController');
 
     });
@@ -95,9 +102,14 @@ Route::group(['middleware'=>'special',
 	Route::get('profile','ProfileController@index');
 	Route::resource('profile','ProfileController');
     
-    Route::resource('survey','CompanySurveyController');
+    Route::get('survey/evaluateUser/{surveyId}/{userId}','CompanySurveyController@evaluateUser');
+	Route::get('survey/viewPeerResults/{surveyId}/{userId}','CompanySurveyController@viewPeerResults');
+	Route::post('survey/inviteEvaluators','CompanySurveyController@inviteEvaluators');
+	Route::resource('survey','CompanySurveyController');
 
     Route::get('groupsurvey/getParticipant/{surveyId}/{groupId}/{participantId}','GroupSurveyController@getParticipant');
+    Route::get('groupsurvey/deleteSurvey/{id}','GroupSurveyController@deleteSurvey');
+    Route::get('groupsurvey/downloadPdf/{id}','GroupSurveyController@downloadPdf');
     Route::get('groupsurvey/edit/{id}','GroupSurveyController@editSurvey');
     Route::post('groupsurvey/update','GroupSurveyController@updateSurvey');
 	Route::resource('groupsurvey','GroupSurveyController');

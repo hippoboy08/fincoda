@@ -18,6 +18,7 @@ class CreateSurveysTable extends Migration
             $table->integer('type_id')->unsigned();
             $table->integer('company_id')->unsigned();
             $table->integer('category_id')->unsigned();
+            $table->integer('user_group_id')->unsigned();
             $table->string('title');
             $table->text('description');
             $table->text('end_message');
@@ -29,6 +30,7 @@ class CreateSurveysTable extends Migration
             $table->foreign('type_id')->references('id')->on('survey_types')->onDelete('cascade');
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('category_id')->references('id')->on('survey_categories')->onDelete('cascade');
+            $table->foreign('user_group_id')->references('id')->on('user_groups');
         });
     }
 

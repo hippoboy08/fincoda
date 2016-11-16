@@ -46,25 +46,4 @@ function createComparedChart(chartArea, labelArr, dataset1, dataset2) {
     });
 };
 
-function createMaxMinChart(chartArea, labelArr, dataset1, dataset2, dataset3) {
-
-    return new Chart(chartArea, {
-        type: 'bar',
-        data: {
-            labels: labelArr,
-            datasets: [dataset1, dataset2, dataset3]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-};
-
-
 console.log('been here');

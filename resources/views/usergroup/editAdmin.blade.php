@@ -91,7 +91,7 @@
                                 @if($errors->has('usersToAdd'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('usersToAdd') !!}</label>
                                 @endif
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table id="example2" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th><i class="fa fa-check-square-o" aria-hidden="true"></i> | User ID</th>
@@ -133,6 +133,7 @@
     <script>
         $(function () {
             $("#example1").DataTable();
+			 $("#example2").DataTable();
 
         });
     </script>

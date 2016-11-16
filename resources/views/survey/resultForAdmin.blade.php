@@ -32,7 +32,7 @@
                                   <li><h5><label>Start time : </label> {!! $survey->start_time !!}</h5></li>
                                   <li><h5><label>Deadline : </label> {!! $survey->end_time !!}</h5></li>
                                   <li><h5><label>Total Participants : </label> {!! count($participants)!!}</h5></li>
-                                  <li><h5><label>Total answers : </label> {!! count($answers)!!}</h5></li>
+                                  <li><h5><label>Total answers : </label> {!! $answers!!}</h5></li>
                                 </ul>
 
                                 @role ('admin')
@@ -44,8 +44,8 @@
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
                                     <div class="row pull-right" >
-                                       <i class="fa fa-print" aria-hidden="true"></i> <u>Print report (PDF)</u>
-                                    </div>
+                                       <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
+									</div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
@@ -116,48 +116,23 @@
                                     <script src="{{URL::asset('js/displayChart.js')}}">
                                     </script>
                                     <script>
-                                      var chartArea = document.getElementById('indicatorGroupAverage');
-                                      var datasetMinCompany = {
-                                        label: 'Minimum Company Average Score Each Dimension',
-                                        data: [
-                                                {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average!!},
-                                                {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average!!},
-                                                {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Minimum_User_Indicator_Group_Average!!},
-                                                {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Minimum_User_Indicator_Group_Average!!},
-                                                {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Minimum_User_Indicator_Group_Average!!}
-                                              ],
-                                         backgroundColor: 'rgba(255,0,0,1)'
-                                      };
-                                      var datasetMaxCompany = {
-                                        label: 'Maximum Company Average Score Each Dimension',
-                                        data: [
-                                          {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Maximum_User_Indicator_Group_Average!!},
-                                          {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Maximum_User_Indicator_Group_Average!!},
-                                          {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Maximum_User_Indicator_Group_Average!!},
-                                          {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Maximum_User_Indicator_Group_Average!!},
-                                          {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Maximum_User_Indicator_Group_Average!!}
-                                        ],
-                                        backgroundColor: 'rgba(0,0,255,1)'
-                                      };
-                                      var datasetAvgCompany = {
-                                        label: 'Company Average Score Each Dimension',
-                                        data: [
-                                          {!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
-                                            {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}
-                                        ],
-                                        backgroundColor: 'rgba(255,255,0,1)'
-                                      };
-                                      var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
-                                      createMaxMinChart(chartArea, labelArr, datasetMinCompany, datasetAvgCompany, datasetMaxCompany);
+                                      createChart(
+                                        document.getElementById("indicatorGroupAverage"),
+                                        ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
+                                        'Company average score of each dimension',
+                                        [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
+                                          {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
+                                        'rgba(0,0,255,1)'
+                                      );
                                     </script>
 									@else
 										<div>You have no surveys results to display or your indicators group count is not equal 5</div>
 									@endif
 
+
                                     <div>
                                       @include ('survey.resultContent.surveyScorePerIndicatorGroup')
                                     </div>
-
                                   </div>
 
                                   <div id="detailedview" class="tab-pane fade">
@@ -170,7 +145,7 @@
                                              <h5 class="select-users"><label>Select User</label>
                                                <select id="participantsIds">
                                                  <option>Select a user</option>
- 													  @foreach($answers as $participant)
+ 													  @foreach($participants as $participant)
 														<option value="{!! \App\User::find($participant->user_id)->id !!}">{!! \App\User::find($participant->user_id)->email !!}</option>
  													  @endforeach
  											  </select>

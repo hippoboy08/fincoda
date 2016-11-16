@@ -20,7 +20,7 @@ use Session;
 class DashboardController extends Controller
 {
 public function index(){
-
+	$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
     //get all the admins of the company
    User::where('company_id',Auth::User()->company_id)->get();
 
@@ -34,14 +34,14 @@ public function index(){
     }
 
     $open=Company::find(Auth::User()->company_id)->hasSurveys()->whereIn('user_id',$admin_id)
-        ->where('start_time','<=',Carbon::now()->addHour(1))
-        ->where('end_time','>',Carbon::now())->get();
+        ->where('start_time','<=',Carbon::now($companyTimeZone))
+        ->where('end_time','>',Carbon::now($companyTimeZone))->get();
     $closed=Company::find(Auth::User()->company_id)->hasSurveys()->whereIn('user_id',$admin_id)
-        ->where('start_time','<',Carbon::now()->addHour(1))
+        ->where('start_time','<',Carbon::now($companyTimeZone))
         ->where('end_time','<',Carbon::now()->addHour(1))->get();
     $pending=Company::find(Auth::User()->company_id)->hasSurveys()->whereIn('user_id',$admin_id)
-        ->where('start_time','>',Carbon::now()->addHour(1))
-        ->where('end_time','>',Carbon::now()->addHour(1))->get();
+        ->where('start_time','>',Carbon::now($companyTimeZone))
+        ->where('end_time','>',Carbon::now($companyTimeZone))->get();
 
     return view('dashboard')->with('open',$open)->with('closed',$closed)->with('pending',$pending);
 }
