@@ -41,7 +41,7 @@
                                 </ul>
 
                                 <div class="tab-content">
-                                  <div id="overview" class="tab-pane fade in active">
+                                  <div class="tab-pane fade in active">
 								  
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>

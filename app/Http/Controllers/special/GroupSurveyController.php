@@ -23,6 +23,7 @@ use Illuminate\Http\Response;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Worksheet;
+use View;
 
 
 
