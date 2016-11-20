@@ -89,6 +89,7 @@ class UserGroupController extends Controller
 			 return Redirect::to('special/usergroup')->with('success','A new user group has been created successfully.');
 			}catch(\Exception $e){
 				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
 
            }

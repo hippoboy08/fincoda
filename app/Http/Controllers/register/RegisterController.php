@@ -94,7 +94,7 @@ class RegisterController extends Controller
 			
 			}catch(\Exception $e){
 				DB::rollback();
-				return $e;
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
           }
 

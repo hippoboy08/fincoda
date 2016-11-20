@@ -171,7 +171,7 @@ class GroupSurveyController extends Controller
                
 			}catch(\Exception $e){
 				DB::rollback();
-				return "survey could not be created";
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
             }
 
@@ -1377,6 +1377,7 @@ class GroupSurveyController extends Controller
            
 		   }catch(\Exception $e){
 				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
         }
 		
@@ -1444,7 +1445,7 @@ class GroupSurveyController extends Controller
 			}
 		}catch(\Exception $e){
 				DB::rollback();
-				return $e;
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
 		}
 

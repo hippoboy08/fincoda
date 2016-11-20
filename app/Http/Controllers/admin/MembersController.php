@@ -132,6 +132,7 @@ class MembersController extends Controller
 					return redirect()->back()->with('success','Your profile has been updated successfully');
 					}catch(\Exception $e){
 					DB::rollback();
+					return 'The profile could not be updated because'.$e->getMessage();
 					}
            }
 

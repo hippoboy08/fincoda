@@ -55,6 +55,7 @@ class ProfileController extends Controller
 					return redirect()->back()->with('success','Your profile has been updated successfully');
 					}catch(\Exception $e){
 					DB::rollback();
+					return "An error occured; your request could not be completed ".$e->getMessage();
 					}
             }
 

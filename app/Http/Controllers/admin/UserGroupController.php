@@ -94,6 +94,7 @@ class UserGroupController extends Controller
                return Redirect::to('admin/usergroup')->with('success','A new user group has been created successfully.');
 			}catch(\Exception $e){
 				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
            }
         }
@@ -231,6 +232,7 @@ class UserGroupController extends Controller
 			DB::commit();
 			}catch(\Exception $e){
 				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}	
                return Redirect::to('admin/usergroup')->with('success','A new user group has been edited successfully.');
            }else{
@@ -302,7 +304,7 @@ class UserGroupController extends Controller
 						return Redirect::to('admin/usergroup')->with('success','A user group has been deleted successfully.');
 						}catch(\Exception $e){
 							DB::rollback();
-							return $e;
+							return "An error occured; your request could not be completed ".$e->getMessage();
 						}
 					}
 					

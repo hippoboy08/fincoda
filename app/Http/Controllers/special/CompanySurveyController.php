@@ -558,7 +558,7 @@ class CompanySurveyController extends Controller
 				return Redirect::to('special/survey/'.$request->survey_id)->with('success','Your request has been processed');
 				}catch(\Exception $e){
 				DB::rollback();
-				return $e;
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
 			}
 			}
@@ -787,6 +787,7 @@ class CompanySurveyController extends Controller
 			
 		}catch(\Exception $e){
 				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
         }else{
             return redirect()->back()->with('fail',' Could not save your answer. All the indicators have to be marked. Please check the unmarked indicator(s) and submit the survey again.')

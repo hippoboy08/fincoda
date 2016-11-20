@@ -727,6 +727,7 @@ class SurveyController extends Controller
 				return Redirect::to('basic/survey/'.$request->id)->with('success','Your  request has been completed ');
 			}catch(\Exception $e){
 				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
 			}
 		}
@@ -954,6 +955,7 @@ class SurveyController extends Controller
 			}
 			}catch(\Exception $e){
 				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
 
         }else{

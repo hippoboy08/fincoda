@@ -139,7 +139,7 @@ use EmailTrait;
 				 
 			}catch(\Exception $e){
 				DB::rollback();
-				return $e;
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
             }
             }
@@ -1791,6 +1791,7 @@ public function getParticipantDetails($surveyId, $participantId){
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
            }catch(\Exception $e){
 				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
         }
 
@@ -1850,7 +1851,7 @@ public function getParticipantDetails($surveyId, $participantId){
 			}
 		}catch(\Exception $e){
 				DB::rollback();
-				return $e;
+				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
 		}
     
