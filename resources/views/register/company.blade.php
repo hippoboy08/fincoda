@@ -8,7 +8,7 @@
 
                 <div class="box-header with-border">
                     <h3 class="box-title"><b>Provide you basic information</b></h3>
-                    <p><i>Please provide all the basic information of your company or the organisation.</i></p>
+                    <p><i>Please provide all the basic information of your organisation.</i></p>
                 </div><!-- /.box-header -->
                 <!-- form start -->
 
@@ -83,7 +83,8 @@
                             {!! Form::text('postcode',old('postcode'),['class'=>'form-control','placeholder'=>'Postal Address']) !!}
 
                         </div>
-						
+
+
 						 <div class="form-group">
                                 <label>Time Zone*:</label>
                                 {!! Form::select('time_zone',array_merge([''=>'         '],$timeZones),null,['class'=>'form-control']) !!}
