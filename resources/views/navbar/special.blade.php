@@ -25,14 +25,18 @@
 							<h5 class="select-users"><label></label>
 								<select id="languageId">
 									<option value="">language</option>
+									<option value="fi">fi</option>
 									<option value="en">en</option>
 									<option value="de">de</option>
+									<option value="nl">nl</option>
+									<option value="sp">sp</option>
 								</select>
 							</h5>
 							
 							<script>
 								  $(document).ready(function(){
 								  $('#languageId').change(function(){
+									  alert('success');
 								  if($(this).val()==""){
 								  return;
 								  }
@@ -44,7 +48,7 @@
 										   });
 										   $.ajax({
 											 method: 'POST',
-											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-system/public/special/language",
+											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete/public/special/language",
 											 dataType: 'json',
 											 data: {'languageId':$(this).val()},
 											 success: function(data){

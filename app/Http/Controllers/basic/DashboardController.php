@@ -48,8 +48,6 @@ class DashboardController extends Controller
 	public function switchLanguage(Request $request){
 		Session::put('language',$request['languageId']);
 		Session::save();
-		\App::setLocale($request['languageId']);
-	
 	return response()->json(array('stri'=>$request['languageId']));
 }	
 }
