@@ -30,8 +30,7 @@ use PDF;
 use View;
 
 
-class SurveyController extends Controller
-{ 
+class SurveyController extends Controller { 
 use EmailTrait;
     public function index(){
 		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
@@ -139,8 +138,10 @@ use EmailTrait;
 				 
 			}catch(\Exception $e){
 				DB::rollback();
-				return "An error occured; your request could not be completed ".$e->getMessage();
-			}
+				return redirect()->back()
+                    ->with('fail','An error occured; your request could not be completed '.$e->getMessage())
+                    ->withInput();			
+	    }
             }
             }
 
@@ -266,12 +267,12 @@ use EmailTrait;
                     ->withInput();
 				}
 				
-				$view = View::make('survey.resultForAdminPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
+				$view = PDF::loadView('survey.resultForAdminPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
 									'surveyScorePerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
-									'participants','company','company_profile','answers'))->render();
-				$pdf = \App::make('dompdf.wrapper');
-				$pdf->loadHTML($view);
-				return $pdf->stream('resultForAdmin');
+									'participants','company','company_profile','answers'));
+				//$pdf = \App::make('snappy.pdf.wrapper');
+				//$pdf->loadHTML($view);
+				return $view->download('resultAdmin.pdf');
 			  				
 		}
 		
@@ -381,14 +382,14 @@ use EmailTrait;
                     ->withInput();
 				}
 				
-				$view = View::make('survey.resultForAdminPdfOverView',
+				$view = PDF::loadView('survey.resultForAdminPdfOverView',
 												compact('survey','$surveyScoreAllUsersCheckThreeParticipants','surveyScoreAllUsers',
 															'surveyGroupAveragePerIndicatorAllUsers','surveyScorePerIndicatorGroup',
 															'surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
-															'participants','company','company_profile','answers'))->render();
-				$pdf = \App::make('dompdf.wrapper');
-				$pdf->loadHTML($view);
-				return $pdf->stream('resultForAdmin');
+															'participants','company','company_profile','answers'));
+				//$pdf = \App::make('dompdf.wrapper');
+				//$pdf->loadHTML($view);
+				return $view->download('resultAdmin.pdf');
 		}
 		
 		return redirect()->back();

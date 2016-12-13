@@ -20,15 +20,15 @@
         <tr>
             @role('admin')
             <td><a href="{!! url('admin/survey/'.$pending->id) !!}">{!! $pending->title !!}</a></td>
-			<td><a href="{!! url('admin/survey/edit/'.$pending->id) !!}">edit</a></td>
-			<td><a href="{!! url('admin/survey/deleteSurvey/'.$pending->id) !!}">delete</a></td>
+			<td><a class="confirmation" href="{!! url('admin/survey/edit/'.$pending->id) !!}">edit</a></td>
+			<td><a class="confirmation" href="{!! url('admin/survey/deleteSurvey/'.$pending->id) !!}">delete</a></td>
             @endrole
 
             @role('special')
 				@if(Route::current()->getName()=='special.groupsurvey.index')
                     <td><a href="{!! url('special/groupsurvey/'.$pending->id) !!}">{!! $pending->title !!}</a></td>
-					<td><a href="{!! url('special/groupsurvey/edit/'.$pending->id) !!}">edit</a></td>
-					<td><a href="{!! url('special/groupsurvey/deleteSurvey/'.$pending->id) !!}">delete</a></td>
+					<td><a class="confirmation" href="{!! url('special/groupsurvey/edit/'.$pending->id) !!}">edit</a></td>
+					<td><a class="confirmation" href="{!! url('special/groupsurvey/deleteSurvey/'.$pending->id) !!}">delete</a></td>
                 @elseif(Route::getCurrentRoute()->getPath()=='special/groupsurveyresult')
                     <td><a href="{!! url('special/groupsurvey/'.$pending->id) !!}">{!! $pending->title !!}</a></td>
 					<td> </td>

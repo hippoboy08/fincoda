@@ -3,7 +3,11 @@
 return [
 
 	/*
-	These are the keys for the remote server
+		//These are the keys for the local host
+   'public_key'     => env('RECAPTCHA_PUBLIC_KEY', '6LdhACkTAAAAALMn9JyiGDbcZbAy2O2zILM1YLoD'),
+    'private_key'    => env('RECAPTCHA_PRIVATE_KEY', '6LdhACkTAAAAAI0BdvIBXfX93h6ew8JS_otZ4KvW'),
+
+		//These are the keys for the remote server
 	'public_key'     => env('RECAPTCHA_PUBLIC_KEY', '6Lf6gikTAAAAAHokO4LZte_v3_isLrjKGPnaqPlt'),
     'private_key'    => env('RECAPTCHA_PRIVATE_KEY', '6Lf6gikTAAAAAEhMV9VTPU1oEUkFCPDzathXwK9o'),
 	
@@ -21,9 +25,10 @@ return [
     | and private_key is the Secret key.
     |
     */
-	//These are the keys for the local host
-   'public_key'     => env('RECAPTCHA_PUBLIC_KEY', '6LdhACkTAAAAALMn9JyiGDbcZbAy2O2zILM1YLoD'),
-    'private_key'    => env('RECAPTCHA_PRIVATE_KEY', '6LdhACkTAAAAAI0BdvIBXfX93h6ew8JS_otZ4KvW'),
+	//These are the keys for the remote server
+	'public_key'     => env('RECAPTCHA_PUBLIC_KEY', '6Lf6gikTAAAAAHokO4LZte_v3_isLrjKGPnaqPlt'),
+    'private_key'    => env('RECAPTCHA_PRIVATE_KEY', '6Lf6gikTAAAAAEhMV9VTPU1oEUkFCPDzathXwK9o'),
+
 
     /*
     |--------------------------------------------------------------------------

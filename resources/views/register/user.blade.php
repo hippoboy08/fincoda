@@ -8,7 +8,7 @@
 
         <div class="box-header with-border">
             <h3 class="box-title"><b>Provide your Organisation Code</b></h3>
-            <p><i>this is the most beautiful thing i has seen</i></p>
+            <p><i></i></p>
         </div><!-- /.box-header -->
 
         {!! Form::open(['role'=>'form','method'=>'POST']) !!}
@@ -33,7 +33,7 @@
 
 
         <div class="box-header with-border">
-            <h3 class="box-title"><b>Provide the Administrator detail below</b> </h3>
+            <h3 class="box-title"><b>Provide the Detailed Information below</b> </h3>
         </div>
         <div class="box box-primary">
             <div class="box-body">
@@ -75,13 +75,13 @@
                             <span class="form-control-feedback"><i class="fa fa-eye" aria-hidden="true"></i></span>
                         </div>
 
-                        <div class="form-group{!! $errors->has('g-recaptcha-response') ? ' has-error':'' !!} has-feedback">
+                        <!--<div class="form-group{!! $errors->has('g-recaptcha-response') ? ' has-error':'' !!} has-feedback">
                             <label>Please check the box below*<i>(Spam filtration)</i></label><br>
                             @if($errors->has('g-recaptcha-response'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('g-recaptcha-response') !!}.</label>
                             @endif
                             {!! Recaptcha::render() !!}
-                        </div>
+                        </div>-->
 
 
                         <div class="form-group col-md-offset-5">

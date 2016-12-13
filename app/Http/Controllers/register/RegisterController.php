@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -34,7 +35,7 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|max:20|confirmed',
-            'g-recaptcha-response' => 'required|recaptcha',
+            //'g-recaptcha-response' => 'required|recaptcha',
 
         ]);
         if ($validator->fails()) {
@@ -89,12 +90,13 @@ class RegisterController extends Controller
             //send an email with the company code
             $name=$request->company_name;
             $code=$company_code;
-            $this->email('email.registration',['name'=>$name,'code'=>$code],$admin->email);
+            $this->email('email.registration',['name'=>$name,'link'=>url('/').'/login','code'=>$code],$admin->email);
 			DB::commit();
 			
 			}catch(\Exception $e){
 				DB::rollback();
-				return "An error occured; your request could not be completed ".$e->getMessage();
+				return $e;
+				//return "An error occured; your request could not be completed ".$e->getMessage();
 			}
           }
 
@@ -117,7 +119,7 @@ class RegisterController extends Controller
             'name'=>'required|max:255',
             'email'=>'required|email|max:255|unique:users',
             'password'=>'required|confirmed|min:6|max:20',
-            'g-recaptcha-response' => 'required|recaptcha',
+            //'g-recaptcha-response' => 'required|recaptcha',
       ]);
         if($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput();

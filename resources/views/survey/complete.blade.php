@@ -65,7 +65,7 @@
 											@if($closed->type_id=='1')
 												<td><a href="{!! url('basic/survey/'.$closed->id) !!}"> {!! $closed->title !!}</a></td>
 											@else
-												<td><a href="{!! url('basic/survey/viewPeerResults/'.$closed->id).'/'.Auth::User()->id !!}">{!! $closed->type_id !!}</a></td>
+												<td><a href="{!! url('basic/survey/viewPeerResults/'.$closed->id).'/'.Auth::User()->id !!}">{!! $closed->title !!}</a></td>
 											@endif
 										@endrole
 
@@ -91,6 +91,9 @@
 									@if($closed->completed=='3')
                                         <td><span class="label label-success">In progress</span></td>
                                     @endif
+									@if($closed->completed=='5')
+										<td><span class="label label-success">Completed</span></td>
+									@endif
                                 </tr>
                                 @endforeach
 

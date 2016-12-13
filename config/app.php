@@ -149,7 +149,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
-		Barryvdh\DomPDF\ServiceProvider::class,
+		Barryvdh\Snappy\ServiceProvider::class,
 		Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 
         /*
@@ -208,7 +208,8 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-		'PDF'   => Barryvdh\DomPDF\Facade::class,
+		'PDF'   => Barryvdh\Snappy\Facades\SnappyPdf::class,
+		'SnappyImage'   => Barryvdh\Snappy\Facades\SnappyImage::class,
 		'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
 
 

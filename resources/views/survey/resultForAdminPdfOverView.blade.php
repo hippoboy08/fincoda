@@ -58,7 +58,7 @@
                                     <!-- Company average graph -->
 									@if(count($surveyGroupAveragePerIndicatorAllUsers)==34)
                                     <canvas id="companyAverage" width="800" height="400"></canvas>
-                                    <script src="{{URL::asset('js/displayChart.js')}}">
+                                    <script src="{{siteFullName()}}/js/displayChart.js">
                                     </script>
                                     <script>
                                       createChart(
@@ -109,7 +109,7 @@
 
 									@if(count($surveyScorePerIndicatorGroup)==5)
                                     <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
-                                    <script src="{{URL::asset('js/displayChart.js')}}">
+                                   <script src="{{siteFullName()}}/js/displayChart.js">
                                     </script>
                                     <script>
                                       createChart(

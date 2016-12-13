@@ -10,7 +10,9 @@
         "laravelcollective/html": "~5.0",
         "zizaco/entrust": "5.2.x-dev",
         "phpoffice/phpexcel": "dev-master",
-		"barryvdh/laravel-dompdf":"0.6.*",
+		"barryvdh/laravel-snappy":"0.3.*",
+		"h4cc/wkhtmltopdf-amd64":"0.12.*",
+		"h4cc/wkhtmltoimage-amd64":"0.12.*",
 		"greggilbert/recaptcha": "dev-master"
     },
     "require-dev": {
@@ -54,3 +56,4 @@
     },
     "guzzlehttp/guzzle": "~5.3|~6.0"
 }
+

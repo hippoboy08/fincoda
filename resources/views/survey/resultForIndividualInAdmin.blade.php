@@ -25,8 +25,7 @@
                                 <!-- <label id="surveyId">{!! $survey->title !!}</label> -->
                                 <ul>
 								  {{App::setLocale(Session::get('language'))}}
-								  <li><h5><label>Id : </label> {!! $survey->id !!}</h5></li>
-                                  <li><h5 class="text-capitalize"><label>Title : </label> {!! $survey->title !!}</h5></li>
+								  <li><h5 class="text-capitalize"><label>Title : </label> {!! $survey->title !!}</h5></li>
                                   <li><h5 class="text-capitalize"><label>Type : </label> {!! \App\Survey_Type::find($survey->type_id)->name !!}</h5></li>
                                   <li><h5><label>Start time : </label> {!! $survey->start_time !!}</h5></li>
                                   <li><h5><label>Deadline : </label> {!! $survey->end_time !!}</h5></li>
@@ -60,6 +59,7 @@
                                     @role ('admin')
                                     <!-- Company average graph -->
 									@if(count($surveyGroupAveragePerIndicatorAllUsers)==34)
+                                    <h3 style="text-align:center;">Company average score per indicator </h3>
                                     <canvas id="companyAverage" width="800" height="400"></canvas>
                                     <script src="{{URL::asset('js/displayChart.js')}}">
                                     </script>
@@ -86,7 +86,7 @@
 
                                     <div>
                                       <table class="table table-bordered table-striped text-center">
-                                        <h4><b>Indicators Table</b></h4>
+                                        <h3 style="text-align: center;"><b>Indicators Table</b></h3>
                                           <thead>
                                             <tr>
                                                 <th>Indicator ID</th>
@@ -112,18 +112,44 @@
                                     </div>
 
 									@if(count($surveyScorePerIndicatorGroup)==5)
+                                    <h3 style="text-align:center;">Company average score per dimension</h3>
                                     <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
                                     <script src="{{URL::asset('js/displayChart.js')}}">
                                     </script>
                                     <script>
-                                      createChart(
-                                        document.getElementById("indicatorGroupAverage"),
-                                        ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
-                                        'Company average score of each dimension',
-                                        [{!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
-                                          {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}],
-                                        'rgba(0,0,255,1)'
-                                      );
+                                    var chartArea = document.getElementById('indicatorGroupAverage');
+                                    var datasetMinCompany = {
+                                      label: 'Minimum Company Average Score Each Dimension',
+                                      data: [
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average!!},
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average!!},
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Minimum_User_Indicator_Group_Average!!},
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Minimum_User_Indicator_Group_Average!!},
+                                              {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Minimum_User_Indicator_Group_Average!!}
+                                            ],
+                                       backgroundColor: 'rgba(255,0,0,1)'
+                                    };
+                                    var datasetMaxCompany = {
+                                      label: 'Maximum Company Average Score Each Dimension',
+                                      data: [
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Maximum_User_Indicator_Group_Average!!},
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Maximum_User_Indicator_Group_Average!!},
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Maximum_User_Indicator_Group_Average!!},
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Maximum_User_Indicator_Group_Average!!},
+                                        {!!$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Maximum_User_Indicator_Group_Average!!}
+                                      ],
+                                      backgroundColor: 'rgba(255,255,0,1)'
+                                    };
+                                    var datasetAvgCompany = {
+                                      label: 'Company Average Score Each Dimension',
+                                      data: [
+                                        {!!$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average!!},
+                                          {!!$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average!!}, {!!$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average!!}
+                                      ],
+                                      backgroundColor: 'rgba(0,0,255,1)'
+                                    };
+                                    var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
+                                    createMaxMinChart(chartArea, labelArr, datasetMinCompany, datasetAvgCompany, datasetMaxCompany);
                                     </script>
 									@else
 										<div>You have no surveys results to display or your indicators group count is not equal 5</div>
@@ -131,6 +157,7 @@
 
 
                                     <div>
+									<h3 style="text-align:center;">Company average score per dimension</h3>
                                       @include ('survey.resultContent.surveyScorePerIndicatorGroup')
                                     </div>
                                   </div>
@@ -175,13 +202,13 @@
                                              <h5>Email: <label>{!! \App\User::find($user)->email !!}</label><h5>
                                              <br>
                                               <table id="Participants_scores" class="table table-bordered table-striped table-responsive text-center" >
-                                                <caption style="text-align:center;">User score per indicator compared with group average score per indicator</caption>
+                                                <h3 style="text-align:center;">User score per indicator compared with company average score per indicator</h3>
                                                   <thead>
                                                   <tr>
                                                       <th>Indicator ID</td>
                                                       <th>Indicator Name</th>
                                                       <th>User Answer Indicator</th>
-                                                      <th>Group Average Indicator</th>
+                                                      <th>Company Average Indicator</th>
 
 
                                                   </tr>
@@ -264,12 +291,12 @@
                                             <br>
                                             <div>
                                               <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                                                <caption style="text-align: center;">User average score per dimension compared with group average score per dimension</caption>
+                                                <h3 style="text-align: center;">User average score per dimension compared with company average score per dimension</h3>
                                                 <thead>
                                                   <tr>
                                                     <th>Dimension</th>
                                                     <th>User Dimension Average</th>
-                                                    <th>Group Dimension Average</th>
+                                                    <th>Company Dimension Average</th>
                                                   </tr>
                                                 </thead>
                                                 <tbody>
@@ -297,7 +324,7 @@
                                             </div>
                                             <div>
                                               <br>
-                                              <h3 style="text-align: center">User average per dimension VS Company average per dimension
+                                              <h3 style="text-align: center">User average per dimension VS Company average per dimension</h3>
                                               <canvas id="comparedGraphCategory" width="800" height="400"></canvas>
                                               <script src="{{URL::asset('js/displayChart.js')}}"></script>
 											@if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)

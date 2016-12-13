@@ -19,8 +19,8 @@
             <tr>
                 @role('admin')
                 <td><a href="{!! url('admin/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
-				<td><a href="{!! url('admin/survey/edit/'.$closed->id) !!}">edit</a></td>
-				<td><a href="{!! url('admin/survey/deleteSurvey/'.$closed->id) !!}">delete</a></td>
+				<td><a class="confirmation" href="{!! url('admin/survey/edit/'.$closed->id) !!}">edit</a></td>
+				<td><a class="confirmation" href="{!! url('admin/survey/deleteSurvey/'.$closed->id) !!}">delete</a></td>
 				@endrole
 
                 @role('basic')
@@ -50,8 +50,8 @@
 
                 @if(Route::current()->getName()=='special.groupsurvey.index')
                     <td><a href="{!! url('special/groupsurvey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
-					<td><a href="{!! url('special/groupsurvey/edit/'.$closed->id) !!}">edit</a></td>
-					<td><a href="{!! url('special/groupsurvey/deleteSurvey/'.$closed->id) !!}">delete</a></td>
+					<td><a class="confirmation" href="{!! url('special/groupsurvey/edit/'.$closed->id) !!}">edit</a></td>
+					<td><a class="confirmation" href="{!! url('special/groupsurvey/deleteSurvey/'.$closed->id) !!}">delete</a></td>
                 @elseif(Route::getCurrentRoute()->getPath()=='special/groupsurveyresult')
                     <td><a href="{!! url('special/groupsurvey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
 					<td> </td>

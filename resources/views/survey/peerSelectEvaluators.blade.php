@@ -1,293 +1,281 @@
 @extends('master')
 @section('content')
-    <div class="row">
-        <!-- left column -->
-        <div class="col-md-12 col-md-offset-0">
+<div class="row">
+  <!-- left column -->
+  <div class="col-md-12 col-md-offset-0">
 
-            @include('message.fail')
+    @include('message.fail')
 
-            <div class="box-header with-border">
-                <h2 class="box-title"><b>You have been invited to take part in a survey.</b></h2>
-                <p><i>Below is the information of the survey you are going to take.
-                     </i></p>
-            </div>
-            <div class="box box-primary">
-                <div class="box-body">
-
-                    <p>Survey title : {!! $survey->title !!}</p>
-                    <p>Created by : {!! \App\User::find($survey->user_id)->name !!}</p>
-                    <p>Open between : {!! $survey->start_time.' - '.$survey->end_time !!}</p>
-                    <p>Survey Description: {!! $survey->description !!}</p>
-					
-					<p class="panel-title">
-                             <a data-toggle="collapse" href="#collapse2"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>View the people you have asked to evaluate you.</label></a>
-                            </p>
-							<div id="collapse2" class="panel-collapse collapse">
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>User ID</th>
-									<th>Full Name</th>
-                                    <th>Email Address</th>
-									<th>Completed</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-								@if(count($evaluators)>0)
-                                @foreach($evaluators as $user)
-                                    <tr>
-                                        <td>{!! $user->id !!}</td>
-										<td>{!! $user->name !!}</td>
-                                        <td>{!! $user->email !!}</td>
-										@if(count($evaluatorsCompleted)>0)
-											@foreach($evaluatorsCompleted as $users)
-												@if($user->id == $users->id)
-													<td>completed</td>
-												@endif
-											@endforeach
-										@endif
-										@if(count($evaluatorsNotCompleted)>0)
-											@foreach($evaluatorsNotCompleted as $users)
-												@if($user->id == $users->id)
-													<td>not-completed</td>
-												@endif
-											@endforeach
-										@endif
-                                    </tr>
-                                @endforeach
-								@endif
-                                </tbody>
-                                </table>
-                                </div>
-							
-							<a data-toggle="collapse" href="#collapse4"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>View the people who have asked you to evaluate them. The id link will be active if you have not yet evaluated them</label></a>
-                            </p>
-							<div id="collapse4" class="panel-collapse collapse">
-                            <table id="example2" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>User ID</th>
-									<th>Full Name</th>
-                                    <th>Email Address</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-								@if(count($evaluatees)>0)
-                                @foreach($evaluatees as $user)
-                                    <tr>
-										@if(count($evaluated)>0)
-											@foreach($evaluated as $users)
-												@if($user->id == $users->id)
-													<td>{!! $user->id !!}</td>
-												@endif
-											@endforeach
-										@endif
-										
-										@if(count($evaluatedNot)>0)
-											@foreach($evaluatedNot as $users)
-												@if($user->id == $users->id)
-													@role('special')
-													<td><a href="{!! url('special/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->id !!}</a></td>
-													@endrole
-													@role('basic')
-													<td><a href="{!! url('basic/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->id !!}</a></td>
-													@endrole
-												@endif
-											@endforeach
-										@endif
-										<td>{!! $user->name !!}</td>
-                                        <td>{!! $user->email !!}</td>
-                                    </tr>
-                                @endforeach
-								@endif
-                                </tbody>
-                                </table>
-                            </div>	
-							
-							
-							<a data-toggle="collapse" href="#collapse5"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>View the people you have already evaluated.</label></a>
-                            </p>
-							<div id="collapse5" class="panel-collapse collapse">
-                            <table id="example3" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>User ID</th>
-									<th>Full Name</th>
-                                    <th>Email Address</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-								@if(count($evaluated)>0)
-                                @foreach($evaluated as $user)
-                                    <tr>
-										<td>{!! $user->id !!}</td>
-										<td>{!! $user->name !!}</td>
-                                        <td>{!! $user->email !!}</td>
-                                    </tr>
-                                @endforeach
-								@endif
-                                </tbody>
-                                </table>
-                            </div>	
-							
-							<a data-toggle="collapse" href="#collapse6"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>View the people who have completed evaluating you.</label></a>
-                            </p>
-							<div id="collapse6" class="panel-collapse collapse">
-                            <table id="example4" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>User ID</th>
-									<th>Full Name</th>
-                                    <th>Email Address</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-								@if(count($evaluatorsCompleted)>0)
-                                @foreach($evaluatorsCompleted as $user)
-                                    <tr>
-										<td>{!! $user->id !!}</td>
-										<td>{!! $user->name !!}</td>
-                                        <td>{!! $user->email !!}</td>
-                                    </tr>
-                                @endforeach
-								@endif
-                                </tbody>
-                                </table>
-                            </div>	
-							
-							<a data-toggle="collapse" href="#collapse7"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>View the people who have not completed evaluating you.</label></a>
-                            </p>
-							<div id="collapse7" class="panel-collapse collapse">
-                            <table id="example5" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>User ID</th>
-									<th>Full Name</th>
-                                    <th>Email Address</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-								@if(count($evaluatorsNotCompleted)>0)
-                                @foreach($evaluatorsNotCompleted as $user)
-                                    <tr>
-										<td>{!! $user->id !!}</td>
-										<td>{!! $user->name !!}</td>
-                                        <td>{!! $user->email !!}</td>
-                                    </tr>
-                                @endforeach
-								@endif
-                                </tbody>
-                                </table>
-                            </div>	
-							
-							
-							<a data-toggle="collapse" href="#collapse8"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>View your results.</label></a>
-                            </p>
-							<div id="collapse8" class="panel-collapse collapse">
-                            <table id="example6" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Results</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-								    <tr>
-										@role('special')
-											@if(count($evaluatorsCompleted)>1)
-												<td><a href="{!! url('special/survey/viewPeerResults/'.$survey->id).'/'.Auth::User()->id !!}">{!! Auth::User()->id !!}</a></td>
-											@endif
-										@endrole
-										@role('basic')
-											@if(count($evaluatorsCompleted)>1)
-												<td><a href="{!! url('basic/survey/viewPeerResults/'.$survey->id).'/'.Auth::User()->id !!}">{!! Auth::User()->id !!}</a></td>
-											@endif
-										@endrole
-                                    </tr>
-                                </tbody>
-                                </table>
-                            </div>	
-							
-							
-							@role('basic')
-                    {!! Form::open(['method'=>'POST', 'action'=>'basic\SurveyController@inviteEvaluators']) !!}
-                        @endrole
-                      @role('special')
-                    {!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@inviteEvaluators']) !!}
-                        @endrole
-                        {!! Form::hidden('survey_id',$survey->id) !!}
-						  <p class="panel-title">
-                             <a data-toggle="collapse" href="#collapse3"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>Please select a maximum of five people you would like to evaluate you.</label></a>
-                            </p>
-							@if(Session::has('message'))
-								<p>{{Session::get('message')}}<p>
-							@endif
-                            <div id="collapse3" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="form-group{!! $errors->has('usersToEvaluate') ? ' has-error':'' !!} has-feedback">
-                                @if($errors->has('usersToEvaluate'))
-                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('usersToEvaluate') !!}</label>
-                                @endif
-                            <table id="example7" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th><i class="fa fa-check-square-o" aria-hidden="true"></i> | User ID</th>
-									<th>Full Name</th>
-                                    <th>Email Address</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-								@if(count($evaluators)<5)
-                                @foreach($participantsNotSelectedAsEvaluators as $user)
-                                    <tr>
-                                        <td>{!! Form::checkbox('usersToEvaluate[]',$user->id) !!} | {!! $user->id !!}</td>
-										<td>{!! $user->name !!}</td>
-                                        <td>{!! $user->email !!}</td>
-                                    </tr>
-                                @endforeach
-								@endif
-                                </tbody>
-                                </table>
-                                </div>
-                                </div>
-                            </div>
-						  
-						<button type="submit" class="btn btn-info btn-flat" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Submit</button>
-                    {!! Form::close() !!}
-							
-							
-                    </div>
-                </div>
-                    </div>
-            </div>
-        </div>
+    <div class="box-header with-border">
+      <h2 class="box-title"><b>You have been invited to take part in a survey.</b></h2>
+      <p><i>Below is the information of the survey you are going to take.
+      </i></p>
     </div>
+    <div class="box box-primary">
+      <div class="box-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
 
-	<!-- DataTables -->
-    <script src="{{URL::asset('datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{URL::asset('datatables/dataTables.bootstrap.min.js')}}"></script>
+            <h2>Survey Results</h2>
+            <ul>
+              <li><h5><label>Survey title</label> : {!! $survey->title !!}</h5></li>
+              <li><h5><label>Created by</label> : {!! \App\User::find($survey->user_id)->name !!}</h5></li>
+              <li><h5><label>Open between</label> : {!! $survey->start_time.' - '.$survey->end_time !!}</h5></li>
+              <li><h5><label>Survey Description</label>: {!! $survey->description !!}</h5></li>
+              <li style="display:none;"><p id="surveyId">{!!$survey->id!!}</p></li>
+              <li style="display:none;"><p id="userId">{!!Auth::User()->id!!}</p></li>
+            </ul>
+            <br><br>
+            <ul class="nav nav-tabs">
+              <li class="active"><a data-toggle="tab" href="#tab1">Select who evaluate you</a></li>
+              <li><a data-toggle="tab" href="#tab2">Who are evaluating you</a></li>
+              <li><a data-toggle="tab" href="#tab3">People you are evaluating</a></li>
+              <li id='getData'><a data-toggle="tab" href="#tab4">Results</a></li>
+            </ul>
 
-    <script>
-        $(function () {
-            $("#example1").DataTable();
-			$('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
-			$("#example3").DataTable();
-			$("#example4").DataTable();
-			$("#example5").DataTable();
-			$("#example7").DataTable();
-        });
-    </script>
-    @stop
+            <div class="tab-content">
+              <div id="tab1" class="tab-pane fade in active">
+                <br>
+                @role('basic')
+                {!! Form::open(['method'=>'POST', 'action'=>'basic\SurveyController@inviteEvaluators']) !!}
+                @endrole
+                @role('special')
+                {!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@inviteEvaluators']) !!}
+                @endrole
+
+                {!! Form::hidden('survey_id',$survey->id) !!}
+                <p class="panel-title">
+                  <label>Please select a maximum of five people you would like to evaluate you. If no participants is shown, you have had maximum participants as evaluators.</label>
+                </p>
+                @if(Session::has('message'))
+                <h4 style="color:red;">{{Session::get('message')}}</h4>
+                  @endif
+                  <div class="panel-body">
+                    <div class="form-group{!! $errors->has('usersToEvaluate') ? ' has-error':'' !!} has-feedback">
+                      @if($errors->has('usersToEvaluate'))
+                      <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('usersToEvaluate') !!}</label>
+                      @endif
+
+                      <table id="example7" class="table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th><i class="fa fa-check-square-o" aria-hidden="true"></i> | User Name</th>
+                            <th>Email Address</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @if(count($evaluators)<5)
+                          @foreach($participantsNotSelectedAsEvaluators as $user)
+                          <tr>
+                            <td>{!! Form::checkbox('usersToEvaluate[]',$user->id) !!} | {!! $user->name !!}</td>
+                            <td>{!! $user->email !!}</td>
+                          </tr>
+                          @endforeach
+                          @endif
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <button id="pickEvaluators" type="submit" class="btn btn-info btn-flat"><i class="fa fa-floppy-o" aria-hidden="true" ></i> Submit</button>
+                  @if(count($evaluators)>=5)
+                  <script type="text/javascript">
+                    document.getElementById('pickEvaluators').disabled=true;
+                  </script>
+                  @endif
+                  {!! Form::close() !!}
+
+                </div>
+
+                <div id="tab2" class="tab-pane fade">
+                  <br>
+                  <p class="panel-title">
+                    <label>People who you asked to evaluate you.</label>
+                  </p>
+                  <div class="panel-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>Full Name</th>
+                          <th>Email Address</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @if(count($evaluators)>0)
+                        @foreach($evaluators as $user)
+                        <tr>
+                          <td>{!! $user->name !!}</td>
+                          <td>{!! $user->email !!}</td>
+                          @if(count($evaluatorsCompleted)>0)
+                          @foreach($evaluatorsCompleted as $users)
+                          @if($user->id == $users->id)
+                          <td>
+                            <button type="button" class="btn btn-success">Completed</button>
+                          </td>
+                          @endif
+                          @endforeach
+                          @endif
+                          @if(count($evaluatorsNotCompleted)>0)
+                          @foreach($evaluatorsNotCompleted as $users)
+                          @if($user->id == $users->id)
+                          <td>
+                            <button type="button" class="btn btn-danger">Not Completed</button>
+                          </td>
+                          @endif
+                          @endforeach
+                          @endif
+                        </tr>
+                        @endforeach
+                        @endif
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+                <div id="tab3" class="tab-pane fade">
+                  <br>
+                  <p class="panel-title">
+                    <label>People who have asked you to evaluate them. The name link will be active if you have not completed evaluating them.</label>
+                  </p>
+                  <div class="panel-body">
+                    <table id="example3" class="table table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>Full Name</th>
+                          <th>Email Address</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @if(count($evaluatees)>0)
+                        @foreach($evaluatees as $user)
+                        <tr>
+                          @if(count($evaluated)>0)
+                          @foreach($evaluated as $users)
+                          @if($user->id == $users->id)
+                          <td>{!! $user->name !!}</td>
+                          <td>{!! $user->email !!}</td>
+                          <td>
+                            <button type="button" class="btn btn-success">Completed</button>
+                          </td>
+                          @endif
+                          @endforeach
+                          @endif
+
+                          @if(count($evaluatedNot)>0)
+                          @foreach($evaluatedNot as $users)
+                          @if($user->id == $users->id)
+                          @role('special')
+                          <td><a href="{!! url('special/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
+                          <td>{!! $user->email !!}</td>
+                          @endrole
+
+                          @role('basic')
+                          <td><a href="{!! url('basic/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
+                          <td>{!! $user->email !!}</td>
+                          @endrole
+                          <td>
+                            <button type="button" class="btn btn-danger">Not Completed</button>
+                          </td>
+                          @endif
+                          @endforeach
+                          @endif
+                        </tr>
+                        @endforeach
+                        @endif
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div id="tab4" class="tab-pane fade">
+                  <br>
+
+                  @role('special')
+                  @if(count($evaluatorsCompleted)>1)
+                  <script type="text/javascript">
+                  $(document).ready(function(){
+                    $('#getData').click(function(e) {
+                      $userId = $('#userId').text();
+                      $surveyId = $('#surveyId').text();
+
+                      $url = 'viewPeerResults/'+$surveyId+'/'+$userId;
+
+                      $.get($url,function(response){
+                        content = $("#show",response);
+                        $('#tab4').append(content);
+                      })
+                      .fail(function() {
+                        $('#tab4').append('<h3>Errors occurs when retrieving your results. Please contact admin for more information.</h3>');
+                      });
+                    });
+                  });
+                  </script>
+                  @endif
+                  @if(count($evaluatorsCompleted)<=1)
+                  <h3>You don't have enough evaluations to see your result.</h3>
+                  @endif
+                  @endrole
+
+                  @role('basic')
+                  @if(count($evaluatorsCompleted)>1)
+                  <script type="text/javascript">
+                  $(document).ready(function(){
+                    $('#getData').click(function(e) {
+                      $userId = $('#userId').text();
+                      $surveyId = $('#surveyId').text();
+
+                      $url = 'viewPeerResults/'+$surveyId+'/'+$userId;
+                      $.get($url,function(response){
+                        content = $("#show",response);
+                        $('#tab4').append(content);
+                      })
+                      .fail(function() {
+                        $('#tab4').append('<h3>Errors occurs when retrieving your results. Please contact admin for more information.</h3>');
+                      });
+                    });
+                  });
+                  </script>
+                  @endif
+                  @if(count($evaluatorsCompleted)<=1)
+                  <h3>You don't have enough evaluations to get your result.</h3>
+                  @endif
+                  @endrole
+
+                </div>
+
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- DataTables -->
+<script src="{{URL::asset('datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{URL::asset('datatables/dataTables.bootstrap.min.js')}}"></script>
+
+<script>
+$(function () {
+  $("#example1").DataTable();
+  $('#example2').DataTable({
+    "paging": true,
+    "lengthChange": false,
+    "searching": false,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false
+  });
+  $("#example3").DataTable();
+  $("#example4").DataTable();
+  $("#example5").DataTable();
+  $("#example7").DataTable();
+});
+</script>
+@stop

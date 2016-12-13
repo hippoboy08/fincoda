@@ -24,6 +24,7 @@
 					<div class="pull-right" >
 							<h5 class="select-users"><label></label>
 								<select id="languageId">
+									<option value="">language</option>
 									<option value="fi">fi</option>
 									<option value="en">en</option>
 									<option value="de">de</option>
@@ -46,7 +47,7 @@
 										   });
 										   $.ajax({
 											 method: 'POST',
-											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete/public/admin/language",
+											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete-server/public/admin/language",
 											 dataType: 'json',
 											 data: {'languageId':$(this).val()},
 											 success: function(data){

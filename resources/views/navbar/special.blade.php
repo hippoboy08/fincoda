@@ -36,7 +36,7 @@
 							<script>
 								  $(document).ready(function(){
 								  $('#languageId').change(function(){
-									  alert('success');
+									  //alert('success');
 								  if($(this).val()==""){
 								  return;
 								  }
@@ -48,7 +48,7 @@
 										   });
 										   $.ajax({
 											 method: 'POST',
-											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete/public/special/language",
+											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete-server/public/special/language",
 											 dataType: 'json',
 											 data: {'languageId':$(this).val()},
 											 success: function(data){

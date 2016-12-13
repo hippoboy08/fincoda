@@ -131,13 +131,13 @@
                         {!! Form::password('password_confirmation',['class'=>'form-control','placeholder'=>'Re-type Password']) !!}
                         <span class="form-control-feedback"><i class="fa fa-eye" aria-hidden="true"></i></span>
                     </div>
-                    <div class="form-group{!! $errors->has('g-recaptcha-response') ? ' has-error':'' !!} has-feedback">
+                    <!--<div class="form-group{!! $errors->has('g-recaptcha-response') ? ' has-error':'' !!} has-feedback">
                         <label>Please check the box below*<i>(Spam filtration)</i></label><br>
                            @if($errors->has('g-recaptcha-response'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('g-recaptcha-response') !!}.</label>
                             @endif
                         {!! Recaptcha::render() !!}
-                    </div>
+                    </div>-->
 
 
 

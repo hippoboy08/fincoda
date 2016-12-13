@@ -24,6 +24,7 @@ use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Worksheet;
 use View;
+use PDF;
 
 
 
@@ -314,12 +315,12 @@ class GroupSurveyController extends Controller
 				}
 				
 				
-				$view = View::make('survey.resultForSpecialGroupSurveyPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
+				$view = PDF::loadview('survey.resultForSpecialPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
 									'surveyScorePerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
-									'participants','company','company_profile','answers'))->render();
-				$pdf = \App::make('dompdf.wrapper');
-				$pdf->loadHTML($view);
-				return $pdf->stream('resultForAdmin');
+									'participants','company','company_profile','answers'));
+				//$pdf = \App::make('dompdf.wrapper');
+				//$pdf->loadHTML($view);
+				return $view->download('resultSpecial.pdf');
 		}
 		
 		if ($this->SurveyType($id) == 'peer') {
@@ -429,15 +430,14 @@ class GroupSurveyController extends Controller
                     ->withInput();
 				}
 				
-				$view = View::make('survey.resultForSpecialGroupSurveyPdfOverView',
+				$view = PDF::loadview('survey.resultForSpecialPdfOverView',
 												compact('survey','$surveyScoreAllUsersCheckThreeParticipants','surveyScoreAllUsers',
 															'surveyGroupAveragePerIndicatorAllUsers','surveyScorePerIndicatorGroup',
 															'surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
-															'participants','company','company_profile','answers'))->render();
-				$pdf = \App::make('dompdf.wrapper');
-				$pdf->loadHTML($view);
-				return $pdf->stream('resultForAdmin');
-		}
+															'participants','company','company_profile','answers'));
+				//$pdf = \App::make('dompdf.wrapper');
+				//$pdf->loadHTML($view);
+				return $view->download('resultSpecial.pdf');		}
 		
 		return redirect()->back();
 				
@@ -838,7 +838,7 @@ class GroupSurveyController extends Controller
 							
 							
 							$answers = DB::select(DB::raw(
-									"select users.id as User_ID, users.name, users.email from users where users.id in
+									"select users.id, users.name, users.email from users where users.id in
 										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
 												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
 												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
@@ -907,22 +907,11 @@ class GroupSurveyController extends Controller
 
 
 
-			  $participants = DB::select(DB::raw(
-                            "select results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
-								results.user_id as User_ID, users.name as name,
-								users.email as email, participants.reminder as reminder,
-                                participants.completed as completed
-                                from indicators
-								join results on results.indicator_id = indicators.id
-								join users on results.user_id = users.id
-								join participants on results.user_id = participants.user_id
-								join user_in_groups on results.user_id = user_in_groups.user_id
-								join indicator_groups on indicators.group_id = indicator_groups.id
-								where results.survey_id = :surveyId
-								and results.user_id = :userId
-								and user_in_groups.user_group_id = :groupId
-								group by results.survey_id, user_in_groups.user_group_id, results.user_id"),
-                            array("surveyId"=>$id,"userId"=>$userId,"groupId"=>$groupId));
+				$participants = DB::select(DB::raw(
+                            "select users.id as User_ID, users.name, users.email from users where users.id in 
+														(select participants.user_id from participants 
+															where participants.survey_id = :surveyId)"),
+                            array("surveyId"=>$id));
 
               //If a user does not belong to any group, then this query will return an empty result set
 			  $surveyScoreAllUsers = DB::select(DB::raw(

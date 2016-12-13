@@ -2733,7 +2733,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `company_id`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'basic', 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 'eciqjxSX9Y1rhH6XFexNXSrugNPMvJCiDN7Pi1KChl363D9pCyiKyi0Swfpx', '2016-09-04 18:24:58', '2016-11-16 13:28:18'),
+(1, 'admin', 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 'eciqjxSX9Y1rhH6XFexNXSrugNPMvJCiDN7Pi1KChl363D9pCyiKyi0Swfpx', '2016-09-04 18:24:58', '2016-11-16 13:28:18'),
 (2, 'special', 'special@fincoda.com', 1, '$2y$10$XEkBB9aQOSUsnZnbvtIU/eFpxWuzc3g.xN/Va5QGt5FWbJSh7P0vW', '5RjtYNERxMRh3OSSQigXrejbhU5cwxldehVoOu6bnqAfQdGjjZS5hYcFCEUt', '2016-09-04 18:24:59', '2016-11-16 13:28:02'),
 (3, 'basic', 'basic@fincoda.com', 1, '$2y$10$VJ1.j0X2Ns2gXUHhBs5Ob.orTIrsug85qCSQd36tvzfababDw9OdS', '1eGHJZ8MfiQpBDnZTqfyfByvRBlvvaHyBaITxo9hmzExqAAn3VRoILxckoWP', '2016-09-04 18:24:59', '2016-11-16 10:26:20'),
 (15, 'dav', 'dav1@yahoo.com', 1, '$2y$10$c8oZ.5Hw3vrz4Rj/2DlcXOtOEzbKseMrNGNZyezlztWUpEXQx4F3m', 'meENIAHuoMBVypeGrpIYOnsmY5DkiTQ2UKoFokzddn8H4KzaocfMy9eaZEQh', '2016-11-15 09:31:48', '2016-11-15 12:48:25'),

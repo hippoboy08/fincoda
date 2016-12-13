@@ -33,12 +33,14 @@
     <tr>
         @role('admin')
         <td><a href="{!! url('admin/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
-        <td><a href="{!! url('admin/survey/edit/'.$open->id) !!}">edit</a></td>
-		<td><a href="{!! url('admin/survey/deleteSurvey/'.$open->id) !!}">delete</a></td>
+        <td><a class="confirmation" href="{!! url('admin/survey/edit/'.$open->id) !!}">edit</a></td>
+		<td><a class="confirmation" href="{!! url('admin/survey/deleteSurvey/'.$open->id) !!}" >delete</a>
+
+    </td>
         @endrole
         @role('basic')
 			@if($open->completed=='0')
-			<td><a href="{!! url('basic/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
+			<td><a  href="{!! url('basic/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
 			<td> </td>
 			<td> </td>
 			@endif
@@ -62,8 +64,8 @@
         @role('special')
         @if(Route::current()->getName()=='special.groupsurvey.index')
             <td><a href="{!! url('special/groupsurvey/'.$open->id) !!}">{!! $open->title !!}</a></td>
-			<td><a href="{!! url('special/groupsurvey/edit/'.$open->id) !!}">edit</a></td>
-			<td><a href="{!! url('special/groupsurvey/deleteSurvey/'.$open->id) !!}">delete</a></td>
+			<td><a class="confirmation" href="{!! url('special/groupsurvey/edit/'.$open->id) !!}">edit</a></td>
+			<td><a class="confirmation" href="{!! url('special/groupsurvey/deleteSurvey/'.$open->id) !!}">delete</a></td>
         @else
         @if($open->completed=='0'||$open->completed=='3')
             <td><a href="{!! url('special/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
