@@ -49,7 +49,7 @@ use EmailTrait;
 				users.email from participants 
 				join surveys on participants.survey_id = surveys.id
 				join users on users.id = participants.user_id
-				where surveys.end_time < DATE_ADD(NOW(),INTERVAL 14 DAY)"));
+				where surveys.end_time = DATE_ADD(NOW(),INTERVAL 14 DAY)"));
 	if(!empty($surveysAndParticipants)){						
 	foreach($surveysAndParticipants as $participant){
               //send email to the participants

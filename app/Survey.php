@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Survey extends Model
 {
 
-    protected $fillable=['title','description','end_message','user_id','type_id','start_time','end_time','company_id','category_id','user_group_id'];
+    protected $fillable=['title','description','number_of_evaluators','end_message','user_id','type_id','start_time','end_time','company_id','category_id','user_group_id'];
     //each survey has indicators
     public function indicators(){
         return $this->belongsTo();

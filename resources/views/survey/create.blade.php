@@ -65,8 +65,17 @@
                             <label>Self Evaluation Survey</label><br>
                             {!! Form::radio('survey_type','2','',['class'=>'form-group']) !!}
                             <label>Peer Evaluation Survey</label><br><br>
+							
 
-
+							<div class="form-group{!! $errors->has('numberOfEvaluators') ? ' has-error':'' !!} has-feedback">
+                        <label><h3>Number Of Evaluators:</h3></label>
+                            <p>Provide the number of peer evaluators for your survey</p>
+                         @if($errors->has('numberOfEvaluators'))
+                              <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('numberOfEvaluators') !!}</label>
+                         @endif
+                        {!! Form::text('numberOfEvaluators',old('numberOfEvaluators'),['class'=>'form-control','placeholder'=>'Number Of Evaluators']) !!}
+                                </div><br>
+								
 
                             <p class="panel-title">
                                 <a data-toggle="collapse" href="#collapse1"><i class="fa fa-sort-desc" aria-hidden="true"></i>
@@ -167,3 +176,4 @@
     </div>
     </div>
 @stop
+

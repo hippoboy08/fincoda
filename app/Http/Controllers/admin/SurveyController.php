@@ -75,6 +75,13 @@ use EmailTrait;
     public function store(Request $request)
     {
 		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
+		$numberOfBasicAndSpecialUsers = DB::select(DB::raw(
+                                "select users.id from users 
+									join role_user on users.id = role_user.user_id 
+									where role_user.role_id != 1 
+									and users.company_id = :companyId"),
+                                array("companyId"=>Auth::User()->company_id));
+		
 		//dd($request->all());
         $validation=Validator::make($request->all(),[
             'title'=>'required|max:255',
@@ -84,6 +91,26 @@ use EmailTrait;
             'editor2'=>'required|max:500'
 
         ]);
+		
+		if($request->survey_type == 2 && $request->numberOfEvaluators < 1){
+			    return redirect()->back()
+                    ->with('fail','You need to provide the number of evaluators for your peer survey: It cannot be zero')
+                    ->withInput();
+            }
+			
+		if($request->survey_type == 2 && $request->numberOfEvaluators == count($numberOfBasicAndSpecialUsers)){
+			return redirect()->back()
+				->with('fail','The number of evaluators for your peer survey cannot equal the number of participants in the survey')
+				->withInput();
+		}
+		
+		if($request->survey_type == 2 && $request->numberOfEvaluators > count($numberOfBasicAndSpecialUsers)){
+			dd(count($numberOfBasicAndSpecialUsers));
+			return redirect()->back()
+				->with('fail','The number of evaluators for your peer survey cannot be greator than the number of participants in the survey')
+				->withInput();
+		}
+		
 
         if($validation->fails()){
             return redirect()->back()->withErrors($validation)->withInput();
@@ -103,6 +130,7 @@ use EmailTrait;
                 $survey=$owner->creates_survey()->create([
                     'title'=>$request->title,
                     'description'=>$request->editor1,
+					'number_of_evaluators'=>$request->numberOfEvaluators,
                     'end_message'=>$request->editor2,
                     'user_id'=>$owner->id,
                     'type_id'=>$request->survey_type,

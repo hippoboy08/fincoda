@@ -523,7 +523,8 @@ class CompanySurveyController extends Controller
 	
 	
 	public function inviteEvaluators(Request $request){
-		$survey = Survey::find($request->id);
+		$survey = Survey::find($request->survey_id);
+		//dd($request->all());
 		//This is for incremental additions, but in this case the additions are still strict to 5
         $participantsNotSelectedAsEvaluators = DB::select(DB::raw(
 			"select users.id, users.name, users.email from users where users.id in 
@@ -532,10 +533,10 @@ class CompanySurveyController extends Controller
 			(select users.id from users where users.id in 
 				(select peer_surveys.peer_id from peer_surveys 
 					where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)))"),
-				array("surveyId"=>$request->id,"surveyId1"=>$request->id,"currentUser"=>Auth::User()->id,"currentUser1"=>Auth::User()->id));
+				array("surveyId"=>$request->survey_id,"surveyId1"=>$request->survey_id,"currentUser"=>Auth::User()->id,"currentUser1"=>Auth::User()->id));
 										
-        if(count($request->usersToEvaluate)!==5){
-			Session::flash('message','You need to select 5 users to evaluate you');
+        if(count($request->usersToEvaluate)!==$survey->number_of_evaluators){
+			Session::flash('message','You need to select '.$survey->number_of_evaluators.' users to evaluate you');
             return redirect()->back();
         }else{
 			
@@ -555,7 +556,8 @@ class CompanySurveyController extends Controller
 						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
 				}
 				DB::commit();
-				return Redirect::to('special/survey/'.$request->survey_id)->with('success','Your request has been processed');
+				return redirect()->back()
+                    ->with('success','Your  request has been completed ');
 				}catch(\Exception $e){
 				DB::rollback();
 				return "An error occured; your request could not be completed ".$e->getMessage();
@@ -772,7 +774,8 @@ class CompanySurveyController extends Controller
 				//needs of the peer survey being a bit different from the self survey: retrofitting new logic to cater for this peculiarity requires
 				//restructuring the if else blocks: so have left the status to always be in progess so that the peer blade is returned from which you can
 				//do other things while the survey is still open
-				if((count($evaluatorsCompleted)==5)){
+				$numberSurveyEvalutors = Survey::find($request->survey_id)->number_of_evaluators;
+				if((count($evaluatorsCompleted)==$numberSurveyEvalutors)){
 					DB::table('participants')
 								->where('user_id',$request->user_id)
 								->where('survey_id',$request->survey_id)

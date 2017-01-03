@@ -45,7 +45,7 @@
 
                 {!! Form::hidden('survey_id',$survey->id) !!}
                 <p class="panel-title">
-                  <label>Please select a maximum of five people you would like to evaluate you. If no participants is shown, you have had maximum participants as evaluators.</label>
+                  <label>Please select a maximum of {{$survey->number_of_evaluators}} people you would like to evaluate you. If no participants is shown, you have had maximum participants as evaluators.</label>
                 </p>
                 @if(Session::has('message'))
                 <h4 style="color:red;">{{Session::get('message')}}</h4>
@@ -64,7 +64,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          @if(count($evaluators)<5)
+                          @if(count($evaluators)<$survey->number_of_evaluators)
                           @foreach($participantsNotSelectedAsEvaluators as $user)
                           <tr>
                             <td>{!! Form::checkbox('usersToEvaluate[]',$user->id) !!} | {!! $user->name !!}</td>
@@ -78,7 +78,7 @@
                   </div>
 
                   <button id="pickEvaluators" type="submit" class="btn btn-info btn-flat"><i class="fa fa-floppy-o" aria-hidden="true" ></i> Submit</button>
-                  @if(count($evaluators)>=5)
+                  @if(count($evaluators)>=$survey->number_of_evaluators)
                   <script type="text/javascript">
                     document.getElementById('pickEvaluators').disabled=true;
                   </script>

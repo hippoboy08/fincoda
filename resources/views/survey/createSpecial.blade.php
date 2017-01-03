@@ -40,6 +40,15 @@
                                 @endif
                                 {!! Form::textarea('editor1',old('editor1'),['id'=>'editor1','rows'=>'10','cols'=>'80']) !!}
                             </div><br>
+							
+							<div class="form-group{!! $errors->has('numberOfEvaluators') ? ' has-error':'' !!} has-feedback">
+                        <label><h3>Number Of Evaluators:</h3></label>
+                            <p>Provide the number of peer evaluators for your survey</p>
+                         @if($errors->has('numberOfEvaluators'))
+                              <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('numberOfEvaluators') !!}</label>
+                         @endif
+                        {!! Form::text('numberOfEvaluators',old('numberOfEvaluators'),['class'=>'form-control','placeholder'=>'Number Of Evaluators']) !!}
+                                </div><br>
 
                             <div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
                             <label><h3>Open data ane time range*:</h3></label>

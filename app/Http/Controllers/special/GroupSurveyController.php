@@ -113,13 +113,25 @@ class GroupSurveyController extends Controller
 									"select user_in_groups.user_id from user_in_groups where user_in_groups.user_group_id = :groupId and user_in_groups.user_id != :owner "),
 										array("groupId"=>$request->group,"owner"=>$owner->id));
 			
-			if($request->survey_type == 2){
-				if(count($participants)<6){
-						return redirect()->back()
-							->with('fail','The group needs to have at least six members for a peer survey.')
-							->withInput();
-				}
+			
+			if($request->survey_type == 2 && $request->numberOfEvaluators < 1){
+			    return redirect()->back()
+                    ->with('fail','You need to provide the number of evaluators for your peer survey: It cannot be zero')
+                    ->withInput();
+            }
+			
+			if($request->survey_type == 2 && $request->numberOfEvaluators == count($participants)){
+				return redirect()->back()
+					->with('fail','The number of evaluators for your peer survey cannot equal the number of participants in the survey')
+					->withInput();
 			}
+		
+			if($request->survey_type == 2 && $request->numberOfEvaluators > count($participants)){
+				return redirect()->back()
+					->with('fail','The number of evaluators for your peer survey cannot be greator than the number of participants in the survey')
+					->withInput();
+			}	
+			
 
             if($validation->fails()){
                 return redirect()->back()->withErrors($validation)->withInput();
@@ -139,6 +151,7 @@ class GroupSurveyController extends Controller
 						$survey=$owner->creates_survey()->create([
 							'title'=>$request->title,
 							'description'=>$request->editor1,
+							'number_of_evaluators'=>$request->numberOfEvaluators,
 							'end_message'=>$request->editor2,
 							'user_id'=>$owner->id,
 							'type_id'=>$request->survey_type,
