@@ -53,15 +53,18 @@
                                     <div>
                                       @include ('survey.resultContent.scoreTable')
                                     </div>
+				    
 
                                     @role ('admin')
                                     <!-- Company average graph -->
+				<div class="canvas-holder" style="width: 818px; height: 409px;">
+				<h4><b>Indicators Chart</b></h4>
 									@if(count($surveyGroupAveragePerIndicatorAllUsers)==34)
                                     <canvas id="companyAverage" width="800" height="400"></canvas>
-                                    <script src="{{siteFullName()}}/js/displayChart.js">
+                                    <script src="js/displayChart.js">
                                     </script>
-                                    <script>
-                                      createChart(
+				   <script>
+				    createChart(
                                         document.getElementById("companyAverage"),
                                         ["Ind 1", "Ind 2", "Ind 3", "Ind 4", "Ind 5", "Ind 6", "Ind 7", "Ind 8", "Ind 9", "Ind 10", "Ind 11", "Ind 12",
                                                 "Ind 13", "Ind 14", "Ind 15", "Ind 16", "Ind 17", "Ind 18", "Ind 19", "Ind 20", "Ind 21", "Ind 22", "Ind 23", "Ind 24",
@@ -76,10 +79,17 @@
                                                   {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
                                     	'rgba(0,0,255,1)'
                                       );
-                                    </script>
+                                    </script>                                    
+
+				
 									@else
 										<div>You have no surveys results to display or your indicators count is not equal 34</div>
 									@endif
+				</div>
+				
+				<div>
+                                      @include ('survey.resultContent.surveyScorePerIndicatorGroup')
+                                    </div>
 
                                     <div>
                                       <table class="table table-bordered table-striped text-center">
@@ -106,12 +116,12 @@
                                           </tbody>
                                       </table>
                                     </div>
-
+				<div class="canvas-holder" style="width: 818px; height: 409px;">
 									@if(count($surveyScorePerIndicatorGroup)==5)
-                                    <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
-                                   <script src="{{siteFullName()}}/js/displayChart.js">
+				    <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
+                                    <script src="{{siteFullName()}}/js/displayChart.js">
                                     </script>
-                                    <script>
+				    <script>
                                       createChart(
                                         document.getElementById("indicatorGroupAverage"),
                                         ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING",],
@@ -121,17 +131,16 @@
                                         'rgba(0,0,255,1)'
                                       );
                                     </script>
+				  
 									@else
 										<div>You have no surveys results to display or your indicators group count is not equal 5</div>
 									@endif
+				</div>
 
 
-                                    <div>
-                                      @include ('survey.resultContent.surveyScorePerIndicatorGroup')
-                                    </div>
+                                      
                                   </div>
-
-                                  
+				  
                                   @endrole
 
                                 </div>
@@ -146,7 +155,5 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
         </div>
 @stop
