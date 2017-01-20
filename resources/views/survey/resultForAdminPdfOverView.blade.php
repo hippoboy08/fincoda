@@ -1,11 +1,50 @@
-@extends('master')
-@section('content')
-    <div class="row">
-        <!-- left column -->
-        <div class="col-md-12 col-md-offset-0">
-            <!-- general form elements -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="csrf-token" content="{{csrf_token()}}">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Latest compiled and minified CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    
+    <link rel="stylesheet" href="{{URL::asset('css/custom.css')}}">
+
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
+    <script src="{{URL::asset('js/confirmation.js')}}" ></script>
+
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{URL::asset('css/AdminLTE.min.css')}}">
+
+    <link rel="stylesheet" href="{{URL::asset('css/skins/skin-blue.min.css')}}">
+    
+    <script src="{{URL::asset('js/app.min.js')}}"></script>
+    <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+    
+
+	<!-- Bootstrap WYSIHTML5 -->
+	<script src="{{URL::asset('input-mask/jquery.inputmask.js')}}"></script>
+	<script src="{{URL::asset('input-mask/jquery.inputmask.date.extensions.js')}}"></script>
+	<script src="{{URL::asset('input-mask/jquery.inputmask.extensions.js')}}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+	<script src="{{URL::asset('bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
+	<script src="{{URL::asset('timepicker/bootstrap-timepicker.min.js')}}"></script>
+	<script src="{{URL::asset('daterangepicker/daterangepicker.js')}}"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
             <div class="box-header with-border">
                 <h3 class="box-title"><b>Survey Result.</b></h3>
                 <p><i>Below is the information about the pending survey you requested.
@@ -15,8 +54,6 @@
 
             @include('message.fail')
             @include('message.errors_head')
-
-
             <div class="box box-primary">
                 <div class="box-body">
                     <div class="panel panel-default">
@@ -49,19 +86,15 @@
                           							Alternate between the two buttons to view your scores only or in comparison with the group average.
                           							Only your score are shown by default.</p>
                                     </div>
-
-                                    <div>
-                                      @include ('survey.resultContent.scoreTable')
-                                    </div>
+				
 				    
-
                                     @role ('admin')
                                     <!-- Company average graph -->
-				<div class="canvas-holder" style="width: 818px; height: 409px;">
+				<div class="canvas-holder" style="width: 818px; height: 419px;">
 				<h4><b>Indicators Chart</b></h4>
 									@if(count($surveyGroupAveragePerIndicatorAllUsers)==34)
                                     <canvas id="companyAverage" width="800" height="400"></canvas>
-                                    <script src="js/displayChart.js">
+                                    <script src="http://localhost/fincoda-phase2-complete/public/js/displayChart.js">
                                     </script>
 				   <script>
 				    createChart(
@@ -86,11 +119,17 @@
 										<div>You have no surveys results to display or your indicators count is not equal 34</div>
 									@endif
 				</div>
-				
-				<div>
-                                      @include ('survey.resultContent.surveyScorePerIndicatorGroup')
-                                    </div>
 
+				    <div>
+                                      @include ('survey.resultContent.scoreTable')
+                                    </div>
+				    
+
+				    <div>
+                                      @include ('survey.resultContent.surveyScorePerIndicatorGroup')
+                                    </div>    
+
+				    
                                     <div>
                                       <table class="table table-bordered table-striped text-center">
                                         <h4><b>Indicators Table</b></h4>
@@ -119,7 +158,7 @@
 				<div class="canvas-holder" style="width: 818px; height: 409px;">
 									@if(count($surveyScorePerIndicatorGroup)==5)
 				    <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
-                                    <script src="{{siteFullName()}}/js/displayChart.js">
+                                    <script src="http://localhost/fincoda-phase2-complete/public/js/displayChart.js">
                                     </script>
 				    <script>
                                       createChart(
@@ -156,4 +195,5 @@
                     </div>
                 </div>
         </div>
-@stop
+</body>
+</html>

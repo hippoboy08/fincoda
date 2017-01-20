@@ -28,6 +28,7 @@ use PHPExcel_IOFactory;
 use PHPExcel_Worksheet;
 use PDF;
 use View;
+use App;
 
 
 class SurveyController extends Controller { 
@@ -214,6 +215,8 @@ use EmailTrait;
 	//evolving requirements subject to change at any time: at one point they may look similar enough to be grouped into a clearly known function, but at another instance
 	//they may change and you find yourself refactoring or rewriting to separate them out.
 	public function downloadPdf($id){
+	try{
+	//dd($this->SurveyType($id));
 		if ($this->SurveyType($id) == 'self') {
 			$surveyScoreAllUsers = DB::table('indicators')
                                 ->join('results','results.indicator_id','=','indicators.id')
@@ -295,12 +298,16 @@ use EmailTrait;
                     ->withInput();
 				}
 				
-				$view = PDF::loadView('survey.resultForAdminPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
+				$view = View::make('survey.resultForAdminPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
 									'surveyScorePerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
-									'participants','company','company_profile','answers'));
-				//$pdf = \App::make('snappy.pdf.wrapper');
-				//$pdf->loadHTML($view);
-				return $view->download('resultAdmin.pdf');
+									'participants','company','company_profile','answers'))->render();
+				$pdf = App::make('snappy.pdf.wrapper');
+				$pdf->setOption('enable-javascript', true);
+				$pdf->setOption('javascript-delay', 5000);
+				$pdf->setOption('enable-smart-shrinking', true);
+				$pdf->setOption('no-stop-slow-scripts', true);
+				$pdf->loadHTML($view);
+				return $pdf->inline();
 			  				
 		}
 		
@@ -411,16 +418,25 @@ use EmailTrait;
 				}
 				
 				$view = PDF::loadView('survey.resultForAdminPdfOverView',
-												compact('survey','$surveyScoreAllUsersCheckThreeParticipants','surveyScoreAllUsers',
-															'surveyGroupAveragePerIndicatorAllUsers','surveyScorePerIndicatorGroup',
-															'surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
-															'participants','company','company_profile','answers'));
+										compact('survey','$surveyScoreAllUsersCheckThreeParticipants','surveyScoreAllUsers',
+											'surveyGroupAveragePerIndicatorAllUsers','surveyScorePerIndicatorGroup',
+											'surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
+											'participants','company','company_profile','answers'));
 				//$pdf = \App::make('dompdf.wrapper');
 				//$pdf->loadHTML($view);
-				return $view->download('resultAdmin.pdf');
+				$view->setOption('enable-javascript',true);
+				$view->setOption('javascript-delay',13500);
+				$view->setOption('enable-smart-shrinking',true);
+				$view->setOption('no-stop-slow-scripts',true);
+				return $view->inline();
 		}
 		
 		return redirect()->back();
+		}catch(\Exception $e){
+				return redirect()->back()
+                    ->with('fail','An error occured; your request could not be completed '.$e->getMessage())
+                    ->withInput();			
+	    }
 				
 	}
 

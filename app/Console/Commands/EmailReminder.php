@@ -40,20 +40,56 @@ use EmailTrait;
      * @return mixed
      */
     public function handle()
-    {
-        
-        //This returns all of the surveys that are due in 14 days from now
+    {        
+        //This returns all of the surveys that are due in 7 days from now
               $surveysAndParticipants = DB::select(DB::raw(
                                 "select surveys.id, surveys.user_id, surveys.title, surveys.start_time, 
 				surveys.end_time, participants.user_id, 
 				users.email from participants 
 				join surveys on participants.survey_id = surveys.id
 				join users on users.id = participants.user_id
-				where surveys.end_time = DATE_ADD(NOW(),INTERVAL 14 DAY)"));
+				where DATE(surveys.end_time) = DATE(DATE_ADD(NOW(),INTERVAL 7 DAY))
+				and surveys.type_id = 1
+				and participants.completed = 0"));
 	if(!empty($surveysAndParticipants)){						
 	foreach($surveysAndParticipants as $participant){
               //send email to the participants
-              $this->email('email.surveyreminder',['owner'=>DB::table('users')->where('id',$participant->user_id)->value('name'), 'link'=>url('/').'/login', 'title'=>$participant->title],$participant->email);
+              $this->email('email.surveyreminder',['owner'=>DB::table('users')->where('id',$participant->user_id)->value('name'), 'link'=>url('/').'/login', 'title'=>$participant->title,'start_time'=>$participant->start_time,'end_time'=>$participant->end_time],$participant->email);
+    	     }
+    	}
+
+	//This returns all of the surveys that are due in 3 days from now
+              $surveysAndParticipants3Days = DB::select(DB::raw(
+                                "select surveys.id, surveys.user_id, surveys.title, surveys.start_time, 
+				surveys.end_time, participants.user_id, 
+				users.email from participants 
+				join surveys on participants.survey_id = surveys.id
+				join users on users.id = participants.user_id
+				where DATE(surveys.end_time) = DATE(DATE_ADD(NOW(),INTERVAL 3 DAY))
+				and surveys.type_id = 1
+				and participants.completed = 0"));
+	if(!empty($surveysAndParticipants3Days)){						
+	foreach($surveysAndParticipants3Days as $participant){
+              //send email to the participants
+              $this->email('email.surveyreminder3days',['owner'=>DB::table('users')->where('id',$participant->user_id)->value('name'), 'link'=>url('/').'/login', 'title'=>$participant->title,'start_time'=>$participant->start_time,'end_time'=>$participant->end_time],$participant->email);
+    	     }
+    	}
+
+
+	//This returns all of the surveys that are starting today:It runs every midnight before any new surveys are created
+              $surveysAndParticipantsToday = DB::select(DB::raw(
+                                "select surveys.id, surveys.user_id, surveys.title, surveys.start_time, 
+				surveys.end_time, participants.user_id, 
+				users.email from participants 
+				join surveys on participants.survey_id = surveys.id
+				join users on users.id = participants.user_id
+				where DATE(surveys.start_time) = DATE(NOW())
+				and surveys.type_id = 1
+				and participants.completed = 0"));
+	if(!empty($surveysAndParticipantsToday)){						
+	foreach($surveysAndParticipantsToday as $participant){
+              //send email to the participants
+              $this->email('email.surveyremindertoday',['owner'=>DB::table('users')->where('id',$participant->user_id)->value('name'), 'link'=>url('/').'/login', 'title'=>$participant->title, 'start_time'=>$participant->start_time,'end_time'=>$participant->end_time],$participant->email);
     	     }
     	}
 	

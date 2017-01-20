@@ -246,6 +246,7 @@ class GroupSurveyController extends Controller
 	//evolving requirements subject to change at any time: at one point they may look similar enough to be grouped into a clearly known function, but at another instance
 	//they may change and you find yourself refactoring or rewriting to separate them out.
 	public function downloadPdf($id){
+		try{
 		if ($this->SurveyType($id) == 'self') {
 			$surveyScoreAllUsers = DB::table('indicators')
                                 ->join('results','results.indicator_id','=','indicators.id')
@@ -328,12 +329,12 @@ class GroupSurveyController extends Controller
 				}
 				
 				
-				$view = PDF::loadview('survey.resultForSpecialPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
+				$view = PDF::loadview('survey.resultForSpecialPdfOverview',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
 									'surveyScorePerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
 									'participants','company','company_profile','answers'));
 				//$pdf = \App::make('dompdf.wrapper');
 				//$pdf->loadHTML($view);
-				return $view->download('resultSpecial.pdf');
+				return $view->inline();
 		}
 		
 		if ($this->SurveyType($id) == 'peer') {
@@ -443,17 +444,22 @@ class GroupSurveyController extends Controller
                     ->withInput();
 				}
 				
-				$view = PDF::loadview('survey.resultForSpecialPdfOverView',
+				$view = PDF::loadview('survey.resultForSpecialPdfOverview',
 												compact('survey','$surveyScoreAllUsersCheckThreeParticipants','surveyScoreAllUsers',
 															'surveyGroupAveragePerIndicatorAllUsers','surveyScorePerIndicatorGroup',
 															'surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
 															'participants','company','company_profile','answers'));
 				//$pdf = \App::make('dompdf.wrapper');
 				//$pdf->loadHTML($view);
-				return $view->download('resultSpecial.pdf');		}
+				return $view->inline();		}
 		
 		return redirect()->back();
-				
+		}catch(\Exception $e){
+				return redirect()->back()
+                    ->with('fail','An error occured; your request could not be completed '.$e->getMessage())
+                    ->withInput();			
+	    }
+					
 	}
 
 	
