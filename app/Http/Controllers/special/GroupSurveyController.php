@@ -173,7 +173,8 @@ class GroupSurveyController extends Controller
 									'updated_at'=>Carbon::now()
 								]);
 							$userEmail = DB::table('users')->where('id',$user->user_id)->value('email');
-							$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login', 'title'=>$survey->title],$userEmail);
+							$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login',
+							     'title'=>$survey->title,'start_time'=>$from,'end_time'=>$to],$userEmail);
 						}
 					}
 					 DB::commit();

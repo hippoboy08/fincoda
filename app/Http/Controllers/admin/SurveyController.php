@@ -158,7 +158,8 @@ use EmailTrait;
                 }
 
               //send email to the participants
-              $this->email('email.newsurvey',['owner'=>$owner->name, 'link'=>url('/').'/login', 'title'=>$survey->title],$member_email);
+              $this->email('email.newsurvey',['owner'=>$owner->name, 'link'=>url('/').'/login',
+            	     'title'=>$survey->title, 'start_time'=>$from,'end_time'=>$to],$member_email);
 			
 			DB::commit();
 				

@@ -1,7 +1,8 @@
 <p>Hi,</p>
 
-<p>You have a new survey request. Please login to the Fincoda Survey System and answer the survey.</p>
-
+<p>You have a new survey request. Please login to the Fincoda Survey System when the survey is open and answer the survey.</p>
+<p>Survey start date : <strong>{!! $start_time !!}</strong></p>
+<p>Survey end date : <strong>{!! $end_time !!}</strong></p>
 <p>Survey title : <strong>{!! $title !!}</strong></p>
 <p>Created by : <strong>{!! $owner !!}</strong></p>
 <p>You can access the survey via this link : <strong> <a href="{!! $link !!}">{!! $link !!}</a></strong></p>

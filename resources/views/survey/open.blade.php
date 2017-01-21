@@ -67,7 +67,7 @@
 			<td><a class="confirmation" href="{!! url('special/groupsurvey/edit/'.$open->id) !!}">edit</a></td>
 			<td><a class="confirmation" href="{!! url('special/groupsurvey/deleteSurvey/'.$open->id) !!}">delete</a></td>
         @else
-        @if($open->completed=='0'||$open->completed=='3')
+        @if($open->completed=='0'||$open->completed=='3'||$open->completed=='5')
             <td><a href="{!! url('special/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
 			<td> </td>
 			<td> </td>
