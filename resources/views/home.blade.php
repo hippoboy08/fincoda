@@ -42,9 +42,10 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#home" class="smothscroll">Home</a></li>
-                <li><a href="#desc" class="smothscroll">Description</a></li>
+                <li><a href="#desc" class="smothScroll">Description</a></li>
                 <li><a href="#showcase" class="smothScroll">Showcase</a></li>
                 <li><a href="#contact" class="smothScroll">Contact</a></li>
+                <li><a href="#tutorial" class="smothScroll">Tutorial</a></li>
             </ul>
 
             <ul class="nav navbar-nav pull-right">
@@ -230,6 +231,34 @@
         </div>
     </div>
 </div>
+
+<div id="tutorial">
+    <div class="container">
+        <div class="row centered">
+            <h1>FINCODA - Tutorials</h1>
+            <div class="col-lg-4">
+                <h3>Organisation Registration</h3>
+                <a href="https://www.youtube.com/watch?v=WB9UMq9MyYQ" target="_blank">Click here to watch tutorial</a>
+            </div>
+            <div class="col-lg-4">
+                <h3>Basic User Registration</h3>
+                <a href="https://www.youtube.com/watch?v=nB1fT9D0k1U" target="_blank">Click here to watch tutorial</a>
+            </div>
+            <div class="col-lg-4">
+                <h3>View Survey Results</h3>
+                <a href="https://www.youtube.com/watch?v=doC_OkgjrKY" target="_blank">Click here to watch tutorial</a>
+            </div>
+            <div class="col-lg-4">
+                <h3>Create a Self Survey</h3>
+                <a href="https://www.youtube.com/watch?v=Ernimd40rWQ" target="_blank">Click here to watch tutorial</a>
+            </div>
+            <div class="col-lg-4">
+                <h3>Create a Peer Survey</h3>
+                <a href="https://www.youtube.com/watch?v=NKFZbFxpr0k" target="_blank">Click here to watch tutorial</a>
+            </div>
+        </div>
+    </div> <!--/ .container -->
+</div><!--/ #tutorialwrap -->
 
 
 <div class="container">

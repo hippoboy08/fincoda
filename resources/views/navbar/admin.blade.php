@@ -20,7 +20,7 @@
             </a>
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
-			
+
 					<div class="pull-right" >
 							<h5 class="select-users"><label></label>
 								<select id="languageId">
@@ -32,7 +32,7 @@
 									<option value="sp">sp</option>
 								</select>
 							</h5>
-							
+
 							<script>
 								  $(document).ready(function(){
 								  $('#languageId').change(function(){
@@ -66,8 +66,8 @@
 								   });
 							</script>
 					</div>
-				
-			
+
+
                 <ul class="nav navbar-nav">
                     <!-- Messages: style can be found in dropdown.less-->
 
@@ -101,7 +101,7 @@
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#" class="dropdown-toggle action" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
                             <img src="{{URL::asset('img/user2-160x160.jpg')}}" class="user-image" alt="User Image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->

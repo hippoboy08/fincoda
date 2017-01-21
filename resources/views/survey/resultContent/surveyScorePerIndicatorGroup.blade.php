@@ -1,10 +1,10 @@
 <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-  <h4><b>Indicator Groups Table</b></h4>
+  <h3 style="text-align:center;"><b>Dimension Table</b></h3>
+  <br>
   <thead>
     <tr>
-      <th>Indicator Group ID</th>
-      <th>Indicator Group</th>
-      <th>Indicator Group Average</th>
+      <th>Dimension</th>
+      <th>Dimension Average</th>
     </tr>
   </thead>
   <tbody>
@@ -13,9 +13,8 @@
     @else
       @foreach($surveyScorePerIndicatorGroup as $result)
         <tr>
-          <td>{!! $result->Indicator_Group_ID !!}</td>
           <td>{!! $result->Indicator_Group !!}</td>
-          <td>{!! $result->Indicator_Group_Average !!}</td>
+          <td>{!! number_format((float)$result->Indicator_Group_Average,2,'.','') !!}</td>
         </tr>
       @endforeach
     @endif

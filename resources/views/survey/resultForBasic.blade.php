@@ -55,6 +55,7 @@
                           @include ('survey.resultContent.scoreTable')
                         </div>
 
+                        <h3 style="text-align: center;"><b>Your answer each indicator</b></h3>
                         @if(count($surveyGroupAveragePerIndicatorAllUsers)==34)
                         <canvas id="myAnswerGraph" width="800" height="400"></canvas>
                         <script src="{{URL::asset('js/displayChart.js')}}">
@@ -69,39 +70,39 @@
                           {!!$surveyScoreAllUsers[20]->Indicator_ID!!}, {!!$surveyScoreAllUsers[21]->Indicator_ID!!}, {!!$surveyScoreAllUsers[22]->Indicator_ID!!}, {!!$surveyScoreAllUsers[23]->Indicator_ID!!}, {!!$surveyScoreAllUsers[24]->Indicator_ID!!},
                           {!!$surveyScoreAllUsers[25]->Indicator_ID!!}, {!!$surveyScoreAllUsers[26]->Indicator_ID!!}, {!!$surveyScoreAllUsers[27]->Indicator_ID!!}, {!!$surveyScoreAllUsers[28]->Indicator_ID!!}, {!!$surveyScoreAllUsers[29]->Indicator_ID!!},
                           {!!$surveyScoreAllUsers[30]->Indicator_ID!!}, {!!$surveyScoreAllUsers[31]->Indicator_ID!!}, {!!$surveyScoreAllUsers[32]->Indicator_ID!!}, {!!$surveyScoreAllUsers[33]->Indicator_ID!!}],
-                          'Your score for each indicator',
-                          [{!!$surveyScoreAllUsers[0]->Answer!!}, {!!$surveyScoreAllUsers[1]->Answer!!}, {!!$surveyScoreAllUsers[2]->Answer!!}, {!!$surveyScoreAllUsers[3]->Answer!!}, {!!$surveyScoreAllUsers[4]->Answer!!},
-                          {!!$surveyScoreAllUsers[5]->Answer!!}, {!!$surveyScoreAllUsers[6]->Answer!!}, {!!$surveyScoreAllUsers[7]->Answer!!}, {!!$surveyScoreAllUsers[8]->Answer!!}, {!!$surveyScoreAllUsers[9]->Answer!!},
-                          {!!$surveyScoreAllUsers[10]->Answer!!}, {!!$surveyScoreAllUsers[11]->Answer!!}, {!!$surveyScoreAllUsers[12]->Answer!!}, {!!$surveyScoreAllUsers[13]->Answer!!}, {!!$surveyScoreAllUsers[14]->Answer!!},
-                          {!!$surveyScoreAllUsers[15]->Answer!!}, {!!$surveyScoreAllUsers[16]->Answer!!}, {!!$surveyScoreAllUsers[17]->Answer!!}, {!!$surveyScoreAllUsers[18]->Answer!!}, {!!$surveyScoreAllUsers[19]->Answer!!},
-                          {!!$surveyScoreAllUsers[20]->Answer!!}, {!!$surveyScoreAllUsers[21]->Answer!!}, {!!$surveyScoreAllUsers[22]->Answer!!}, {!!$surveyScoreAllUsers[23]->Answer!!}, {!!$surveyScoreAllUsers[24]->Answer!!},
-                          {!!$surveyScoreAllUsers[25]->Answer!!}, {!!$surveyScoreAllUsers[26]->Answer!!}, {!!$surveyScoreAllUsers[27]->Answer!!}, {!!$surveyScoreAllUsers[28]->Answer!!}, {!!$surveyScoreAllUsers[29]->Answer!!},
-                          {!!$surveyScoreAllUsers[30]->Answer!!}, {!!$surveyScoreAllUsers[31]->Answer!!}, {!!$surveyScoreAllUsers[32]->Answer!!}, {!!$surveyScoreAllUsers[33]->Answer!!}],
-                          'rgba(0,0,255,1)'
+                          'Your answer',
+                          [{!!number_format((float)$surveyScoreAllUsers[0]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[1]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[2]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[3]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[4]->Answer,2,'.','')!!},
+                            {!!number_format((float)$surveyScoreAllUsers[5]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[6]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[7]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[8]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[9]->Answer,2,'.','')!!},
+                             {!!number_format((float)$surveyScoreAllUsers[10]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[11]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[12]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[13]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[14]->Answer,2,'.','')!!},
+                              {!!number_format((float)$surveyScoreAllUsers[15]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[16]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[17]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[18]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[19]->Answer,2,'.','')!!},
+                                {!!number_format((float)$surveyScoreAllUsers[20]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[21]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[22]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[23]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[24]->Answer,2,'.','')!!},
+                                  {!!number_format((float)$surveyScoreAllUsers[25]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[26]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[27]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[28]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[29]->Answer,2,'.','')!!},
+                                    {!!number_format((float)$surveyScoreAllUsers[30]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[31]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[32]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[33]->Answer,2,'.','')!!}],
+                          'rgba(255,0,0,1)'
                         );
                         </script>
                         @else
-                        <div>You have no surveys results to display or your indicators count is not equal 34</div>
+                        <h4><b>You have no surveys results to display or your indicators count is not equal 34</b></div>
                         @endif
                         <div>
                           <table class="table table-bordered table-striped">
-                            <h4><b>Indicators Table</b></h4>
+                            <h3 style="text-align: center;"><b>Indicator Table</b></h3>
                             <thead>
                               <tr>
                                 <th>Indicator ID</th>
                                 <th>Indicator</th>
-                                <th>Your Score</th>
+                                <th>Answer</th>
                               </tr>
                             </thead>
                             <tbody>
                               @if(count($surveyScoreAllUsers)==0)
-                              <div>You have no surveys results to display</div>
+                              <h4><b>You have no surveys results to display</b></h4>
                               @else
                               @foreach($surveyScoreAllUsers as $result)
                               <tr>
                                 <td>{!! $result->Indicator_ID !!}</td>
                                 <td>{{Lang::get('indicators.'.$result->Indicator_ID,array(),App::getLocale())}}</td>
-                                <td>{!! $result->Answer !!}</td>
+                                <td>{!! number_format((float)$result->Answer,2,'.','') !!}</td>
                               </tr>
                               @endforeach
                               @endif
@@ -122,6 +123,7 @@
                         <div>
                           @include ('survey.resultContent.scoreTable')
                         </div>
+                        <h3 style="text-align: center;"><b>Your answer VS Company average score</b></h3>
                         @if(count($surveyGroupAveragePerIndicatorAllUsers)==34)
                         @if(count($surveyScorePerIndicatorGroup)==5)
                         <canvas id="comparedGraph" width="800" height="400"></canvas>
@@ -130,25 +132,25 @@
                         <script>
                         var chartArea = document.getElementById('comparedGraph');
                         var datasetOwnScore = {
-                          label: 'My score',
-                          data: [{!!$surveyScoreAllUsers[0]->Answer!!}, {!!$surveyScoreAllUsers[1]->Answer!!}, {!!$surveyScoreAllUsers[2]->Answer!!}, {!!$surveyScoreAllUsers[3]->Answer!!}, {!!$surveyScoreAllUsers[4]->Answer!!},
-                          {!!$surveyScoreAllUsers[5]->Answer!!}, {!!$surveyScoreAllUsers[6]->Answer!!}, {!!$surveyScoreAllUsers[7]->Answer!!}, {!!$surveyScoreAllUsers[8]->Answer!!}, {!!$surveyScoreAllUsers[9]->Answer!!},
-                          {!!$surveyScoreAllUsers[10]->Answer!!}, {!!$surveyScoreAllUsers[11]->Answer!!}, {!!$surveyScoreAllUsers[12]->Answer!!}, {!!$surveyScoreAllUsers[13]->Answer!!}, {!!$surveyScoreAllUsers[14]->Answer!!},
-                          {!!$surveyScoreAllUsers[15]->Answer!!}, {!!$surveyScoreAllUsers[16]->Answer!!}, {!!$surveyScoreAllUsers[17]->Answer!!}, {!!$surveyScoreAllUsers[18]->Answer!!}, {!!$surveyScoreAllUsers[19]->Answer!!},
-                          {!!$surveyScoreAllUsers[20]->Answer!!}, {!!$surveyScoreAllUsers[21]->Answer!!}, {!!$surveyScoreAllUsers[22]->Answer!!}, {!!$surveyScoreAllUsers[23]->Answer!!}, {!!$surveyScoreAllUsers[24]->Answer!!},
-                          {!!$surveyScoreAllUsers[25]->Answer!!}, {!!$surveyScoreAllUsers[26]->Answer!!}, {!!$surveyScoreAllUsers[27]->Answer!!}, {!!$surveyScoreAllUsers[28]->Answer!!}, {!!$surveyScoreAllUsers[29]->Answer!!},
-                          {!!$surveyScoreAllUsers[30]->Answer!!}, {!!$surveyScoreAllUsers[31]->Answer!!}, {!!$surveyScoreAllUsers[32]->Answer!!}, {!!$surveyScoreAllUsers[33]->Answer!!}],
+                          label: 'Your answer',
+                          data: [{!!number_format((float)$surveyScoreAllUsers[0]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[1]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[2]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[3]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[4]->Answer,2,'.','')!!},
+                            {!!number_format((float)$surveyScoreAllUsers[5]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[6]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[7]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[8]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[9]->Answer,2,'.','')!!},
+                             {!!number_format((float)$surveyScoreAllUsers[10]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[11]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[12]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[13]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[14]->Answer,2,'.','')!!},
+                              {!!number_format((float)$surveyScoreAllUsers[15]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[16]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[17]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[18]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[19]->Answer,2,'.','')!!},
+                                {!!number_format((float)$surveyScoreAllUsers[20]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[21]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[22]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[23]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[24]->Answer,2,'.','')!!},
+                                  {!!number_format((float)$surveyScoreAllUsers[25]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[26]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[27]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[28]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[29]->Answer,2,'.','')!!},
+                                    {!!number_format((float)$surveyScoreAllUsers[30]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[31]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[32]->Answer,2,'.','')!!}, {!!number_format((float)$surveyScoreAllUsers[33]->Answer,2,'.','')!!}],
                           backgroundColor: 'rgba(255,0,0,1)'
                         };
                         var datasetGroupAvg = {
                           label: 'Company average',
-                          data: [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Group_Average!!},
-                          {!!$surveyGroupAveragePerIndicatorAllUsers[5]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[6]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[7]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[8]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[9]->Group_Average!!},
-                          {!!$surveyGroupAveragePerIndicatorAllUsers[10]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[11]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[12]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[13]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[14]->Group_Average!!},
-                          {!!$surveyGroupAveragePerIndicatorAllUsers[15]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[16]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[17]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[18]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[19]->Group_Average!!},
-                          {!!$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average!!},
-                          {!!$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average!!},
-                          {!!$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average!!}],
+                          data: [{!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[0]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[1]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[2]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[3]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[4]->Group_Average,2,'.','')!!},
+                            {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[5]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[6]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[7]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[8]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[9]->Group_Average,2,'.','')!!},
+                             {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[10]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[11]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[12]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[13]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[14]->Group_Average,2,'.','')!!},
+                              {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[15]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[16]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[17]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[18]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[19]->Group_Average,2,'.','')!!},
+                                {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average,2,'.','')!!},
+                                  {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average,2,'.','')!!},
+                                    {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average,2,'.','')!!}],
                           backgroundColor: 'rgba(0,0,255,1)'
                         };
                         var labelArr = [{!!$surveyGroupAveragePerIndicatorAllUsers[0]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[1]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[2]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[3]->Indicator_ID!!}, {!!$surveyGroupAveragePerIndicatorAllUsers[4]->Indicator_ID!!},
@@ -162,20 +164,20 @@
 
                         </script>
                         @else
-                        <div>You have no surveys results to display or your indicators group count is not equal 5</div>
+                        <h4><b>You have no surveys results to display or your indicators group count is not equal 5</b></h4>
                         @endif
                         @else
-                        <div>You have no surveys results to display or your indicators count is not equal 34</div>
+                        <h4><b>You have no surveys results to display or your indicators count is not equal 34</b></h4>
                         @endif
 
                         <div>
                           <table class="table table-bordered table-striped">
-                            <h4><b>Indicators Table</b></h4>
+                            <h3 style="text-align: center;"><b>Indicators Table</b></h3>
                             <thead>
                               <tr>
                                 <th>Indicator ID</th>
                                 <th>Indicator</th>
-                                <th>Your Score</th>
+                                <th>Your Answer</th>
 								@if($survey->category_id == "1")
 								<th>Company average</th>
 								@endif
@@ -186,7 +188,7 @@
                             </thead>
                             <tbody>
                               @if(count($surveyScoreAllUsers)==0)
-                              <div>You have no surveys results to display</div>
+                              <h4><b>You have no surveys results to display</b></h4>
 
                               @else
                               @foreach ($surveyGroupAveragePerIndicatorAllUsers as $avgResult)
@@ -195,10 +197,10 @@
                                 <td>{{Lang::get('indicators.'.$avgResult->Indicator_ID,array(),App::getLocale())}}</td>
                                 @foreach ($surveyScoreAllUsers as $result)
                                 @if(($result->Indicator_ID)==($avgResult->Indicator_ID))
-                                <td>{!! $result->Answer !!}</td>
+                                <td>{!! number_format((float)$result->Answer,2,'.','') !!}</td>
                                 @endif
                                 @endforeach
-                                <td>{!! $avgResult->Group_Average !!}</td>
+                                <td>{!! number_format((float)$avgResult->Group_Average,2,'.','') !!}</td>
                               </tr>
                               @endforeach
 
@@ -207,7 +209,7 @@
                           </table>
                         </div>
                         @else
-                        <div>You have no survey results with enough participants to compare</div>
+                        <h4><b>You have no survey results with enough participants to compare</b></h4>
                         @endif
                       </div>
 
