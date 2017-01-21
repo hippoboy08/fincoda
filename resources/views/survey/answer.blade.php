@@ -15,8 +15,8 @@
       <div class="box-body">
         {{App::setLocale(Session::get('language'))}}
         <h2>{!! $survey->title !!}</h2>
-        <p>Created by : {!! \App\User::find($survey->user_id)->name !!}</p>
-        <p>Open duration : {!! $survey->start_time.' - '.$survey->end_time !!}</p>
+        <p><b>Created by</b> : {!! \App\User::find($survey->user_id)->name !!}</p>
+        <p><b>Open duration</b> : {!! $survey->start_time.' - '.$survey->end_time !!}</p>
         <p> <h4><b>Survey Description</b></h4></label>{!! $survey->description !!}</p>
 
         <h4><b>Marking your indicator:</b></h4>

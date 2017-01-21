@@ -204,10 +204,10 @@
 
                       $.get($url,function(response){
                         content = $("#show",response);
-                        $('#tab4').append(content);
+                        $('#tab4').html(content);
                       })
                       .fail(function() {
-                        $('#tab4').append('<h3>Errors occurs when retrieving your results. Please contact admin for more information.</h3>');
+                        $('#tab4').html('<h3>Errors occurs when retrieving your results. Please contact admin for more information.</h3>');
                       });
                     });
                   });
@@ -229,10 +229,10 @@
                       $url = 'viewPeerResults/'+$surveyId+'/'+$userId;
                       $.get($url,function(response){
                         content = $("#show",response);
-                        $('#tab4').append(content);
+                        $('#tab4').html(content);
                       })
                       .fail(function() {
-                        $('#tab4').append('<h3>Errors occurs when retrieving your results. Please contact admin for more information.</h3>');
+                        $('#tab4').html('<h3>Errors occurs when retrieving your results. Please contact admin for more information.</h3>');
                       });
                     });
                   });
