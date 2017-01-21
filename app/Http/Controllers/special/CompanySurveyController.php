@@ -752,6 +752,15 @@ class CompanySurveyController extends Controller
 					]);
 				}
 				
+				DB::table('peer_surveys')
+					->where('user_id',$request->user_id)
+					->where('peer_id',Auth::id())
+					->where('survey_id',$request->survey_id)
+					    ->update([
+						'peer_completed'=>1,
+						'updated_at'=>Carbon::now()
+					    ]);
+				
 				//In the peer survey results check if more than one peer have evaluated this user_id
 				$evaluatorsCompleted = DB::select(DB::raw(
 									"select users.id, users.name, users.email from users where users.id in
