@@ -38,7 +38,7 @@
                                 @if($errors->has('editor1'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('editor1') !!}</label>
                                 @endif
-                                {!! Form::textarea('editor1',old('editor1'),['id'=>'editor1','rows'=>'10','cols'=>'80']) !!}
+                                {!! Form::textarea('editor1',old('editor1'),['id'=>'editor1','rows'=>'10','cols'=>'80','placeholder'=>'Title of your Survey']) !!}
                             </div><br>
 
                             <div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
