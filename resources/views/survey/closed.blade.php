@@ -1,11 +1,16 @@
+<style type="text/css">
+  table thead tr th
+  {text-align: center;}
+</style>
 <div class="panel-body">
     <h3>Closed surveys</h3>
     <p>The surveys that have been closed already.</p>
     <table id="example3" class="table table-bordered table-striped">
         <thead>
         <tr>
+            <th>Show<input checked type="checkbox" name="showAll" value="Show All"></th>
             <th>Title</th>
-			<th>Edit</th>
+			      <th>Edit</th>
             <th>Delete</th>
             <th>Survey Type</th>
             <th>Open Date</th>
@@ -16,8 +21,9 @@
         </thead>
         <tbody>
         @foreach($closed as $closed)
-            <tr>
+            <tr name="closedSurvey">
                 @role('admin')
+                <td><input type="checkbox" name="hide" value=""></td>
                 <td><a href="{!! url('admin/survey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
 				<td><a class="confirmation" href="{!! url('admin/survey/edit/'.$closed->id) !!}">edit</a></td>
 				<td><a class="confirmation" href="{!! url('admin/survey/deleteSurvey/'.$closed->id) !!}">delete</a></td>

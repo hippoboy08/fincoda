@@ -84,7 +84,7 @@ use EmailTrait;
 				join surveys on participants.survey_id = surveys.id
 				join users on users.id = participants.user_id
 				where DATE(surveys.start_time) = DATE(NOW())
-				and DATE(surveys.created_at) != DATE(NOW())"));
+                and DATE(surveys.created_at) != DATE(NOW())"));
 	if(!empty($surveysAndParticipantsToday)){						
 	foreach($surveysAndParticipantsToday as $participant){
               //send email to the participants
