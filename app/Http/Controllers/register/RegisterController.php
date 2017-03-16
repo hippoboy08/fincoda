@@ -108,8 +108,7 @@ class RegisterController extends Controller
 
     }
 
-    public function user()
-    {
+    public function user(){
         return view('register.user');
     }
     public function registeruser(Request $request){
@@ -145,6 +144,48 @@ class RegisterController extends Controller
             return view('register.success')->with('success','You have been registered to the FINCODA Survey System successfully. Now you are able to receive the survey request created by
              your Administrators. Please login to explore more');
 
+        }
+        else{
+            return redirect()->back()->with('fail','The Organisation Code you provided does not exist. Please contact your administrator for your Organisation Code.')
+                ->withInput();
+            }
+        }
+
+    }
+	
+	
+	public function userExternalEvaluator(){
+        return view('register.user');
+    }
+	
+    public function registeruserExternalEvaluator(Request $request){
+      $validator=Validator::make($request->all(),[
+            'company_code'=>'required|max:255',
+            'name'=>'required|max:255',
+            'email'=>'required|email|max:255|unique:users',
+            'password'=>'required|confirmed|min:6|max:20',
+            //'g-recaptcha-response' => 'required|recaptcha',
+      ]);
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }else{
+        if(Company::where('company_code',$request->company_code)->exists()){
+            $company=Company::where('company_code',$request->company_code)->first();
+            $company_id=$company->id;
+            $user=User::create([
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'company_id'=>$company_id,
+                'password'=>bcrypt($request->password)
+            ]);
+            //attach the basic user role
+            $user->attachRole(3);
+            //initiate the user profile
+            $user->profile()->create([
+
+            ]);
+            return view('register.success')->with('success','You have been registered to the FINCODA Survey System successfully. Now you are able to receive the survey request created by
+             your Administrators. Please login to explore more');
         }
         else{
             return redirect()->back()->with('fail','The Organisation Code you provided does not exist. Please contact your administrator for your Organisation Code.')

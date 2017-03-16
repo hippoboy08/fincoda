@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' =>'fincoda2015@gmail.com', 'name' =>'FincodaSurvey'],
+    'from' => ['address' =>'balsam.abdulghani@gmail.com', 'name' =>'FincodaSurvey'],
 
     /*
     |--------------------------------------------------------------------------

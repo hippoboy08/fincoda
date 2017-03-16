@@ -6,6 +6,7 @@ Use DB;
 Use Illuminate\Support\Facades\Mail;
 Use App\Http\Controllers\EmailTrait;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Console\Scheduling\Event;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-	$schedule->command('email:reminder')->everyMinute();
+	$schedule->command('email:reminder')->hourly()
+                				->between('20:16', '20:20');
     }
 }

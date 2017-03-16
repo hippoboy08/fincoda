@@ -60,7 +60,7 @@ use EmailTrait;
               ->join('role_user','role_user.user_id','=','users.id')
               ->join('companies','companies.id','=','users.company_id')
 			  ->select('users.id', 'users.email', 'users.name')
-              ->where('role_id','!=',1)
+              //->where('role_id','!=',1)
                      ->where('company_id','=',Auth::User()->company_id)
                      ->get());
 

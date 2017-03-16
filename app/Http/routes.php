@@ -88,6 +88,9 @@ Route::group(['middleware'=>'basic',
     Route::get('survey/viewPeerResults/{surveyId}/{userId}','SurveyController@viewPeerResults');
 	Route::get('survey/evaluateUser/{surveyId}/{userId}','SurveyController@evaluateUser');
 	Route::post('survey/inviteEvaluators','SurveyController@inviteEvaluators');
+	Route::post('survey/inviteExternalEvaluators','SurveyController@inviteExternalEvaluators');
+	Route::post('survey/registerExternalEvaluators','SurveyController@registerExternalEvaluators');
+	Route::post('survey/evaluateUserExternal','SurveyController@evaluateUserExternal');
 	Route::resource('survey','SurveyController');
     Route::resource('usergroup','UserGroupController');
 

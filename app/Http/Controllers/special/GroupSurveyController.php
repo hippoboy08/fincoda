@@ -85,7 +85,7 @@ class GroupSurveyController extends Controller
             ->with('indicators',Indicator::all())
             ->with('participants',DB::table('users')
                 ->join('role_user','role_user.user_id','=','users.id')
-                ->where('role_id','=',3)
+                ->where('role_id','!=',1)
                 ->join('user_in_groups','user_in_groups.user_id','=','users.id')
                 ->join('user_groups','user_groups.id','=','user_in_groups.user_group_id')
                 ->join('companies','companies.id','=','users.company_id')

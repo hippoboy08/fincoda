@@ -30,10 +30,13 @@ class ProfileController extends Controller
     public function update(Request $request, $id){
         if(Auth::id()==$id){
 
-
-
             $validation=Validator::make($request->all(),[
-                'name'=>'required|max:255'
+                'name'=>'required|max:255',
+				'gender'=>'required|max:50',
+			   'country'=>'required|max:50',
+			   'city'=>'required|max:50',
+			   'street'=>'required|max:255',
+			   'phone'=>'required|max:255'
             ]);
 
             if($validation->fails()){
@@ -54,7 +57,18 @@ class ProfileController extends Controller
 									'country'=>$request->country,
 									'city'=>$request->city,
 									'street'=>$request->street,
-									'phone'=>$request->phone
+									'phone'=>$request->phone,
+									'What_is_your_highest_completed_education'=>$request->highest_education,
+									'Are_you_a_student_or_a_professional'=>$request->professional_status,
+									'What_level_of_study_do_you_currently_follow'=>$request->study_level,
+									'What_type_of_study_are_you_doing'=>$request->study_type,
+									'What_kind_of_function_do_you_aspire_after_your_graduation'=>$request->post_graduate_aspirations,
+									'At_what_stage_or_in_which_year_of_study_indicated_above_are_you'=>$request->study_stage,
+									'What_industry_does_your_company_or_organization_belong_to'=>$request->company_industry,
+									'How_long_has_your_company_or_organization_been_operating'=>$request->company_age,
+									'What_type_of_study_did_you_do'=>$request->study_type_you_did,
+									'What_is_your_job_role'=>$request->job_role,
+									'How_big_is_the_company_or_organization_you_work_for'=>$request->company_size
 						]);
 					DB::commit();
 					return redirect()->back()->with('success','Your profile has been updated successfully');
