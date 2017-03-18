@@ -47,7 +47,7 @@
 										   });
 										   $.ajax({
 											 method: 'POST',
-											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-phase2-complete/public/admin/language",
+											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete/public/admin/language",
 											 dataType: 'json',
 											 data: {'languageId':$(this).val()},
 											 success: function(data){

@@ -732,7 +732,52 @@ class SurveyController extends Controller
 			}
 			}
 		}
-		 
+			
+    }
+	
+	
+	public function inviteExternalEvaluators(Request $request){
+		dd($request);
+		$survey = Survey::find($request->survey_id);
+		//This returns the evaluators for this survey that the current logged in user has not selected to evaluate him or her
+		//This is for incremental additions, but in this case the additions are still strict to 5
+		$participantsNotSelectedAsEvaluators = DB::select(DB::raw(
+			"select users.id, users.name, users.email from users where users.id in 
+			(select participants.user_id from participants 
+					where participants.survey_id = :surveyId1 and participants.user_id != :currentUser1 and users.id not in
+			(select users.id from users where users.id in 
+				(select peer_surveys.peer_id from peer_surveys 
+					where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)))"),
+				array("surveyId"=>$request->survey_id,"surveyId1"=>$request->survey_id,"currentUser"=>Auth::User()->id,"currentUser1"=>Auth::User()->id));
+										
+        if(count($request->usersToEvaluate)!==$survey->number_of_evaluators){
+			Session::flash('message','You need to select '.$survey->number_of_evaluators.' users to evaluate you');
+            return redirect()->back();
+        }else{
+			if(!empty($request->usersToEvaluate)){
+			DB::beginTransaction();
+			try{
+				foreach($request->usersToEvaluate as $user){
+					DB::table('peer_surveys')
+						->insert([
+							'survey_id'=>$request->survey_id,
+							'peer_id'=>$user,
+							'user_id'=>Auth::User()->id,
+							'created_at'=>Carbon::now(),
+							'updated_at'=>Carbon::now()
+						]);
+						$userEmail = DB::table('users')->where('id',$user)->value('email');
+						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
+				}
+				DB::commit();
+				return redirect()->back()
+                    ->with('success','Your  request has been completed ');
+			}catch(\Exception $e){
+				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
+			}
+			}
+		}
 			
     }
 	

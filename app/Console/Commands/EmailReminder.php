@@ -127,9 +127,5 @@ use EmailTrait;
               $this->email('email.surveyreminderpeer3days',['owner'=>DB::table('users')->where('id',$participant->peer_id)->value('name'), 'link'=>url('/').'/login', 'title'=>$participant->title,'start_time'=>$participant->start_time,'end_time'=>$participant->end_time],$participant->email);
 	     }
 	}
-
-
-
-	
     }
 }

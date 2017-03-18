@@ -30,6 +30,9 @@
               <li class="active"><a data-toggle="tab" href="#tab1">Select who evaluate you</a></li>
               <li><a data-toggle="tab" href="#tab2">Who are evaluating you</a></li>
               <li><a data-toggle="tab" href="#tab3">People you are evaluating</a></li>
+			  <li><a data-toggle="tab" href="#tab5">Invite External Evaluators</a></li>
+			  <li><a data-toggle="tab" href="#tab6">External Evaluators who have confirmed</a></li>
+			  <li><a data-toggle="tab" href="#tab7">External Evaluators who have not confirmed</a></li>
               <li id='getData'><a data-toggle="tab" href="#tab4">Results</a></li>
             </ul>
 
@@ -114,9 +117,9 @@
                   </script>
                   @endif
                   {!! Form::close() !!}
-
                 </div>
-
+				
+				
                 <div id="tab2" class="tab-pane fade">
                   <br>
                   <p class="panel-title">
@@ -161,8 +164,8 @@
                       </tbody>
                     </table>
                   </div>
-
                 </div>
+				
                 <div id="tab3" class="tab-pane fade">
                   <br>
                   <p class="panel-title">
@@ -272,7 +275,82 @@
                   <h3>You don't have enough evaluations to get your result.</h3>
                   @endif
                   @endrole
+                </div>
+				
+				
+				<div id="tab5" class="tab-pane fade">
+                <br>
+                @role('basic')
+                {!! Form::open(['method'=>'POST', 'action'=>'basic\SurveyController@inviteExternalEvaluators']) !!}
+                @endrole
+                @role('special')
+                {!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@inviteExternalEvaluators']) !!}
+                @endrole
 
+                {!! Form::hidden('survey_id',$survey->id) !!}
+                <p class="panel-title">
+                  <label>Please select a maximum of {{$survey->number_of_evaluators}} people you would like to evaluate you. If no participants is shown, you have had maximum participants as evaluators.</label>
+                </p>
+                @if(Session::has('message'))
+                <h4 style="color:red;">{{Session::get('message')}}</h4>
+                  @endif
+                  <div class="panel-body">
+                    <div class="form-group{!! $errors->has('usersToEvaluate') ? ' has-error':'' !!} has-feedback">
+                      @if($errors->has('usersToEvaluate'))
+                      <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('usersToEvaluate') !!}</label>
+                      @endif
+
+                      <table id="example9" class="table table-bordered table-striped">
+                        <tbody>
+                          <tr>
+                           <td>
+							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
+                            <label>Email Address*</label><br>
+							</td>
+							<td>
+                            @if($errors->has('company_code'))
+                                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('email') !!}</label>
+                            @endif
+                            {!! Form::text('email1',old('email'),['class'=>'form-control','placeholder'=>'Email Address']) !!}
+                            <span class="form-control-feedback"><i class="fa fa-lock" aria-hidden="true"></i></span>
+							</td>
+							</div>
+                          </tr>
+						  <tr>
+                           <td>
+							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
+                            <label>Email Address*</label><br>
+							</td>
+							<td>
+                            @if($errors->has('company_code'))
+                                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('email') !!}</label>
+                            @endif
+                            {!! Form::text('email2',old('email'),['class'=>'form-control','placeholder'=>'Email Address']) !!}
+                            <span class="form-control-feedback"><i class="fa fa-lock" aria-hidden="true"></i></span>
+							</td>
+							</div>
+                          </tr>
+						  <tr>
+                           <td>
+							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
+                            <label>Email Address*</label><br>
+							</td>
+							<td>
+                            @if($errors->has('company_code'))
+                                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('email') !!}</label>
+                            @endif
+                            {!! Form::text('email3',old('email'),['class'=>'form-control','placeholder'=>'Email Address']) !!}
+                            <span class="form-control-feedback"><i class="fa fa-lock" aria-hidden="true"></i></span>
+							</td>
+							</div>
+                          </tr>
+                        </tbody>
+                      </table>
+				    </div>
+                  </div>
+				  
+                  <button id="pickEvaluators" type="submit" class="btn btn-info btn-flat"><i class="fa fa-floppy-o" aria-hidden="true" ></i> Submit</button>
+                  {!! Form::close() !!}
                 </div>
 
 
