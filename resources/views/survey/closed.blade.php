@@ -30,6 +30,7 @@
 				@endrole
 
                 @role('basic')
+                <td><input type="checkbox" name="hide" value=""></td>
                 @if(Auth::User()->participate_survey->where('survey_id',$closed->id)->first()->completed==0)
 					<td>{!! $closed->title !!}</td>
 					<td> </td>
@@ -53,7 +54,7 @@
                 @endrole
 
                 @role('special')
-
+                <td><input type="checkbox" name="hide" value=""></td>
                 @if(Route::current()->getName()=='special.groupsurvey.index')
                     <td><a href="{!! url('special/groupsurvey/'.$closed->id) !!}">{!! $closed->title !!}</a></td>
 					<td><a class="confirmation" href="{!! url('special/groupsurvey/edit/'.$closed->id) !!}">edit</a></td>

@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-	$schedule->command('email:reminder')->hourly()
-                				->between('20:16', '20:20');
+	$schedule->command('email:reminder')->hourly();
+                				// ->between('20:16', '20:20');
     }
 }

@@ -73,14 +73,44 @@
                           @endforeach
                           @endif
                         </tbody>
+                        <tfoot id='tfooter' align='center'>
+                          <tr>
+                            <td colspan="2">
+                              <button type="button" id="externalEvaluator" class="btn btn-block btn-info" aria-hidden="true"><strong><b><label>Add external Evaluator</label></b></strong></button>
+                            </td>
+                          </tr>
+                        </tfoot>
                       </table>
                     </div>
                   </div>
 
+                  <div class="modal fade" id="externalEvaluatorModal" tabindex="-1">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title"><b>Exceed maximum number of evaluators</b></h3>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="email">There is already 5 evaluators !!!</label>
+                          <!-- <input class="form-control" id="email" type="text" placeholder="Enter the evaluator email address"> -->
+                      </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <!-- <button type="button" id="inviteExternalEvaluator" class="btn btn-primary">Send Invitation</button> -->
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
                   <button id="pickEvaluators" type="submit" class="btn btn-info btn-flat"><i class="fa fa-floppy-o" aria-hidden="true" ></i> Submit</button>
+
                   @if(count($evaluators)>=$survey->number_of_evaluators)
                   <script type="text/javascript">
                     document.getElementById('pickEvaluators').disabled=true;
+                    document.getElementById('externalEvaluator').style.visibility="hidden";
                   </script>
                   @endif
                   {!! Form::close() !!}
