@@ -29,6 +29,7 @@ use PHPExcel_Worksheet;
 use PDF;
 use View;
 use App;
+use Users;
 
 
 class SurveyController extends Controller { 
@@ -60,10 +61,9 @@ use EmailTrait;
               ->join('role_user','role_user.user_id','=','users.id')
               ->join('companies','companies.id','=','users.company_id')
 			  ->select('users.id', 'users.email', 'users.name')
-              //->where('role_id','!=',1)
+              ->where('role_id','!=',0)
                      ->where('company_id','=',Auth::User()->company_id)
                      ->get());
-
     }
 
 
@@ -73,8 +73,7 @@ use EmailTrait;
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
 		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
 		$numberOfBasicAndSpecialUsers = DB::select(DB::raw(
                                 "select users.id from users 
@@ -86,7 +85,7 @@ use EmailTrait;
 		//dd($request->all());
         $validation=Validator::make($request->all(),[
             'title'=>'required|max:255',
-            'editor1'=>'required|max:500',
+            'editor1'=>'required|max:10000',
             'date'=>'required',
             'survey_type'=>'required',
             'editor2'=>'required|max:500'
@@ -143,23 +142,27 @@ use EmailTrait;
 
                 $participants=DB::table('users')->where('company_id',Auth::User()->company_id)
                     ->join('role_user','role_user.user_id','=','users.id')
-                    ->where('role_user.role_id','!=',1)
-                    ->where('role_user.user_id','!=',Auth::User()->id)
+                    ->where('role_user.role_id','!=',0)
+                    //->where('role_user.user_id','!=',Auth::User()->id)
                     ->select('users.id', 'email')->get();
 
                 foreach($participants as $participant){
                     $survey->participants()->create([
                         'user_id'=>$participant->id
                     ]);
+					
+					//send email to the participants
+					$this->email('email.newsurvey',['owner'=>$owner->name, 'link'=>url('/').'/login',
+            	     'title'=>$survey->title,'name'=>User::find($participant->id)->name,'start_time'=>$from,'end_time'=>$to],$participant->email);
                 }
 
-                foreach($participants as $participant){
+                /*foreach($participants as $participant){
                     $member_email[]=$participant->email;
                 }
 
               //send email to the participants
               $this->email('email.newsurvey',['owner'=>$owner->name, 'link'=>url('/').'/login',
-            	     'title'=>$survey->title, 'start_time'=>$from,'end_time'=>$to],$member_email);
+            	     'title'=>$survey->title, 'start_time'=>$from,'end_time'=>$to],$member_email);*/
 			
 			DB::commit();
 				
@@ -1690,7 +1693,7 @@ public function getParticipantDetails($surveyId, $participantId){
 											(select surveys.user_id from surveys where surveys.id = :surveyId1)) as p
 											where p.id not in 
 											(select participants.user_id from participants where participants.survey_id = :surveyId)and p.id 
-										in (select role_user.user_id from role_user where role_user.role_id != 1)"),
+										in (select role_user.user_id from role_user where role_user.role_id != 0)"),
 										array("surveyId1"=>$id,"companyId"=>Auth::User()->company_id,"surveyId"=>$id));
 
 				
@@ -1734,7 +1737,7 @@ public function getParticipantDetails($surveyId, $participantId){
 											(select surveys.user_id from surveys where surveys.id = :surveyId1)) as p
 											where p.id not in 
 											(select participants.user_id from participants where participants.survey_id = :surveyId)and p.id 
-										in (select role_user.user_id from role_user where role_user.role_id != 1)"),
+										in (select role_user.user_id from role_user where role_user.role_id != 0)"),
 										array("surveyId1"=>$id,"companyId"=>Auth::User()->company_id,"surveyId"=>$id));
 
 				
@@ -1815,7 +1818,7 @@ public function getParticipantDetails($surveyId, $participantId){
 						->where('survey_id', $request->id)
 						->delete();
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login', 'title'=>$survey->title],$userEmail);
+						$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name,'name'=>User::find($user)->name, 'link'=>url('/').'/login', 'title'=>$survey->title],$userEmail);
 				}
 			}
 			
@@ -1828,7 +1831,7 @@ public function getParticipantDetails($surveyId, $participantId){
 							'updated_at'=>Carbon::now()
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login', 'title'=>$survey->title],$userEmail);
+						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>$survey->title],$userEmail);
 				}
 			}
             DB::commit();

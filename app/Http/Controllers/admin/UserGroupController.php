@@ -51,7 +51,7 @@ class UserGroupController extends Controller
                 ->lists('users.name','users.id'))
             ->with('users',DB::table('users')->where('company_id',Auth::User()->company_id)
             ->join('role_user','role_user.user_id','=','users.id')
-            ->where('role_user.role_id','=',3)->get());
+            ->where('role_user.role_id','!=',1)->get());
     }
 
     /**
@@ -156,7 +156,7 @@ class UserGroupController extends Controller
                             "select users.id as user_id, users.name, users.email from users
 								join role_user on role_user.user_id = users.id
 								where users.id in (select user_in_groups.user_id from user_in_groups 
-								where user_in_groups.user_group_id = :groupId) and role_user.role_id = 3 and users.company_id = :companyId"),
+								where user_in_groups.user_group_id = :groupId) and role_user.role_id != 1 and users.company_id = :companyId"),
                             array("groupId"=>$id,"companyId"=>Auth::User()->company_id));
 
 							
@@ -165,7 +165,7 @@ class UserGroupController extends Controller
                             "select users.id as user_id, users.name, users.email from users
 								join role_user on role_user.user_id = users.id
 								where users.id not in (select user_in_groups.user_id from user_in_groups 
-								where user_in_groups.user_group_id = :groupId) and role_user.role_id = 3 and users.company_id = :companyId"),
+								where user_in_groups.user_group_id = :groupId) and role_user.role_id != 1 and users.company_id = :companyId"),
                             array("groupId"=>$id,"companyId"=>Auth::User()->company_id));
 		
         return view('usergroup.editAdmin')

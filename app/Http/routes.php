@@ -68,6 +68,12 @@ Route::group(['middleware'=>'admin',
     Route::get('survey/edit/{id}','SurveyController@editSurvey');
     Route::post('survey/update','SurveyController@updateSurvey');
 	Route::resource('survey','SurveyController');
+	
+	Route::get('survey/evaluateUser/{surveyId}/{userId}','CompanySurveyController@evaluateUser');
+	Route::get('survey/viewPeerResults/{surveyId}/{userId}','CompanySurveyController@viewPeerResults');
+	Route::post('survey/inviteEvaluators','CompanySurveyController@inviteEvaluators');
+	Route::resource('companySurvey','CompanySurveyController');
+	
     Route::get('survey/downloadExcel/{surveyId}',['as'=>'downloadExcelAdmin','uses'=>'SurveyController@downloadCsv']);
     Route::match(['get','post'],'survey/lookForParticipant',['as'=>'lookForParticipant','uses'=> 'SurveyController@lookForParticipant']);
     Route::get('usergroup/edit/{id}','UserGroupController@editUserGroup');
@@ -109,6 +115,14 @@ Route::group(['middleware'=>'special',
 	Route::get('survey/viewPeerResults/{surveyId}/{userId}','CompanySurveyController@viewPeerResults');
 	Route::post('survey/inviteEvaluators','CompanySurveyController@inviteEvaluators');
 	Route::resource('survey','CompanySurveyController');
+	
+	Route::get('groupSurvey/viewPeerResults/{surveyId}/{userId}','SurveyController@viewPeerResults');
+	Route::get('groupSurvey/evaluateUser/{surveyId}/{userId}','SurveyController@evaluateUser');
+	Route::post('groupSurvey/inviteEvaluators','SurveyController@inviteEvaluators');
+	Route::post('groupSurvey/inviteExternalEvaluators','SurveyController@inviteExternalEvaluators');
+	Route::post('groupSurvey/registerExternalEvaluators','SurveyController@registerExternalEvaluators');
+	Route::post('groupSurvey/evaluateUserExternal','SurveyController@evaluateUserExternal');
+	Route::resource('groupSurvey','SurveyController');
 
     Route::get('groupsurvey/getParticipant/{surveyId}/{groupId}/{participantId}','GroupSurveyController@getParticipant');
     Route::get('groupsurvey/deleteSurvey/{id}','GroupSurveyController@deleteSurvey');

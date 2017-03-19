@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\EmailReminder::class,
+		Commands\SwitchOnEmailer::class,
     ];
 
     /**
@@ -28,7 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-	$schedule->command('email:reminder')->hourly();
-                				// ->between('20:16', '20:20');
+    	$schedule->command('email:reminder')->daily();
+    	$schedule->command('email:switchonemailer')->dailyAt('15:00');
     }
 }

@@ -78,6 +78,18 @@
                                         {!! Form::text('city',$profile->city,['class'=>'form-control']) !!}
                                     </div>
                                 </div>
+								
+								<div class="form-group{!! $errors->has('city') ? ' has-error':'' !!} has-feedback row">
+                                    @if($errors->has('dob'))
+                                        <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('dob') !!}</label>
+                                    @endif
+                                    <div class="col-md-2 pull-left">
+                                        <strong>dob* :</strong>
+                                    </div>
+                                    <div class="col-md-10 pull-right">
+                                        {!! Form::text('dob',$profile->dob,['class'=>'form-control']) !!}
+                                    </div>
+                                </div>
 
                                 <div class="form-group{!! $errors->has('street') ? ' has-error':'' !!} has-feedback row">
                                     @if($errors->has('street'))

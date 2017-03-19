@@ -1,4 +1,4 @@
-<p>Hi,</p>
+<p>Dear {!!$name!!}
 
 <p>This is a reminder that the survey you were asked to respond to expires in 3 days.</p>
 <p>Please login to the Fincoda Survey System and answer the survey.</p>
