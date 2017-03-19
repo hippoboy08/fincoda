@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\basic;
+namespace App\Http\Controllers\special;
 use App\Http\Controllers\EmailTrait;
 use App\Company;
 use App\Indicator;
@@ -26,20 +26,7 @@ class SurveyController extends Controller
 {
 	use EmailTrait;
     public function index(){
-		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
-        $open=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<',Carbon::now($companyTimeZone))->where('end_time','>',Carbon::now($companyTimeZone))->select('id')->get();
-
-         $completed_survey=DB::table('participants')->whereIn('survey_id',$open)->where('participants.user_id',Auth::id())->where('completed',1)->join('surveys','surveys.id','=','participants.survey_id')
-            ->select('surveys.id','surveys.type_id','surveys.start_time','surveys.end_time','surveys.user_id','surveys.title','surveys.title','participants.completed')
-            ->get();
-        $closed=Company::find(Auth::User()->company_id)->hasSurveys()->where('start_time','<',Carbon::now($companyTimeZone))->where('end_time','<',Carbon::now($companyTimeZone))->select('id')->get();
-		$closed_survey=DB::table('participants')->whereIn('survey_id',$closed)->where('participants.user_id',Auth::id())->join('surveys','surveys.id','=','participants.survey_id')
-            ->select('surveys.id','surveys.type_id','surveys.start_time','surveys.end_time','surveys.user_id','surveys.title','surveys.title','participants.completed')
-            ->get();
-
-        return  view('survey.complete')->with('completed',$completed_survey)->with('closed',$closed_survey);
-
-
+	
     }
 	
 	
@@ -56,79 +43,6 @@ class SurveyController extends Controller
             if($this->SurveyStatus($id)=='open'){
                if(Auth::User()->participate_survey()->where('survey_id',$id)->first()->completed==1){
                     if($this->SurveyType($id)=='self'){
-                      if($surveyCategoryId==1){//This is report for company survey because the aggregates or averages differ when its group survey
-                        //or company survey
-                            //This returns the indicator scores for each user that took part in the survey
-                            //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
-                            //In other words it will always return a single result
-							
-							$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
-                                              ->select('results.user_id as User_ID')
-                                              ->where('results.survey_id',$id)
-                                              ->distinct()->get();
-							
-                            $surveyScoreAllUsers = DB::table('indicators')
-                                              ->join('results','results.indicator_id','=','indicators.id')
-                                              ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
-                                              ->select('results.survey_id as Survey_ID',
-                                                       'results.user_id as User_ID','indicators.id as Indicator_ID',
-                                                       'indicators.indicator as Indicator', 'results.answer as Answer',
-                                                       'indicators.group_id as Indicator_Group_ID','indicator_groups.name as Indicator_Group')
-                                              ->where('results.survey_id',$id)
-                                              ->where('results.user_id',$userId)
-                                              ->groupBy('results.survey_id', 'results.user_id', 'indicators.id')
-                                              ->get();
-
-
-                            //This returns the average of the user group per indicator in this survey
-                            $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
-                                              "SELECT results.survey_id as Survey_ID,
-                                              indicators.id as Indicator_ID, indicators.indicator as Indicator,
-                                              ROUND (AVG(results.answer), 2) as Group_Average
-                                              FROM indicators
-                                              join results on results.indicator_id = indicators.id
-                                              WHERE results.survey_id = :surveyId
-                                              GROUP BY results.survey_id, indicators.id"),
-                                              array("surveyId"=>$id));
-
-                            //This returns the average of each user per indicator group for this survey
-                            $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
-                                              "SELECT results.survey_id as Survey_ID,
-                                              results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
-                                              indicator_groups.name as Indicator_Group,
-                                              ROUND(AVG(results.answer), 2) as Indicator_Group_Average
-                                              FROM indicators
-                                              JOIN results on results.indicator_id = indicators.id
-                                              JOIN indicator_groups on indicators.group_id = indicator_groups.id
-                                              WHERE results.survey_id = :surveyId
-                                              GROUP BY results.survey_id, results.user_id, indicators.group_id"),
-                                              array("surveyId"=>$id));
-
-                            //This returns the average of each user group per indicator group in this survey
-                            $surveyScorePerIndicatorGroup = DB::select(DB::raw(
-                                              "SELECT results.survey_id as Survey_ID,
-                                              indicators.group_id as Indicator_Group_ID,
-                                              indicator_groups.name as Indicator_Group,
-                                              ROUND(AVG(results.answer), 2) as Indicator_Group_Average
-                                              FROM indicators
-                                              JOIN results on results.indicator_id = indicators.id
-                                              JOIN indicator_groups on indicators.group_id = indicator_groups.id
-                                              WHERE results.survey_id = :surveyId
-                                              GROUP BY results.survey_id, indicators.group_id"),
-                                              array("surveyId"=>$id));
-							
-							
-									return view('survey.resultForBasic')->with('survey',Survey::find($id))
-									->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
-									->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
-									->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
-									->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
-									->with('participants',Survey::find($id)->participants)
-									->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
-									->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
-									
-                      }
-
                       if($surveyCategoryId==2){//This is report for group survey because the aggregates or averages differ when its group survey
                         //or company survey
                         //This returns the indicator scores for each user that took part in the survey
@@ -200,7 +114,7 @@ class SurveyController extends Controller
                                 array("surveyId"=>$id));
 								
 					
-									return view('survey.resultForBasic')->with('survey',Survey::find($id))
+									return view('survey.resultForSpecialInGroupSurvey')->with('survey',Survey::find($id))
 									->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
 									->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
 									->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
@@ -297,7 +211,7 @@ class SurveyController extends Controller
 					
 						  
 
-                            return view('survey.resultForBasic')->with('survey',Survey::find($id))
+                            return view('survey.resultForSpecialInGroupSurvey')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
                             ->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
 							->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
@@ -306,10 +220,7 @@ class SurveyController extends Controller
                             ->with('participants',Survey::find($id)->participants)
                             ->with(['surveyScoreGroupAvgPerIndicatorGroupMinAndMax' => $surveyScoreGroupAvgPerIndicatorGroupMinAndMax])
 							->with('answers',count($answers));
-                    
-					}
-                    
-
+ 					}
                 }else{
                     if($this->SurveyType($id)=='self'){
 						$profileStatus = DB::table('user_profiles')->where('user_id',Auth::user()->id)->value('complete');
@@ -317,9 +228,10 @@ class SurveyController extends Controller
 							return view('profile.edituser')->with('profile',Auth::User()->profile)->with('user',Auth::User());
 						}
 						if($profileStatus==1){
-							return view('survey.answer')->with('indicators', Indicator::all())
-								->with('survey', Survey::find($id));
+							return view('survey.answerForSpecialInGroupSurvey')->with('indicators',Indicator::all())
+                            ->with('survey',Survey::find($id));
 						}
+                        
                     }else{
 						//This is peer survey
                         //Check if the logged in user was invited to take part in the survey
@@ -421,8 +333,7 @@ class SurveyController extends Controller
 								}
 						}
                     }
-
-                }
+              }
 				
 
             }elseif($this->SurveyStatus($id)=='closed'){
@@ -431,81 +342,6 @@ class SurveyController extends Controller
 								||Auth::User()->participate_survey()->where('survey_id',$id)->first()->completed==5){//This is the status when five have evaluated someone
                     if($this->SurveyType($id)=='self'){
                       //This is an issue that will be resolved later when comapny survey logic is cleanly separated from group survey logic
-                      if($surveyCategoryId==1){//This is report for company survey because the aggregates or averages differ when its group survey
-                        //or company survey
-                        /*view('survey.result')->with('survey',Survey::find($id))
-                            ->with('participants',Survey::find($id)->participants)
-                            ->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));*/
-                            //This returns the indicator scores for each user that took part in the survey
-                            //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
-                            //In other words it will always return a single result
-							
-							$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
-                                              ->select('results.user_id as User_ID')
-                                              ->where('results.survey_id',$id)
-                                              ->distinct()->get();
-							
-                            $surveyScoreAllUsers = DB::table('indicators')
-                                              ->join('results','results.indicator_id','=','indicators.id')
-                                              ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
-                                              ->select('results.survey_id as Survey_ID',
-                                                       'results.user_id as User_ID','indicators.id as Indicator_ID',
-                                                       'indicators.indicator as Indicator', 'results.answer as Answer',
-                                                       'indicators.group_id as Indicator_Group_ID','indicator_groups.name as Indicator_Group')
-                                              ->where('results.survey_id',$id)
-                                              ->where('results.user_id',$userId)
-                                              ->groupBy('results.survey_id', 'results.user_id', 'indicators.id')
-                                              ->get();
-
-                            //This returns the average of the user group per indicator in this survey
-                            $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
-                                              "SELECT results.survey_id as Survey_ID,
-                                              indicators.id as Indicator_ID, indicators.indicator as Indicator,
-                                              ROUND (AVG(results.answer), 2) as Group_Average
-                                              FROM indicators
-                                              join results on results.indicator_id = indicators.id
-                                              WHERE results.survey_id = :surveyId
-                                              GROUP BY results.survey_id, indicators.id"),
-                                              array("surveyId"=>$id));
-
-                            //This returns the average of each user per indicator group for this survey
-                            $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
-                                              "SELECT results.survey_id as Survey_ID,
-                                              results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
-                                              indicator_groups.name as Indicator_Group,
-                                              ROUND(AVG(results.answer), 2) as Indicator_Group_Average
-                                              FROM indicators
-                                              JOIN results on results.indicator_id = indicators.id
-                                              JOIN indicator_groups on indicators.group_id = indicator_groups.id
-                                              WHERE results.survey_id = :surveyId
-                                              GROUP BY results.survey_id, results.user_id, indicators.group_id"),
-                                              array("surveyId"=>$id));
-
-                            //This returns the average of each user group per indicator group in this survey
-                            $surveyScorePerIndicatorGroup = DB::select(DB::raw(
-                                              "SELECT results.survey_id as Survey_ID,
-                                              indicators.group_id as Indicator_Group_ID,
-                                              indicator_groups.name as Indicator_Group,
-                                              ROUND(AVG(results.answer), 2) as Indicator_Group_Average
-                                              FROM indicators
-                                              JOIN results on results.indicator_id = indicators.id
-                                              JOIN indicator_groups on indicators.group_id = indicator_groups.id
-                                              WHERE results.survey_id = :surveyId
-                                              GROUP BY results.survey_id, indicators.group_id"),
-                                              array("surveyId"=>$id));
-						
-                            
-									return view('survey.resultForBasic')->with('survey',Survey::find($id))
-									->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
-									->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
-									->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
-									->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
-									->with('participants',Survey::find($id)->participants)
-									->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
-									->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
-							
-                      }
-
                       if($surveyCategoryId==2){//This is report for group survey because the aggregates or averages differ when its group survey
                         //or company survey
                         //This returns the indicator scores for each user that took part in the survey
@@ -575,7 +411,7 @@ class SurveyController extends Controller
                                 array("surveyId"=>$id));
 								
 					
-                        			return view('survey.resultForBasic')->with('survey',Survey::find($id))
+                        			return view('survey.resultForSpecialInGroupSurvey')->with('survey',Survey::find($id))
 									->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
 									->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
 									->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
@@ -583,8 +419,7 @@ class SurveyController extends Controller
 									->with('participants',Survey::find($id)->participants)
 									->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
 									->with('answers',count(Survey::find($id)->participants()->where('completed',1)->get()));
-							
-                      }
+	                  }
 
                     }else{
 							//Since the owner agreed to make modification to the database model to have a survey as group scoped, then the difference in aggregated values
@@ -673,7 +508,7 @@ class SurveyController extends Controller
 					
 						  
 
-                            return view('survey.resultForBasic')->with('survey',Survey::find($id))
+                            return view('survey.resultForSpecialInGroupSurvey')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
                             ->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
 							->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
@@ -701,7 +536,7 @@ class SurveyController extends Controller
 	
 	
 	public function inviteEvaluators(Request $request){
-		
+		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
 		$survey = Survey::find($request->survey_id);
 		//This returns the evaluators for this survey that the current logged in user has not selected to evaluate him or her
 		//This is for incremental additions, but in this case the additions are still strict to 5
@@ -727,11 +562,11 @@ class SurveyController extends Controller
 							'survey_id'=>$request->survey_id,
 							'peer_id'=>$user,
 							'user_id'=>Auth::User()->id,
-							'created_at'=>Carbon::now(),
-							'updated_at'=>Carbon::now()
+							'created_at'=>Carbon::now($companyTimeZone),
+							'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>Survey::find($request->survey_id)->title],$userEmail);
+						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name,'name'=>Users::find($user), 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
 				}
 				DB::commit();
 				return redirect()->back()
@@ -748,6 +583,7 @@ class SurveyController extends Controller
 	
 	public function inviteExternalEvaluators(Request $request){
 		dd($request);
+		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
 		$survey = Survey::find($request->survey_id);
 		//This returns the evaluators for this survey that the current logged in user has not selected to evaluate him or her
 		//This is for incremental additions, but in this case the additions are still strict to 5
@@ -773,11 +609,11 @@ class SurveyController extends Controller
 							'survey_id'=>$request->survey_id,
 							'peer_id'=>$user,
 							'user_id'=>Auth::User()->id,
-							'created_at'=>Carbon::now(),
-							'updated_at'=>Carbon::now()
+							'created_at'=>Carbon::now($companyTimeZone),
+							'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>Survey::find($request->survey_id)->title],$userEmail);
+						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name,'name'=>Users::find($user), 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
 				}
 				DB::commit();
 				return redirect()->back()
@@ -793,7 +629,7 @@ class SurveyController extends Controller
 	
 	
 		public function registerExternalEvaluators(Request $request){
-		
+		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
 		$survey = Survey::find($request->survey_id);
 		//This returns the evaluators for this survey that the current logged in user has not selected to evaluate him or her
 		//This is for incremental additions, but in this case the additions are still strict to 5
@@ -819,11 +655,11 @@ class SurveyController extends Controller
 							'survey_id'=>$request->survey_id,
 							'peer_id'=>$user,
 							'user_id'=>Auth::User()->id,
-							'created_at'=>Carbon::now(),
-							'updated_at'=>Carbon::now()
+							'created_at'=>Carbon::now($companyTimeZone),
+							'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>Survey::find($request->survey_id)->title],$userEmail);
+						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name,'name'=>Users::find($user), 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
 				}
 				DB::commit();
 				return redirect()->back()
@@ -853,13 +689,13 @@ class SurveyController extends Controller
 							return view('profile.edituser')->with('profile',Auth::User()->profile)->with('user',Auth::User());
 						}
 						if($profileStatus==1){
-							return view('survey.answer')
+							return view('survey.answerForSpecialInGroupSurvey')
 								->with('indicators', Indicator::all())
 								->with('user_id', $userId)
 								->with('survey', Survey::find($surveyId));
 						}
 		}
-		return Redirect::to('basic/survey/'.$surveyId)->with('success','Your have no users to evaluate');
+		return Redirect::to('special/groupSurvey/'.$surveyId)->with('success','Your have no users to evaluate');
 	}
 	
 	
@@ -875,18 +711,18 @@ class SurveyController extends Controller
 				array("surveyId1"=>$surveyId,"surveyId"=>$surveyId,"currentUser1"=>Auth::User()->id,"currentUser"=>Auth::User()->id));
 				
 		if(count($evaluatedNot)>0){
-						$profileStatus = DB::table('user_profiles')->where('user_id',Auth::user()->id)->value('complete');
+			$profileStatus = DB::table('user_profiles')->where('user_id',Auth::user()->id)->value('complete');
 						if($profileStatus==0){
 							return view('profile.edituser')->with('profile',Auth::User()->profile)->with('user',Auth::User());
 						}
 						if($profileStatus==1){
-							return view('survey.answer')
+							return view('survey.answerForSpecialInGroupSurvey')
 								->with('indicators', Indicator::all())
 								->with('user_id', $userId)
 								->with('survey', Survey::find($surveyId));
 						}
 		}
-		return Redirect::to('basic/survey/'.$surveyId)->with('success','Your have no users to evaluate');
+		return Redirect::to('special/groupSurvey/'.$surveyId)->with('success','Your have no users to evaluate');
 	}
 	
 	
@@ -975,7 +811,7 @@ class SurveyController extends Controller
 					
 						  
 
-                            return view('survey.resultForBasic')->with('survey',Survey::find($surveyId))
+                            return view('survey.resultForSpecialInGroupSurvey')->with('survey',Survey::find($surveyId))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
                             ->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
 							->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
@@ -998,9 +834,10 @@ class SurveyController extends Controller
     }
 
     public function SurveyStatus($id){
-        if(Survey::find($id)->start_time<Carbon::now()->addHour(1) && Survey::find($id)->end_time>Carbon::now()->addHour(1)) {
+		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
+        if(Survey::find($id)->start_time<Carbon::now($companyTimeZone) && Survey::find($id)->end_time>Carbon::now($companyTimeZone)) {
             return 'open';
-        }elseif(Survey::find($id)->start_time<Carbon::now()->addHour(1) && Survey::find($id)->end_time<Carbon::now()->addHour(1)){
+        }elseif(Survey::find($id)->start_time<Carbon::now($companyTimeZone) && Survey::find($id)->end_time<Carbon::now($companyTimeZone)){
             return 'closed';
         }else{
             return 'pending';
@@ -1017,7 +854,7 @@ class SurveyController extends Controller
     }
 
     public function store(Request $request){
-		
+		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
         count($request->radio);
         if(count($request->radio)==count(Indicator::all())){
 			DB::beginTransaction();
@@ -1038,7 +875,7 @@ class SurveyController extends Controller
             $answer->completed=1;
             $answer->save();
 			DB::commit();
-            return Redirect::to('basic/survey/'.$request->survey_id)->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed. Also please take a moment to check your profile and ensure that its up to date ');
+            return Redirect::to('special/groupSurvey/'.$request->survey_id)->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed. Also please take a moment to check your profile and ensure that its up to date ');
 			}else{
 				//This is a peer survey
 				for($i=1; $i<count($request->radio)+1; $i++){
@@ -1058,7 +895,7 @@ class SurveyController extends Controller
 						->where('survey_id',$request->survey_id)
 						->update([
 						    'peer_completed'=>1,
-						    'updated_at'=>Carbon::now()
+						    'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 				
 				//In the peer survey results check if more than one peer have evaluated this user_id
@@ -1076,7 +913,7 @@ class SurveyController extends Controller
 								->where('survey_id',$request->survey_id)
 								->update([
 									'completed'=>3,
-									'updated_at'=>Carbon::now()
+									'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 				}
 				//This should have been set to 1 to mark it as complete, but its likely that the user can have other users to evaluate
@@ -1091,11 +928,11 @@ class SurveyController extends Controller
 								->where('survey_id',$request->survey_id)
 								->update([
 									'completed'=>5,
-									'updated_at'=>Carbon::now()
+									'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 				}
 				DB::commit();
-				return Redirect::to('basic/survey/'.$request->survey_id)->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed. Also please take a moment to check your profile and ensure that its up to date ');
+				return Redirect::to('special/groupSurvey/'.$request->survey_id)->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed. Also please take a moment to check your profile and ensure that its up to date ');
 			}
 			}catch(\Exception $e){
 				DB::rollback();
@@ -1108,8 +945,5 @@ class SurveyController extends Controller
         }
 		
      }
-
-
-
 
 }

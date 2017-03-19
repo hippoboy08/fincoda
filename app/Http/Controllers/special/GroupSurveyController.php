@@ -96,12 +96,11 @@ class GroupSurveyController extends Controller
     }
 	
 	//All the functions that persist data to the model should be reviewed
-        public function store(Request $request)
-        {
+        public function store(Request $request){
 			$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
 			$validation=Validator::make($request->all(),[
                 'title'=>'required|max:255',
-                'editor1'=>'required|max:500',
+                'editor1'=>'required|max:10000',
                 'date'=>'required',
                 'survey_type'=>'required',
                 'group'=>'required',
@@ -110,8 +109,8 @@ class GroupSurveyController extends Controller
             ]);
 			$owner=Auth::User();
 			$participants = DB::select(DB::raw(
-									"select user_in_groups.user_id from user_in_groups where user_in_groups.user_group_id = :groupId and user_in_groups.user_id != :owner "),
-										array("groupId"=>$request->group,"owner"=>$owner->id));
+									"select user_in_groups.user_id from user_in_groups where user_in_groups.user_group_id = :groupId and user_in_groups.user_id != 0 "),
+										array("groupId"=>$request->group));
 			
 			
 			if($request->survey_type == 2 && $request->numberOfEvaluators < 1){
@@ -169,17 +168,19 @@ class GroupSurveyController extends Controller
 								->insert([
 									'survey_id'=>$survey->id,
 									'user_id'=>$user->user_id,
-									'created_at'=>Carbon::now(),
-									'updated_at'=>Carbon::now()
+									'created_at'=>Carbon::now($companyTimeZone),
+									'updated_at'=>Carbon::now($companyTimeZone)
 								]);
 							$userEmail = DB::table('users')->where('id',$user->user_id)->value('email');
-							$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login',
-							     'title'=>$survey->title,'start_time'=>$from,'end_time'=>$to],$userEmail);
+							$this->email('email.newsurvey',['owner'=>$owner->name,'link'=>url('/').'/login',
+								'name'=>User::find($user->user_id)->name,'start_time'=>$survey->start_time,'end_time'=>$survey->end_time,'title'=>$survey->title],$userEmail);
 						}
 					}
 					 DB::commit();
-					//This piece of code was inherited 
+					//This piece of code was inherited but basically passes an array of emails to the emailer
                     //$this->email('email.newsurvey',['owner'=>$owner->name, 'title'=>$survey->title],$member_email);
+					//$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login',
+							     //'title'=>$survey->title,'name'=>User::find($user->user_id)->name,start_time'=>$survey->start_time,'end_time'=>$survey->end_time],$userEmail);
 
                     return Redirect::to('special/groupsurvey')->with('success','The survey has been created successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
@@ -1168,8 +1169,7 @@ class GroupSurveyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editSurvey($id)
-    {
+    public function editSurvey($id){
 		$survey = Survey::find($id);
 		$indicators = Indicator::all();
 		//This check helps us verify if the returned survey id to edit actually falls under any of the groups the current logged in user
@@ -1222,10 +1222,9 @@ class GroupSurveyController extends Controller
 									"select users.id, users.name, users.email from users where users.company_id = :companyId 
 										and users.id in (select user_in_groups.user_id from `user_in_groups` 
 										where user_in_groups.user_group_id = (select surveys.user_group_id from surveys where surveys.id = :surveyId2))
-										and users.id not in (select surveys.user_id from surveys where surveys.id = :surveyId1) and users.id not in
-										(select participants.user_id from participants where participants.survey_id = :surveyId) and users.id 
-										in (select role_user.user_id from role_user where role_user.role_id = 3)"),
-										array("surveyId1"=>$id,"companyId"=>Auth::User()->company_id,"surveyId"=>$id,"surveyId2"=>$id));
+										and users.id not in(select participants.user_id from participants where participants.survey_id = :surveyId)and users.id 
+										in (select role_user.user_id from role_user where role_user.role_id != 1)"),
+										array("surveyId"=>$id,"companyId"=>Auth::User()->company_id,"surveyId2"=>$id));
 										
 					
 					return view('survey.editSpecial')
@@ -1266,10 +1265,9 @@ class GroupSurveyController extends Controller
 									"select users.id, users.name, users.email from users where users.company_id = :companyId 
 										and users.id in (select user_in_groups.user_id from `user_in_groups` 
 										where user_in_groups.user_group_id = (select surveys.user_group_id from surveys where surveys.id = :surveyId2))
-										and users.id not in (select surveys.user_id from surveys where surveys.id = :surveyId1) and users.id not in
-										(select participants.user_id from participants where participants.survey_id = :surveyId)and users.id 
-										in (select role_user.user_id from role_user where role_user.role_id = 3)"),
-										array("surveyId1"=>$id,"companyId"=>Auth::User()->company_id,"surveyId"=>$id,"surveyId2"=>$id));
+										and users.id not in(select participants.user_id from participants where participants.survey_id = :surveyId)and users.id 
+										in (select role_user.user_id from role_user where role_user.role_id != 1)"),
+										array("surveyId"=>$id,"companyId"=>Auth::User()->company_id,"surveyId2"=>$id));
 				
 				return view('survey.editSpecial')
 						->with('survey',$survey)
@@ -1292,12 +1290,11 @@ class GroupSurveyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function updateSurvey(Request $request){
-		
 		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
 		$survey = Survey::find($request->id);
         $validation=Validator::make($request->all(),[
             'title'=>'required|max:255',
-            'editor1'=>'required|max:500',
+            'editor1'=>'required|max:10000',
             'survey_type'=>'required',
             'editor2'=>'required|max:500'
 
@@ -1311,7 +1308,6 @@ class GroupSurveyController extends Controller
 				$date=explode('-',$request->date);
 				$from=new Carbon($date[0]);
 				$to=new Carbon($date[1]);
-				
 				if($from<Carbon::now($companyTimeZone) || $to<Carbon::now($companyTimeZone)){
 					return redirect()->back()
                     ->with('fail','The Survey open and close date should not be before the current date and time. Your company time zone was set to: '.$companyTimeZone)
@@ -1326,7 +1322,7 @@ class GroupSurveyController extends Controller
 								'type_id'=>$request->survey_type,
 								'start_time'=>$from,
 								'end_time'=>$to,
-								'updated_at'=>Carbon::now()
+								'updated_at'=>Carbon::now($companyTimeZone)
 					]);
 					
 			}else{
@@ -1343,8 +1339,8 @@ class GroupSurveyController extends Controller
 			if(!empty($request->usersToRemove)){
 					$owner=Auth::User();
 					$participants = DB::select(DB::raw(
-											"select user_in_groups.user_id from user_in_groups where user_in_groups.user_group_id = :groupId and user_in_groups.user_id != :owner "),
-												array("groupId"=>$survey->user_group_id,"owner"=>$owner->id));
+											"select user_in_groups.user_id from user_in_groups where user_in_groups.user_group_id = :groupId and user_in_groups.user_id != 0"),
+												array("groupId"=>$survey->user_group_id));
 					
 					if($request->survey_type == 2){
 						if(count($participants)-count($request->usersToRemove)<6){
@@ -1360,7 +1356,7 @@ class GroupSurveyController extends Controller
 							->where('survey_id', $request->id)
 							->delete();
 							$userEmail = DB::table('users')->where('id',$user)->value('email');
-							$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login', 'title'=>$survey->title],$userEmail);
+							$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name,'name'=>User::find($user)->name, 'link'=>url('/').'/login', 'title'=>$survey->title,'start_time'=>$survey->start_time, 'end_time'=>$survey->end_time],$userEmail);
 					}
 			}
 			if(!empty($request->usersToAdd)){
@@ -1373,10 +1369,10 @@ class GroupSurveyController extends Controller
 						->insert([
 							'survey_id'=>$request->id,
 							'user_id'=>$user,
-							'updated_at'=>Carbon::now()
+							'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login', 'title'=>$survey->title],$userEmail);
+						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name,'name'=>User::find($user)->name, 'link'=>url('/').'/login', 'title'=>$survey->title, 'start_time'=>$survey->start_time, 'end_time'=>$survey->end_time],$userEmail);
 				}
 			}
             DB::commit();
@@ -1471,11 +1467,12 @@ class GroupSurveyController extends Controller
     }
 
     public function SurveyStatus($id){
+		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
         $survey=Survey::find($id);
-        if($survey->start_time < Carbon::now()->addHour(1) && $survey->end_time > Carbon::now()->addHour(1) ){
+        if($survey->start_time < Carbon::now($companyTimeZone) && $survey->end_time > Carbon::now($companyTimeZone)){
             return 'open';
         }
-        elseif($survey->start_time < Carbon::now()->addHour(1) && $survey->end_time < Carbon::now()->addHour(1)){
+        elseif($survey->start_time < Carbon::now($companyTimeZone) && $survey->end_time < Carbon::now($companyTimeZone)){
             return 'closed';
         }else{
             return 'pending';

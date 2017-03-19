@@ -14,6 +14,7 @@ use App\Survey;
 use App\Survey_Type;
 use App\Indicator;
 use App\Result;
+use App\User;
 use App\Participant;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -23,15 +24,14 @@ use Session;
 class CompanySurveyController extends Controller
 {
 	use EmailTrait;
-    public function index()
-    {
-
-        $open = Auth::User()->company->hasSurveys()->where('start_time', '<', Carbon::now()->addHour(1))->where('end_time', '>', Carbon::now()->addHour(1))->select('id')->get();
+	public function index(){
+            $companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
+			$open = Auth::User()->company->hasSurveys()->where('start_time', '<', Carbon::now($companyTimeZone))->where('end_time', '>', Carbon::now($companyTimeZone))->select('id')->get();
 
         $completed_survey = DB::table('participants')->whereIn('survey_id', $open)->where('participants.user_id', Auth::id())->where('completed', 1)->join('surveys', 'surveys.id', '=', 'participants.survey_id')
             ->select('surveys.id', 'surveys.type_id', 'surveys.start_time', 'surveys.end_time', 'surveys.user_id', 'surveys.title', 'surveys.title', 'participants.completed')
             ->get();
-        $closed = Auth::User()->company->hasSurveys()->where('start_time', '<', Carbon::now()->addHour(1))->where('end_time', '<', Carbon::now()->addHour(1))->select('id')->get();
+        $closed = Auth::User()->company->hasSurveys()->where('start_time', '<', Carbon::now($companyTimeZone))->where('end_time', '<', Carbon::now($companyTimeZone))->select('id')->get();
         $closed_survey = DB::table('participants')->whereIn('survey_id', $closed)->where('participants.user_id', Auth::id())->join('surveys', 'surveys.id', '=', 'participants.survey_id')
             ->select('surveys.id', 'surveys.type_id', 'surveys.start_time', 'surveys.end_time', 'surveys.user_id', 'surveys.title', 'surveys.title', 'participants.completed')
             ->get();
@@ -225,8 +225,15 @@ class CompanySurveyController extends Controller
 
                 } else {
                     if ($this->SurveyType($id) == 'self') {
-                        return view('survey.answer')->with('indicators', Indicator::all())
+						$profileStatus = DB::table('user_profiles')->where('user_id',Auth::user()->id)->value('complete');
+						if($profileStatus==0){
+							return view('profile.edituser')->with('profile',Auth::User()->profile)->with('user',Auth::User());
+						}
+						if($profileStatus==1){
+							return view('survey.answer')->with('indicators', Indicator::all())
                             ->with('survey', Survey::find($id));
+						}
+                        
                     } else {
                      //Check if the logged in user was invited to take part in the survey
 						$participant = DB::select(DB::raw(
@@ -308,7 +315,12 @@ class CompanySurveyController extends Controller
 								
 								//The computer is a procedural flow machine such that if we manage to get here, then the logged in user needs to select
 								//evaluators or view ones that have completed
-								return view('survey.peerSelectEvaluators')
+								$profileStatus = DB::table('user_profiles')->where('user_id',Auth::user()->id)->value('complete');
+								if($profileStatus==0){
+									return view('profile.edituser')->with('profile',Auth::User()->profile)->with('user',Auth::User());
+								}
+								if($profileStatus==1){
+									return view('survey.peerSelectEvaluators')
 										->with('participants', $participant)
 										->with('participantsNotSelectedAsEvaluators', $participantsNotSelectedAsEvaluators)
 										->with('evaluators', $evaluators)
@@ -319,7 +331,7 @@ class CompanySurveyController extends Controller
 										->with('evaluatorsNotCompleted', $evaluatorsNotCompleted)
 										->with('user', Auth::User()->name)
 										->with('survey', Survey::find($id));
-								
+								}
 						}
                     }
 
@@ -523,7 +535,8 @@ class CompanySurveyController extends Controller
 	
 	
 	public function inviteEvaluators(Request $request){
-		$survey = Survey::find($request->survey_id);
+		    $companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
+			$survey = Survey::find($request->survey_id);
 		//dd($request->all());
 		//This is for incremental additions, but in this case the additions are still strict to 5
         $participantsNotSelectedAsEvaluators = DB::select(DB::raw(
@@ -549,11 +562,11 @@ class CompanySurveyController extends Controller
 							'survey_id'=>$request->survey_id,
 							'peer_id'=>$user,
 							'user_id'=>Auth::User()->id,
-							'created_at'=>Carbon::now(),
-							'updated_at'=>Carbon::now()
+							'created_at'=>Carbon::now($companyTimeZone),
+							'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
+						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>Survey::find($request->survey_id)->title],$userEmail);
 				}
 				DB::commit();
 				return redirect()->back()
@@ -579,10 +592,16 @@ class CompanySurveyController extends Controller
 				array("surveyId1"=>$surveyId,"surveyId"=>$surveyId,"currentUser1"=>Auth::User()->id,"currentUser"=>Auth::User()->id));
 				
 		if(count($evaluatedNot)>0){
-		return view('survey.answer')
-					->with('indicators', Indicator::all())
-					->with('user_id', $userId)
-                    ->with('survey', Survey::find($surveyId));
+						$profileStatus = DB::table('user_profiles')->where('user_id',Auth::user()->id)->value('complete');
+						if($profileStatus==0){
+							return view('profile.edituser')->with('profile',Auth::User()->profile)->with('user',Auth::User());
+						}
+						if($profileStatus==1){
+							return view('survey.answer')
+								->with('indicators', Indicator::all())
+								->with('user_id', $userId)
+								->with('survey', Survey::find($surveyId));
+						}
 		}
 		return Redirect::to('special/survey/'.$surveyId)->with('success','Your have no users to evaluate');
 			
@@ -695,11 +714,11 @@ class CompanySurveyController extends Controller
         }
     }
 
-    public function SurveyStatus($id)
-    {
-        if (Survey::find($id)->start_time < Carbon::now()->addHour(1) && Survey::find($id)->end_time > Carbon::now()->addHour(1)) {
+    public function SurveyStatus($id){
+            $companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
+			if (Survey::find($id)->start_time < Carbon::now($companyTimeZone) && Survey::find($id)->end_time > Carbon::now($companyTimeZone)) {
             return 'open';
-        } elseif (Survey::find($id)->start_time < Carbon::now()->addHour(1) && Survey::find($id)->end_time < Carbon::now()->addHour(1)) {
+        } elseif (Survey::find($id)->start_time < Carbon::now($companyTimeZone) && Survey::find($id)->end_time < Carbon::now($companyTimeZone)) {
             return 'closed';
         } else {
             return 'pending';
@@ -718,7 +737,8 @@ class CompanySurveyController extends Controller
 
     public function store(Request $request){
         count($request->radio);
-		
+		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
+
         if(count($request->radio)==count(Indicator::all())){
 			DB::beginTransaction();
 			try{
@@ -738,7 +758,7 @@ class CompanySurveyController extends Controller
 				$answer->completed=1;
 				$answer->save();
 				DB::commit();
-				return Redirect::to('special/survey')->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed ');
+				return Redirect::to('special/survey')->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed. Also please take a moment to check your profile and ensure that its up to date ');
 			}else{
 				//This is a peer survey
 				for($i=1; $i<count($request->radio)+1; $i++){
@@ -758,7 +778,7 @@ class CompanySurveyController extends Controller
 					->where('survey_id',$request->survey_id)
 					    ->update([
 						'peer_completed'=>1,
-						'updated_at'=>Carbon::now()
+						'updated_at'=>Carbon::now($companyTimeZone)
 					    ]);
 				
 				//In the peer survey results check if more than one peer have evaluated this user_id
@@ -775,7 +795,7 @@ class CompanySurveyController extends Controller
 								->where('survey_id',$request->survey_id)
 								->update([
 									'completed'=>3,
-									'updated_at'=>Carbon::now()
+									'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 				}
 				//This should have been set to 1 to mark it as complete, but its likely that the user can have other users to evaluate
@@ -790,11 +810,11 @@ class CompanySurveyController extends Controller
 								->where('survey_id',$request->survey_id)
 								->update([
 									'completed'=>5,
-									'updated_at'=>Carbon::now()
+									'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 				}
 				DB::commit();
-				return Redirect::to('special/survey/'.$request->survey_id)->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed ');
+				return Redirect::to('special/survey/'.$request->survey_id)->with('success','Your answer has been saved. Thank you for answering the survey. The complete result can be viewed once the survey is completed. Also please take a moment to check your profile and ensure that its up to date ');
 			}
 			
 		}catch(\Exception $e){

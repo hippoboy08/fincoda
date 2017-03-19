@@ -1,4 +1,4 @@
-<p>Hi,</p>
+<p>Dear {!!$name!!}
 
 <p> {!! $owner !!} has asked you for an evaluation according to this survey.</p>
 

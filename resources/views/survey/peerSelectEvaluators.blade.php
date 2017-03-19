@@ -45,7 +45,9 @@
                 @role('special')
                 {!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@inviteEvaluators']) !!}
                 @endrole
-
+				@role('admin')
+                {!! Form::open(['method'=>'POST', 'action'=>'admin\CompanySurveyController@inviteEvaluators']) !!}
+                @endrole
                 {!! Form::hidden('survey_id',$survey->id) !!}
                 <p class="panel-title">
                   <label>Please select a maximum of {{$survey->number_of_evaluators}} people you would like to evaluate you. If no participants is shown, you have had maximum participants as evaluators.</label>
@@ -253,10 +255,7 @@
                 @role('basic')
                 {!! Form::open(['method'=>'POST', 'action'=>'basic\SurveyController@inviteExternalEvaluators']) !!}
                 @endrole
-                @role('special')
-                {!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@inviteExternalEvaluators']) !!}
-                @endrole
-
+                
                 {!! Form::hidden('survey_id',$survey->id) !!}
                 <p class="panel-title">
                   <label>Please select a maximum of {{$survey->number_of_evaluators}} people you would like to evaluate you. If no participants is shown, you have had maximum participants as evaluators.</label>
