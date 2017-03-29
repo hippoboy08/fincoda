@@ -1767,7 +1767,7 @@ public function getParticipantDetails($surveyId, $participantId){
 		$survey = Survey::find($request->id);
         $validation=Validator::make($request->all(),[
             'title'=>'required|max:255',
-            'editor1'=>'required|max:500',
+            'editor1'=>'required|max:10000',
             'survey_type'=>'required',
             'editor2'=>'required|max:500'
 
@@ -1818,7 +1818,7 @@ public function getParticipantDetails($surveyId, $participantId){
 						->where('survey_id', $request->id)
 						->delete();
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name,'name'=>User::find($user)->name, 'link'=>url('/').'/login', 'title'=>$survey->title],$userEmail);
+						$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name,'name'=>User::find($user)->name, 'link'=>url('/').'/login', 'title'=>$survey->title,'start_time'=>$from,'end_time'=>$to],$userEmail);
 				}
 			}
 			
@@ -1831,7 +1831,7 @@ public function getParticipantDetails($surveyId, $participantId){
 							'updated_at'=>Carbon::now()
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>$survey->title],$userEmail);
+						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>$survey->title,'start_time'=>$from,'end_time'=>$to],$userEmail);
 				}
 			}
             DB::commit();
