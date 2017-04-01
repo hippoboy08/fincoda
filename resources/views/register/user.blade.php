@@ -23,7 +23,7 @@
                             @if($errors->has('company_code'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_code') !!}</label>
                             @endif
-                        {!! Form::text('company_code','',['class'=>'form-control','placeholder'=>'Organisation Code']) !!}
+                        {!! Form::text('company_code','',['id'=>'com-code-reg','class'=>'form-control','placeholder'=>'Organisation Code']) !!}
 
                         </div>
                         </div>
@@ -44,7 +44,7 @@
                             @if($errors->has('name'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('name') !!}</label>
                             @endif
-                            {!! Form::text('name',old('name'),['class'=>'form-control','placeholder'=>'Full name']) !!}
+                            {!! Form::text('name',old('name'),['id'=>'name-reg','class'=>'form-control','placeholder'=>'Full name']) !!}
                             <span class="form-control-feedback"><i class="fa fa-user" aria-hidden="true"></i></span>
                             </div>
 
@@ -53,7 +53,7 @@
                             @if($errors->has('company_code'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('email') !!}</label>
                             @endif
-                            {!! Form::text('email',old('email'),['class'=>'form-control','placeholder'=>'Email Address']) !!}
+                            {!! Form::text('email',old('email'),['id'=>'email-reg','class'=>'form-control','placeholder'=>'Email Address']) !!}
                             <span class="form-control-feedback"><i class="fa fa-lock" aria-hidden="true"></i></span>
                         </div>
 
@@ -62,7 +62,7 @@
                             @if($errors->has('company_code'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('password') !!}</label>
                             @endif
-                            {!! Form::password('password',['class'=>'form-control','placeholder'=>'Password']) !!}
+                            {!! Form::password('password',['id'=>'user-pass-reg','class'=>'form-control','placeholder'=>'Password']) !!}
                             <span class="form-control-feedback"><i class="fa fa-eye" aria-hidden="true"></i></span>
                         </div>
 
@@ -71,7 +71,7 @@
                             @if($errors->has('password'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('password') !!}</label>
                             @endif
-                            {!! Form::password('password_confirmation',['class'=>'form-control','placeholder'=>'Re-type Password']) !!}
+                            {!! Form::password('password_confirmation',['id'=>'user-repass','class'=>'form-control','placeholder'=>'Re-type Password']) !!}
                             <span class="form-control-feedback"><i class="fa fa-eye" aria-hidden="true"></i></span>
                         </div>
 
@@ -85,7 +85,7 @@
 
 
                         <div class="form-group col-md-offset-5">
-                            {!! Form::submit('Register',['class'=>'btn btn-primary']) !!}
+                            {!! Form::submit('Register',['id'=>'user-reg','class'=>'btn btn-primary']) !!}
                         </div>
 
                         </div>
