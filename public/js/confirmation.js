@@ -3,6 +3,9 @@ $(document).ready(function(){
     return confirm('Are you sure?');
   });
 
+  /* The variable holds the number of evaluators of the current survey*/
+  var numberOfEvaluators = $('#numberOfEvaluators').data("field-id");
+
   /* Hide the closed Survey when the checkbox is checked */
   $('[name="hide"]').click(function()
   {
@@ -41,7 +44,7 @@ $(document).ready(function(){
   $('#externalEvaluator').on('click',
   function()
   {
-    if(countEvaluator() < 5)
+    if(countEvaluator() < numberOfEvaluators)
     {
     var newRow =
     $("<tr>\
@@ -76,7 +79,7 @@ $(document).ready(function(){
   $('[name="usersToEvaluate[]"]').change(function()
   {
     var $this = $(this);
-    if(countEvaluator() > 5)
+    if(countEvaluator() > numberOfEvaluators)
     {
       $this.prop('checked', false);
       notice();
@@ -92,6 +95,39 @@ $(document).ready(function(){
       {
         $(this).remove();
       });
+    }
+  );
+
+  /* Trigger the singleDatePicker when edit a survey*/
+  $(function() {
+    $('input[name="date"]').daterangepicker(
+      {
+        singleDatePicker: true,
+        timePicker: true
+      }
+    )
+    /* set the format of the picked value */
+    .on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY-MM-DD h:mm A'));
+      $(this).val(picker.endDate.format('YYYY-MM-DD h:mm A'));
+    });
+
+  });
+
+  /* Show/Hide the option Number of Evaluators depedning on the survey type
+  when admin create a survey*/
+  $('input[name="survey_type"]').change(
+    function() {
+      var $option = $('input[name="numberOfEvaluators"]').closest('div');
+      /* show the option to input how many evaluators if the peer survey (value == 2) is selected */
+      if($(this).val() == 2)
+      {
+        $option.fadeIn('slow');
+      }
+      else
+      {
+        $option.fadeOut('slow');
+      }
     }
   );
 
