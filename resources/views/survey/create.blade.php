@@ -67,7 +67,7 @@
                             <label>Peer Evaluation Survey</label><br><br>
 
 
-							<div class="form-group{!! $errors->has('numberOfEvaluators') ? ' has-error':'' !!} has-feedback">
+							<div hidden class="form-group{!! $errors->has('numberOfEvaluators') ? ' has-error':'' !!} has-feedback">
                         <label><h3>Number Of Evaluators:</h3></label>
                             <p>Provide the number of peer evaluators for your survey</p>
                          @if($errors->has('numberOfEvaluators'))
