@@ -241,7 +241,7 @@ function validateCode(code) {
 }
 
 function validateTextarea(text) {
-  var re = /^[a-zA-Z0-9 !@#\$%\^\&*+=._-]{5,255}$/;
+  var re = /^[a-zA-ZåäöüéëïóáíñúÅÄÖßÜÉËÏÓÁÍÑÚ0-9 !@#\$%\^\&*+=._-]{5,255}$/;
   return re.test(text);
 }
 
@@ -256,7 +256,7 @@ function validatePostcode(postcode) {
 }
 
 function validateAddress(address) {
-  var re = /^[a-zA-Z0-9\s.,'-]{5,50}$/;
+  var re = /^[a-zA-ZåäöüéëïóáíñúÅÄÖßÜÉËÏÓÁÍÑÚ0-9\s.,'-]{5,50}$/;
   return re.test(address);
 }
 
@@ -266,16 +266,16 @@ function validateEmail(email) {
 }
 
 function validateFullName(name) {
-  var re = /^[a-zA-Z0-9ä]+(\s[a-zA-Z0-9]*){0,4}$/;
+  var re = /^[a-zA-Z0-9åäöüéëïóáíñúÅÄÖßÜÉËÏÓÁÍÑÚ]+(\s[a-zA-Z0-9åäöüéëïóáíñúÅÄÖßÜÉËÏÓÁÍÑÚ]*){0,4}$/;
   return re.test(name);
 }
 
 function validateCity(city){
-  var re = /^[a-zA-Z0-9]+(\s[a-zA-Z0-9]*){0,3}$/;
+  var re = /^[a-zA-Z0-9åäöüéëïóáíñúÅÄÖßÜÉËÏÓÁÍÑÚ]+(\s[a-zA-Z0-9åäöüéëïóáíñúÅÄÖßÜÉËÏÓÁÍÑÚ]*){0,3}$/;
   return re.test(city);
 }
 
 function validatePassword(password) {
-  var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/;
+  var re = /^(?=.*[a-zåäöüéëïóáíñú])(?=.*[A-ZÅÄÖßÜÉËÏÓÁÍÑÚ])(?=.*[0-9])(?=.{6,})/;
   return re.test(password);
 }
