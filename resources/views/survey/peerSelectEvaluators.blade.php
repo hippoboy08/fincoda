@@ -31,8 +31,7 @@
               <li><a data-toggle="tab" href="#tab2">Who are evaluating you</a></li>
               <li><a data-toggle="tab" href="#tab3">People you are evaluating</a></li>
 			  <li><a data-toggle="tab" href="#tab5">Invite External Evaluators</a></li>
-			  <li><a data-toggle="tab" href="#tab6">External Evaluators who have confirmed</a></li>
-			  <li><a data-toggle="tab" href="#tab7">External Evaluators who have not confirmed</a></li>
+			  <li><a data-toggle="tab" href="#tab6">External Evaluators who you invited</a></li>
               <li id='getData'><a data-toggle="tab" href="#tab4">Results</a></li>
             </ul>
 
@@ -205,6 +204,10 @@
                           <td><a href="{!! url('special/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
                           <td>{!! $user->email !!}</td>
                           @endrole
+						  @role('admin')
+                          <td><a href="{!! url('admin/companySurvey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
+                          <td>{!! $user->email !!}</td>
+                          @endrole
 
                           @role('basic')
                           <td><a href="{!! url('basic/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
@@ -285,10 +288,15 @@
                 @role('basic')
                 {!! Form::open(['method'=>'POST', 'action'=>'basic\SurveyController@inviteExternalEvaluators']) !!}
                 @endrole
-                
-                {!! Form::hidden('survey_id',$survey->id) !!}
+				@role('admin')
+                {!! Form::open(['method'=>'POST', 'action'=>'admin\CompanySurveyController@inviteExternalEvaluators']) !!}
+                @endrole
+				@role('special')
+                {!! Form::open(['method'=>'POST', 'action'=>'special\SurveyController@inviteExternalEvaluators']) !!}
+                @endrole
+				{!! Form::hidden('survey_id',$survey->id) !!}
                 <p class="panel-title">
-                  <label>Please select a maximum of {{$survey->number_of_evaluators}} people you would like to evaluate you. If no participants is shown, you have had maximum participants as evaluators.</label>
+                  <label>You can invite external people you would like to evaluate you. But you can only select them to do so after they have registered on the system</label>
                 </p>
                 @if(Session::has('message'))
                 <h4 style="color:red;">{{Session::get('message')}}</h4>
@@ -301,55 +309,64 @@
 
                       <table id="example9" class="table table-bordered table-striped">
                         <tbody>
+						@for($i = 0; $i<$survey->number_of_evaluators; $i++)
                           <tr>
                            <td>
 							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
                             <label>Email Address*</label><br>
 							</td>
 							<td>
-                            @if($errors->has('company_code'))
-                                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('email') !!}</label>
-                            @endif
-                            {!! Form::text('email1',old('email'),['class'=>'form-control','placeholder'=>'Email Address']) !!}
-                            <span class="form-control-feedback"><i class="fa fa-lock" aria-hidden="true"></i></span>
+							<input type="text" name="emails[]">
 							</td>
 							</div>
                           </tr>
-						  <tr>
-                           <td>
-							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
-                            <label>Email Address*</label><br>
-							</td>
-							<td>
-                            @if($errors->has('company_code'))
-                                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('email') !!}</label>
-                            @endif
-                            {!! Form::text('email2',old('email'),['class'=>'form-control','placeholder'=>'Email Address']) !!}
-                            <span class="form-control-feedback"><i class="fa fa-lock" aria-hidden="true"></i></span>
-							</td>
-							</div>
-                          </tr>
-						  <tr>
-                           <td>
-							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
-                            <label>Email Address*</label><br>
-							</td>
-							<td>
-                            @if($errors->has('company_code'))
-                                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('email') !!}</label>
-                            @endif
-                            {!! Form::text('email3',old('email'),['class'=>'form-control','placeholder'=>'Email Address']) !!}
-                            <span class="form-control-feedback"><i class="fa fa-lock" aria-hidden="true"></i></span>
-							</td>
-							</div>
-                          </tr>
-                        </tbody>
+						  @endfor
+						 </tbody>
                       </table>
 				    </div>
                   </div>
 				  
                   <button id="pickEvaluators" type="submit" class="btn btn-info btn-flat"><i class="fa fa-floppy-o" aria-hidden="true" ></i> Submit</button>
                   {!! Form::close() !!}
+                </div>
+				
+				
+				<div id="tab6" class="tab-pane fade">
+                  <br>
+                  <p class="panel-title">
+                    <label>People who you asked to evaluate you.</label>
+                  </p>
+                  <div class="panel-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Email Address</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @if(count($participantsInvitedAsExternalEvaluators)>0)
+                        @foreach($participantsInvitedAsExternalEvaluators as $user)
+                        <tr>
+                          <td>{!! $user->id !!}</td>
+                          <td>{!! $user->email !!}</td>
+                          @if($user->confirmed == 1)
+                          <td>
+                            <button type="button" class="btn btn-success">Comfirmed</button>
+                          </td>
+                          @endif
+						  @if($user->confirmed == 0)
+                          <td>
+                            <button type="button" class="btn btn-danger">Not Comfirmed</button>
+                          </td>
+                          @endif
+                        </tr>
+                        @endforeach
+                        @endif
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
 

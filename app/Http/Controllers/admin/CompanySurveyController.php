@@ -33,6 +33,14 @@ class CompanySurveyController extends Controller
 	}
 
     public function show($id){
+	  $userParticipatedInSurvey = DB::table('participants')
+										->where('survey_id',$id)
+										->where('user_id',Auth::User()->id)
+										->value('user_id');
+		if($userParticipatedInSurvey!==Auth::User()->id){
+			Session::flash('message','We could not find you as a participant in this survey');
+			return redirect()->back();
+		}
       $email = Auth::user()->email;
       $userId = DB::table('users')->where('email',$email)->value('id');
       if ($this->ValidateSurvey($id) == 'true') {
@@ -298,7 +306,32 @@ class CompanySurveyController extends Controller
 										(select peer_surveys.peer_id from peer_surveys 
 											where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)))"),
 										array("surveyId"=>$id,"surveyId1"=>$id,"currentUser"=>Auth::User()->id,"currentUser1"=>Auth::User()->id));
-											
+								
+								//This returns the external evaluators for this survey that the current logged in user has invited to evaluate him or her
+								$participantsInvitedAsExternalEvaluators = DB::select(DB::raw(
+									"select external_evaluators.id, external_evaluators.email, external_evaluators.confirmed
+											from external_evaluators where external_evaluators.survey_id = :surveyId 
+												and external_evaluators.invited_by_user_id = :invitedByUserId"),
+										array("surveyId"=>$id,"invitedByUserId"=>Auth::User()->id));
+										
+										
+								//This returns the external evaluators (those that have confirmed) for this survey that the current logged in user has invited to evaluate him or her
+								$participantsConfirmedAsExternalEvaluators = DB::select(DB::raw(
+									"select external_evaluators.id, external_evaluators.email, external_evaluators.confirmed
+											from external_evaluators where external_evaluators.survey_id = :surveyId 
+												and external_evaluators.invited_by_user_id = :invitedByUserId
+												and external_evaluators.confirmed = 1"),
+										array("surveyId"=>$id,"invitedByUserId"=>Auth::User()->id));
+										
+										
+								//This returns the external evaluators (those that have not confirmed) for this survey that the current logged in user has invited to evaluate him or her
+								$participantsNotConfirmedAsExternalEvaluators = DB::select(DB::raw(
+									"select external_evaluators.id, external_evaluators.email, external_evaluators.confirmed
+											from external_evaluators where external_evaluators.survey_id = :surveyId 
+												and external_evaluators.invited_by_user_id = :invitedByUserId
+												and external_evaluators.confirmed = 0"),
+										array("surveyId"=>$id,"invitedByUserId"=>Auth::User()->id));
+								
 								
 								//The computer is a procedural flow machine such that if we manage to get here, then the logged in user needs to select
 								//evaluators or view ones that have completed
@@ -310,6 +343,9 @@ class CompanySurveyController extends Controller
 									return view('survey.peerSelectEvaluators')
 										->with('participants', $participant)
 										->with('participantsNotSelectedAsEvaluators', $participantsNotSelectedAsEvaluators)
+										->with('participantsInvitedAsExternalEvaluators', $participantsInvitedAsExternalEvaluators)
+										->with('participantsConfirmedAsExternalEvaluators', $participantsConfirmedAsExternalEvaluators)
+										->with('participantsNotConfirmedAsExternalEvaluators', $participantsNotConfirmedAsExternalEvaluators)
 										->with('evaluators', $evaluators)
 										->with('evaluatees', $evaluatees)
 										->with('evaluatedNot', $evaluatedNot)
@@ -520,6 +556,103 @@ class CompanySurveyController extends Controller
         }
     }
 	
+	public function inviteExternalEvaluators(Request $request){
+		$emailsToSend = array();
+		foreach($request->emails as $email){
+			if(!empty($email)){
+				$emailsToSend[] = $email;
+			}
+		}
+		foreach($emailsToSend as $email){
+			if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+				Session::flash('message','Invalid email address: '.$email);
+				return redirect()->back();
+			}
+		}
+		$survey = Survey::find($request->survey_id);
+		//This returns the evaluators for this survey that the current logged in user selected
+		$evaluators = DB::select(DB::raw(
+			"select users.id, users.name, users.email from users where users.id in 
+				(select peer_surveys.peer_id from peer_surveys 
+					where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)"),
+				array("surveyId"=>$request->survey_id,"currentUser"=>Auth::User()->id));
+				
+		if($survey->number_of_evaluators==count($evaluators)){
+			Session::flash('message','You have already selected '.$survey->number_of_evaluators.' users to evaluate you');
+            return redirect()->back();
+        }
+		if(count($emailsToSend)>$survey->number_of_evaluators){
+			Session::flash('message','You need to select '.$survey->number_of_evaluators.' users to evaluate you');
+            return redirect()->back();
+        }else{
+			if(count($emailsToSend)!=0){
+			DB::beginTransaction();
+			try{
+				foreach($emailsToSend as $user){
+					$modifiedEmail = $survey->company_id.'.'.$user;
+					$modifiedEmailExists = DB::table('users')->where('email',$modifiedEmail)->value('email');
+					$unmodifiedEmailExists = DB::table('users')->where('email',$user)->where('company_id',Auth::User()->id)->value('email');
+					$invitedAlreadyExists = DB::table('external_evaluators')//Invited already exists in the company
+										->where('invited_by_user_id',Auth::User()->id)
+										->where('survey_id',$request->survey_id)
+										->where('email',$user)->value('email');
+					$invitationAlreadyExists = DB::table('external_evaluators')//Invited already exists in the company
+										->where('company_id',Auth::User()->company_id)
+										->where('email',$user)->value('email');
+					$invitedAlreadyExistsConfirmed = DB::table('external_evaluators')//Invited already exists in the company
+										->where('invited_by_user_id',Auth::User()->id)
+										->where('survey_id',$request->survey_id)
+										->where('email',$user)->value('confirmed');
+					$invitationAlreadyExistsConfirmed = DB::table('external_evaluators')//Invited already exists in the company
+										->where('company_id',Auth::User()->company_id)
+										->where('email',$user)->value('confirmed');
+					if(!empty($modifiedEmailExists)){
+						Session::flash('message','That user: '.$user.' already exists on the system; you can select them from the list');
+						return redirect()->back();
+					}
+					if(!empty($unmodifiedEmailExists)){
+						Session::flash('message','That user: '.$user.' already exists on the system; you can select them from the list');
+						return redirect()->back();
+					}
+					if(!empty($invitedAlreadyExists)){
+						Session::flash('message','You have already invited '.$user.' for this survey');
+						return redirect()->back();
+					}
+					if(!empty($invitationAlreadyExists)){
+						Session::flash('message','That user was invited '.$user);
+						return redirect()->back();
+					}
+					if($invitedAlreadyExistsConfirmed==1){
+						Session::flash('message','You have already invited '.$user.' for this survey and you can select them from the list');
+						return redirect()->back();
+					}
+					if($invitationAlreadyExistsConfirmed==1){
+						Session::flash('message','That user was invited '.$user.' and you can select them from the list');
+						return redirect()->back();
+					}
+					
+					DB::table('external_evaluators')
+						->insert([
+							'survey_id'=>$request->survey_id,
+							'invited_by_user_id'=>Auth::User()->id,
+							'email'=>$user,
+							'company_id'=>Auth::User()->company_id,
+							'created_at'=>Carbon::now(),
+							'updated_at'=>Carbon::now()
+						]);
+						$this->email('email.peerEvaluatorsExternal',['invitedEmail'=>$user,'inviterEmail'=>Auth::User()->email, 'link'=>url('/').'/register/userExternal', 'name'=>Auth::User()->name, 'surveyId'=>$survey->id, 'title'=>$survey->title],$user);
+				}
+				DB::commit();
+				return redirect()->back()
+                    ->with('success','Your  request has been completed ');
+			}catch(\Exception $e){
+				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
+			}
+			}
+		}
+			
+    }
 	
 	public function inviteEvaluators(Request $request){
 		    $companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
@@ -544,6 +677,7 @@ class CompanySurveyController extends Controller
 			DB::beginTransaction();
 			try{
 				foreach($request->usersToEvaluate as $user){
+					$invitedUser = User::find($user);
 					DB::table('peer_surveys')
 						->insert([
 							'survey_id'=>$request->survey_id,
@@ -552,8 +686,15 @@ class CompanySurveyController extends Controller
 							'created_at'=>Carbon::now($companyTimeZone),
 							'updated_at'=>Carbon::now($companyTimeZone)
 						]);
+						
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>Survey::find($request->survey_id)->title],$userEmail);
+						if($invitedUser->external_modified_email == 1){
+							$lengthCompanyId = mb_strlen($invitedUser->company_id)+1;
+							$strippedEmail = substr($userEmail, $lengthCompanyId);
+							$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>Survey::find($request->survey_id)->title],$strippedEmail);
+						}else{
+							$this->email('email.peerEvaluators',['owner'=>Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>Survey::find($request->survey_id)->title],$userEmail);
+						}
 				}
 				DB::commit();
 				return redirect()->back()
@@ -564,8 +705,6 @@ class CompanySurveyController extends Controller
 			}
 			}
 			}
-		
-			
     }
 	
 	public function evaluateUser($surveyId, $userId){

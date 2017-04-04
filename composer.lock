@@ -741,16 +741,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.35",
+            "version": "1.0.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "dda7f3ab94158a002d9846a97dc18ebfb7acc062"
+                "reference": "78b5cc4feb61a882302df4fbaf63b7662e5e4ccd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/dda7f3ab94158a002d9846a97dc18ebfb7acc062",
-                "reference": "dda7f3ab94158a002d9846a97dc18ebfb7acc062",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/78b5cc4feb61a882302df4fbaf63b7662e5e4ccd",
+                "reference": "78b5cc4feb61a882302df4fbaf63b7662e5e4ccd",
                 "shasum": ""
             },
             "require": {
@@ -820,7 +820,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-02-09 11:33:58"
+            "time": "2017-03-22 15:43:14"
         },
         {
             "name": "monolog/monolog",
@@ -898,11 +898,7 @@
                 "logging",
                 "psr-3"
             ],
-<<<<<<< HEAD
-            "time": "2017-03-13T07:08:03+00:00"
-=======
-            "time": "2016-11-26 00:15:39"
->>>>>>> 1251e1b697ba5b32a712120de0063ec5515ce5fc
+            "time": "2017-03-13 07:08:03"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -1098,11 +1094,7 @@
                 "pseudorandom",
                 "random"
             ],
-<<<<<<< HEAD
-            "time": "2017-03-13T16:22:52+00:00"
-=======
-            "time": "2016-03-18 20:34:03"
->>>>>>> 1251e1b697ba5b32a712120de0063ec5515ce5fc
+            "time": "2017-03-13 16:22:52"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -1509,11 +1501,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-            "time": "2017-02-21T09:12:04+00:00"
-=======
             "time": "2017-02-21 09:12:04"
->>>>>>> 1251e1b697ba5b32a712120de0063ec5515ce5fc
         },
         {
             "name": "symfony/finder",
@@ -3369,11 +3357,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-<<<<<<< HEAD
-            "time": "2016-10-03T07:41:43+00:00"
-=======
             "time": "2016-10-03 07:41:43"
->>>>>>> 1251e1b697ba5b32a712120de0063ec5515ce5fc
         },
         {
             "name": "sebastian/version",
@@ -3572,11 +3556,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-            "time": "2017-03-07T16:47:02+00:00"
-=======
             "time": "2017-03-07 16:47:02"
->>>>>>> 1251e1b697ba5b32a712120de0063ec5515ce5fc
         },
         {
             "name": "webmozart/assert",

@@ -10,7 +10,7 @@
         <tr>
             <th>Show<input checked type="checkbox" name="showAll" value="Show All"></th>
             <th>Title</th>
-			      <th>Edit</th>
+			<th>Edit</th>
             <th>Delete</th>
             <th>Survey Type</th>
             <th>Open Date</th>
@@ -52,7 +52,7 @@
 					<td> </td>
                 @endif
                 @endrole
-
+			
                 @role('special')
                 <td><input type="checkbox" name="hide" value=""></td>
                 @if(Route::current()->getName()=='special.groupsurvey.index')
@@ -85,7 +85,6 @@
 						<td> </td>
                     @endif
                 @endif
-
                 @endrole
 
                 <td>{!! \App\Survey_Type::find($closed->type_id)->name !!}</td>

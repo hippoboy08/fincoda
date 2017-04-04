@@ -9,6 +9,9 @@
     @role('basic')
     <title>Fincoda | Basic User</title>
     @endrole
+	@role('external')
+    <title>Fincoda | External User</title>
+    @endrole
 
     @role('special')
     <title>Fincoda | Special User</title>
@@ -75,6 +78,19 @@
     </div>
     @include('footer.basic')
     @include('controlbar.basic')
+    @endrole
+	
+	<!--role external-->
+    @role('external')
+    @include('navbar.external')
+    @include('sidebar.external')
+    <div class="content-wrapper">
+        <section class="content">
+            @yield('content')
+        </section>
+    </div>
+    @include('footer.external')
+    @include('controlbar.external')
     @endrole
 
      <!--special-->

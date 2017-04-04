@@ -37,6 +37,8 @@ Route::get('register/company','register\RegisterController@company');
 Route::post('register/company','register\RegisterController@registercompany');
 Route::get('register/user','register\RegisterController@user');
 Route::post('register/user','register\RegisterController@registeruser');
+Route::get('register/userExternal','register\RegisterController@userExternalEvaluator');
+Route::post('register/userExternal','register\RegisterController@registeruserExternalEvaluator');
 
 Route::post('login','Auth\AuthController@postLogin');
 Route::get('logout','Auth\AuthController@logout');
@@ -47,8 +49,6 @@ Route::get('logout','Auth\AuthController@logout');
 Route::group(['middleware'=>'admin',
                 'namespace'=>'admin',
                 'prefix'=>'admin'], function(){
-
-
     Route::get('/','DashboardController@index');
 	Route::post('language','DashboardController@switchLanguage');
 	
@@ -72,6 +72,7 @@ Route::group(['middleware'=>'admin',
 	Route::get('survey/evaluateUser/{surveyId}/{userId}','CompanySurveyController@evaluateUser');
 	Route::get('survey/viewPeerResults/{surveyId}/{userId}','CompanySurveyController@viewPeerResults');
 	Route::post('survey/inviteEvaluators','CompanySurveyController@inviteEvaluators');
+	Route::post('companySurvey/inviteExternalEvaluators','CompanySurveyController@inviteExternalEvaluators');
 	Route::resource('companySurvey','CompanySurveyController');
 	
     Route::get('survey/downloadExcel/{surveyId}',['as'=>'downloadExcelAdmin','uses'=>'SurveyController@downloadCsv']);
@@ -87,6 +88,25 @@ Route::group(['middleware'=>'admin',
 Route::group(['middleware'=>'basic',
                 'namespace'=>'basic',
                 'prefix'=>'basic'],function(){
+    Route::get('/','DashboardController@index');
+    Route::post('language','DashboardController@switchLanguage');
+	Route::resource('profile','ProfileController@index');
+	Route::resource('profile','ProfileController');
+    Route::get('survey/viewPeerResults/{surveyId}/{userId}','SurveyController@viewPeerResults');
+	Route::get('survey/evaluateUser/{surveyId}/{userId}','SurveyController@evaluateUser');
+	Route::post('survey/inviteEvaluators','SurveyController@inviteEvaluators');
+	Route::post('survey/removeEvaluators','SurveyController@removeEvaluators');
+	Route::post('survey/inviteExternalEvaluators','SurveyController@inviteExternalEvaluators');
+	Route::resource('survey','SurveyController');
+    Route::resource('usergroup','UserGroupController');
+
+    });
+	
+	
+//external Route
+Route::group(['middleware'=>'external',
+                'namespace'=>'external',
+                'prefix'=>'external'],function(){
     Route::get('/','DashboardController@index');
     Route::post('language','DashboardController@switchLanguage');
 	Route::resource('profile','ProfileController@index');

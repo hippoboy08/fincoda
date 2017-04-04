@@ -22,7 +22,7 @@ class AdminMiddleware
             return redirect('/');
         }
 
-        if(Auth::user()->hasRole('special') || Auth::user()->hasRole('basic')){
+        if(Auth::user()->hasRole('special') || Auth::user()->hasRole('basic') || Auth::user()->hasRole('external')){
             return redirect('403');
         }
         return $next($request);

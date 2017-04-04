@@ -19,6 +19,9 @@
                 @role('basic')
                 {!! Form::open(array('method'=>'PUT','url'=>'basic/profile/'.$user->id)) !!}
                 @endrole
+				@role('external')
+                {!! Form::open(array('method'=>'PUT','url'=>'external/profile/'.$user->id)) !!}
+                @endrole
 
 
                 {{ csrf_field() }}

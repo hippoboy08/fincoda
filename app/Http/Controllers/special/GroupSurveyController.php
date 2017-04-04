@@ -1248,7 +1248,7 @@ class GroupSurveyController extends Controller
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 										array("surveyId"=>$id));
 										
-				$participantsNotCompleted = DB::select(DB::raw(
+				/*$participantsNotCompleted = DB::select(DB::raw(
 									"select users.id, users.name, users.email from users where users.id in 
 										(select participants.user_id from participants 
 											where participants.survey_id = :surveyId1 and participants.user_id != :currentUser
@@ -1258,7 +1258,21 @@ class GroupSurveyController extends Controller
 												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
 												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
 												having count(peer_results.peer_id)>1) as p group by p.user_id))"),
-										array("surveyId1"=>$id,"surveyId"=>$id,"currentUser"=>Auth::User()->id));
+										array("surveyId1"=>$id,"surveyId"=>$id,"currentUser"=>Auth::User()->id));*/
+										
+				$participantsNotCompleted = DB::select(DB::raw(
+									"select users.id, users.name, users.email from users where users.id in 
+										(select participants.user_id from participants 
+											where participants.survey_id = :surveyId
+											and participants.completed = 0 and participants.user_id not in
+										(select distinct peer_results.user_id from peer_results where peer_results.peer_survey_id = :surveyId1)
+                                         and participants.user_id not in
+                                         (select distinct peer_results.peer_id from peer_results where peer_results.peer_survey_id = :surveyId2)
+                                         and participants.user_id not in
+                                        (select distinct peer_surveys.user_id from peer_surveys where peer_surveys.survey_id = :surveyId3)
+                                        and participants.user_id not in 
+                                        (select distinct peer_surveys.peer_id from peer_surveys where peer_surveys.survey_id = :surveyId4))"),
+										array("surveyId"=>$id,"surveyId1"=>$id,"surveyId2"=>$id,"surveyId3"=>$id,"surveyId4"=>$id));
 				
 				//These are the ones who have not been invited to take part in the survey						
 				$participantsNot = DB::select(DB::raw(

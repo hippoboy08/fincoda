@@ -19,7 +19,7 @@ class BasicMiddleware
         if(Auth::guest()){
             return redirect('/');
         }
-        if(Auth::user()->hasRole('special') || Auth::user()->hasRole('admin')){
+        if(Auth::user()->hasRole('special') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('external')){
             return redirect('403');
         }
         return $next($request);

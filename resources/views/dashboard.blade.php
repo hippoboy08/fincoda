@@ -33,7 +33,11 @@
                         @include('survey.open')
                         @include('survey.closed')
                         @endrole
-
+						
+						@role('external')
+                        @include('survey.open')
+                        @endrole
+						
                         @role('special')
                         @if(Route::current()->getName()=='special.groupsurvey.index')
                             @include('survey.pending')

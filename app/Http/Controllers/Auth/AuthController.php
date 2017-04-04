@@ -49,6 +49,9 @@ class AuthController extends Controller
         elseif($user->hasRole('special')){
             return redirect('special');
         }
+		elseif(Auth::User()->hasRole('external')){
+                return redirect('external');
+            }
         else{
             return redirect('basic');
         }

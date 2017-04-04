@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
-class SpecialMiddleware
+class ExternalMiddleware
 {
     /**
      * Handle an incoming request.
@@ -20,7 +21,8 @@ class SpecialMiddleware
         if(Auth::guest()){
             return redirect('/');
         }
-        if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('basic') || Auth::user()->hasRole('external')){
+
+        if(Auth::user()->hasRole('special') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('basic')){
             return redirect('403');
         }
         return $next($request);

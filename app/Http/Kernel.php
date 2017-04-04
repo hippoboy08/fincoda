@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
         //middlewares for admin, special and basic users
         'admin'=>\App\Http\Middleware\AdminMiddleware::class,
         'basic'=>\App\Http\Middleware\BasicMiddleware::class,
+        'external'=>\App\Http\Middleware\ExternalMiddleware::class,
         'special'=>\App\Http\Middleware\SpecialMiddleware::class,
     ];
 }

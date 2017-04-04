@@ -18,6 +18,10 @@
             @role('basic')
             <th>Survey Status</th>
             @endrole
+			
+			@role('external')
+            <th>Survey Status</th>
+            @endrole
 
             @role('special')
             @if(Route::current()->getName()=='special.groupsurvey.index')
@@ -56,6 +60,29 @@
 			@endif
 			@if($open->completed=='5')
 			<td><a href="{!! url('basic/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
+			<td> </td>
+			<td> </td>
+			@endif
+		@endrole
+		
+		@role('external')
+			@if($open->completed=='0')
+			<td><a  href="{!! url('external/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
+			<td> </td>
+			<td> </td>
+			@endif
+			@if($open->completed=='1')
+			<td>{!! $open->title !!}</td>
+			<td> </td>
+			<td> </td>
+			@endif
+			@if($open->completed=='3')
+			<td><a href="{!! url('external/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
+			<td> </td>
+			<td> </td>
+			@endif
+			@if($open->completed=='5')
+			<td><a href="{!! url('external/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
 			<td> </td>
 			<td> </td>
 			@endif
@@ -121,6 +148,22 @@
 			<td><span class="label label-success">Completed</span></td>
 		@endif
         @endrole
+		
+		@role('external')
+        @if($open->completed=='0')
+			<td><span class="label label-danger">Not completed</span></td>
+		@endif
+		@if($open->completed=='1')
+			<td><span class="label label-success">Completed</span></td>
+		@endif
+		@if($open->completed=='3')
+			<td><span class="label label-success">In progress</span></td>
+		@endif
+		@if($open->completed=='5')
+			<td><span class="label label-success">Completed</span></td>
+		@endif
+        @endrole
+		
     </tr>
 @endforeach
         </tbody>

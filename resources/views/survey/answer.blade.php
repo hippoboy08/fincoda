@@ -29,6 +29,9 @@
         @role('basic')
         {!! Form::open(['method'=>'POST', 'action'=>'basic\SurveyController@store']) !!}
         @endrole
+        @role('external')
+        {!! Form::open(['method'=>'POST', 'action'=>'external\SurveyController@store']) !!}
+        @endrole
         @role('special')
         {!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@store']) !!}
         @endrole

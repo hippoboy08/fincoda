@@ -144,17 +144,18 @@ use EmailTrait;
                     ->join('role_user','role_user.user_id','=','users.id')
                     ->where('role_user.role_id','!=',0)
                     //->where('role_user.user_id','!=',Auth::User()->id)
-                    ->select('users.id', 'email')->get();
+                    ->select('users.id', 'email', 'external')->get();
 
                 foreach($participants as $participant){
                     $survey->participants()->create([
                         'user_id'=>$participant->id
                     ]);
-					
+				if($participant->external == 0){
 					//send email to the participants
 					$this->email('email.newsurvey',['owner'=>$owner->name, 'link'=>url('/').'/login',
             	     'title'=>$survey->title,'name'=>User::find($participant->id)->name,'start_time'=>$from,'end_time'=>$to],$participant->email);
                 }
+				}
 
                 /*foreach($participants as $participant){
                     $member_email[]=$participant->email;
@@ -652,7 +653,7 @@ use EmailTrait;
      * @return \Illuminate\Http\Response
      */
     public function show($id){
-		
+	  	
       if($this->ValidateSurvey($id)=='true'){
           if($this->SurveyStatus($id)=='pending'){
               $this->editSurvey($id);
@@ -1718,7 +1719,7 @@ public function getParticipantDetails($surveyId, $participantId){
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 										array("surveyId"=>$id));
 										
-				$participantsNotCompleted = DB::select(DB::raw(
+				/*$participantsNotCompletedss = DB::select(DB::raw(
 									"select users.id, users.name, users.email from users where users.id in 
 										(select participants.user_id from participants 
 											where participants.survey_id = :surveyId1 and participants.user_id != :currentUser
@@ -1728,7 +1729,22 @@ public function getParticipantDetails($surveyId, $participantId){
 												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
 												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
 												having count(peer_results.peer_id)>1) as p group by p.user_id))"),
-										array("surveyId1"=>$id,"surveyId"=>$id,"currentUser"=>Auth::User()->id));
+										array("surveyId1"=>$id,"surveyId"=>$id,"currentUser"=>Auth::User()->id));*/
+										
+				$participantsNotCompleted = DB::select(DB::raw(
+									"select users.id, users.name, users.email from users where users.id in 
+										(select participants.user_id from participants 
+											where participants.survey_id = :surveyId
+											and participants.completed = 0 and participants.user_id not in
+										(select distinct peer_results.user_id from peer_results where peer_results.peer_survey_id = :surveyId1)
+                                         and participants.user_id not in
+                                         (select distinct peer_results.peer_id from peer_results where peer_results.peer_survey_id = :surveyId2)
+                                         and participants.user_id not in
+                                        (select distinct peer_surveys.user_id from peer_surveys where peer_surveys.survey_id = :surveyId3)
+                                        and participants.user_id not in 
+                                        (select distinct peer_surveys.peer_id from peer_surveys where peer_surveys.survey_id = :surveyId4))"),
+										array("surveyId"=>$id,"surveyId1"=>$id,"surveyId2"=>$id,"surveyId3"=>$id,"surveyId4"=>$id));
+				
 				
 				//These are the ones who have not been invited to take part in the survey						
 				$participantsNot = DB::select(DB::raw(
@@ -1818,7 +1834,7 @@ public function getParticipantDetails($surveyId, $participantId){
 						->where('survey_id', $request->id)
 						->delete();
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name,'name'=>User::find($user)->name, 'link'=>url('/').'/login', 'title'=>$survey->title,'start_time'=>$from,'end_time'=>$to],$userEmail);
+						$this->email('email.deleteParticipant',['owner'=>$owner=Auth::User()->name,'name'=>User::find($user)->name, 'link'=>url('/').'/login', 'title'=>$survey->title],$userEmail);
 				}
 			}
 			
@@ -1831,7 +1847,7 @@ public function getParticipantDetails($surveyId, $participantId){
 							'updated_at'=>Carbon::now()
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>$survey->title,'start_time'=>$from,'end_time'=>$to],$userEmail);
+						$this->email('email.editsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login','name'=>User::find($user)->name, 'title'=>$survey->title],$userEmail);
 				}
 			}
             DB::commit();

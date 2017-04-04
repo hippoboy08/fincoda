@@ -18,9 +18,14 @@ class HomeController extends Controller
         if(Auth::check()){
             if(Auth::User()->hasRole('admin')){
                 return Redirect::to('admin');
-            }elseif(Auth::User()->hasRole('special')){
+            }
+			elseif(Auth::User()->hasRole('special')){
                 return Redirect::to('special');
-            }else{
+            }
+			elseif(Auth::User()->hasRole('external')){
+                return Redirect::to('external');
+            }
+			else{
                 return Redirect::to('basic');
             }
         }
@@ -33,9 +38,14 @@ class HomeController extends Controller
         if(Auth::check()) {
             if (Auth::User()->hasRole('admin')) {
                 return Redirect::to('admin');
-            } elseif (Auth::User()->hasRole('special')) {
+            } 
+			elseif (Auth::User()->hasRole('special')) {
                 return Redirect::to('special');
-            } else {
+            }
+			elseif(Auth::User()->hasRole('external')){
+                return Redirect::to('external');
+            }
+			else {
                 return Redirect::to('basic');
             }
         }else{
