@@ -53,19 +53,29 @@
                             <div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
                             <label><h3>Open data ane time range*:</h3></label>
                             <p>Please choose the date and time range of the start and end of the survey.</p>
-                                @if($errors->has('date'))
-                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('date') !!}</label>
+                                @if($errors->has('startDate'))
+                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('startDate') !!}</label>
                                 @endif
                             <div class="form-group">
-
-                                <div class="input-group">
+                                <div class="input-group split-time">
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    {!! Form::text('date',old('date'),['class'=>'form-control pull-left','id'=>'reservationtime']) !!}
-
+                                    {!! Form::text('startDate',old('startDate'),['class'=>'form-control pull-left','id'=>'startTime', 'placeholder'=>'New Start Time']) !!}
+								</div><!-- /.input group -->
+                            </div>
+							@if($errors->has('endDate'))
+                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('endDate') !!}</label>
+                            @endif
+                            <div class="form-group">
+                                <div class="input-group split-time">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    {!! Form::text('endDate',old('endDate'),['class'=>'form-control pull-left','id'=>'endTime', 'placeholder'=>'New End Time']) !!}
                                 </div><!-- /.input group -->
-                            </div></div>
+                            </div>
+							</div>
 
 
                             <br>
