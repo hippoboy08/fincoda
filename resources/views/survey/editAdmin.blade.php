@@ -23,12 +23,12 @@
                 <div class="box-body">
                     <div class="panel panel-default">
                         <div class="panel-body">
-						
+
 						<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
                                 <label><h3>Survey Id*:</h3></label>
                                  {!! Form::text('id',$survey->id,['class'=>'form-control','readonly']) !!}
                             </div><br>
-						
+
                             <div class="form-group{!! $errors->has('title') ? ' has-error':'' !!} has-feedback">
                         <label><h3>Survey Title*:</h3></label>
                             <p>Provide a name/title for your survey</p>
@@ -49,17 +49,17 @@
 
                             <div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
                             <label><h3>Open data ane time range*:</h3></label>
-							
+
 							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
                                 <label><h3>Current Start Time:</h3></label>
                                  {!! Form::text('currentStartTime',$survey->start_time,['class'=>'form-control','readonly']) !!}
                             </div><br>
-							
+
 							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
                                 <label><h3>Current End Time:</h3></label>
                                  {!! Form::text('currentEndTime',$survey->end_time,['class'=>'form-control','readonly']) !!}
                             </div><br>
-							
+
                             <p>Please choose the date and time range of the start and end of the survey: Current Date And Time On Server: {{\Carbon\Carbon::now()}}</p>
 								@if($errors->has('date'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('date') !!}</label>
@@ -70,10 +70,23 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    {!! Form::text('date',old('date'),['class'=>'form-control pull-left','id'=>'reservationtime']) !!}
+                                    {!! Form::text('date',old('date'),['class'=>'form-control pull-left','id'=>'startTime', 'placeholder'=>'New Start Time']) !!}
+
 
                                 </div><!-- /.input group -->
-                            </div></div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    {!! Form::text('date',old('date'),['class'=>'form-control pull-left','id'=>'endTime', 'placeholder'=>'New End Time']) !!}
+
+
+                                </div><!-- /.input group -->
+                            </div>
+                          </div>
 
 
                             <br>
@@ -130,7 +143,7 @@
                                 </table>
                             </div>
                         </div><br>
-						
+
 						 <p class="panel-title">
                              <a data-toggle="collapse" href="#collapse4"><i class="fa fa-sort-desc" aria-hidden="true"></i>
                                     <label>Participants who have completed the survey</label></a>
@@ -158,8 +171,8 @@
                                         </table>
                                 </div>
                             </div>
-							
-							
+
+
 
                             <p class="panel-title">
                              <a data-toggle="collapse" href="#collapse2"><i class="fa fa-sort-desc" aria-hidden="true"></i>
@@ -195,9 +208,9 @@
                                 </div>
                                 </div>
                             </div>
-							
-							
-							
+
+
+
 							<p class="panel-title">
                              <a data-toggle="collapse" href="#collapse3"><i class="fa fa-sort-desc" aria-hidden="true"></i>
                                     <label>Participants who were not part of the survey (you can add these)</label></a>
@@ -234,9 +247,9 @@
                                 </div>
                                 </div>
                             </div>
-							
-							
-							
+
+
+
                             <br>
 
                             <div class="form-group{!! $errors->has('editor2') ? ' has-error':'' !!} has-feedback">

@@ -22,7 +22,7 @@
 
 
     <script src="{{'landing_page/js/smoothscroll.js'}}"></script>
-
+    <script src="{{URL::asset('js/confirmation.js')}}" ></script>
 
 </head>
 
@@ -222,10 +222,10 @@
                     </div>
                     <div class="form-group">
                         <label>Message</label>
-                        <textarea class="form-control" name="Message" rows="3"></textarea>
+                        <textarea class="form-control" name="Message" id="message1" rows="3"></textarea>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-large btn-success">SUBMIT</button>
+                    <button type="submit" class="btn btn-large btn-success" id="submit-home-contact">SUBMIT</button>
                 </form>
             </div>
         </div>

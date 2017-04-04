@@ -44,6 +44,8 @@
                                   <div id="overview" class="tab-pane fade in active">
                                     <div class="row pull-right" >
                                        <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
+                                       &nbsp;
+                                       <i class="fa fa-print" aria-hidden="true"></i> <u><a href="#">Download Excel</a></u>
 									</div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
@@ -59,58 +61,6 @@
 
                                     @role ('admin')
                                     <!-- Company average graph -->
-									@if(count($surveyGroupAveragePerIndicatorAllUsers)==34)
-									<h3 style="text-align:center;"><b>Company average score per indicator</b></h3>
-                                    <canvas id="companyAverage" width="800" height="400"></canvas>
-                                    <script src="{{URL::asset('js/displayChart.js')}}">
-                                    </script>
-                                    <script>
-                                      createChart(
-                                        document.getElementById("companyAverage"),
-                                        ["Ind 1", "Ind 2", "Ind 3", "Ind 4", "Ind 5", "Ind 6", "Ind 7", "Ind 8", "Ind 9", "Ind 10", "Ind 11", "Ind 12",
-                                                "Ind 13", "Ind 14", "Ind 15", "Ind 16", "Ind 17", "Ind 18", "Ind 19", "Ind 20", "Ind 21", "Ind 22", "Ind 23", "Ind 24",
-                                                "Ind 25", "Ind 26", "Ind 27", "Ind 28", "Ind 29", "Ind 30", "Ind 31", "Ind 32", "Ind 33", "Ind 34"],
-                                        'Company average score of each indicator',
-									                      [{!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[0]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[1]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[2]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[3]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[4]->Group_Average,2,'.','')!!},
-                                          {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[5]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[6]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[7]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[8]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[9]->Group_Average,2,'.','')!!},
-                                           {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[10]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[11]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[12]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[13]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[14]->Group_Average,2,'.','')!!},
-                                            {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[15]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[16]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[17]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[18]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[19]->Group_Average,2,'.','')!!},
-                                              {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[20]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[21]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[22]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[23]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[24]->Group_Average,2,'.','')!!},
-                                                {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[25]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[26]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[27]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[28]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[29]->Group_Average,2,'.','')!!},
-                                                  {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[30]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[31]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[32]->Group_Average,2,'.','')!!}, {!!number_format((float)$surveyGroupAveragePerIndicatorAllUsers[33]->Group_Average,2,'.','')!!}],
-                                    	'rgba(0,0,255,1)'
-                                      );
-                                    </script>
-									@else
-										<h3><b>You have no surveys results to display or your indicators count is not equal 34</b></h3>
-									@endif
-
-                                    <div>
-                                      <table class="table table-bordered table-striped text-center">
-                                        <h3 style="text-align: center;"><b>Indicators Table</b></h3>
-                                          <thead>
-                                            <tr>
-                                                <th>Indicator ID</th>
-                                                <th>Indicator</th>
-                                                <th>Company Average</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            @if(count($surveyScoreAllUsers)==0)
-                                              <h3><b>You have no surveys results to display</b></h3>
-                                            @else
-                                              @foreach($surveyGroupAveragePerIndicatorAllUsers as $result)
-                                                <tr>
-                                                  <td>{!! $result->Indicator_ID !!}</td>
-                                                  <td>{{Lang::get('indicators.'.$result->Indicator_ID,array(),App::getLocale())}}</td>
-                                                  <td>{!! number_format((float)$result->Group_Average,2,'.','') !!}</td>
-                                                </tr>
-                                              @endforeach
-                                            @endif
-                                          </tbody>
-                                      </table>
-                                    </div>
-
                   <h3 style="text-align:center;"><b>Company average score per dimension</b></h3>
 									@if(count($surveyScorePerIndicatorGroup)==5)
                                     <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
@@ -157,7 +107,6 @@
 
 
                                     <div>
-
                                       @include ('survey.resultContent.surveyScorePerIndicatorGroup')
                                     </div>
                                   </div>

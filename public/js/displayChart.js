@@ -18,7 +18,8 @@ function createChart(chartArea, labelArr, dataLabelStr, dataArr, bgColor) {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                      min: 1,
+                      stepSize: 0.5
                     }
                 }]
             }
@@ -38,7 +39,8 @@ function createComparedChart(chartArea, labelArr, dataset1, dataset2) {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                      min: 1,
+                      stepSize: 0.5
                     }
                 }]
             }
@@ -58,7 +60,8 @@ function createMaxMinChart(chartArea, labelArr, dataset1, dataset2, dataset3) {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                      min: 1,
+                      stepSize: 0.5
                     }
                 }]
             }
