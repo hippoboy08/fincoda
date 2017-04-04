@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2017 at 05:23 AM
+-- Generation Time: Apr 04, 2017 at 07:09 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -81,14 +81,26 @@ INSERT INTO `company_profiles` (`id`, `company_id`, `type`, `country`, `city`, `
 --
 
 CREATE TABLE `external_evaluators` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int(10) NOT NULL,
   `invited_by_user_id` int(10) UNSIGNED NOT NULL,
   `survey_id` int(10) UNSIGNED NOT NULL,
   `email` char(50) COLLATE utf8_unicode_ci NOT NULL,
+  `company_id` int(10) UNSIGNED NOT NULL,
+  `registered_email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `confirmed` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `external_evaluators`
+--
+
+INSERT INTO `external_evaluators` (`id`, `invited_by_user_id`, `survey_id`, `email`, `company_id`, `registered_email`, `confirmed`, `created_at`, `updated_at`) VALUES
+(53, 1, 142, 'davis.kawalya@edu.turkuamk.fi', 1, 'davis.kawalya@edu.turkuamk.fi', 1, '2017-04-04 08:50:28', '2017-04-04 08:52:38'),
+(54, 2, 142, 'duy.lenguyen@edu.turkuamk.fi', 1, 'duy.lenguyen@edu.turkuamk.fi', 1, '2017-04-04 09:00:05', '2017-04-04 09:01:15'),
+(55, 2, 143, 'balsam.almurrani@gmail.com', 1, 'balsam.almurrani@gmail.com', 1, '2017-04-04 09:24:34', '2017-04-04 09:25:48'),
+(56, 3, 142, 'davi12@yahoo.coms', 1, 'davi12@yahoo.coms', 1, '2017-04-04 09:41:09', '2017-04-04 09:46:10');
 
 -- --------------------------------------------------------
 
@@ -247,7 +259,6 @@ INSERT INTO `participants` (`id`, `survey_id`, `user_id`, `reminder`, `completed
 (104, 109, 21, 0, 0, '2016-12-01 10:06:29', '2016-12-01 10:06:29'),
 (105, 109, 22, 0, 0, '2016-12-01 10:06:29', '2016-12-01 10:06:29'),
 (106, 109, 23, 0, 0, '2016-12-01 10:06:29', '2016-12-01 10:06:29'),
-(118, 111, 15, 0, 0, '2016-12-01 12:43:42', '2016-12-01 12:43:42'),
 (119, 111, 16, 0, 0, '2016-12-01 12:43:46', '2016-12-01 12:43:46'),
 (120, 111, 17, 0, 1, '2016-12-01 12:43:47', '2016-12-01 12:48:28'),
 (121, 111, 18, 0, 1, '2016-12-01 12:43:48', '2016-12-01 12:49:49'),
@@ -268,11 +279,9 @@ INSERT INTO `participants` (`id`, `survey_id`, `user_id`, `reminder`, `completed
 (207, 119, 23, 0, 0, '2017-01-21 10:13:22', '2017-01-21 10:13:22'),
 (211, 123, 15, 0, 5, '2017-01-21 11:27:35', '2017-01-21 11:54:05'),
 (212, 123, 16, 0, 5, '2017-01-21 11:27:37', '2017-01-21 11:54:56'),
-(213, 123, 17, 0, 0, '2017-01-21 11:27:38', '2017-01-21 11:27:38'),
 (214, 123, 18, 0, 5, '2017-01-21 11:27:39', '2017-01-21 11:55:56'),
 (215, 123, 19, 0, 0, '2017-01-21 11:27:40', '2017-01-21 11:27:40'),
 (216, 123, 3, 0, 5, '2017-01-21 11:27:42', '2017-01-21 11:53:13'),
-(217, 123, 20, 0, 0, '2017-01-21 11:27:43', '2017-01-21 11:27:43'),
 (218, 123, 21, 0, 0, '2017-01-21 11:27:44', '2017-01-21 11:27:44'),
 (309, 131, 1, 0, 1, '2017-03-19 01:29:16', '2017-03-19 01:40:11'),
 (310, 131, 2, 0, 1, '2017-03-19 01:29:22', '2017-03-19 01:53:09'),
@@ -288,10 +297,7 @@ INSERT INTO `participants` (`id`, `survey_id`, `user_id`, `reminder`, `completed
 (320, 131, 23, 0, 0, '2017-03-19 01:29:35', '2017-03-19 01:29:35'),
 (321, 132, 1, 0, 5, '2017-03-19 01:31:17', '2017-03-19 02:03:06'),
 (322, 132, 2, 0, 3, '2017-03-19 01:31:19', '2017-03-19 02:09:23'),
-(323, 132, 3, 0, 0, '2017-03-19 01:31:20', '2017-03-19 01:31:20'),
 (324, 132, 15, 0, 3, '2017-03-19 01:31:21', '2017-03-19 02:10:44'),
-(325, 132, 16, 0, 0, '2017-03-19 01:31:22', '2017-03-19 01:31:22'),
-(326, 132, 17, 0, 0, '2017-03-19 01:31:24', '2017-03-19 01:31:24'),
 (327, 132, 18, 0, 0, '2017-03-19 01:31:25', '2017-03-19 01:31:25'),
 (328, 132, 19, 0, 0, '2017-03-19 01:31:27', '2017-03-19 01:31:27'),
 (329, 132, 20, 0, 0, '2017-03-19 01:31:28', '2017-03-19 01:31:28'),
@@ -315,7 +321,49 @@ INSERT INTO `participants` (`id`, `survey_id`, `user_id`, `reminder`, `completed
 (363, 136, 3, 0, 3, '2017-03-19 03:21:52', '2017-03-19 04:04:04'),
 (364, 136, 20, 0, 0, '2017-03-19 03:21:53', '2017-03-19 03:21:53'),
 (365, 136, 21, 0, 0, '2017-03-19 03:21:54', '2017-03-19 03:21:54'),
-(366, 136, 2, 0, 3, '2017-03-19 03:21:56', '2017-03-19 04:01:07');
+(366, 136, 2, 0, 3, '2017-03-19 03:21:56', '2017-03-19 04:01:07'),
+(367, 137, 1, 0, 1, '2017-03-27 10:12:31', '2017-03-27 10:15:22'),
+(368, 137, 2, 0, 0, '2017-03-27 10:12:36', '2017-03-27 10:12:36'),
+(369, 137, 3, 0, 0, '2017-03-27 10:12:37', '2017-03-27 10:12:37'),
+(370, 137, 15, 0, 0, '2017-03-27 10:12:39', '2017-03-27 10:12:39'),
+(371, 137, 16, 0, 0, '2017-03-27 10:12:40', '2017-03-27 10:12:40'),
+(372, 137, 17, 0, 0, '2017-03-27 10:12:42', '2017-03-27 10:12:42'),
+(373, 137, 18, 0, 0, '2017-03-27 10:12:43', '2017-03-27 10:12:43'),
+(374, 137, 19, 0, 0, '2017-03-27 10:12:44', '2017-03-27 10:12:44'),
+(375, 137, 20, 0, 0, '2017-03-27 10:12:45', '2017-03-27 10:12:45'),
+(376, 137, 21, 0, 0, '2017-03-27 10:12:47', '2017-03-27 10:12:47'),
+(377, 137, 22, 0, 0, '2017-03-27 10:12:48', '2017-03-27 10:12:48'),
+(378, 137, 23, 0, 0, '2017-03-27 10:12:49', '2017-03-27 10:12:49'),
+(439, 142, 1, 0, 0, '2017-04-04 08:47:07', '2017-04-04 08:47:07'),
+(440, 142, 2, 0, 3, '2017-04-04 08:47:09', '2017-04-04 10:10:08'),
+(442, 142, 15, 0, 0, '2017-04-04 08:47:12', '2017-04-04 08:47:12'),
+(443, 142, 16, 0, 0, '2017-04-04 08:47:13', '2017-04-04 08:47:13'),
+(444, 142, 17, 0, 0, '2017-04-04 08:47:14', '2017-04-04 08:47:14'),
+(445, 142, 18, 0, 0, '2017-04-04 08:47:15', '2017-04-04 08:47:15'),
+(446, 142, 19, 0, 0, '2017-04-04 08:47:17', '2017-04-04 08:47:17'),
+(447, 142, 20, 0, 0, '2017-04-04 08:47:18', '2017-04-04 08:47:18'),
+(448, 142, 21, 0, 0, '2017-04-04 08:47:20', '2017-04-04 08:47:20'),
+(449, 142, 22, 0, 0, '2017-04-04 08:47:21', '2017-04-04 08:47:21'),
+(450, 142, 23, 0, 0, '2017-04-04 08:47:22', '2017-04-04 08:47:22'),
+(451, 142, 49, 0, 0, '2017-04-04 08:47:24', '2017-04-04 08:47:24'),
+(452, 142, 69, 0, 0, NULL, '2017-04-04 08:52:38'),
+(453, 142, 70, 0, 0, NULL, '2017-04-04 09:01:15'),
+(454, 143, 15, 0, 0, '2017-04-04 10:20:21', '2017-04-04 10:20:21'),
+(455, 143, 16, 0, 0, '2017-04-04 10:20:23', '2017-04-04 10:20:23'),
+(456, 143, 17, 0, 0, '2017-04-04 10:20:24', '2017-04-04 10:20:24'),
+(457, 143, 18, 0, 0, '2017-04-04 10:20:25', '2017-04-04 10:20:25'),
+(458, 143, 19, 0, 0, '2017-04-04 10:20:27', '2017-04-04 10:20:27'),
+(459, 143, 3, 0, 0, '2017-04-04 10:20:28', '2017-04-04 10:20:28'),
+(460, 143, 20, 0, 0, '2017-04-04 10:20:29', '2017-04-04 10:20:29'),
+(461, 143, 21, 0, 0, '2017-04-04 10:20:31', '2017-04-04 10:20:31'),
+(462, 143, 2, 0, 0, '2017-04-04 10:20:32', '2017-04-04 10:20:32'),
+(463, 143, 71, 0, 0, NULL, '2017-04-04 09:25:48'),
+(464, 142, 72, 0, 0, NULL, '2017-04-04 09:46:10'),
+(467, 142, 3, 0, 0, NULL, '2017-04-04 11:35:35'),
+(469, 111, 15, 0, 0, NULL, '2017-04-04 14:24:52'),
+(470, 123, 20, 0, 0, NULL, '2017-04-04 14:27:48'),
+(472, 123, 17, 0, 0, NULL, '2017-04-04 14:31:44'),
+(473, 123, 2, 0, 0, NULL, '2017-04-04 15:39:52');
 
 -- --------------------------------------------------------
 
@@ -1992,7 +2040,109 @@ INSERT INTO `peer_results` (`id`, `peer_survey_id`, `user_id`, `peer_id`, `indic
 (4859, 136, 18, 2, 31, 5, NULL, NULL),
 (4860, 136, 18, 2, 32, 5, NULL, NULL),
 (4861, 136, 18, 2, 33, 4, NULL, NULL),
-(4862, 136, 18, 2, 34, 4, NULL, NULL);
+(4862, 136, 18, 2, 34, 4, NULL, NULL),
+(4898, 142, 1, 69, 1, 5, NULL, NULL),
+(4899, 142, 1, 69, 2, 4, NULL, NULL),
+(4900, 142, 1, 69, 3, 4, NULL, NULL),
+(4901, 142, 1, 69, 4, 4, NULL, NULL),
+(4902, 142, 1, 69, 5, 5, NULL, NULL),
+(4903, 142, 1, 69, 6, 4, NULL, NULL),
+(4904, 142, 1, 69, 7, 4, NULL, NULL),
+(4905, 142, 1, 69, 8, 4, NULL, NULL),
+(4906, 142, 1, 69, 9, 4, NULL, NULL),
+(4907, 142, 1, 69, 10, 5, NULL, NULL),
+(4908, 142, 1, 69, 11, 4, NULL, NULL),
+(4909, 142, 1, 69, 12, 5, NULL, NULL),
+(4910, 142, 1, 69, 13, 5, NULL, NULL),
+(4911, 142, 1, 69, 14, 4, NULL, NULL),
+(4912, 142, 1, 69, 15, 5, NULL, NULL),
+(4913, 142, 1, 69, 16, 4, NULL, NULL),
+(4914, 142, 1, 69, 17, 4, NULL, NULL),
+(4915, 142, 1, 69, 18, 4, NULL, NULL),
+(4916, 142, 1, 69, 19, 5, NULL, NULL),
+(4917, 142, 1, 69, 20, 5, NULL, NULL),
+(4918, 142, 1, 69, 21, 5, NULL, NULL),
+(4919, 142, 1, 69, 22, 4, NULL, NULL),
+(4920, 142, 1, 69, 23, 4, NULL, NULL),
+(4921, 142, 1, 69, 24, 4, NULL, NULL),
+(4922, 142, 1, 69, 25, 5, NULL, NULL),
+(4923, 142, 1, 69, 26, 5, NULL, NULL),
+(4924, 142, 1, 69, 27, 4, NULL, NULL),
+(4925, 142, 1, 69, 28, 4, NULL, NULL),
+(4926, 142, 1, 69, 29, 5, NULL, NULL),
+(4927, 142, 1, 69, 30, 4, NULL, NULL),
+(4928, 142, 1, 69, 31, 4, NULL, NULL),
+(4929, 142, 1, 69, 32, 4, NULL, NULL),
+(4930, 142, 1, 69, 33, 5, NULL, NULL),
+(4931, 142, 1, 69, 34, 5, NULL, NULL),
+(4932, 142, 2, 70, 1, 4, NULL, NULL),
+(4933, 142, 2, 70, 2, 4, NULL, NULL),
+(4934, 142, 2, 70, 3, 4, NULL, NULL),
+(4935, 142, 2, 70, 4, 4, NULL, NULL),
+(4936, 142, 2, 70, 5, 4, NULL, NULL),
+(4937, 142, 2, 70, 6, 5, NULL, NULL),
+(4938, 142, 2, 70, 7, 5, NULL, NULL),
+(4939, 142, 2, 70, 8, 4, NULL, NULL),
+(4940, 142, 2, 70, 9, 4, NULL, NULL),
+(4941, 142, 2, 70, 10, 5, NULL, NULL),
+(4942, 142, 2, 70, 11, 4, NULL, NULL),
+(4943, 142, 2, 70, 12, 4, NULL, NULL),
+(4944, 142, 2, 70, 13, 5, NULL, NULL),
+(4945, 142, 2, 70, 14, 5, NULL, NULL),
+(4946, 142, 2, 70, 15, 4, NULL, NULL),
+(4947, 142, 2, 70, 16, 5, NULL, NULL),
+(4948, 142, 2, 70, 17, 4, NULL, NULL),
+(4949, 142, 2, 70, 18, 5, NULL, NULL),
+(4950, 142, 2, 70, 19, 4, NULL, NULL),
+(4951, 142, 2, 70, 20, 5, NULL, NULL),
+(4952, 142, 2, 70, 21, 4, NULL, NULL),
+(4953, 142, 2, 70, 22, 4, NULL, NULL),
+(4954, 142, 2, 70, 23, 4, NULL, NULL),
+(4955, 142, 2, 70, 24, 4, NULL, NULL),
+(4956, 142, 2, 70, 25, 4, NULL, NULL),
+(4957, 142, 2, 70, 26, 5, NULL, NULL),
+(4958, 142, 2, 70, 27, 4, NULL, NULL),
+(4959, 142, 2, 70, 28, 4, NULL, NULL),
+(4960, 142, 2, 70, 29, 4, NULL, NULL),
+(4961, 142, 2, 70, 30, 4, NULL, NULL),
+(4962, 142, 2, 70, 31, 5, NULL, NULL),
+(4963, 142, 2, 70, 32, 5, NULL, NULL),
+(4964, 142, 2, 70, 33, 5, NULL, NULL),
+(4965, 142, 2, 70, 34, 4, NULL, NULL),
+(4966, 143, 2, 71, 1, 5, NULL, NULL),
+(4967, 143, 2, 71, 2, 5, NULL, NULL),
+(4968, 143, 2, 71, 3, 4, NULL, NULL),
+(4969, 143, 2, 71, 4, 4, NULL, NULL),
+(4970, 143, 2, 71, 5, 4, NULL, NULL),
+(4971, 143, 2, 71, 6, 4, NULL, NULL),
+(4972, 143, 2, 71, 7, 4, NULL, NULL),
+(4973, 143, 2, 71, 8, 4, NULL, NULL),
+(4974, 143, 2, 71, 9, 4, NULL, NULL),
+(4975, 143, 2, 71, 10, 4, NULL, NULL),
+(4976, 143, 2, 71, 11, 4, NULL, NULL),
+(4977, 143, 2, 71, 12, 4, NULL, NULL),
+(4978, 143, 2, 71, 13, 4, NULL, NULL),
+(4979, 143, 2, 71, 14, 4, NULL, NULL),
+(4980, 143, 2, 71, 15, 4, NULL, NULL),
+(4981, 143, 2, 71, 16, 4, NULL, NULL),
+(4982, 143, 2, 71, 17, 5, NULL, NULL),
+(4983, 143, 2, 71, 18, 4, NULL, NULL),
+(4984, 143, 2, 71, 19, 5, NULL, NULL),
+(4985, 143, 2, 71, 20, 4, NULL, NULL),
+(4986, 143, 2, 71, 21, 5, NULL, NULL),
+(4987, 143, 2, 71, 22, 4, NULL, NULL),
+(4988, 143, 2, 71, 23, 5, NULL, NULL),
+(4989, 143, 2, 71, 24, 4, NULL, NULL),
+(4990, 143, 2, 71, 25, 4, NULL, NULL),
+(4991, 143, 2, 71, 26, 4, NULL, NULL),
+(4992, 143, 2, 71, 27, 5, NULL, NULL),
+(4993, 143, 2, 71, 28, 4, NULL, NULL),
+(4994, 143, 2, 71, 29, 4, NULL, NULL),
+(4995, 143, 2, 71, 30, 5, NULL, NULL),
+(4996, 143, 2, 71, 31, 4, NULL, NULL),
+(4997, 143, 2, 71, 32, 4, NULL, NULL),
+(4998, 143, 2, 71, 33, 5, NULL, NULL),
+(4999, 143, 2, 71, 34, 5, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2082,7 +2232,28 @@ INSERT INTO `peer_surveys` (`id`, `survey_id`, `peer_id`, `peer_completed`, `use
 (244, 136, 3, 0, 18, '2017-03-19 04:01:33', '2017-03-19 04:01:33'),
 (245, 136, 15, 0, 18, '2017-03-19 04:01:35', '2017-03-19 04:01:35'),
 (246, 136, 16, 0, 18, '2017-03-19 04:01:36', '2017-03-19 04:01:36'),
-(247, 136, 2, 1, 18, '2017-03-19 04:01:38', '2017-03-19 04:05:53');
+(247, 136, 2, 1, 18, '2017-03-19 04:01:38', '2017-03-19 04:05:53'),
+(248, 132, 1, 0, 18, '2017-03-29 08:27:38', '2017-03-29 08:27:38'),
+(249, 132, 15, 0, 18, '2017-03-29 08:27:40', '2017-03-29 08:27:40'),
+(250, 132, 19, 0, 18, '2017-03-29 08:27:41', '2017-03-29 08:27:41'),
+(251, 136, 3, 0, 19, '2017-03-29 08:29:47', '2017-03-29 08:29:47'),
+(252, 136, 15, 0, 19, '2017-03-29 08:29:49', '2017-03-29 08:29:49'),
+(253, 136, 16, 0, 19, '2017-03-29 08:29:50', '2017-03-29 08:29:50'),
+(254, 136, 17, 0, 19, '2017-03-29 08:29:51', '2017-03-29 08:29:51'),
+(284, 142, 21, 0, 1, '2017-04-04 09:55:35', '2017-04-04 09:55:35'),
+(285, 142, 69, 1, 1, '2017-04-04 09:55:37', '2017-04-04 08:57:19'),
+(286, 142, 2, 0, 1, '2017-04-04 09:55:38', '2017-04-04 09:55:38'),
+(287, 142, 1, 0, 2, '2017-04-04 10:03:36', '2017-04-04 10:03:36'),
+(289, 142, 69, 0, 2, '2017-04-04 10:03:39', '2017-04-04 10:03:39'),
+(290, 142, 70, 1, 2, '2017-04-04 10:03:41', '2017-04-04 09:05:40'),
+(291, 143, 3, 0, 2, '2017-04-04 10:32:15', '2017-04-04 10:32:15'),
+(292, 143, 15, 0, 2, '2017-04-04 10:32:17', '2017-04-04 10:32:17'),
+(293, 143, 18, 0, 2, '2017-04-04 10:32:18', '2017-04-04 10:32:18'),
+(294, 143, 71, 1, 2, '2017-04-04 10:32:20', '2017-04-04 09:34:14'),
+(299, 123, 3, 0, 2, '2017-04-04 15:40:58', '2017-04-04 15:40:58'),
+(300, 123, 15, 0, 2, '2017-04-04 15:40:59', '2017-04-04 15:40:59'),
+(301, 123, 16, 0, 2, '2017-04-04 15:41:01', '2017-04-04 15:41:01'),
+(302, 123, 17, 0, 2, '2017-04-04 15:41:02', '2017-04-04 15:41:02');
 
 -- --------------------------------------------------------
 
@@ -2810,7 +2981,41 @@ INSERT INTO `results` (`id`, `survey_id`, `user_id`, `indicator_id`, `answer`, `
 (2275, 135, 18, 31, 5, '2017-03-19 03:58:06', '2017-03-19 03:58:06'),
 (2276, 135, 18, 32, 4, '2017-03-19 03:58:06', '2017-03-19 03:58:06'),
 (2277, 135, 18, 33, 4, '2017-03-19 03:58:06', '2017-03-19 03:58:06'),
-(2278, 135, 18, 34, 4, '2017-03-19 03:58:06', '2017-03-19 03:58:06');
+(2278, 135, 18, 34, 4, '2017-03-19 03:58:06', '2017-03-19 03:58:06'),
+(2279, 137, 1, 1, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2280, 137, 1, 2, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2281, 137, 1, 3, 3, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2282, 137, 1, 4, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2283, 137, 1, 5, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2284, 137, 1, 6, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2285, 137, 1, 7, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2286, 137, 1, 8, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2287, 137, 1, 9, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2288, 137, 1, 10, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2289, 137, 1, 11, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2290, 137, 1, 12, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2291, 137, 1, 13, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2292, 137, 1, 14, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2293, 137, 1, 15, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2294, 137, 1, 16, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2295, 137, 1, 17, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2296, 137, 1, 18, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2297, 137, 1, 19, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2298, 137, 1, 20, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2299, 137, 1, 21, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2300, 137, 1, 22, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2301, 137, 1, 23, 3, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2302, 137, 1, 24, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2303, 137, 1, 25, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2304, 137, 1, 26, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2305, 137, 1, 27, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2306, 137, 1, 28, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2307, 137, 1, 29, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2308, 137, 1, 30, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2309, 137, 1, 31, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2310, 137, 1, 32, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2311, 137, 1, 33, 4, '2017-03-27 10:15:22', '2017-03-27 10:15:22'),
+(2312, 137, 1, 34, 5, '2017-03-27 10:15:22', '2017-03-27 10:15:22');
 
 -- --------------------------------------------------------
 
@@ -2832,7 +3037,8 @@ CREATE TABLE `roles` (
 INSERT INTO `roles` (`id`, `name`, `display_name`, `description`) VALUES
 (1, 'admin', 'admin', 'An Admin role.'),
 (2, 'special', 'special', 'Special user role.'),
-(3, 'basic', 'basic', 'basic user role.');
+(3, 'basic', 'basic', 'basic user role.'),
+(4, 'external', 'external', 'An external evaluator');
 
 -- --------------------------------------------------------
 
@@ -2856,14 +3062,19 @@ INSERT INTO `role_user` (`user_id`, `role_id`) VALUES
 (15, 3),
 (16, 3),
 (17, 3),
-(18, 3),
+(18, 4),
 (19, 3),
 (20, 3),
 (21, 3),
 (22, 3),
 (23, 3),
 (27, 1),
-(28, 1);
+(28, 1),
+(49, 3),
+(69, 4),
+(70, 4),
+(71, 4),
+(72, 4);
 
 -- --------------------------------------------------------
 
@@ -2915,13 +3126,16 @@ INSERT INTO `surveys` (`id`, `user_id`, `type_id`, `company_id`, `category_id`, 
 (102, 2, 1, 1, 2, 19, 'self survey group scoped test 1', '<p>self survey</p>\r\n', NULL, '<p>thank you</p>\r\n', '2016-11-15 14:00:00', '2016-11-25 18:59:00', '2016-11-15 12:38:46', '2016-11-15 12:38:46'),
 (106, 1, 1, 1, 1, NULL, 'self survey company scoped test 2', '<p>self survey</p>\r\n', NULL, '<p>Thank you</p>\r\n', '2016-11-19 15:00:00', '2016-11-29 23:59:00', '2016-11-19 12:40:14', '2016-11-19 12:40:14'),
 (109, 1, 1, 1, 1, NULL, 'self survey company scoped test 5', '<p>self survey</p>\r\n', NULL, '<p>thank you</p>\r\n', '2016-12-01 12:00:00', '2016-12-22 23:59:00', '2016-12-01 10:06:29', '2016-12-01 10:06:29'),
-(111, 2, 1, 1, 2, 19, 'self survey group scoped test 5', '<p>self survey</p>\r\n', NULL, '<p>thank you</p>\r\n', '2016-12-01 14:00:00', '2016-12-28 23:59:00', '2016-12-01 12:43:42', '2016-12-01 12:43:42'),
+(111, 2, 1, 1, 2, 19, 'self survey group scoped test 5', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', NULL, '<p>thank you</p>\r\n', '2016-12-01 14:00:00', '2017-12-28 23:59:00', '2016-12-01 12:43:42', '2016-12-01 12:43:42'),
 (119, 1, 2, 1, 1, NULL, 'peer survey company scoped test 1', '<p>peer survey</p>\r\n', 4, '<p>thank you</p>\r\n', '2017-01-21 05:10:00', '2017-01-26 23:59:00', '2017-01-21 10:13:22', '2017-01-21 10:14:16'),
-(123, 2, 2, 1, 2, 19, 'peer survey group scoped test 1', '<p>peer survey</p>\r\n', 4, '<p>thank you</p>\r\n', '2017-01-21 06:30:00', '2017-01-31 23:59:00', '2017-01-21 11:27:35', '2017-01-21 11:27:35'),
+(123, 2, 2, 1, 2, 19, 'peer survey group scoped test 1', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 4, '<p>thank you</p>\r\n', '2017-01-21 06:30:00', '2017-09-31 23:59:00', '2017-01-21 11:27:35', '2017-01-21 11:27:35'),
 (131, 1, 1, 1, 1, NULL, 'self survey company scoped include admin test 4', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 4, '<p>thank you</p>\r\n', '2017-03-19 03:30:00', '2017-03-29 23:59:00', '2017-03-19 01:29:16', '2017-03-19 01:29:16'),
-(132, 1, 2, 1, 1, NULL, 'peer survey company scoped include admin test 4', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 3, '<p>thank you</p>\r\n', '2017-03-19 03:00:00', '2017-03-31 23:59:00', '2017-03-19 01:31:17', '2017-03-19 01:31:17'),
+(132, 1, 2, 1, 1, NULL, 'peer survey company scoped include admin test 4', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 3, '<p>thank you</p>\r\n', '2017-03-19 03:00:00', '2017-06-31 23:59:00', '2017-03-19 01:31:17', '2017-03-29 08:07:03'),
 (135, 2, 1, 1, 2, 19, 'self survey group scoped include admin test 4', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 3, '<p>thank you</p>\r\n', '2017-03-19 05:00:00', '2017-03-30 23:59:00', '2017-03-19 03:20:21', '2017-03-19 03:20:21'),
-(136, 2, 2, 1, 2, 19, 'peer survey group scoped include admin test 4', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 4, '<p>thank you</p>\r\n', '2017-03-19 05:00:00', '2017-03-31 23:59:00', '2017-03-19 03:21:44', '2017-03-19 03:21:44');
+(136, 2, 2, 1, 2, 19, 'peer survey group scoped include admin test 4', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 4, '<p>thank you</p>\r\n', '2017-03-19 05:00:00', '2017-05-31 23:59:00', '2017-03-19 03:21:44', '2017-03-19 03:21:44'),
+(137, 1, 1, 1, 1, NULL, 'self survey company scoped include admin test 5', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 0, '<p>thank you</p>\r\n', '2017-03-27 14:00:00', '2017-05-31 23:59:00', '2017-03-27 10:12:31', '2017-03-27 10:12:31'),
+(142, 1, 2, 1, 1, NULL, 'peer survey company scoped include admin test 9', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 4, '<p>thank you</p>\r\n', '2017-04-04 12:00:00', '2017-05-06 23:59:00', '2017-04-04 08:47:07', '2017-04-04 11:35:35'),
+(143, 2, 2, 1, 2, 19, 'peer survey group scoped include special test 9', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 4, '<p>thank you</p>\r\n', '2017-04-04 13:00:00', '2017-05-06 23:59:00', '2017-04-04 09:20:21', '2017-04-04 09:20:21');
 
 -- --------------------------------------------------------
 
@@ -2972,6 +3186,8 @@ INSERT INTO `survey_types` (`id`, `name`) VALUES
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `external` tinyint(2) NOT NULL DEFAULT '0',
+  `external_modified_email` tinyint(2) NOT NULL DEFAULT '0',
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `company_id` int(11) NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -2984,21 +3200,26 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `company_id`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 'nuOugAyq2NEewVW73Pf1bRNK8Q91Bg7pe13IdeVKDnbdpNWBVh9YYZfM6XEU', '2016-09-04 18:24:58', '2017-03-19 03:18:16'),
-(2, 'special', 'special@fincoda.com', 1, '$2y$10$XEkBB9aQOSUsnZnbvtIU/eFpxWuzc3g.xN/Va5QGt5FWbJSh7P0vW', '01kwKH1Tk5g1HJ4IQgVzMLpt8fPaeqwQAV0eXNt9rwqEKnvZMPwE5uPOntmv', '2016-09-04 18:24:59', '2017-03-19 04:07:45'),
-(3, 'basic', 'basic@fincoda.com', 1, '$2y$10$VJ1.j0X2Ns2gXUHhBs5Ob.orTIrsug85qCSQd36tvzfababDw9OdS', 'Io3oJWGggmIb552GvosNohiNDJ9miHNeJQyOSY8hrVVFPvAngJUBsGlF6Qjn', '2016-09-04 18:24:59', '2017-03-19 03:50:30'),
-(15, 'dav', 'davis.kawalya@edu.turkuamk.fi', 1, '$2y$10$PWJmx4dIVIQkOn9yQ7/2e.RrOuMni5K/0knmxD1bPdxFbGKFo98VK', 'ev7RE2ibacMpuD8ZXpO50L2U2I9OIqN36CLAlxiqqVKrFrZJkb5Wt5Mdb7VE', '2016-11-15 09:31:48', '2017-03-19 03:56:12'),
-(16, 'dav', 'dav2@yahoo.coms', 1, '$2y$10$8ssO4p4nWZN/zkog31bWt.5gkarkW6XQrXiCuVuSXkiW08ngC2M1W', 'AQ8Uy1XUiXx2oxn9tbJ1rvQgUxhxc1JtDPkZxsZQl4ioc5Uw4UmJaMESrqaN', '2016-11-15 09:32:40', '2017-01-21 11:50:40'),
-(17, 'dav', 'duy.lenguyen@edu.turkuamk.fi', 1, '$2y$10$PBZPCwtbEUqXmQeeyKWQ8.AzVrAZuEocNPfaaSJl504ySykwRy1dq', 'T7xjJIAW6oqbXLSNvEWxvvYGCpb9VauZBJCrOn42fboBpCwLwBu0EjJjIIMe', '2016-11-15 09:33:15', '2017-01-02 22:26:52'),
-(18, 'dav', 'dav4@yahoo.coms', 1, '$2y$10$XEdiSkvjJFYlFFhCMv7tYOtBKkuhDauIPKfcDHIBcui9g29JYqiJO', 'awHYb8pFZ2gX4RC4it4xqUOEpgHlkgyJWRg4h0eCsrV5YcM3Y63p5BJJtoHC', '2016-11-15 09:33:44', '2017-03-19 04:01:53'),
-(19, 'dav', 'dav5@yahoo.coms', 1, '$2y$10$.zHdXynhWlde9hSDKHiJjegBUNnJCKwOMTV1PEVrXQaM3gg82owTm', '2Ju0FEDEN6AMH3P7dJzbhIUW9aLdXGtNVxRcS0ZzXbGASdSTjQxT6U4xnJNq', '2016-11-15 09:34:04', '2017-03-19 01:47:15'),
-(20, 'dav', 'dav6@yahoo.coms', 1, '$2y$10$KWrb57lTkGO1zmGXIVLOneRGTZX5QJgClcOkJ35dvWjt.ENhUAHOK', 'YG1ynoaK451WHBx6MriwbGG8EuWhK4IvDm1mSoAhWQCL3PXUWEa6s2fRQHa0', '2016-11-15 09:34:33', '2017-01-21 06:15:37'),
-(21, 'dav', 'dav7@yahoo.coms', 1, '$2y$10$hoDB8JLvKK23bGfWsJNY.eK.bfee3fcfBQan0RaQp.Jc8KTkzRwvC', '0eVJ3M8Qqnwnbe8aPTMITFKRHbulF3tYPMNewyRddXprYgrcaCfbWlAlXg5m', '2016-11-15 09:35:04', '2016-11-30 22:17:06'),
-(22, 'dav', 'dav8@yahoo.coms', 1, '$2y$10$RhAv.7VBId8UMVguzTqGQ.KzMEhcBwICHGDekC/NYpvBTGE5yx8x.', '9cwXpaGYiLBcc8Esj9dgZ18LT8JJP7KkztlmJIlltBdkv1BC4XXnFOXvQHz0', '2016-11-15 09:35:39', '2016-11-15 10:13:50'),
-(23, 'dav', 'dav9@yahoo.coms', 1, '$2y$10$jocVMuYLutwmoBjttRYYCOifIQGhOT0wTPtsgBuy.h5gDe4DUtSAm', '2VpuVfBEwGKf1gX7fBn5ijTm4jRz5M5q64FpnwLrM8Bkp2j4uMfo1tloD7Vg', '2016-11-15 09:36:08', '2016-11-15 12:43:20'),
-(27, 'kawalya', 'davis.kawalya@edu.turkuamk.fis', 5, '$2y$10$T8xlkKpfTyRN4qkmpppGh.USduGyVeY5LWv.1j8HzgWIxQ2MvmOQK', NULL, '2016-12-01 18:19:25', '2016-12-01 18:19:25'),
-(28, 'd', 'davis.kawalya@edu.turkuamk.fiss', 7, '$2y$10$9rZIH0bWj.gDebgd5ILJwuxkXctat4a3nC59moxidev057RzL4at2', NULL, '2016-12-01 18:48:11', '2016-12-01 18:48:11');
+INSERT INTO `users` (`id`, `name`, `external`, `external_modified_email`, `email`, `company_id`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 0, 0, 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 'RPX5IdycRJX4e4u6z434u0RzhjkfETUcl7hvVE1hmiuQFYetJ4TuEvfFZ1Yr', '2016-09-04 18:24:58', '2017-04-04 13:00:01'),
+(2, 'special', 0, 0, 'special@fincoda.com', 1, '$2y$10$XEkBB9aQOSUsnZnbvtIU/eFpxWuzc3g.xN/Va5QGt5FWbJSh7P0vW', '1OPdYWhyBix4INwy5BIx5kZM8y2DtRmp6i3R1wzwOKVeIpVDBNf40lVYd7p5', '2016-09-04 18:24:59', '2017-04-04 14:46:15'),
+(3, 'basic', 0, 0, 'basic@fincoda.com', 1, '$2y$10$VJ1.j0X2Ns2gXUHhBs5Ob.orTIrsug85qCSQd36tvzfababDw9OdS', 'v5apLpQzi2L3SdJcJm9x1tGAa5snuOcLx3EyDxs08QPSvq06rThlFOQ2Pmxg', '2016-09-04 18:24:59', '2017-04-04 10:10:25'),
+(15, 'dav', 0, 0, 'davis2.kawalya@edu.turkuamk.fi', 1, '$2y$10$PWJmx4dIVIQkOn9yQ7/2e.RrOuMni5K/0knmxD1bPdxFbGKFo98VK', 'ev7RE2ibacMpuD8ZXpO50L2U2I9OIqN36CLAlxiqqVKrFrZJkb5Wt5Mdb7VE', '2016-11-15 09:31:48', '2017-03-19 03:56:12'),
+(16, 'dav', 0, 0, 'balsam2.almurrani@gmail.com', 1, '$2y$10$8ssO4p4nWZN/zkog31bWt.5gkarkW6XQrXiCuVuSXkiW08ngC2M1W', 'AQ8Uy1XUiXx2oxn9tbJ1rvQgUxhxc1JtDPkZxsZQl4ioc5Uw4UmJaMESrqaN', '2016-11-15 09:32:40', '2017-01-21 11:50:40'),
+(17, 'dav', 0, 0, 'duy2.lenguyen@edu.turkuamk.fi', 1, '$2y$10$PBZPCwtbEUqXmQeeyKWQ8.AzVrAZuEocNPfaaSJl504ySykwRy1dq', 'T7xjJIAW6oqbXLSNvEWxvvYGCpb9VauZBJCrOn42fboBpCwLwBu0EjJjIIMe', '2016-11-15 09:33:15', '2017-01-02 22:26:52'),
+(18, 'dav', 0, 0, 'dav4@yahoo.coms', 1, '$2y$10$XEdiSkvjJFYlFFhCMv7tYOtBKkuhDauIPKfcDHIBcui9g29JYqiJO', 'Z5GFd1JqwWxvRdIOUA0XUjxquLL20dAKKQYApb8in5eqDfWDeVMNWeGUWrQP', '2016-11-15 09:33:44', '2017-03-31 19:45:46'),
+(19, 'dav', 0, 0, 'dav5@yahoo.coms', 1, '$2y$10$.zHdXynhWlde9hSDKHiJjegBUNnJCKwOMTV1PEVrXQaM3gg82owTm', '0qM2euIpBeZKuhsU4bAP69Q4BoFOiHGLSMD0xudPQj8BOIaz0QTnNQdSj1LW', '2016-11-15 09:34:04', '2017-03-31 21:51:47'),
+(20, 'dav', 0, 0, 'dav6@yahoo.coms', 1, '$2y$10$KWrb57lTkGO1zmGXIVLOneRGTZX5QJgClcOkJ35dvWjt.ENhUAHOK', 'IdAm1Y1U3PYT8IWkSjoD1qDpJ7QjtsgFKSrX1ehRhh4Ihma19dTHvysZ3nAu', '2016-11-15 09:34:33', '2017-04-02 11:43:15'),
+(21, 'dav', 0, 0, 'dav7@yahoo.coms', 1, '$2y$10$hoDB8JLvKK23bGfWsJNY.eK.bfee3fcfBQan0RaQp.Jc8KTkzRwvC', '0eVJ3M8Qqnwnbe8aPTMITFKRHbulF3tYPMNewyRddXprYgrcaCfbWlAlXg5m', '2016-11-15 09:35:04', '2016-11-30 22:17:06'),
+(22, 'dav', 0, 0, 'dav8@yahoo.coms', 1, '$2y$10$RhAv.7VBId8UMVguzTqGQ.KzMEhcBwICHGDekC/NYpvBTGE5yx8x.', '5p0aM0B5peelXHXf69x2XuVZQ4Wu6CgbwZnm2kmgaWsinrDJ7d62ondPeuPW', '2016-11-15 09:35:39', '2017-03-31 21:50:58'),
+(23, 'dav', 0, 0, 'dav9@yahoo.coms', 1, '$2y$10$jocVMuYLutwmoBjttRYYCOifIQGhOT0wTPtsgBuy.h5gDe4DUtSAm', '2VpuVfBEwGKf1gX7fBn5ijTm4jRz5M5q64FpnwLrM8Bkp2j4uMfo1tloD7Vg', '2016-11-15 09:36:08', '2016-11-15 12:43:20'),
+(27, 'kawalya', 0, 0, 'davis.kawalya@edu.turkuamk.fis', 5, '$2y$10$T8xlkKpfTyRN4qkmpppGh.USduGyVeY5LWv.1j8HzgWIxQ2MvmOQK', NULL, '2016-12-01 18:19:25', '2016-12-01 18:19:25'),
+(28, 'd', 0, 0, 'davis.kawalya@edu.turkuamk.fiss', 7, '$2y$10$9rZIH0bWj.gDebgd5ILJwuxkXctat4a3nC59moxidev057RzL4at2', NULL, '2016-12-01 18:48:11', '2016-12-01 18:48:11'),
+(49, 'davi', 0, 0, 'dav11@yahoo.coms', 1, '$2y$10$7/X2ujlNHxs2t.3fLJnZjem8idItYonwlq/PAfUImLF77BS7BPo6K', 'AP9fT8qI2P80MAIPdvpHSos4OkJnkyMy7i8KhTbQ8hio37DiOuS10gOb3E3B', '2017-04-02 16:33:32', '2017-04-02 16:33:55'),
+(69, 'dav', 1, 0, 'davis.kawalya@edu.turkuamk.fi', 1, '$2y$10$k8EMBMqjtVzh.ugNJCwMw.CW9koYfkhDnMw7nto2Rc9bRax/rCKlm', 'lVufauJk6JqCIhgxZtsknxAgfqIuDUuZentYZRJV0GfqxdBw8VAAxHhERIwz', NULL, '2017-04-04 08:58:34'),
+(70, 'dav', 1, 0, 'duy.lenguyen@edu.turkuamk.fi', 1, '$2y$10$7uUgVc8e2NZ/rp/OQy6V7O9MPRgWcnHC9r5PFlMDR4B7YxwxlFZX.', '6qG1QnkLeZV67GUvHppNPKD5JiTI3zQ9fZ6y7YLku3MKXEhYxsoUYlZ3MQxo', NULL, '2017-04-04 09:11:00'),
+(71, 'dav', 1, 0, 'balsam.almurrani@gmail.com', 1, '$2y$10$x7D/gHi4SxEOACt0p7Dxnu1QAjcrxFlBS958f4diTDx.lUcudIrUC', 'naUXtE1ayeKabKEdheWFyw2qcdWREHrbib5679ANdrtIYGXISRTPJkBkKynC', NULL, '2017-04-04 09:34:34'),
+(72, 'dav', 1, 0, 'davi12@yahoo.coms', 1, '$2y$10$f7D3aioeTAoHf5znRfOCWeh6eWmuVa3etYFn7nYc26sdb2K1S/n9G', 'AKnOiWry0eQB2A0IG6CMHJJ78pf6wkixIdS3vkSK4MxL60KUTXILzoqWVCvt', NULL, '2017-04-04 09:51:59');
 
 -- --------------------------------------------------------
 
@@ -3103,15 +3324,20 @@ INSERT INTO `user_profiles` (`id`, `user_id`, `gender`, `dob`, `What_is_your_hig
 (17, 17, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-11-15 09:33:15', '2016-11-15 09:33:15'),
 (18, 18, 'male', '0000-00-00', 'Phd Level', 'Professional', '', '', '', '', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', 'Ascension Island', 'hjhj', 'fghfg', 0, '0000-00-00', 1, '2016-11-15 09:33:44', '2016-11-15 09:33:44'),
 (19, 19, 'male', '0000-00-00', 'Phd Level', 'Professional', '', '', '', '', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', 'Ascension Island', 'jlkl', 'jkjjk', 0, '0000-00-00', 1, '2016-11-15 09:34:04', '2016-11-15 09:34:04'),
-(20, 20, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-11-15 09:34:33', '2016-11-15 09:34:33'),
+(20, 20, 'male', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, '2016-11-15 09:34:33', '2016-11-15 09:34:33'),
 (21, 21, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-11-15 09:35:04', '2016-11-15 09:35:04'),
-(22, 22, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-11-15 09:35:39', '2016-11-15 09:35:39'),
+(22, 22, 'male', '0000-00-00', 'Phd Level', 'Student', 'ghg', 'jklklkds', 'jkjdfksj', 'kjöajkjk', '', '', '', '', '', 'Ascension Island', 'jlkl', 'jjkkkj', 0, '0000-00-00', 1, '2016-11-15 09:35:39', '2016-11-15 09:35:39'),
 (23, 23, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-11-15 09:36:09', '2016-11-15 09:36:09'),
 (25, 1, 'male', '0000-00-00', 'phd level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more sssd', 'Healthcareddssss', 'Five to ten years', 'engineering', 'Partnerssssd', 'Less than 50 employees', 'Ascension Island', 'klask', 'klkas', 902390232, '0000-00-00', 1, '2016-11-15 09:31:48', '2016-11-15 09:38:18'),
 (26, 2, 'male', '0000-00-00', 'Phd Level', 'Professional', '', '', '', '', 'Healthcare', 'Five to ten years', 'engineering', 'Partner', 'Less than 50 employees', 'Ascension Island', 'jksd', 'kiöejds', 0, '0000-00-00', 1, '2016-11-15 09:31:48', '2016-11-15 09:38:18'),
 (27, 3, 'male', '0000-00-00', 'phd level', 'Professional', 'ghg', '', '', '', 'ghgg', 'Five to ten years', 'engineering', 'Partnerklll', 'Less than 50 employees', 'Ascension Island', 'jlklkl', 'hljui', 4556, '0000-00-00', 1, '2016-11-15 09:31:48', '2016-11-15 09:38:18'),
 (31, 27, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-12-01 18:19:25', '2016-12-01 18:19:25'),
-(32, 28, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-12-01 18:48:11', '2016-12-01 18:48:11');
+(32, 28, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-12-01 18:48:11', '2016-12-01 18:48:11'),
+(49, 49, '', '2016-09-04', 'Phd Level', 'Professional', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', 0, '0000-00-00', 0, '2017-04-02 16:33:32', '2017-04-02 16:33:32'),
+(62, 69, 'male', '2016-09-04', 'Phd Level', 'Professional', '', '', '', '', 'Healthcareddssss', '23', 'engineering', 'Partner', '990909', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, NULL, NULL),
+(63, 70, 'male', '2016-09-04', 'Phd Level', 'Professional', '', '', '', '', 'Healthcareddssss', '23', 'engineering', 'Partner', '990909', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, NULL, NULL),
+(64, 71, 'male', '2016-09-04', 'Phd Level', 'Professional', '', '', '', '', 'Healthcareddssss', '23', 'engineering', 'Partner', '990909', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, NULL, NULL),
+(65, 72, 'male', '2016-09-04', 'Phd Level', 'Professional', '', '', '', '', 'Healthcareddssss', '23', 'engineering', 'Partner', '990909', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3154,8 +3380,11 @@ ALTER TABLE `company_profiles`
 --
 ALTER TABLE `external_evaluators`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `invited_by_user_id` (`invited_by_user_id`,`survey_id`,`email`),
+  ADD UNIQUE KEY `email` (`email`,`company_id`),
   ADD KEY `external_evaluators_invited_by_fk` (`invited_by_user_id`),
-  ADD KEY `external_evaluators_invited_on_survey_id_fk` (`survey_id`);
+  ADD KEY `external_evaluators_invited_on_survey_id_fk` (`survey_id`),
+  ADD KEY `external_evaluators_company_id_foreign` (`company_id`);
 
 --
 -- Indexes for table `indicators`
@@ -3321,6 +3550,11 @@ ALTER TABLE `companies`
 ALTER TABLE `company_profiles`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
+-- AUTO_INCREMENT for table `external_evaluators`
+--
+ALTER TABLE `external_evaluators`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+--
 -- AUTO_INCREMENT for table `indicators`
 --
 ALTER TABLE `indicators`
@@ -3334,17 +3568,17 @@ ALTER TABLE `indicator_groups`
 -- AUTO_INCREMENT for table `participants`
 --
 ALTER TABLE `participants`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=367;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=474;
 --
 -- AUTO_INCREMENT for table `peer_results`
 --
 ALTER TABLE `peer_results`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4863;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5068;
 --
 -- AUTO_INCREMENT for table `peer_surveys`
 --
 ALTER TABLE `peer_surveys`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=303;
 --
 -- AUTO_INCREMENT for table `permissions`
 --
@@ -3354,22 +3588,22 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT for table `results`
 --
 ALTER TABLE `results`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2279;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2313;
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `scheduled_tasks`
 --
 ALTER TABLE `scheduled_tasks`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `surveys`
 --
 ALTER TABLE `surveys`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
 --
 -- AUTO_INCREMENT for table `survey_categories`
 --
@@ -3384,7 +3618,7 @@ ALTER TABLE `survey_types`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT for table `user_groups`
 --
@@ -3399,7 +3633,7 @@ ALTER TABLE `user_in_groups`
 -- AUTO_INCREMENT for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 --
 -- Constraints for dumped tables
 --
@@ -3414,6 +3648,7 @@ ALTER TABLE `company_profiles`
 -- Constraints for table `external_evaluators`
 --
 ALTER TABLE `external_evaluators`
+  ADD CONSTRAINT `external_evaluators_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `external_evaluators_invited_by_fk` FOREIGN KEY (`invited_by_user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `external_evaluators_invited_on_survey_id_fk` FOREIGN KEY (`survey_id`) REFERENCES `surveys` (`id`);
 

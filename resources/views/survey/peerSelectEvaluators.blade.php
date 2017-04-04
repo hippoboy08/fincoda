@@ -97,7 +97,7 @@
                       </div>
                       <div class="modal-body">
                         <div class="form-group">
-                          <label for="email">There is already {{ $survey->number_of_evaluators }} evaluators !!!</label>
+                          <label for="email">There is already 5 evaluators !!!</label>
                           <!-- <input class="form-control" id="email" type="text" placeholder="Enter the evaluator email address"> -->
                       </div>
                       </div>
@@ -119,8 +119,8 @@
                   @endif
                   {!! Form::close() !!}
                 </div>
-
-
+				
+				
                 <div id="tab2" class="tab-pane fade">
                   <br>
                   <p class="panel-title">
@@ -166,7 +166,7 @@
                     </table>
                   </div>
                 </div>
-
+				
                 <div id="tab3" class="tab-pane fade">
                   <br>
                   <p class="panel-title">
@@ -200,11 +200,6 @@
                           @if(count($evaluatedNot)>0)
                           @foreach($evaluatedNot as $users)
                           @if($user->id == $users->id)
-                          @role('admin')
-                          <td><a href="{!! url('admin/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
-                          <td>{!! $user->email !!}</td>
-                          @endrole
-
                           @role('special')
                           <td><a href="{!! url('special/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
                           <td>{!! $user->email !!}</td>
@@ -286,8 +281,8 @@
                   @endif
                   @endrole
                 </div>
-
-
+				
+				
 				<div id="tab5" class="tab-pane fade">
                 <br>
                 @role('basic')
@@ -303,7 +298,6 @@
                 <p class="panel-title">
                   <label>You can invite external people you would like to evaluate you. But you can only select them to do so after they have registered on the system</label>
                 </p>
-                <div id="numberOfEvaluators" data-field-id="{{$survey->number_of_evaluators}}" ></div>
                 @if(Session::has('message'))
                 <h4 style="color:red;">{{Session::get('message')}}</h4>
                   @endif
@@ -331,7 +325,7 @@
                       </table>
 				    </div>
                   </div>
-
+				  
                   <button id="pickEvaluators" type="submit" class="btn btn-info btn-flat"><i class="fa fa-floppy-o" aria-hidden="true" ></i> Submit</button>
                   {!! Form::close() !!}
                 </div>

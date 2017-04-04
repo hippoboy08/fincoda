@@ -74,6 +74,7 @@ use EmailTrait;
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+		dd($request);
 		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
 		$numberOfBasicAndSpecialUsers = DB::select(DB::raw(
                                 "select users.id from users 
