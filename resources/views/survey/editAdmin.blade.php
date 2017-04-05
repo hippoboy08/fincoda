@@ -65,15 +65,12 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('startDate') !!}</label>
                                 @endif
                             <div class="form-group">
-
                                 <div class="input-group split-time">
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
                                     {!! Form::text('startDate',old('startDate'),['class'=>'form-control pull-left','id'=>'startTime', 'placeholder'=>'New Start Time']) !!}
-
-
-                                </div><!-- /.input group -->
+								</div><!-- /.input group -->
                             </div>
 							@if($errors->has('endDate'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('endDate') !!}</label>
@@ -84,8 +81,6 @@
                                         <i class="fa fa-clock-o"></i>
                                     </div>
                                     {!! Form::text('endDate',old('endDate'),['class'=>'form-control pull-left','id'=>'endTime', 'placeholder'=>'New End Time']) !!}
-
-
                                 </div><!-- /.input group -->
                             </div>
                           </div>
