@@ -84,7 +84,7 @@
 
 
                             <br>
-                            <label><h3>Select a Survey Type*:</h3></label><br>
+                            <label><h3>Select a Survey Type: (on construction, please don't change the survey's type)</h3></label><br>
 							@if($survey->type_id == 1)
 								{!! Form::radio('survey_type','1',true,['class'=>'form-group']) !!}
 							@else
