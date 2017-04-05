@@ -86,7 +86,7 @@
                           </div>
 
 
-                            <br>
+                            <!-- <br>
                             <label><h3>Select a Survey Type*:</h3></label><br>
 							@if($survey->type_id == 1)
 								{!! Form::radio('survey_type','1',true,['class'=>'form-group']) !!}
@@ -99,7 +99,7 @@
 							@else
 								{!! Form::radio('survey_type','2','',['class'=>'form-group']) !!}
 							@endif
-                            <label>Peer Evaluation Survey</label><br><br>
+                            <label>Peer Evaluation Survey</label><br><br> -->
 
 
 

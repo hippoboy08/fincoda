@@ -100,10 +100,11 @@ $(document).ready(function(){
 
   /* Trigger the singleDatePicker when edit a survey*/
   $(function() {
-    $('input[name="date"]').daterangepicker(
+    $('input[name="startDate"], input[name="endDate"]').daterangepicker(
       {
         singleDatePicker: true,
-        timePicker: true
+        timePicker: true,
+        minDate: moment()
       }
     )
     /* set the format of the picked value */
@@ -111,7 +112,6 @@ $(document).ready(function(){
       $(this).val(picker.startDate.format('YYYY-MM-DD h:mm A'));
       $(this).val(picker.endDate.format('YYYY-MM-DD h:mm A'));
     });
-
   });
 
   /* Show/Hide the option Number of Evaluators depedning on the survey type
