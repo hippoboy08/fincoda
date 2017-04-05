@@ -66,22 +66,22 @@
                                 @endif
                             <div class="form-group">
 
-                                <div class="input-group">
+                                <div class="input-group split-time">
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    {!! Form::text('date',old('date'),['class'=>'form-control pull-left','id'=>'startTime', 'placeholder'=>'New Start Time']) !!}
+                                    {!! Form::text('startDate',old('startDate'),['class'=>'form-control pull-left','id'=>'startTime', 'placeholder'=>'New Start Time']) !!}
 
 
                                 </div><!-- /.input group -->
                             </div>
                             <div class="form-group">
 
-                                <div class="input-group">
+                                <div class="input-group split-time">
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    {!! Form::text('date',old('date'),['class'=>'form-control pull-left','id'=>'endTime', 'placeholder'=>'New End Time']) !!}
+                                    {!! Form::text('endDate',old('endDate'),['class'=>'form-control pull-left','id'=>'endTime', 'placeholder'=>'New End Time']) !!}
 
 
                                 </div><!-- /.input group -->

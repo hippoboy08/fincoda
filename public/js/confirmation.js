@@ -100,7 +100,7 @@ $(document).ready(function(){
 
   /* Trigger the singleDatePicker when edit a survey*/
   $(function() {
-    $('input[name="date"]').daterangepicker(
+    $('.split-time #startTime').daterangepicker(
       {
         singleDatePicker: true,
         timePicker: true
@@ -108,6 +108,16 @@ $(document).ready(function(){
     )
     /* set the format of the picked value */
     .on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY-MM-DD h:mm A'));
+      $(this).val(picker.endDate.format('YYYY-MM-DD h:mm A'));
+    });
+
+    $('.split-time #endTime').daterangepicker(
+      {
+        singleDatePicker: true,
+        timePicker: true
+      }
+    ).on('apply.daterangepicker', function(ev, picker) {
       $(this).val(picker.startDate.format('YYYY-MM-DD h:mm A'));
       $(this).val(picker.endDate.format('YYYY-MM-DD h:mm A'));
     });
@@ -132,7 +142,7 @@ $(document).ready(function(){
   );
 
   //add template description to every survey
-  var description = "Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person's level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br>Innovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.";
+  var description = "Innovation encourages an organisation to develop a knowledge-based competitive advantage. Innovation is often a critical component for success in today’s working world and so the FINCODA Innovation Barometer Assessment Tool gives organisations and individuals the ability to assess their capacity for innovation – by assessing individual levels of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br><br>The Fincoda Barometer includes five Innovation competencies that span the process of innovation from idea to outcome. The following five dimensions are measured using the FINCODA Barometer: creativity, critical thinking, initiative, teamwork and networking. As it is unlikely that an individual would show a high mastery on all five innovation competencies, an innovator is defined as someone who has a high mastery on one or more of the five innovation competencies.";
 
   $("textarea#editor1").val(description);
 
