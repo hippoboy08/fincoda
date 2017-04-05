@@ -6,6 +6,9 @@
         <div class="col-md-12 col-md-offset-0">
 
             @include('message.success')
+			@if(Session::has('message'))
+                <h4 style="color:red;">{{Session::get('message')}}</h4>
+            @endif
 
             <div class="box-header with-border">
 			

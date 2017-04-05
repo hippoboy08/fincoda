@@ -61,8 +61,8 @@
                             </div><br>
 
                             <p>Please choose the date and time range of the start and end of the survey: Current Date And Time On Server: {{\Carbon\Carbon::now()}}</p>
-								@if($errors->has('date'))
-                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('date') !!}</label>
+								@if($errors->has('startDate'))
+                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('startDate') !!}</label>
                                 @endif
                             <div class="form-group">
 
@@ -75,8 +75,10 @@
 
                                 </div><!-- /.input group -->
                             </div>
+							@if($errors->has('endDate'))
+                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('endDate') !!}</label>
+                            @endif
                             <div class="form-group">
-
                                 <div class="input-group split-time">
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>

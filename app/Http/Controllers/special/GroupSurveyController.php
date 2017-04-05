@@ -101,7 +101,8 @@ class GroupSurveyController extends Controller
 			$validation=Validator::make($request->all(),[
                 'title'=>'required|max:255',
                 'editor1'=>'required|max:10000',
-                'date'=>'required',
+                'startDate'=>'required',
+				'endDate'=>'required',
                 'survey_type'=>'required',
                 'group'=>'required',
                 'editor2'=>'required|max:500'
@@ -135,16 +136,19 @@ class GroupSurveyController extends Controller
             if($validation->fails()){
                 return redirect()->back()->withErrors($validation)->withInput();
             }else{
-                $date=explode('-',$request->date);
-                $from=new Carbon($date[0]);
-                $to=new Carbon($date[1]);
-			
-				//The date management still needs to be worked on especially at 24:00 or 12:00 AM
-               if($from<Carbon::now($companyTimeZone) || $to<Carbon::now($companyTimeZone)){
-                    return redirect()->back()
-                        ->with('fail','The Survey open and close date should not be before the current date and time. Please fix the date range before creating the survey.')
-                        ->withInput();
-                }else{
+                $from=new Carbon($request->startDate);
+            $to=new Carbon($request->endDate);
+
+            if($from<Carbon::now($companyTimeZone) || $to<Carbon::now($companyTimeZone)){
+                return redirect()->back()
+                    ->with('fail','The Survey open and close date should not be before the current date and time. Your Company Time Zone was set to: '.$companyTimeZone)
+                    ->withInput();
+			}
+			if($from > $to){
+                return redirect()->back()
+                    ->with('fail','The Survey open date should not be after the closing date. Your Company Time Zone was set to: '.$companyTimeZone)
+                    ->withInput();
+			}else{
 					DB::beginTransaction();
 					try{
 						$survey=$owner->creates_survey()->create([
@@ -1318,13 +1322,12 @@ class GroupSurveyController extends Controller
         }else{
 			DB::beginTransaction();
 			try{
-			if(!empty($request->date)){
-				$date=explode('-',$request->date);
-				$from=new Carbon($date[0]);
-				$to=new Carbon($date[1]);
-				if($from<Carbon::now($companyTimeZone) || $to<Carbon::now($companyTimeZone)){
+			if(!empty($request->startDate)&&!empty($request->endDate)){
+				$from=new Carbon($request->startDate);
+				$to=new Carbon($request->endDate);
+				if($from > $to){
 					return redirect()->back()
-                    ->with('fail','The Survey open and close date should not be before the current date and time. Your company time zone was set to: '.$companyTimeZone)
+                    ->with('fail','The Survey open date cannot be after the close date. Your company timezone was set to: '.$companyTimeZone)
                     ->withInput();
 				}
 				DB::table('surveys')
@@ -1336,17 +1339,60 @@ class GroupSurveyController extends Controller
 								'type_id'=>$request->survey_type,
 								'start_time'=>$from,
 								'end_time'=>$to,
-								'updated_at'=>Carbon::now($companyTimeZone)
+								'updated_at'=>Carbon::now()
 					]);
-					
-			}else{
+				
+			}
+			if(!empty($request->startDate)&&empty($request->endDate)){
+				$from=new Carbon($request->startDate);
+				$to=new Carbon($request->currentEndTime);
+				
+				if($from > $to){
+					return redirect()->back()
+                    ->with('fail','The Survey open date cannot be after the close date. Your company timezone was set to: '.$companyTimeZone)
+                    ->withInput();
+				}
+				
 				DB::table('surveys')
 							->where('id',$request->id)
 							->update([
 								'title'=>$request->title,
 								'description'=>$request->editor1,
 								'end_message'=>$request->editor2,
-								'type_id'=>$request->survey_type
+								'type_id'=>$request->survey_type,
+								'start_time'=>$from,
+								'updated_at'=>Carbon::now()
+					]);
+			}
+			if(empty($request->startDate)&&!empty($request->endDate)){
+				$from=new Carbon($request->currentStartTime);
+				$to=new Carbon($request->endDate);
+				if($from > $to){
+					return redirect()->back()
+                    ->with('fail','The Survey open date cannot be after the close date. Your company timezone was set to: '.$companyTimeZone)
+                    ->withInput();
+				}
+				
+				DB::table('surveys')
+							->where('id',$request->id)
+							->update([
+								'title'=>$request->title,
+								'description'=>$request->editor1,
+								'end_message'=>$request->editor2,
+								'type_id'=>$request->survey_type,
+								'end_time'=>$to,
+								'updated_at'=>Carbon::now()
+					]);
+			}
+			if(empty($request->startDate)&&empty($request->endDate)){
+				DB::table('surveys')
+							->where('id',$request->id)
+							->update([
+								'title'=>$request->title,
+								'description'=>$request->editor1,
+								'end_message'=>$request->editor2,
+								'type_id'=>$request->survey_type,
+								'updated_at'=>Carbon::now()
 					]);
 			}
             	
