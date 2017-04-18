@@ -6,6 +6,9 @@
         <tr>
             <th>Title</th>
 			<th>Edit</th>
+      @role('admin' or 'special')
+      <th>Participate</th>
+      @endrole
             <th>Delete</th>
             <th>Survey Type</th>
             <th>Open Date</th>
@@ -18,7 +21,7 @@
             @role('basic')
             <th>Survey Status</th>
             @endrole
-			
+
 			@role('external')
             <th>Survey Status</th>
             @endrole
@@ -37,7 +40,8 @@
     <tr>
         @role('admin')
         <td><a href="{!! url('admin/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
-        <td><a class="confirmation" href="{!! url('admin/survey/edit/'.$open->id) !!}">edit</a><br/><a href="{!! url('admin/companySurvey/'.$open->id) !!}">participate</a></td>
+        <td><a class="confirmation" href="{!! url('admin/survey/edit/'.$open->id) !!}">edit</a><br/></td>
+        <td><a class="btn btn-info" href="{!! url('admin/companySurvey/'.$open->id) !!}">Participate</a></td>
 		<td><a class="confirmation" href="{!! url('admin/survey/deleteSurvey/'.$open->id) !!}" >delete</a>
 
     </td>
@@ -64,7 +68,7 @@
 			<td> </td>
 			@endif
 		@endrole
-		
+
 		@role('external')
 			@if($open->completed=='0')
 			<td><a  href="{!! url('external/survey/'.$open->id) !!}">{!! $open->title !!}</a></td>
@@ -91,7 +95,8 @@
         @role('special')
         @if(Route::current()->getName()=='special.groupsurvey.index')
             <td><a href="{!! url('special/groupsurvey/'.$open->id) !!}">{!! $open->title !!}</a></td>
-			<td><a class="confirmation" href="{!! url('special/groupsurvey/edit/'.$open->id) !!}">edit</a><br/><a href="{!! url('special/groupSurvey/'.$open->id) !!}">participate</a</td>
+			<td><a class="confirmation" href="{!! url('special/groupsurvey/edit/'.$open->id) !!}">edit</a><br/></td>
+      <td><a class="btn btn-info" href="{!! url('special/groupSurvey/'.$open->id) !!}">Participate</a></td>
 			<td><a class="confirmation" href="{!! url('special/groupsurvey/deleteSurvey/'.$open->id) !!}">delete</a></td>
         @else
         @if($open->completed=='0'||$open->completed=='3'||$open->completed=='5')
@@ -148,7 +153,7 @@
 			<td><span class="label label-success">Completed</span></td>
 		@endif
         @endrole
-		
+
 		@role('external')
         @if($open->completed=='0')
 			<td><span class="label label-danger">Not completed</span></td>
@@ -163,7 +168,7 @@
 			<td><span class="label label-success">Completed</span></td>
 		@endif
         @endrole
-		
+
     </tr>
 @endforeach
         </tbody>
