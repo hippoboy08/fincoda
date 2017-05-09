@@ -24,7 +24,7 @@
             <li class="active"><a href="{!! url('external') !!}"><i class="fa fa-tachometer" aria-hidden="true"></i> <span>Dashboard</span></a></li>
             <li class="active"><a href="{!! url('external/profile') !!}"><i class="fa fa-user" aria-hidden="true"></i> <span>Profile</span></a></li>
 
-            <li class="treeview">
+            <!-- <li class="treeview">
                 <a href="#"><i class="fa fa-line-chart" aria-hidden="true"></i> <span>Survey</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{action('external\SurveyController@index')}}"><i class="fa fa-pie-chart" aria-hidden="true"></i>Survey Results</a></li>
@@ -38,7 +38,7 @@
                     <li><a href="{!! url('external/usergroup') !!}"><i class="fa fa-users" aria-hidden="true"></i>My Groups</a></li>
 
                 </ul>
-            </li>
+            </li> -->
 
 
         </ul><!-- /.sidebar-menu -->

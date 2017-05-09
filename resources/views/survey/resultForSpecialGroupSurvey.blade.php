@@ -63,7 +63,7 @@
                                     </div>
 
                                     @role ('special')
-									
+
 									@if(count($surveyScorePerIndicatorGroup)==5)
 									<h3 style="text-align:center;"><b>Group average score per dimension</b></h3>
                                     <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
@@ -162,9 +162,9 @@
                                           </script>
 										</div>
 
-										    <div class="row pull-right" >
+										    <!-- <div class="row pull-right" >
                                                 <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelSpecial',$survey->id)}}">Download Excel</a></u>
-                                            </div>
+                                            </div> -->
 
                                         </div>
 

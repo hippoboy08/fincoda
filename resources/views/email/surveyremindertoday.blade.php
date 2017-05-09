@@ -1,3 +1,6 @@
+<img src="{{URL::asset('img/FINCODA logo.png')}}" alt="FINCODA logo" width="300px">
+<img src="{{URL::asset('img/EU logo.png')}}" alt="EU logo" align="right" width="150px">
+<br>
 <p>Dear {!!$name!!}
 
 <p>This is a reminder that the survey you were asked to respond to is now open.</p>
