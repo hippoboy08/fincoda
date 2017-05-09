@@ -6,8 +6,13 @@
         <tr>
             <th>Title</th>
 			<th>Edit</th>
-      @role('admin' or 'special')
+      @role('admin')
       <th>Participate</th>
+      @endrole
+      @role('special')
+      @if(Route::current()->getName()=='special.groupsurvey.index')
+        <th>Participate</th>
+      @endif
       @endrole
             <th>Delete</th>
             <th>Survey Type</th>

@@ -125,7 +125,17 @@
                                         <strong>What is your highest completed education?* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                        {!! Form::text('highest_education',$profile->What_is_your_highest_completed_education,['class'=>'form-control']) !!}
+                                      @php
+                                        $options = ['No education' => 'No education',
+                                        'Primary education' => 'Primary education',
+                                        'Secondary education' => 'Secondary education',
+                                        'Pre-vocational or vocational education' => 'Pre-vocational or vocational education',
+                                        'University level (bachelor)' => 'University level (bachelor)',
+                                        'University level (master)' => 'University level (master)',
+                                        'PhD level' => 'PhD level'];
+                                      @endphp
+                                        <!-- {!! Form::text('highest_education',$profile->What_is_your_highest_completed_education,['class'=>'form-control']) !!} -->
+                                        {!! Form::select('highest_education', $options, $profile->What_is_your_highest_completed_education, ['class'=>'form-control']) !!}
                                     </div>
                                 </div>
 
@@ -137,7 +147,15 @@
                                         <strong>Are you a student or a professional?* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                        {!! Form::text('professional_status',$profile->Are_you_a_student_or_a_professional,['class'=>'form-control']) !!}
+                                        <!-- {!! Form::text('professional_status',$profile->Are_you_a_student_or_a_professional,['class'=>'form-control', 'list'=>'professionalList'])!!} -->
+                                        @php
+                                          $status = ['Student' => 'Student', 'Professional' => 'Professional'];
+                                        @endphp
+                                        {!! Form::select('professional_status', $status, $profile->Are_you_a_student_or_a_professional, ['class'=>'form-control']) !!}
+                                        <!-- <datalist id="professionalList">
+                                          <option value="Student">
+                                          <option value="Professional">
+                                        </datalist> -->
                                     </div>
                                 </div>
 
@@ -150,7 +168,14 @@
                                       <strong>What level of study do you currently follow?* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                      {!! Form::text('study_level',$profile->What_level_of_study_do_you_currently_follow,['class'=>'form-control']) !!}
+                                      @php
+                                        $options = ['Bachelor degree' => 'Bachelor degree',
+                                        'Master degree' => 'Master degree',
+                                        'Associate Degree' => 'Associate Degree',
+                                        'Other' => 'Other'];
+                                      @endphp
+                                      <!-- {!! Form::text('study_level',$profile->What_level_of_study_do_you_currently_follow,['class'=>'form-control']) !!} -->
+                                      {!! Form::select('study_level', $options, $profile->What_level_of_study_do_you_currently_follow, ['class'=>'form-control']) !!}
                                     </div>
                                   </div>
 
@@ -162,7 +187,23 @@
                                       <strong>What type of study are you doing?* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                      {!! Form::text('study_type',$profile->What_type_of_study_are_you_doing,['class'=>'form-control']) !!}
+                                      <!-- {!! Form::text('study_type',$profile->What_type_of_study_are_you_doing,['class'=>'form-control']) !!} -->
+                                      @php
+                                        $options = ['Business' => 'Business',
+                                        'Engineering' => 'Engineering',
+                                        'Arts' => 'Arts',
+                                        'Healthcare' => 'Healthcare',
+                                        'Life sciences' => 'Life sciences',
+                                        'Natural science / mathematics' => 'Natural science / mathematics',
+                                        'Social work' => 'Social work',
+                                        'Design' => 'Design',
+                                        'Education' => 'Education',
+                                        'ICT' => 'ICT',
+                                        'Social science' => 'Social science',
+                                        'Humanities' => 'Humanities',
+                                        'Other' => 'Other'];
+                                      @endphp
+                                      {!! Form::select('study_type', $options, $profile->What_type_of_study_are_you_doing, ['class'=>'form-control']) !!}
                                     </div>
                                   </div>
 
@@ -186,7 +227,14 @@
                                       <strong>At what stage or in which year of study indicated above are you? Fill in the academic year in which the majority of your subjects are based.* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                      {!! Form::text('study_stage',$profile->At_what_stage_or_in_which_year_of_study_indicated_above_are_you,['class'=>'form-control']) !!}
+                                      <!-- {!! Form::text('study_stage',$profile->At_what_stage_or_in_which_year_of_study_indicated_above_are_you,['class'=>'form-control']) !!} -->
+                                      @php
+                                        $options = ['First year' => 'First year',
+                                        'Second year' => 'Second year',
+                                        'Third year' => 'Third year',
+                                        'Fourth year or more' => 'Fourth year or more'];
+                                      @endphp
+                                      {!! Form::select('study_stage', $options, $profile->At_what_stage_or_in_which_year_of_study_indicated_above_are_you, ['class'=>'form-control']) !!}
                                     </div>
                                   </div>
                                 </div>
@@ -200,7 +248,22 @@
                                       <strong>What industry does your company/organization belong to?* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                      {!! Form::text('company_industry',$profile->What_industry_does_your_company_or_organization_belong_to,['class'=>'form-control']) !!}
+                                      <!-- {!! Form::text('company_industry',$profile->What_industry_does_your_company_or_organization_belong_to,['class'=>'form-control']) !!} -->
+                                      @php
+                                        $options = [
+                                        'Healthcare' => 'Healthcare',
+                                        'Non-profit / government' => 'Non-profit / government',
+                                        'Technology' => 'Technology',
+                                        'Energy &amp; utilities' => 'Energy &amp; utilities',
+                                        'Transportation' => 'Transportation',
+                                        'Retail' => 'Retail',
+                                        'Finance' => 'Finance',
+                                        'Education' => 'Education',
+                                        'Professional service' => 'Professional service',
+                                        'Manufacturing' => 'Manufacturing',
+                                        'Other' => 'Other'];
+                                      @endphp
+                                      {!! Form::select('company_industry', $options, $profile->What_industry_does_your_company_or_organization_belong_to, ['class'=>'form-control']) !!}
                                     </div>
                                   </div>
 
@@ -212,7 +275,15 @@
                                       <strong>How long has your company/organization been operating?* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                      {!! Form::text('company_age',$profile->How_long_has_your_company_or_organization_been_operating,['class'=>'form-control']) !!}
+                                      <!-- {!! Form::text('company_age',$profile->How_long_has_your_company_or_organization_been_operating,['class'=>'form-control']) !!} -->
+                                      @php
+                                        $options = [
+                                        'Less than a year' => 'Less than a year',
+                                        'Two to five years' => 'Two to five years',
+                                        'Five to ten years' => 'Five to ten years',
+                                        'More than 10 years' => 'More than 10 years'];
+                                      @endphp
+                                      {!! Form::select('company_age', $options, $profile->How_long_has_your_company_or_organization_been_operating, ['class'=>'form-control']) !!}
                                     </div>
                                   </div>
 
@@ -224,7 +295,23 @@
                                       <strong>What type of study did you do?* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                      {!! Form::text('study_type_you_did',$profile->What_type_of_study_did_you_do,['class'=>'form-control']) !!}
+                                      <!-- {!! Form::text('study_type_you_did',$profile->What_type_of_study_did_you_do,['class'=>'form-control']) !!} -->
+                                      @php
+                                        $options = ['Business' => 'Business',
+                                        'Engineering' => 'Engineering',
+                                        'Law' => 'Law',
+                                        'Healthcare' => 'Healthcare',
+                                        'Life sciences' => 'Life sciences',
+                                        'Natural science / mathematics' => 'Natural science / mathematics',
+                                        'Social work' => 'Social work',
+                                        'Design / arts' => 'Design / arts',
+                                        'Education' => 'Education',
+                                        'ICT' => 'ICT',
+                                        'Social science' => 'Social science',
+                                        'Humanities' => 'Humanities',
+                                        'Other' => 'Other'];
+                                      @endphp
+                                      {!! Form::select('study_type_you_did', $options, $profile->What_type_of_study_did_you_do, ['class'=>'form-control']) !!}
                                     </div>
                                   </div>
 
@@ -236,7 +323,20 @@
                                       <strong>What is your job role?* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                      {!! Form::text('job_role',$profile->What_is_your_job_role,['class'=>'form-control']) !!}
+                                      <!-- {!! Form::text('job_role',$profile->What_is_your_job_role,['class'=>'form-control']) !!} -->
+                                      @php
+                                        $options = [
+                                        'Individual Contributor' => 'Individual Contributor',
+                                        'Team Leader' => 'Team Leader',
+                                        'Manager ' => 'Manager ',
+                                        'Senior Manager' => 'Senior Manager',
+                                        'Partner' => 'Partner',
+                                        'Owner' => 'Owner',
+                                        'Volunteer' => 'Volunteer',
+                                        'Intern' => 'Intern',
+                                        'Other' => 'Other'];
+                                      @endphp
+                                      {!! Form::select('job_role', $options, $profile->What_is_your_job_role, ['class'=>'form-control']) !!}
                                     </div>
                                   </div>
 
@@ -248,7 +348,14 @@
                                       <strong>How big is the company / organization you work for?* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                      {!! Form::text('company_size',$profile->How_big_is_the_company_or_organization_you_work_for,['class'=>'form-control']) !!}
+                                      <!-- {!! Form::text('company_size',$profile->How_big_is_the_company_or_organization_you_work_for,['class'=>'form-control']) !!} -->
+                                      @php
+                                        $options = [
+                                        'Less than 50 employees' => 'Less than 50 employees',
+                                        '50 to 250 employees' => '50 to 250 employees',
+                                        'More than 250 employees ' => 'More than 250 employees'];
+                                      @endphp
+                                      {!! Form::select('company_size', $options, $profile->How_big_is_the_company_or_organization_you_work_for, ['class'=>'form-control']) !!}
                                     </div>
                                   </div>
                                 </div>

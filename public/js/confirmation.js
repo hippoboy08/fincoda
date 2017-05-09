@@ -133,23 +133,25 @@ $(document).ready(function(){
 
   /* Only shows the corresponding fields of the professional status in the EditProfile blade*/
   $(function () {
-    $('input[name="professional_status"]').change();
+    $('select[name="professional_status"]').change();
   });
-  $('input[name="professional_status"]').change(
+  $('select[name="professional_status"]').change(
     function() {
       var professionalStatus = $(this).val();
       /* Choose the fields to hide*/
-      var hidingFields = professionalStatus == "Professional" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
+      var hidingFields = professionalStatus == "professional" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
       /* Choose the fields to show*/
-      var displayingFields = professionalStatus == "Student" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
+      var displayingFields = professionalStatus == "student" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
       hidingFields.fadeOut('slow');
       displayingFields.fadeIn('slow');
-      /* Set the view to the displaying fields*/
-      $("html, body").delay(0).animate({
-        scrollTop: displayingFields.offset().top
-    }, 500);
+    //   /* Set the view to the displaying fields*/
+    //   $("html, body").delay(0).animate({
+    //     scrollTop: displayingFields.offset().top
+    // }, 500);
     }
   ).change();
+
+
 
   //add template description to every survey
   var description = "Innovation encourages an organisation to develop a knowledge-based competitive advantage. Innovation is often a critical component for success in today’s working world and so the FINCODA Innovation Barometer Assessment Tool gives organisations and individuals the ability to assess their capacity for innovation – by assessing individual levels of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br><br>The Fincoda Barometer includes five Innovation competencies that span the process of innovation from idea to outcome. The following five dimensions are measured using the FINCODA Barometer: creativity, critical thinking, initiative, teamwork and networking. As it is unlikely that an individual would show a high mastery on all five innovation competencies, an innovator is defined as someone who has a high mastery on one or more of the five innovation competencies.";
