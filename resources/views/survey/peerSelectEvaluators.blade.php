@@ -49,7 +49,7 @@
                 @endrole
                 {!! Form::hidden('survey_id',$survey->id) !!}
                 <p class="panel-title">
-                  <label>Please select a maximum of {{$survey->number_of_evaluators}} people you would like to evaluate you. If no participants is shown, you have had maximum participants as evaluators.</label>
+                  <label>Please select a maximum of {{$survey->number_of_evaluators-count($evaluators)}} people you would like to evaluate you. If no participants is shown, you have had maximum participants as evaluators.</label>
                 </p>
                 @if(Session::has('message'))
                 <h4 style="color:red;">{{Session::get('message')}}</h4>

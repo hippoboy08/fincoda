@@ -109,31 +109,7 @@ class GroupSurveyController extends Controller
 
             ]);
 			$owner=Auth::User();
-			$participants = DB::select(DB::raw(
-									"select user_in_groups.user_id from user_in_groups where user_in_groups.user_group_id = :groupId and user_in_groups.user_id != 0 "),
-										array("groupId"=>$request->group));
-			
-			
-			if($request->survey_type == 2 && $request->numberOfEvaluators < 1){
-			    return redirect()->back()
-                    ->with('fail','You need to provide the number of evaluators for your peer survey: It cannot be zero')
-                    ->withInput();
-            }
-			
-			if($request->survey_type == 2 && $request->numberOfEvaluators == count($participants)){
-				return redirect()->back()
-					->with('fail','The number of evaluators for your peer survey cannot equal the number of participants in the survey')
-					->withInput();
-			}
-		
-			if($request->survey_type == 2 && $request->numberOfEvaluators > count($participants)){
-				return redirect()->back()
-					->with('fail','The number of evaluators for your peer survey cannot be greator than the number of participants in the survey')
-					->withInput();
-			}	
-			
-
-            if($validation->fails()){
+			if($validation->fails()){
                 return redirect()->back()->withErrors($validation)->withInput();
             }else{
                 $from=new Carbon($request->startDate);
@@ -148,8 +124,18 @@ class GroupSurveyController extends Controller
                 return redirect()->back()
                     ->with('fail','The Survey open date should not be after the closing date. Your Company Time Zone was set to: '.$companyTimeZone)
                     ->withInput();
-			}else{
-					DB::beginTransaction();
+			}
+			
+			if($request->survey_type == 1){
+				$participants = DB::select(DB::raw(
+									"select user_in_groups.user_id, role_user.role_id from user_in_groups
+										join role_user on user_in_groups.user_id = role_user.user_id
+										where user_in_groups.user_group_id = :groupId 
+										and role_user.role_id != 4
+										and user_in_groups.user_id != 0"),
+										array("groupId"=>$request->group));
+									
+				DB::beginTransaction();
 					try{
 						$survey=$owner->creates_survey()->create([
 							'title'=>$request->title,
@@ -193,9 +179,81 @@ class GroupSurveyController extends Controller
 				DB::rollback();
 				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
-            }
-
 			}
+			
+			if($request->survey_type == 2){
+				$participants = DB::select(DB::raw(
+									"select user_in_groups.user_id from user_in_groups
+										where user_in_groups.user_group_id = :groupId 
+											and user_in_groups.user_id != 0 "),
+										array("groupId"=>$request->group));
+										
+				if($request->numberOfEvaluators < 1){
+					return redirect()->back()
+						->with('fail','You need to provide the number of evaluators for your peer survey: It cannot be zero')
+						->withInput();
+				}
+			
+				if($request->numberOfEvaluators == count($participants)){
+					return redirect()->back()
+						->with('fail','The number of evaluators for your peer survey cannot equal the number of participants in the survey')
+						->withInput();
+				}
+		
+				if($request->numberOfEvaluators > count($participants)){
+					return redirect()->back()
+						->with('fail','The number of evaluators for your peer survey cannot be greator than the number of participants in the survey')
+						->withInput();
+				}	
+										
+				DB::beginTransaction();
+					try{
+						$survey=$owner->creates_survey()->create([
+							'title'=>$request->title,
+							'description'=>$request->editor1,
+							'number_of_evaluators'=>$request->numberOfEvaluators,
+							'end_message'=>$request->editor2,
+							'user_id'=>$owner->id,
+							'type_id'=>$request->survey_type,
+							'company_id'=>Auth::User()->company_id,
+							'category_id'=>2,
+							'user_group_id'=>(int)$request->group,
+							'start_time'=>$from,
+							'end_time'=>$to
+					]);
+
+					
+					if(!empty($participants)){
+						foreach($participants as $user){
+							DB::table('participants')
+								->insert([
+									'survey_id'=>$survey->id,
+									'user_id'=>$user->user_id,
+									'created_at'=>Carbon::now($companyTimeZone),
+									'updated_at'=>Carbon::now($companyTimeZone)
+								]);
+							$userEmail = DB::table('users')->where('id',$user->user_id)->value('email');
+							$this->email('email.newsurvey',['owner'=>$owner->name,'link'=>url('/').'/login',
+								'name'=>User::find($user->user_id)->name,'start_time'=>$survey->start_time,'end_time'=>$survey->end_time,'title'=>$survey->title],$userEmail);
+						}
+					}
+					 DB::commit();
+					//This piece of code was inherited but basically passes an array of emails to the emailer
+                    //$this->email('email.newsurvey',['owner'=>$owner->name, 'title'=>$survey->title],$member_email);
+					//$this->email('email.newsurvey',['owner'=>$owner=Auth::User()->name, 'link'=>url('/').'/login',
+							     //'title'=>$survey->title,'name'=>User::find($user->user_id)->name,start_time'=>$survey->start_time,'end_time'=>$survey->end_time],$userEmail);
+
+                    return Redirect::to('special/groupsurvey')->with('success','The survey has been created successfully.
+                 The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
+               
+			}catch(\Exception $e){
+				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
+			}
+			}
+			
+			
+		}
 
         }
 		
@@ -478,6 +536,7 @@ class GroupSurveyController extends Controller
 	//May have to be looked into.
 	public function downloadCsv($surveyId){
 		$id = $surveyId;
+		$survey = Survey::find($surveyId);
 		if($this->ValidateSurvey($id)=='true'){
           if($this->SurveyStatus($id)=='pending'){
               $this->editSurvey($id);
@@ -569,7 +628,7 @@ class GroupSurveyController extends Controller
 
 			  $headers = array(
 					'Content-Type' 	=> 'application/vnd.ms-excel',
-					'Content-Disposition'	=>	'attachment;filename="dav.xlsx"'
+					'Content-Disposition'	=>	'attachment;filename='.$survey->title.".xlsx"
 				);
 
 			  $workBook = new PHPExcel();
@@ -1227,7 +1286,7 @@ class GroupSurveyController extends Controller
 										and users.id in (select user_in_groups.user_id from `user_in_groups` 
 										where user_in_groups.user_group_id = (select surveys.user_group_id from surveys where surveys.id = :surveyId2))
 										and users.id not in(select participants.user_id from participants where participants.survey_id = :surveyId)and users.id 
-										in (select role_user.user_id from role_user where role_user.role_id != 1)"),
+										in (select role_user.user_id from role_user where role_user.role_id != 1 and role_user.role_id != 4)"),
 										array("surveyId"=>$id,"companyId"=>Auth::User()->company_id,"surveyId2"=>$id));
 										
 					
@@ -1313,7 +1372,6 @@ class GroupSurveyController extends Controller
         $validation=Validator::make($request->all(),[
             'title'=>'required|max:255',
             'editor1'=>'required|max:10000',
-            'survey_type'=>'required',
             'editor2'=>'required|max:500'
 
         ]);
@@ -1336,7 +1394,6 @@ class GroupSurveyController extends Controller
 								'title'=>$request->title,
 								'description'=>$request->editor1,
 								'end_message'=>$request->editor2,
-								'type_id'=>$request->survey_type,
 								'start_time'=>$from,
 								'end_time'=>$to,
 								'updated_at'=>Carbon::now()
@@ -1359,7 +1416,6 @@ class GroupSurveyController extends Controller
 								'title'=>$request->title,
 								'description'=>$request->editor1,
 								'end_message'=>$request->editor2,
-								'type_id'=>$request->survey_type,
 								'start_time'=>$from,
 								'updated_at'=>Carbon::now()
 					]);
@@ -1379,7 +1435,6 @@ class GroupSurveyController extends Controller
 								'title'=>$request->title,
 								'description'=>$request->editor1,
 								'end_message'=>$request->editor2,
-								'type_id'=>$request->survey_type,
 								'end_time'=>$to,
 								'updated_at'=>Carbon::now()
 					]);
@@ -1391,7 +1446,6 @@ class GroupSurveyController extends Controller
 								'title'=>$request->title,
 								'description'=>$request->editor1,
 								'end_message'=>$request->editor2,
-								'type_id'=>$request->survey_type,
 								'updated_at'=>Carbon::now()
 					]);
 			}

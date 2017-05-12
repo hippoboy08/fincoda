@@ -171,6 +171,7 @@ class RegisterController extends Controller
             return redirect()->back()->withErrors($validator)->withInput()->with('message','Validation failed');
         }
 		$survey = DB::table('surveys')->where('id',$request->surveyId)->value('id');
+		$surveyNumberEvaluators = DB::table('surveys')->where('id',$request->surveyId)->value('number_of_evaluators');
 		$surveyCompany = DB::table('surveys')->where('id',$request->surveyId)->value('company_id');
 		$inviterEmail = DB::table('users')->where('email',$request->emailOfWhoInvitedYou)->value('email');
 		$inviterId = DB::table('users')->where('email',$request->emailOfWhoInvitedYou)->value('id');
@@ -189,6 +190,7 @@ class RegisterController extends Controller
 		
 		$modifiedEmail = $inviterCompany.'.'.$request->yourEmail;
 		$modifiedEmailExists = DB::table('users')->where('email',$modifiedEmail)->value('email');
+		
 		if(!empty($modifiedEmailExists)){
 			return redirect()->back()->withInput()->with('message','The email you are registering already exists');
 		}
@@ -214,6 +216,20 @@ class RegisterController extends Controller
 		if(empty($inviterId)){
             return redirect()->back()->withInput()->with('message','We could not find the record of the person who invited you');
         }
+		
+		//This returns the evaluators for this survey that the current logged in user selected
+		$evaluators = DB::select(DB::raw(
+			"select users.id, users.name, users.email from users where users.id in 
+				(select peer_surveys.peer_id from peer_surveys 
+					where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)"),
+				array("surveyId"=>$request->survey_id,"currentUser"=>$inviterId));
+		
+		$requiredNumEvaluators = $surveyNumberEvaluators-count($evaluators);
+		
+		if($requiredNumEvaluators==count($evaluators)){
+			return redirect()->back()->withInput()->with('message','Unfortunately the required number of '.$surveyNumberEvaluators.' users to do the evaluation has already been reached');
+        }
+		
 		if($surveyCompany != $inviterCompany){
             return redirect()->back()->withInput()->with('message','Its likely you belong to a different company and the survey belongs to another company');
         }
@@ -242,6 +258,8 @@ class RegisterController extends Controller
 							'external_modified_email'=>1,
 							'email'=>$inviterCompany.'.'.$request->yourEmail,
 							'company_id'=>$inviterCompany,
+							'created_at'=>Carbon::now(),
+							'updated_at'=>Carbon::now(),
 							'password'=>bcrypt($request->password)
 						]);
 						
@@ -255,15 +273,6 @@ class RegisterController extends Controller
 						->insert([
 							'user_id'=>$user
 						]);
-			
-			/*DB::table('peer_surveys')
-						->insert([
-							'survey_id'=>$request->surveyId,
-							'peer_id'=>$user,
-							'user_id'=>$inviterId,
-							'created_at'=>Carbon::now(),
-							'updated_at'=>Carbon::now()
-						]);*/
 						
 			DB::table('external_evaluators')
 								->where('invited_by_user_id',$inviterId)
@@ -282,6 +291,14 @@ class RegisterController extends Controller
 							'updated_at'=>Carbon::now()
 						]);
 			
+			DB::table('peer_surveys')
+						->insert([
+							'survey_id'=>$request->surveyId,
+							'peer_id'=>$user,
+							'user_id'=>$inviterId,
+							'created_at'=>Carbon::now(),
+							'updated_at'=>Carbon::now()
+						]);
 						
 			//send email to the registered user
 			$this->email('email.registrationExternalUser',['invitedEmail'=>$request->name,  'link'=>url('/').'/login',
@@ -297,6 +314,8 @@ class RegisterController extends Controller
 							'external'=>1,
 							'email'=>$request->yourEmail,
 							'company_id'=>$inviterCompany,
+							'created_at'=>Carbon::now(),
+							'updated_at'=>Carbon::now(),
 							'password'=>bcrypt($request->password)
 						]);
 						
@@ -311,14 +330,14 @@ class RegisterController extends Controller
 							'user_id'=>$user
 						]);
 						
-			/*DB::table('peer_surveys')
+			DB::table('peer_surveys')
 						->insert([
 							'survey_id'=>$request->surveyId,
 							'peer_id'=>$user,
 							'user_id'=>$inviterId,
 							'created_at'=>Carbon::now(),
 							'updated_at'=>Carbon::now()
-						]);*/
+						]);
 						
 			DB::table('external_evaluators')
 								->where('invited_by_user_id',$inviterId)

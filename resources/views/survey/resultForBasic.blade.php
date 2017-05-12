@@ -116,9 +116,9 @@
 
                       <div id="compared" class="tab-pane fade">
                         <div class="row pull-right" >
-                           <i class="fa fa-print" aria-hidden="true"></i> <u><a href="#">Print report (PDF)</a></u>
+                           <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('basic/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                           &nbsp;
-                           <i class="fa fa-download" aria-hidden="true"></i> <u><a href="#">Download Excel</a></u>
+                           <i class="fa fa-download" aria-hidden="true"></i> <u><a href="{!! url('basic/survey/downloadCsv/'.$survey->id) !!}">Download Excel</a></u>
                         </div>
 
                         @if(count($surveyScoreAllUsersCheckThreeParticipants)>2)

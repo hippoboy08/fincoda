@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `fincoda`
+-- Database: `fincoda_db`
 --
 
 -- --------------------------------------------------------
@@ -3257,7 +3257,7 @@ CREATE TABLE `user_in_groups` (
   `user_id` int(10) UNSIGNED NOT NULL,
   `user_group_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `updated_at` datetime NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -3353,7 +3353,7 @@ CREATE TABLE `yearly_averages` (
   `teamwork` decimal(18,4) NOT NULL,
   `networking` decimal(18,4) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `updated_at` timestamp NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
