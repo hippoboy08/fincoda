@@ -82,18 +82,18 @@
                           @endforeach
                           @endif
                         </tbody>
-                        <tfoot id='tfooter' align='center'>
+                        <!-- <tfoot id='tfooter' align='center'>
                           <tr>
                             <td colspan="2">
                               <button type="button" id="externalEvaluator" class="btn btn-block btn-info" aria-hidden="true"><strong><b><label>Add external Evaluator</label></b></strong></button>
                             </td>
                           </tr>
-                        </tfoot>
+                        </tfoot> -->
                       </table>
                     </div>
                   </div>
 
-                  <div class="modal fade" id="externalEvaluatorModal" tabindex="-1">
+                  <!-- <div class="modal fade" id="externalEvaluatorModal" tabindex="-1">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -103,16 +103,14 @@
                       <div class="modal-body">
                         <div class="form-group">
                           <label for="email">There is already 5 evaluators !!!</label>
-                          <!-- <input class="form-control" id="email" type="text" placeholder="Enter the evaluator email address"> -->
                       </div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <!-- <button type="button" id="inviteExternalEvaluator" class="btn btn-primary">Send Invitation</button> -->
                       </div>
-                    </div><!-- /.modal-content -->
-                  </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+                    </div>
+                  </div>
+                </div> -->
 
                   <button id="pickEvaluators" type="submit" class="btn btn-info btn-flat"><i class="fa fa-floppy-o" aria-hidden="true" ></i> Submit</button>
 
@@ -124,8 +122,8 @@
                   @endif
                   {!! Form::close() !!}
                 </div>
-				
-				
+
+
                 <div id="tab2" class="tab-pane fade">
                   <br>
                   <p class="panel-title">
@@ -171,7 +169,7 @@
                     </table>
                   </div>
                 </div>
-				
+
                 <div id="tab3" class="tab-pane fade">
                   <br>
                   <p class="panel-title">
@@ -265,7 +263,7 @@
                   <h3>You don't have enough evaluations to see your result.</h3>
                   @endif
                   @endrole
-				  
+
 				  @role('admin')
                   @if(count($evaluatorsCompleted)>1)
                   <script type="text/javascript">
@@ -317,8 +315,8 @@
                   @endif
                   @endrole
                 </div>
-				
-				
+
+
 				<div id="tab5" class="tab-pane fade">
                 <br>
                 @role('basic')
@@ -366,12 +364,12 @@
                       </table>
 				    </div>
                   </div>
-				  
+
                   <button id="pickEvaluators" type="submit" class="btn btn-info btn-flat"><i class="fa fa-floppy-o" aria-hidden="true" ></i> Submit</button>
                   {!! Form::close() !!}
                 </div>
-				
-				
+
+
 				<div id="tab6" class="tab-pane fade">
                   <br>
                   <p class="panel-title">
