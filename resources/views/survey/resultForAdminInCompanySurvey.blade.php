@@ -45,6 +45,11 @@
 
                   <div class="tab-content">
                     <div id="overview" class="tab-pane fade in active">
+                      <div class="row pull-right" >
+                         <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
+                         &nbsp;
+                         <i class="fa fa-print" aria-hidden="true"></i> <u><a href="#">Download Excel</a></u>
+                      </div>
                       <div class="report-caption">
                         <h4><b>Description</b></h4>
                         <p>The bar graph shows your answers in this survey.
@@ -122,6 +127,11 @@
 
 
                           @if(count($surveyScoreAllUsersCheckThreeParticipants)>2)
+                          <div class="row pull-right" >
+                             <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
+                             &nbsp;
+                             <i class="fa fa-print" aria-hidden="true"></i> <u><a href="#">Download Excel</a></u>
+                          </div>
                           <div class="report-caption">
                             <h4><b>Description</b></h4>
                             <p>The bar graph shows a comparison between your score and company average score in this survey.
