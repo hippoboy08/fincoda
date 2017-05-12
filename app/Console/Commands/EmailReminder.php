@@ -39,7 +39,12 @@ use EmailTrait;
      *
      * @return mixed
      */
-    public function handle(){   
+    public function handle(){  
+		for($i=0; ; $i++){
+			if($i>1000000){
+				break;
+			}
+		}
 		$emailerRunning = DB::table('scheduled_tasks')->where('id',1)->value('running');
 		if($emailerRunning===0){
         //This returns all of the surveys that are due in 7 days from now

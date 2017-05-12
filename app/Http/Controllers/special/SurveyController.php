@@ -21,6 +21,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Session;
+use PHPExcel;
+use PHPExcel_IOFactory;
+use PHPExcel_Worksheet;
+use PDF;
+use View;
+use App;
+use Users;
 
 class SurveyController extends Controller
 {
@@ -33,6 +40,206 @@ class SurveyController extends Controller
 	public function switchLanguage(Request $request){
 		return response()->json(array('stri'=>'success'));
 	}
+	
+	
+		
+	public function downloadCsv($surveyId){
+		$id = $surveyId;
+		$survey = Survey::find($surveyId);
+		if($this->ValidateSurvey($id)=='true'){
+          if($this->SurveyStatus($id)=='pending'){
+              $this->editSurvey($id);
+          }else{
+              //This returns the indicator scores for each user that took part in the survey
+              //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
+              //In other words it will always return a single result
+			  //This returns the average of each user group per indicator group in this survey
+              $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
+                                "SELECT p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,
+									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
+									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
+										(SELECT results.survey_id as Survey_ID, results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
+											indicator_groups.name as Indicator_Group,
+											AVG(results.answer) as Indicator_Group_Average
+											FROM indicators
+											JOIN results on results.indicator_id = indicators.id
+											JOIN indicator_groups on indicators.group_id = indicator_groups.id
+											WHERE results.survey_id = :surveyId
+											GROUP BY results.survey_id, results.user_id, indicators.group_id)
+								AS p GROUP BY p.Indicator_Group_ID"),
+                                array("surveyId"=>$id));
+			  
+              $surveyScoreAllUsers = DB::table('indicators')
+                                ->join('results','results.indicator_id','=','indicators.id')
+                                ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
+                                ->select('results.survey_id as Survey_ID',
+                                         'results.user_id as User_ID','indicators.id as Indicator_ID',
+                                         'indicators.indicator as Indicator', 'results.answer as Answer'
+                                         )
+                                ->where('results.survey_id',$id)
+                                ->where('results.user_id',Auth::User()->id)
+                                ->groupBy('results.survey_id','results.user_id', 'indicators.id')
+                                ->get();
+								
+			   $participants = DB::table('participants')
+                                ->join('users','users.id','=','participants.user_id')
+                                ->select('users.id as User_ID',
+                                         'users.name as Name','users.email as Email',
+                                         'participants.completed as Completed'
+                                         )
+                                ->where('participants.survey_id',$id)
+                                ->where('participants.user_id',Auth::User()->id)
+                                ->groupBy('participants.survey_id','participants.user_id')
+                                ->get();
+								
+				$surveys = DB::table('surveys')
+                                ->select('surveys.id as Survey_ID',
+                                         'surveys.title as Title','surveys.description as Description',
+                                         'surveys.start_time as Start_Time','surveys.end_time as End_Time'
+                                         )
+                                ->where('surveys.id',$id)
+                                ->get();
+
+              $company = Auth::User()->company()->first();
+			  $company_profile=$company->profile()->first();
+			  $participantsNumber = count(Survey::find($id)->participants()->get());
+			  $participantsCompletedNumber = count(Survey::find($id)->participants()->where('completed',1)->get());
+			  
+			  //These are the peer survey variables: the application is an evolving one with changes crafted in from time to time: reorganizing the code to have pre defined functions
+			  //as any programmer would think of the code below, would mean doing so so many times as unanticipated changes arise: better to have the loose coupling and allow for future
+			  //growth
+			  $surveyScoreGroupAvgPerIndicatorGroupMinAndMaxPeer = DB::select(DB::raw(
+                                "SELECT d.Survey_ID, d.Indicator_Group_ID, d.Indicator_Group,
+									MIN(d.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
+									MAX(d.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
+										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+											  from `peer_results`
+											  join indicators on indicators.id = peer_results.indicator_id
+											  join indicator_groups on indicator_groups.id = indicators.group_id
+											  where peer_results.peer_survey_id = :surveyId group by 
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id)
+								AS d GROUP BY d.Indicator_Group_ID"),
+                                array("surveyId"=>$id));
+				
+				
+               $surveyScoreAllUsersPeer = DB::select(DB::raw(
+												"select peer_results.id, peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID, 
+												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator, indicators.group_id as Indicator_Group_ID, 
+												 indicator_groups.name as Indicator_Group, avg(peer_results.answer) as Answer from `peer_results`
+												 join indicators on indicators.id = peer_results.indicator_id
+												 join indicator_groups on indicator_groups.id = indicators.group_id
+												 where peer_results.peer_survey_id = :surveyId and peer_results.user_id = :userId group by 
+												 peer_results.peer_survey_id, peer_results.user_id, 
+												 peer_results.indicator_id having count(peer_results.peer_id)>1"),
+												array("surveyId"=>$surveyId,"userId"=>Auth::User()->id));
+								
+			  $headers = array(
+					'Content-Type' 	=> 'application/vnd.ms-excel',
+					'Content-Disposition'	=>	'attachment;filename='.$survey->title.".xlsx"
+				);
+				
+			  $workBook = new PHPExcel();
+			  $workSheet1 = new PHPExcel_Worksheet($workBook, 'Survey');
+			  $workBook->addSheet($workSheet1,0);
+			  $workSheet2 = new PHPExcel_Worksheet($workBook, 'Participants');
+			  $workBook->addSheet($workSheet2,1);
+			  $workSheet3 = new PHPExcel_Worksheet($workBook, 'Results');
+			  $workBook->addSheet($workSheet3,2);
+			  $workSheet4 = new PHPExcel_Worksheet($workBook, 'Min_Max_Average');
+			  $workBook->addSheet($workSheet4,3);
+			  
+			  //Write the survey details to the excel sheet
+			  $surveyArray = array();
+			  $surveyArray[] = ['Survey_ID','Title','Description','Start_Time','End_Time'
+                                         ];
+			  foreach ($surveys as $survey){
+				  $surveyArray[] = get_object_vars($survey);
+			  }
+			  $workBook->getSheet(0)->fromArray(
+					$surveyArray,
+					NULL,
+					'A1'
+			  );
+			  
+			  
+			  //Write the participants to the excel sheet
+			  $surveyParticipantsArray = array();
+			  $surveyParticipantsArray[] = ['User_ID','Name','Email','Completed'
+                                         ];
+			  foreach ($participants as $participant){
+				  $surveyParticipantsArray[] = get_object_vars($participant);
+			  }
+			  $workBook->getSheet(1)->fromArray(
+					$surveyParticipantsArray,
+					NULL,
+					'A1'
+			  );
+			  
+			  //Write the results to the excel sheet
+			  $surveyScoreAllUsersArray = array();
+			  $surveyScoreAllUsersArray[] = ['Survey_ID','User_ID','Indicator_ID',
+                                         'Indicator', 'Answer'
+                                         ];
+			 if ($this->SurveyType($id) == 'self') {
+			  foreach ($surveyScoreAllUsers as $surveyScoreAllUser){
+				  $surveyScoreAllUsersArray[] = get_object_vars($surveyScoreAllUser);
+			  }
+			 }
+			 if ($this->SurveyType($id) == 'peer') {
+			  foreach ($surveyScoreAllUsersPeer as $surveyScoreAllUser){
+				  $surveyScoreAllUsersArray[] = get_object_vars($surveyScoreAllUser);
+			  }
+			 }
+			  $workBook->getSheet(2)->fromArray(
+					$surveyScoreAllUsersArray,
+					NULL,
+					'A1'
+			  );
+			  
+			  //Write the min and maximum to the excel sheet
+			  $surveyScoreMinMaxArray = array();
+			  $surveyScoreMinMaxArray[] = ['Survey_ID','Indicator_Group_ID','Indicator_Group',
+                                         'Minimum_User_Indicator_Group_Average', 'Maximum_User_Indicator_Group_Average'
+                                         ];
+			if ($this->SurveyType($id) == 'self') {
+			  foreach ($surveyScoreGroupAvgPerIndicatorGroupMinAndMax as $surveyScoreAllUser){
+				  $surveyScoreMinMaxArray[] = get_object_vars($surveyScoreAllUser);
+			  }
+			}
+			if ($this->SurveyType($id) == 'peer') {
+			  foreach ($surveyScoreGroupAvgPerIndicatorGroupMinAndMaxPeer as $surveyScoreAllUser){
+				  $surveyScoreMinMaxArray[] = get_object_vars($surveyScoreAllUser);
+			  }
+			}
+			  $workBook->getSheet(3)->fromArray(
+					$surveyScoreMinMaxArray,
+					NULL,
+					'A1'
+			  );
+			  
+			  //Get a php object writer coz we want to write objects to file
+			  $objectWriter = PHPExcel_IOFactory::createWriter($workBook,'Excel2007');
+			  ob_end_clean();
+			  
+			  //Provide a callback to be used by the response stream
+			  $callback = function() use($objectWriter){
+				  //Write the objects to a php output
+				  $objectWriter->save('php://output');
+			  };
+			  //return the stream
+			  return response()->stream($callback, 200, $headers);
+			  
+          }
+
+      }else{
+          return view('errors.404')->with('title',' Survey Not found')
+              ->with('message','The survey you requested doe not belong to your company or does not exists in the Fincoda Survey System.');
+      }
+    }
+	
 	
     public function show($id){
 	  $userParticipatedInSurvey = DB::table('participants')
@@ -593,12 +800,15 @@ class SurveyController extends Controller
 				(select peer_surveys.peer_id from peer_surveys 
 					where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)"),
 				array("surveyId"=>$request->survey_id,"currentUser"=>Auth::User()->id));
+				
+		$requiredNumEvaluators = $survey->number_of_evaluators-count($evaluators);
+		
 		if($survey->number_of_evaluators==count($evaluators)){
 			Session::flash('message','You have already selected '.$survey->number_of_evaluators.' users to evaluate you');
             return redirect()->back();
         }
-		if(count($emailsToSend)>$survey->number_of_evaluators){
-			Session::flash('message','You need to select '.$survey->number_of_evaluators.' users to evaluate you');
+		if(count($emailsToSend)>$requiredNumEvaluators){
+			Session::flash('message','You need to select '.$requiredNumEvaluators.' users to evaluate you');
             return redirect()->back();
         }else{
 			if(count($emailsToSend)!=0){
@@ -684,9 +894,17 @@ class SurveyController extends Controller
 				(select peer_surveys.peer_id from peer_surveys 
 					where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)))"),
 				array("surveyId"=>$request->survey_id,"surveyId1"=>$request->survey_id,"currentUser"=>Auth::User()->id,"currentUser1"=>Auth::User()->id));
-										
-        if(count($request->usersToEvaluate)!==$survey->number_of_evaluators){
-			Session::flash('message','You need to select '.$survey->number_of_evaluators.' users to evaluate you');
+		
+		$evaluators = DB::select(DB::raw(
+			"select users.id, users.name, users.email from users where users.id in 
+				(select peer_surveys.peer_id from peer_surveys 
+					where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)"),
+				array("surveyId"=>$request->survey_id,"currentUser"=>Auth::User()->id));
+		
+		$requiredNumEvaluators = $survey->number_of_evaluators-count($evaluators);	
+		
+        if(count($request->usersToEvaluate)>$requiredNumEvaluators){
+			Session::flash('message','You need to select '.$requiredNumEvaluators.' users to evaluate you');
             return redirect()->back();
         }else{
 			if(!empty($request->usersToEvaluate)){
@@ -702,7 +920,7 @@ class SurveyController extends Controller
 							'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name,'name'=>Users::find($user), 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
+						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name,'name'=>User::find($user), 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
 				}
 				DB::commit();
 				return redirect()->back()
