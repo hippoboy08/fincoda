@@ -69,11 +69,11 @@ Route::group(['middleware'=>'admin',
     Route::post('survey/update','SurveyController@updateSurvey');
 	Route::resource('survey','SurveyController');
 	
-	Route::get('survey/evaluateUser/{surveyId}/{userId}','CompanySurveyController@evaluateUser');
-	Route::get('survey/viewPeerResults/{surveyId}/{userId}','CompanySurveyController@viewPeerResults');
-	Route::post('survey/inviteEvaluators','CompanySurveyController@inviteEvaluators');
-	Route::get('survey/downloadAdminUserPdf/{id}','CompanySurveyController@downloadPdf');
-    Route::get('survey/downloadAdminUserCsv/{id}','CompanySurveyController@downloadCsv');
+	Route::get('companySurvey/evaluateUser/{surveyId}/{userId}','CompanySurveyController@evaluateUser');
+	Route::get('companySurvey/viewPeerResults/{surveyId}/{userId}','CompanySurveyController@viewPeerResults');
+	Route::post('companySurvey/inviteEvaluators','CompanySurveyController@inviteEvaluators');
+	Route::get('companySurvey/downloadAdminUserPdf/{id}','CompanySurveyController@downloadPdf');
+    Route::get('companySurvey/downloadAdminUserCsv/{id}','CompanySurveyController@downloadCsv');
     Route::post('companySurvey/inviteExternalEvaluators','CompanySurveyController@inviteExternalEvaluators');
 	Route::resource('companySurvey','CompanySurveyController');
 	
@@ -141,10 +141,11 @@ Route::group(['middleware'=>'special',
 	Route::get('survey/evaluateUser/{surveyId}/{userId}','CompanySurveyController@evaluateUser');
 	Route::get('survey/viewPeerResults/{surveyId}/{userId}','CompanySurveyController@viewPeerResults');
 	Route::post('survey/inviteEvaluators','CompanySurveyController@inviteEvaluators');
+	Route::post('survey/inviteExternalEvaluators','CompanySurveyController@inviteExternalEvaluators');
 	Route::resource('survey','CompanySurveyController');
 	
-	Route::get('groupSurvey/downloadPdf/{id}','CompanySurveyController@downloadPdf');
-    Route::get('groupSurvey/downloadCsv/{id}','CompanySurveyController@downloadCsv');
+	Route::get('groupSurvey/downloadPdf/{id}','SurveyController@downloadPdf');
+    Route::get('groupSurvey/downloadCsv/{id}','SurveyController@downloadCsv');
     Route::get('groupSurvey/viewPeerResults/{surveyId}/{userId}','SurveyController@viewPeerResults');
 	Route::get('groupSurvey/evaluateUser/{surveyId}/{userId}','SurveyController@evaluateUser');
 	Route::post('groupSurvey/inviteEvaluators','SurveyController@inviteEvaluators');

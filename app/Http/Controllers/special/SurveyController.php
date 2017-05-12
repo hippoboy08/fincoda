@@ -45,6 +45,7 @@ class SurveyController extends Controller
 		
 	public function downloadCsv($surveyId){
 		$id = $surveyId;
+		$survey = Survey::find($surveyId);
 		if($this->ValidateSurvey($id)=='true'){
           if($this->SurveyStatus($id)=='pending'){
               $this->editSurvey($id);
@@ -137,7 +138,7 @@ class SurveyController extends Controller
 								
 			  $headers = array(
 					'Content-Type' 	=> 'application/vnd.ms-excel',
-					'Content-Disposition'	=>	'attachment;filename="dav.xlsx"'
+					'Content-Disposition'	=>	'attachment;filename='.$survey->title.".xlsx"
 				);
 				
 			  $workBook = new PHPExcel();
@@ -893,7 +894,13 @@ class SurveyController extends Controller
 				(select peer_surveys.peer_id from peer_surveys 
 					where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)))"),
 				array("surveyId"=>$request->survey_id,"surveyId1"=>$request->survey_id,"currentUser"=>Auth::User()->id,"currentUser1"=>Auth::User()->id));
-				
+		
+		$evaluators = DB::select(DB::raw(
+			"select users.id, users.name, users.email from users where users.id in 
+				(select peer_surveys.peer_id from peer_surveys 
+					where peer_surveys.survey_id = :surveyId and peer_surveys.user_id = :currentUser)"),
+				array("surveyId"=>$request->survey_id,"currentUser"=>Auth::User()->id));
+		
 		$requiredNumEvaluators = $survey->number_of_evaluators-count($evaluators);	
 		
         if(count($request->usersToEvaluate)>$requiredNumEvaluators){
@@ -913,7 +920,7 @@ class SurveyController extends Controller
 							'updated_at'=>Carbon::now($companyTimeZone)
 						]);
 						$userEmail = DB::table('users')->where('id',$user)->value('email');
-						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name,'name'=>Users::find($user), 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
+						$this->email('email.peerEvaluators',['owner'=>Auth::User()->name,'name'=>User::find($user), 'link'=>url('/').'/login', 'title'=>Survey::find($request->survey_id)->title],$userEmail);
 				}
 				DB::commit();
 				return redirect()->back()

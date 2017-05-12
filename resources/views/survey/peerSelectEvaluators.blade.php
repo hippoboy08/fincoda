@@ -42,7 +42,12 @@
                 {!! Form::open(['method'=>'POST', 'action'=>'basic\SurveyController@inviteEvaluators']) !!}
                 @endrole
                 @role('special')
-                {!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@inviteEvaluators']) !!}
+					@if($survey->category_id==1)
+						{!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@inviteEvaluators']) !!}
+					@endif
+					@if($survey->category_id==2)
+						{!! Form::open(['method'=>'POST', 'action'=>'special\SurveyController@inviteEvaluators']) !!}
+					@endif
                 @endrole
 				@role('admin')
                 {!! Form::open(['method'=>'POST', 'action'=>'admin\CompanySurveyController@inviteEvaluators']) !!}
@@ -201,8 +206,13 @@
                           @foreach($evaluatedNot as $users)
                           @if($user->id == $users->id)
                           @role('special')
-                          <td><a href="{!! url('special/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
-                          <td>{!! $user->email !!}</td>
+							@if($survey->category_id==1)
+								<td><a href="{!! url('special/survey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
+							@endif
+							@if($survey->category_id==2)
+								<td><a href="{!! url('special/groupSurvey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
+							@endif
+							<td>{!! $user->email !!}</td>
                           @endrole
 						  @role('admin')
                           <td><a href="{!! url('admin/companySurvey/evaluateUser/'.$survey->id).'/'.$user->id !!}">{!! $user->name !!}</a></td>
@@ -231,6 +241,32 @@
                   <br>
 
                   @role('special')
+                  @if(count($evaluatorsCompleted)>1)
+                  <script type="text/javascript">
+                  $(document).ready(function(){
+                    $('#getData').click(function(e) {
+                      $userId = $('#userId').text();
+                      $surveyId = $('#surveyId').text();
+
+                      $url = 'viewPeerResults/'+$surveyId+'/'+$userId;
+
+                      $.get($url,function(response){
+                        content = $("#show",response);
+                        $('#tab4').html(content);
+                      })
+                      .fail(function() {
+                        $('#tab4').html('<h3>Errors occurs when retrieving your results. Please contact admin for more information.</h3>');
+                      });
+                    });
+                  });
+                  </script>
+                  @endif
+                  @if(count($evaluatorsCompleted)<=1)
+                  <h3>You don't have enough evaluations to see your result.</h3>
+                  @endif
+                  @endrole
+				  
+				  @role('admin')
                   @if(count($evaluatorsCompleted)>1)
                   <script type="text/javascript">
                   $(document).ready(function(){
@@ -292,7 +328,12 @@
                 {!! Form::open(['method'=>'POST', 'action'=>'admin\CompanySurveyController@inviteExternalEvaluators']) !!}
                 @endrole
 				@role('special')
-                {!! Form::open(['method'=>'POST', 'action'=>'special\SurveyController@inviteExternalEvaluators']) !!}
+					@if($survey->category_id==1)
+						{!! Form::open(['method'=>'POST', 'action'=>'special\CompanySurveyController@inviteExternalEvaluators']) !!}
+					@endif
+					@if($survey->category_id==2)
+						{!! Form::open(['method'=>'POST', 'action'=>'special\SurveyController@inviteExternalEvaluators']) !!}
+					@endif
                 @endrole
 				{!! Form::hidden('survey_id',$survey->id) !!}
                 <p class="panel-title">
@@ -368,10 +409,7 @@
                     </table>
                   </div>
                 </div>
-
-
               </div>
-
             </div>
           </div>
         </div>
