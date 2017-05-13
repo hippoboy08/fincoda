@@ -44,9 +44,9 @@
                   <div class="tab-content">
                     <div id="myAnswer" class="tab-pane fade in active">
                       <div class="row pull-right" >
-                         <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
+                         <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('special/groupsurvey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                          &nbsp;
-                         <i class="fa fa-print" aria-hidden="true"></i> <u><a href="#">Download Excel</a></u>
+                         <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('special/groupSurvey/downloadCsv/'.$survey->id) !!}">Download Excel</a></u>
                       </div>
                       <div class="report-caption">
                         <h4><b>Description</b></h4>

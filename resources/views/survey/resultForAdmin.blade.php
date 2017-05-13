@@ -45,7 +45,6 @@
                                     <div class="row pull-right" >
                                        <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                                        &nbsp;
-                                       <i class="fa fa-print" aria-hidden="true"></i> <u><a href="#">Download Excel</a></u>
 									</div>
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
