@@ -143,7 +143,7 @@ class CompanySurveyController extends Controller
                     ->withInput();
 				}
 				
-				$view = View::make('survey.resultForAdminPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
+				$view = View::make('survey.resultForUserPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
 									'surveyScorePerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
 									'participants','company','company_profile','answers'))->render();
 				$pdf = App::make('snappy.pdf.wrapper');
@@ -262,7 +262,7 @@ class CompanySurveyController extends Controller
                     ->withInput();
 				}
 				
-				$view = PDF::loadView('survey.resultForAdminPdfOverView',
+				$view = PDF::loadView('survey.resultForUserPdfOverView',
 										compact('survey','$surveyScoreAllUsersCheckThreeParticipants','surveyScoreAllUsers',
 											'surveyGroupAveragePerIndicatorAllUsers','surveyScorePerIndicatorGroup',
 											'surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
