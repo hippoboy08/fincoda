@@ -493,7 +493,7 @@ class SurveyController extends Controller
 										->where('survey_id',$id)
 										->where('user_id',Auth::User()->id)
 										->value('user_id');
-		if($userParticipatedInSurvey!==Auth::User()->id){
+		if($userParticipatedInSurvey!=Auth::User()->id){
 			Session::flash('message','We could not find you as a participant in this survey');
 			return redirect()->back();
 		}
