@@ -5,111 +5,71 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Latest compiled and minified CSS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-
-    <link rel="stylesheet" href="{{URL::asset('css/custom.css')}}">
-
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
-    <script src="{{URL::asset('js/confirmation.js')}}" ></script>
 
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{URL::asset('css/AdminLTE.min.css')}}">
-
-    <link rel="stylesheet" href="{{URL::asset('css/skins/skin-blue.min.css')}}">
 
     <script src="{{URL::asset('js/app.min.js')}}"></script>
     <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
 
-	<!-- Bootstrap WYSIHTML5 -->
-	<script src="{{URL::asset('input-mask/jquery.inputmask.js')}}"></script>
-	<script src="{{URL::asset('input-mask/jquery.inputmask.date.extensions.js')}}"></script>
-	<script src="{{URL::asset('input-mask/jquery.inputmask.extensions.js')}}"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
-	<script src="{{URL::asset('bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
-	<script src="{{URL::asset('timepicker/bootstrap-timepicker.min.js')}}"></script>
-	<script src="{{URL::asset('daterangepicker/daterangepicker.js')}}"></script>
-
   <style>
     body {
-      padding-top: 50px;
       -webkit-print-color-adjust: exact;
     }
     /*info style*/
     .info {
       text-align: center;
       /*padding-top: 10px;*/
-      margin-top: 80px;
     }
     img#fincoda, img#eu {
       margin: 50px auto;
       vertical-align: middle;
     }
-    .info h1 {
-      margin-bottom: 15px;
-      margin-top: 15px;
-      font-size: 40px;
-      line-height: 4.0em;
+    .info h1{
     }
     .info ul li {
       list-style: none;
-      font-size: 30px;
-      line-height: 4.0em;
     }
     .info ul {
       padding: 0;
-      margin: 50px 0;
+      margin: 30px 0;
     }
     .info p {
-      font-size: 30px;
-      margin: 20px 0;
     }
     /*introduction*/
     .introduction {
-      margin-top: 30px;
-      margin-bottom: 100px;
+      margin-top: 100px;
+      margin-bottom: 80px;
     }
     .introduction h1 {
-      margin-bottom: 10px;
-      margin-top: 10px;
-      font-size: 40px;
-      line-height: 4.0em;
     }
     .introduction h4 {
-      font-size: 30px;
     }
     .introduction p {
-      font-size: 20px;
-      margin: 0;
-      line-height: 2.5em;
+	line-height: 2em;
     }
-    /*hidden results*/
-    .hidden {
-      display: none;
-    }
+
     /*comments*/
     .score {
       display: inline-block;
-      width: 200px;
-      height: 200px;
+      width: 180px;
+      height: 230px;
       margin: 10px;
       vertical-align: middle;
     }
     .scores {
-      width: 80%;
+      width: 100%;
       text-align:center;
-      margin: 40px auto;
+      margin: 10px auto;
+      margin-top: 80px;
       overflow: auto;
     }
     .below-avg {
@@ -152,13 +112,14 @@
       padding: 10px;
     }
     .progress {
-      margin: 10px 0;
+      margin: 100px 0;
     }
     .rec {
-      margin: 30px 0;
+      margin: 100px 0;
     }
     .mastery {
       padding: 40px 0;
+      margin-bottom: 0px;
     }
     /*progress bar has colors when printing*/
     @media print{
@@ -190,223 +151,6 @@
                 }
             }
   </style>
-    <script>window.jQuery || document.write('<script src="{{URL::asset('../../assets/js/vendor/jquery.min.js')}}"></script>')</script>
-    
-    <script>
-    $(document).ready(function(){
-      var x = $(".average"),
-          y = $(".progress-bar"),
-          z = $(".rec");
-          console.log(x[0].innerHTML);
-
-      //creativity: x[0] low <=3.22, medium: >3.22 <=3.89, high: > 3.89
-      function evaluateCreativity(num) {
-        var cr = $("#cr"),
-            cr_rec = $("#cr-rec"),
-            cr_above = $("#cr-above");
-        y[0].setAttribute("aria-valuenow", num);
-        y[0].setAttribute("style", "width: " + num/5*100 + "%");
-        y[0].append(num);
-        if( 1.00 <= num && num <= 3.22 ) {
-          y[0].classList.add('progress-bar-danger');
-          z[0].classList.add('below-avg');
-          cr.append("<li>lack a creative perspective</li>");
-          cr.append("<li>avoid changes to current products, services or processes</li>");
-          cr.append("<li>be unaware of the potential benefits of new ideas</li>");
-          cr_rec.text("Your tendency to avoid unconventional ideas may not allow you to show the valuable role you are capable of playing. As a consequence your contributions may not be as significant as they could be. As your score suggests a tendency to avoid creative change, ensure that you do not dismiss others’ creative ideas too soon.");
-        }
-        else if ( 3.22 < num && num <= 3.89 ) {
-          y[0].classList.add('progress-bar-success');
-          z[0].classList.add('avg');
-          cr.append("<li>take a creative perspective at times</li>");
-          cr.append("<li>to test out your knowledge and intuition extensively prior to implementing any actions</li>");
-          cr.append("<li>be more cautious in identifying unconventional ways to enhance products, services or processes</li>");
-          cr_rec.text("It could be worthwhile for you to identify comfortable ways of using your imagination and sharing your creative ideas. It could be wise for you to take advice or spend time with others who have a high degree of creativity.");
-        }
-        else if ( num > 3.89){
-          y[0].classList.add('progress-bar-info');
-          z[0].classList.add('above-avg');
-          cr_above.text(" strong");
-          cr.append("<li>take a creative perspective</li>");
-          cr.append("<li>think differently and be open to new ideas</li>");
-          cr.append("<li>refine ideas in order to use the available resources in an original way</li>");
-          cr.append("<li>identify unconventional ways that processes, products or services might be improved</li>");
-          cr_rec.text("Being so creative, you may have a tendency to lose sight of the end goal. To balance this, it could be wise for you to take advice from others who can share the practical perspective.");
-        }
-        else {
-          cr.append("Errors happened when retrieving your results")
-          cr_rec.text("Please contact your admin for more information.")
-        }
-      }
-
-      function evaluateCriticalThinking(num) {
-        var ct = $("#ct"),
-            ct_rec = $("#ct-rec"),
-            ct_above = $("#ct-above");
-        y[1].setAttribute("aria-valuenow", num);
-        y[1].setAttribute("style", "width: " + num/5*100 + "%");
-        y[1].append(num);
-        if( 1.00 <= num && num <= 3.17 ) {
-          y[1].classList.add('progress-bar-danger');
-          z[1].classList.add('below-avg');
-          ct.append("<li>avoid taking a critical perspective</li>");
-          ct.append("<li>use traditional methods for problem solving</li>");
-          ct.append("<li>avoid developing and experimenting with new ways of problem solving, preferring to accept things as they are</li>");
-          ct_rec.text("Your score suggests you are satisfied with the norm and may adopt a supportive role. However, a degree of critical thinking is necessary for successful innovation so it will be helpful to consider ways of improving your critical thinking and taking advice from others who frequently adopt a critical viewpoint.");
-        }
-        else if ( 3.17 < num && num <= 3.83 ) {
-          y[1].classList.add('progress-bar-success');
-          z[1].classList.add('avg');
-          ct.append("<li>take a critical perspective at times</li>");
-          ct.append("<li>consider different points of view when facing tasks, problems and opportunities</li>");
-          ct.append("<li>be less likely to develop and experiment with new ways of problem solving</li>");
-          ct_rec.text("It could be worthwhile for you to identify opportunities to develop your critical and analytic thinking. It may be helpful to take advice from others who frequently adopt and share a critical viewpoint.");
-        }
-        else if ( num > 3.83){
-          y[1].classList.add('progress-bar-info');
-          z[1].classList.add('above-avg');
-          ct.append("<li>take a critical perspective</li>");
-          ct.append("<li>face tasks, problems and opportunities from different points of view</li>");
-          ct.append("<li>consider the impact different solutions may have</li>");
-          ct.append("<li>develop and experiment with new ways of problem solving using a trial and error approach</li>");
-          ct_above.text(" strong");
-          ct_rec.text("Your score suggests a strong critical tendency which is likely to benefit you in the course of innovation. However, demonstrating an overly critical and analytical attitude to others may hamper their creativity. Consider how you may offer more of a balanced argument when outlining solutions with others.");
-        }
-        else {
-          ct.append("Errors happened when retrieving your results")
-          ct_rec.text("Please contact your admin for more information.")
-        }
-      }
-
-      function evaluateInitiative(num) {
-        var IN = $("#in"),
-            in_rec = $("#in-rec"),
-            in_above = $("#in-above");
-        y[2].setAttribute("aria-valuenow", num);
-        y[2].setAttribute("style", "width: " + num/5*100 + "%");
-        y[2].append(num);
-        if( 1.00 <= num && num <= 3.17 ) {
-          y[2].classList.add('progress-bar-danger');
-          z[2].classList.add('below-avg');
-          IN.append("<li>do only what is required to meet expectations in an assignment, task, or job description you are responsible for</li>");
-          IN.append("<li>only support new ideas when there is minimal risk</li>");
-          IN.append("<li>let others take the lead in fostering improvements in your work organisation</li>");
-          IN.append("<li>lack visibility in your team or organisation</li>");
-          in_rec.text("Your profile is a benefit in some cases as you are not seen as threatening by others. Your reputation might improve, however, when you can once in a while visibly support the initiative of others.");
-        }
-        else if ( 3.17 < num && num <= 3.83 ) {
-          y[2].classList.add('progress-bar-success');
-          z[2].classList.add('avg');
-          IN.append("<li>contribute to improvements in your work organisation</li>");
-          IN.append("<li>take a degree of risk to support new ideas</li>");
-          IN.append("<li>aim for a high impact in the assignment, task, or job description without being asked</li>");
-          IN.append("<li>Support someone else in an innovative idea</li>");
-          in_rec.text("Overall you support new ideas into work practices. You should consider how you can be more proactive in putting your ideas forward.");
-        }
-        else if (num > 3.83){
-          y[2].classList.add('progress-bar-info');
-          z[2].classList.add('above-avg');
-          IN.append("<li>challenge yourself to go beyond expectations in the assignment, task, or job description without being asked</li>");
-          IN.append("<li>foster improvements in your work organisation and convince people to support an innovative idea</li>");
-          IN.append("<li>frequently introduce new ideas into work practices</li>");
-          IN.append("<li>act quickly and energetically</li>");
-          IN.append("<li>remain visible person in your team or organisation</li>");
-          in_above.text(" strong");
-          in_rec.text("You are really a visible person in your team or organisation. Take care that you when you showing initiative that you do not appear domineering.");
-        }
-        else {
-          IN.append("Errors happened when retrieving your results")
-          in_rec.text("Please contact your admin for more information.")
-        }
-      }
-
-      function evaluateTeamwork(num) {
-        var tw = $("#tw"),
-            tw_rec = $("#tw-rec"),
-            tw_above = $("#tw-above");
-        y[3].setAttribute("aria-valuenow", num);
-        y[3].setAttribute("style", "width: " + num/5*100 + "%");
-        y[3].append(num);
-        if( 1.00 <= num && num <= 3.43 ) {
-          y[3].classList.add('progress-bar-danger');
-          z[3].classList.add('below-avg');
-          tw.append("<li>be less likely to work effectively within a team</li>");
-          tw.append("<li>to put your personal goals above the innovative goals of the team</li>");
-          tw.append("<li>be less likely to engage in active listening</li>");
-          tw.append("<li>to avoid giving and receiving constructive feedback from others</li>");
-          tw_rec.text("Your score suggests a preference for working autonomously. However, this may result in you becoming isolated from the innovative activities in your team. You may benefit from working more closely with others to implement innovative ideas.");
-        }
-        else if ( 3.43 < num && num <= 4.00 ) {
-          y[3].classList.add('progress-bar-success');
-          z[3].classList.add('avg');
-          tw.append("<li>implement your own changes with some consideration of others’ viewpoints</li>");
-          tw.append("<li>listen when others are speaking and respond effectively at times</li>");
-          tw.append("<li>engage in constructive feedback conversations from time to time</li>");
-          tw.append("<li>address conflict within the team if it becomes apparent</li>");
-          tw_rec.text("Your score suggests an ability to work well with others in the team whilst still focusing on personal goals. At times, you may consider how to balance your own goals with the team’s in implementing innovative ideas.");
-        }
-        else if (num > 4.00){
-          y[3].classList.add('progress-bar-info');
-          z[3].classList.add('above-avg');
-          tw.append("<li>consult about essential changes</li>");
-          tw.append("<li>actively listen when others are speaking and respond effectively</li>");
-          tw.append("<li>both obtain from and offer constructive feedback to colleagues</li>");
-          tw.append("<li>identify sources of conflict within the team and take steps to overcome disharmony</li>");
-          tw_above.text(" strong");
-          tw_rec.text("Your score suggests a strong team work ethic and that you work supportively with others to implement an innovative idea. However, be wary of this tendency for team working to have a negative impact on the achievement of your own personal goals.");
-        }
-        else {
-          tw.append("Errors happened when retrieving your results")
-          tw_rec.text("Please contact your admin for more information.")
-        }
-      }
-
-      function evaluateNetworking(num) {
-        var nw = $("#nw"),
-            nw_rec = $("#nw-rec"),
-            nw_above = $("#nw-above");
-        y[4].setAttribute("aria-valuenow", num);
-        y[4].setAttribute("style", "width: " + num/5*100 + "%");
-        y[4].append(num);
-        if( 1.00 <= num && num <= 3.17 ) {
-          y[4].classList.add('progress-bar-danger');
-          z[4].classList.add('below-avg');
-          nw.append("<li>avoid engaging with others outside of your immediate team</li>");
-          nw.append("<li>be less likely to engage with unknown stakeholders</li>");
-          nw.append("<li>rely on others to facilitate conversations with people from different backgrounds</li>");
-          nw_rec.text("Your score suggests a tendency to avoid networking. However, it can be a vital exercise in implementing innovation. Therefore you may wish to consider developing your networking skills with your peers initially.");
-        }
-        else if ( 3.17 < num && num <= 3.83 ) {
-          y[4].classList.add('progress-bar-success');
-          z[4].classList.add('avg');
-          nw.append("<li>establish new contacts and maintain existing ones at times</li>");
-          nw.append("<li>you are less likely to independently engage contacts inside and outside of your work environment</li>");
-          nw.append("<li>only communicate with people from different backgrounds if initiated by others</li>");
-          nw_rec.text("Your score suggests you are happy to engage with others at times. However, you may rely on others to initiate these engagements. You make find it valuable to speak to someone you know internally who is a proven networker to support you.");
-        }
-        else if (num > 3.83){
-          y[4].classList.add('progress-bar-info');
-          z[4].classList.add('above-avg');
-          nw.append("<li>frequently establish new contacts and maintain existing ones</li>");
-          nw.append("<li>engage contacts inside and outside of your everyday environment</li>");
-          nw.append("<li>work with individuals from different backgrounds</li>");
-          nw.append("<li>respect others’ ideas and perspectives and the value they provide</li>");
-          nw_above.text(" strong");
-          nw_rec.text("Your score suggests you frequently engage with those around you, identifying different perspectives to support the implementation of innovation. Ensure you demonstrate the benefit to others of engaging with a variety of individuals.");
-        }
-        else {
-          nw.append("Errors happened when retrieving your results")
-          nw_rec.text("Please contact your admin for more information.")
-        }
-      }
-      evaluateCreativity(x[0].innerHTML);
-      evaluateCriticalThinking(x[1].innerHTML);
-      evaluateInitiative(x[2].innerHTML);
-      evaluateTeamwork(x[3].innerHTML);
-      evaluateNetworking(x[4].innerHTML);
-    });
-    </script>
-  
   </head>
 
   <body>
@@ -418,6 +162,7 @@
           <div class="info">
             <img id="fincoda" src="{{URL::asset('img/FINCODA logo.png')}}" alt="Fincoda Logo">
             <h1>FINCODA Innovation Barometer</h1>
+            
             <h1>Assessment Tool</h1>
             <ul>
               <li><b>Name: </b>{!! $survey->title !!}</li>
@@ -425,11 +170,10 @@
             </ul>
 
             <img id="eu" src="{{URL::asset('img/EU logo.png')}}" alt="EU Logo">
-            <p>The FINCODA Innovation Barometer Assessment Tool has been developed by the European Union through academic and business partnership.</p>
-            <p>To find out more visit www.fincoda.eu</p>
-
+            <h3>The FINCODA Innovation Barometer Assessment Tool has been developed by the European Union through academic and business partnership.</h3>
+            <h3>To find out more visit www.fincoda.eu</h3>
+	    <br><br><br>
           </div><!-- .info -->
-
           <div class="introduction">
             <h1>Introduction</h1>
             <p>Thank you for completing the FINCODA barometer Innovation Assessment Tool which assesses an individual’s capacity to be innovative within their work environment. This report summarises your scores with an interpretative description. The scores and the accompanying descriptions will give you an indication of possible directions in which you can develop your innovative capacity.</p>
@@ -455,17 +199,18 @@
           </div> <!-- .introduction -->
 
           <!-- hidden results for displaying evaluation -->
-          <!-- get variables in here -->
-          <div class="hidden">
+          <!-- get variables in here.-->
+          <div class="test" style="display: none">
             <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
             <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
             <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
             <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
             <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
           </div>
-
-          <div class="comments">
-            <div id="creativity" class="mastery">
+          
+          <div class="test2"></div>
+    
+          <div class="comments"><div id="creativity" class="mastery">
               <h3><b>Creativity</b></h3>
               <div class="scores">
                 <div class="below-avg score">
@@ -634,4 +379,199 @@
 </div>
     
   </body>
+  <script>
+	var x = document.getElementsByClassName("average"),
+	    y = document.getElementsByClassName("progress-bar"),
+	    z = document.getElementsByClassName("rec");
+	function evalCreativity(num) {
+	    num = parseFloat(num);
+	    var cr = document.getElementById("cr"),
+		cr_rec = document.getElementById("cr-rec"),
+		cr_above = document.getElementById("cr-above");
+	    y[0].setAttribute("aria-valuenow", num);
+	    y[0].setAttribute("style", "width: " +num/5*100+"%");
+	    y[0].innerHTML += num;
+	    if (1.00 <= num && num <=3.22){
+		y[0].className += " progress-bar-danger";
+		z[0].className += " below-avg";
+		cr.innerHTML += "<li>lack a creative perspective</li>";
+		cr.innerHTML += "<li>avoid changes to current products, services or processes</li>";
+		cr.innerHTML += "<li>be unaware of the potential benefits of new ideas</li>";
+		cr_rec.innerHTML = "Your tendency to avoid unconventional ideas may not allow you to show the valuable role you are capable of playing. As a consequence your contributions may not be as significant as they should be. As your score suggests a tendency to avoid creative change, ensure that you do not dismiss other's creative ideas too soon.";
+	    } else if (3.22 < num && num <= 3.89) {
+		y[0].className += " progress-bar-success";
+		z[0].className += " avg";
+		cr.innerHTML += "<li>take a creative perspective at times</li>";
+		cr.innerHTML += "<li>to test out your knowledge and intuition extensively prior to implementing any actions</li>";
+		cr.innerHTML += "<li>be more cautious in identifying unconventional ways to enhance products, services or processes</li>";
+		cr_rec.innerHTML = "It could be worthwhile for you to identify comfortable ways of using your imagination and sharing your creative ideas. It could be wise for you to take advice or spend time with others who have a high degree of creativity.";
+	    } else if (num <= 5 && num>3.89) {
+		y[0].className += " progress-bar-info";
+		z[0].className += " above-avg";
+		cr_above.innerHTML = " strong";
+		cr.innerHTML += "<li>take a creative perspective</li>";
+		cr.innerHTML += "<li>think differently and be open to new ideas</li>";
+		cr.innerHTML += "<li>refine ideas in order to use the available resources in an original way</li>";
+		cr.innerHTML += "<li>identify unconventional ways that processes, products and services might be improved</li>";
+		cr_rec.innerHTML = "Being so creative, you may have a tendency to lose sight of the end goal. To balance this, it could be wise for you to take advice from others who can share the practical perspective";
+	    } else {
+		cr.innerHTML += "<li>Errors happened when retrieving your results</li>";
+		cr_rec.innerHTML = "Please contact your admin for more information";
+	    }
+	}
+	function evalCriThink(num) {
+	    num = parseFloat(num);
+	    var cr = document.getElementById("ct"),
+		cr_rec = document.getElementById("ct-rec"),
+		cr_above = document.getElementById("ct-above");
+	    y[1].setAttribute("aria-valuenow", num);
+	    y[1].setAttribute("style", "width: " +num/5*100+"%");
+	    y[1].innerHTML += num;
+	    if (1.00 <= num && num <=3.17){
+		y[1].className += " progress-bar-danger";
+		z[1].className += " below-avg";
+		cr.innerHTML += "<li>avoid taking a critical perspective</li>";
+		cr.innerHTML += "<li>use traditional methods for problem solving</li>";
+		cr.innerHTML += "<li>avoid developing and experimenting with new ways of problem solving, prefering to accept things as they are</li>";
+		cr_rec.innerHTML = "Your score suggests you are satisfied with the norm and may adopt a supportive role. However, a degree of critical thinking is necessary for successful innovation so it will be helpful to consider ways of improving your critical thinking and taking advice from others who frequently adopt a critical viewpoint";
+	    } else if (3.17 < num && num <= 3.83) {
+		y[1].className += " progress-bar-success";
+		z[1].className += " avg";
+		cr.innerHTML += "<li>take a critical perspective at times</li>";
+		cr.innerHTML += "<li>consider different points of view when facing tasks, problems and opportunities</li>";
+		cr.innerHTML += "<li>be less likely to develop and experiment with new ways of problem solving</li>";
+		cr_rec.innerHTML = "It could be worthwhile for you to identify opportunities to develop your critical and analytic thinking. It may be helpful to take advice from others who frequently adopt and share a critical viewpoint";
+	    } else if (num <= 5 && num>3.83) {
+		y[1].className += " progress-bar-info";
+		z[1].className += " above-avg";
+		cr_above.innerHTML = " strong";
+		cr.innerHTML += "<li>take a critical perspective</li>";
+		cr.innerHTML += "<li>face tasks, problems and opportunities from different points of view</li>";
+		cr.innerHTML += "<li>consider the impact different solutions may have</li>";
+		cr.innerHTML += "<li>develop and experiment with new ways of problem solving using a trial and error approaching</li>";
+		cr_rec.innerHTML = "Your score suggests a strong critical tendency which is likely to benefit you in the course of innovation. However, demonstrating an overly critical and analytical attitude to others may hamper their creativity. Consider how you may offer more of a balaced argument when outlining solutions with others";
+	    } else {
+		cr.innerHTML += "<li>Errors happened when retrieving your results</li>";
+		cr_rec.innerHTML = "Please contact your admin for more information";
+	    }
+	}
+	function evalInit(num) {
+	    num = parseFloat(num);
+	    var cr = document.getElementById("in"),
+		cr_rec = document.getElementById("in-rec"),
+		cr_above = document.getElementById("in-above");
+	    y[2].setAttribute("aria-valuenow", num);
+	    y[2].setAttribute("style", "width: " +num/5*100+"%");
+	    y[2].innerHTML += num;
+	    if (1.00 <= num && num <=3.17){
+		y[2].className += " progress-bar-danger";
+		z[2].className += " below-avg";
+		cr.innerHTML += "<li>do only what is required to meet expectations in an assignment, task or job description you are responsible for</li>";
+		cr.innerHTML += "<li>only support new ideas when there is minimal risk</li>";
+		cr.innerHTML += "<li>let others take the lead in fostering improvements in your work organisation</li>";
+		cr_rec.innerHTML = "Your profile is a benefit in some cases as you are not seen as threatening by others. Your reputation might improve, howvever, when you can once in a while visibly support the initiative of others";
+	    } else if (3.17 < num && num <= 3.83) {
+		y[2].className += " progress-bar-success";
+		z[2].className += " avg";
+		cr.innerHTML += "<li>contribute to improvements in your work organisation</li>";
+		cr.innerHTML += "<li>take a degree of risk to support new ideas</li>";
+		cr.innerHTML += "<li>support someone else in an innovative idea</li>";
+		cr.innerHTML += "<li>aim for a high impact in the assignment, task or job description without being asked</li>";
+		cr_rec.innerHTML = "Overall you support new ideas into work practices. You should consider how you can be more proactive in putting your ideas forward";
+	    } else if (num <= 5 && num>3.83) {
+		y[2].className += " progress-bar-info";
+		z[2].className += " above-avg";
+		cr_above.innerHTML = " strong";
+		cr.innerHTML += "<li>challenge yourself to go beyond expectations in the assignment, task and job description without being asked</li>";
+		cr.innerHTML += "<li>foster improvements in your work organisation and convince people to support innovative idea</li>";
+		cr.innerHTML += "<li>frequently introducing new ideas into work practices</li>";
+		cr.innerHTML += "<li>act quickly and energetically</li>";
+		cr.innerHTML += "<li>remain visible person in your team and organisation</li>";
+		cr_rec.innerHTML = "You are really a visible person in your team or organisation. Take care that when you show initiative, you do not appear domineering";
+	    } else {
+		cr.innerHTML += "<li>Errors happened when retrieving your results</li>";
+		cr_rec.innerHTML = "Please contact your admin for more information";
+	    }
+	}
+	function evalTeam(num) {
+	    num = parseFloat(num);
+	    var cr = document.getElementById("tw"),
+		cr_rec = document.getElementById("tw-rec"),
+		cr_above = document.getElementById("tw-above");
+	    y[3].setAttribute("aria-valuenow", num);
+	    y[3].setAttribute("style", "width: " +num/5*100+"%");
+	    y[3].innerHTML += num;
+	    if (1.00 <= num && num <=3.43){
+		y[3].className += " progress-bar-danger";
+		z[3].className += " below-avg";
+		cr.innerHTML += "<li>be less likely to work effectively within a team</li>";
+		cr.innerHTML += "<li>put your personal goals above the innovative goals of the team</li>";
+		cr.innerHTML += "<li>be less likely to engage in active listening</li>";
+		cr.innerHTML += "<li>avoid giving and receiving constructive feedback from others</li>";
+		cr_rec.innerHTML = "Your score suggests a preference to work autonomously. However this may result in you becoming isolated from the innovative activities in your team. You may benefit from working closely with others to implement innovative ideas";
+	    } else if (3.43 < num && num <= 4.00) {
+		y[3].className += " progress-bar-success";
+		z[3].className += " avg";
+		cr.innerHTML += "<li>implement your own changes with some consideration of others viewpoints</li>";
+		cr.innerHTML += "<li>listen when others are speaking and respond effectively at times</li>";
+		cr.innerHTML += "<li>engage in constructive feedback conversations from time to time</li>";
+		cr.innerHTML += "<li>address conflict within the team if it becomes apparent";
+		cr_rec.innerHTML = "Your score suggests an ability to work well with others in the team while still focusing on personal goals. At times, you may consider how to balance your own goals with the team's goals in implementing innovative ideas";
+	    } else if (num <= 5 && num>4.00) {
+		y[3].className += " progress-bar-info";
+		z[3].className += " above-avg";
+		cr_above.innerHTML = " strong";
+		cr.innerHTML += "<li>consult about essential changes</li>";
+		cr.innerHTML += "<li>actively listen when others are speaking and responding effectively</li>";
+		cr.innerHTML += "<li>both obtain from and offer constructive feedback to colleagues</li>";
+		cr.innerHTML += "<li>identify sources of conflict within the team and take steps to overcome disharmony</li>";
+		cr_rec.innerHTML = "Your score suggests a strong teamwork ethic and that you work supportively with others to implement an innovative idea. However be wary of this tendency for teamworking to have a negative impact on achievement of your own personal goals";
+	    } else {
+		cr.innerHTML += "<li>Errors happened when retrieving your results</li>";
+		cr_rec.innerHTML = "Please contact your admin for more information";
+	    }
+	}
+	function evalNetwork(num) {
+	    num = parseFloat(num);
+	    var cr = document.getElementById("nw"),
+		cr_rec = document.getElementById("nw-rec"),
+		cr_above = document.getElementById("nw-above");
+	    y[4].setAttribute("aria-valuenow", num);
+	    y[4].setAttribute("style", "width: " +num/5*100+"%");
+	    y[4].innerHTML += num;
+	    if (1.00 <= num && num <=3.17){
+		y[4].className += " progress-bar-danger";
+		z[4].className += " below-avg";
+		cr.innerHTML += "<li>avoid engaging with others outside of your immediate team</li>";
+		cr.innerHTML += "<li>be less likely to engage with unknown stakeholders</li>";
+		cr.innerHTML += "<li>rely on others to facilitate conversations with people from different backgrounds</li>";
+		cr_rec.innerHTML = "Your score suggests a tendency to avoid networking. However, it can be a vital exercise to implement innovation. Therefore you may wish to consider developing your networking skills with your peers initially";
+	    } else if (3.17 < num && num <= 3.83) {
+		y[4].className += " progress-bar-success";
+		z[4].className += " avg";
+		cr.innerHTML += "<li>establish new contacts and maintain existing ones at times</li>";
+		cr.innerHTML += "<li>be less likely to independently engage contacts inside and outside of your work environment</li>";
+		cr.innerHTML += "<li>only communicate with people from different backgrounds if initiated by others</li>";
+		cr_rec.innerHTML = "Your score suggests you are happy to engage with people at times. However you may rely on others to initiate these engagements. You find it valuable to speak to someone you know internally, whom is a proven networker to support you";
+	    } else if (num <= 5 && num>3.83) {
+		y[4].className += " progress-bar-info";
+		z[4].className += " above-avg";
+		cr_above.innerHTML = " strong";
+		cr.innerHTML += "<li>frequently establishing new contacts and maintain existing ones</li>";
+		cr.innerHTML += "<li>engage contacts inside and outside of your everyday environment</li>";
+		cr.innerHTML += "<li>work with individuals from different backgrounds</li>";
+		cr.innerHTML += "<li>respect others' ideas and perspectives and the values they provide</li>";
+		cr_rec.innerHTML = "Your score suggests you frequently engage with people around you, identifying different perspectives to support the implementation of innovation. Ensure you demonstrate benefits to others of engaging with a variety of individuals";
+	    } else {
+		cr.innerHTML += "<li>Errors happened when retrieving your results</li>";
+		cr_rec.innerHTML = "Please contact your admin for more information";
+	    }
+	}
+	
+	evalCreativity(4.5);
+	evalCriThink(4.5);
+	evalInit(4.5);
+	evalTeam(4.5);
+	evalNetwork(4.5);
+  </script>
 </html>
