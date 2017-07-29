@@ -16,7 +16,7 @@ Route::get('about', function(){
 });
 
 Route::get('password/reset','Auth\PasswordController@showLinkRequestForm');
-Route::post('password/reset','Auth\passwordController@postReset');
+Route::post('password/reset','Auth\PasswordController@postReset');
 Route::post('password/email','Auth\PasswordController@sendResetLinkEmail');
 Route::get('password/reset/{var}','Auth\PasswordController@showResetForm');
 
