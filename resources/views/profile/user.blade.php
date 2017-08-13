@@ -39,15 +39,24 @@
 
                             @role('admin')
                               <a href="{!! url('admin/members/'.Auth::id().'/edit') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button></a>
+                              <a href="{!! url('admin/members/'.Auth::id().'/deleteUserProfile') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Delete Profile</button></a>
                                 @endrole
 
                                 @role('special')
                                 <a href="{!! url('special/profile/'.Auth::id().'/edit') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button></a>
-                                @endrole
+                                <a href="{!! url('special/profile/deleteUserProfile/'.Auth::id()) !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Delete Profile</button></a>
+								@endrole
 
                                 @role('basic')
                                 <a href="{!! url('basic/profile/'.Auth::id().'/edit') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button></a>
-                                @endrole
+                                <a href="{!! url('basic/profile/deleteUserProfile/'.Auth::id()) !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Delete Profile</button></a>
+								@endrole
+								
+								@role('external')
+                                <a href="{!! url('external/profile/'.Auth::id().'/edit') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button></a>
+                                <a href="{!! url('external/profile/deleteUserProfile/'.Auth::id()) !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Delete Profile</button></a>
+								@endrole
+							  
 
                             @else
                              <button class="btn  btn-info btn-flat" disabled><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button>

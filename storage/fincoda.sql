@@ -1845,7 +1845,7 @@ CREATE TABLE `user_in_groups` (
   `user_id` int(10) UNSIGNED NOT NULL,
   `user_group_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1941,7 +1941,7 @@ CREATE TABLE `yearly_averages` (
   `teamwork` decimal(18,4) NOT NULL,
   `networking` decimal(18,4) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

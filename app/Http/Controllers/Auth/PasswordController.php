@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
@@ -21,6 +26,42 @@ class PasswordController extends Controller
     use ResetsPasswords;
 
     protected $redirectTo = '/login';
+	
+	public function reset(Request $request)
+    {
+		$this->validate(
+            $request,
+            $this->getResetValidationRules(),
+            $this->getResetValidationMessages(),
+            $this->getResetValidationCustomAttributes()
+        );
+
+        $credentials = $this->getResetCredentials($request);
+
+        $broker = $this->getBroker();
+
+        $response = Password::broker($broker)->reset($credentials, function ($user, $password) {
+            $this->resetPassword($user, $password);
+        });
+
+        switch ($response) {
+            case Password::PASSWORD_RESET:
+                	 if(Auth::User()->hasRole('admin')){
+						return redirect('admin');
+					   }
+						elseif(Auth::User()->hasRole('special')){
+							return redirect('special');
+						}
+						elseif(Auth::User()->hasRole('external')){
+								return redirect('external');
+							}
+						else{
+							return redirect('basic');
+						}
+            default:
+                return $this->getResetFailureResponse($request, $response);
+        }
+    }
 
     /**
      * Create a new password controller instance.

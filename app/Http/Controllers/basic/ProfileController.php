@@ -5,17 +5,25 @@ namespace App\Http\Controllers\basic;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Controllers\EmailTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Illuminate\Database\Query;
+use App\User_Profile;
 
-
-class ProfileController extends Controller
-{
+class ProfileController extends Controller{
+	use EmailTrait;
     public function index(){
-
+		if(Auth::User()->profile_deleted == 1){
+			return redirect()->back()
+                    ->with('message','Your profile was already deleted and does not exist ')
+                    ->withInput();
+		}
+		
+		if(Auth::User()->profile_deleted == 0){
         $role=DB::table('role_user')->where('user_id',Auth::id())
             ->join('roles','roles.id','=','role_user.role_id')
             ->select('roles.display_name')->first();
@@ -23,10 +31,54 @@ class ProfileController extends Controller
         return view('profile.user')->with('user',Auth::User())
             ->with('profile',Auth::User()->profile)
             ->with('role',$role);
+		}
     }
 
     public function edit($id){
+		if(Auth::User()->profile_deleted == 1){
+			return redirect()->back()
+                    ->with('message','Your profile was already deleted and does not exist ')
+                    ->withInput();
+		}
         return view('profile.edituser')->with('profile',Auth::User()->profile)->with('user',Auth::User());
+    }
+	public function deleteUserProfile($id){
+		if(Auth::User()->profile_deleted == 1){
+			return redirect()->back()
+                    ->with('message','Your profile was already deleted and does not exist ')
+                    ->withInput();
+		}
+		if(Auth::User()->profile_deleted == 0){
+		DB::beginTransaction();
+		try{
+		DB::table('user_profiles')
+						->where('user_id', $id)
+						->delete();
+						
+		DB::table('users')
+						->where('id',$id)
+						->update([
+							'profile_deleted'=>1
+						]);
+						
+		DB::table('users')
+						->where('id',$id)
+						->update([
+							'enabled'=>0
+						]);
+						
+						if(Auth::User()->external_modified_email == 0){
+						$userEmail = DB::table('users')->where('id',$id)->value('email');
+						$this->email('email.deleteUserProfile',['name'=>$owner=Auth::User()->name,'link'=>url('/').'/login'],$userEmail);
+						}
+		DB::commit();
+		return redirect('basic')
+					->with('message','Your profile was deleted successfully');
+		}catch(\Exception $e){
+				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
+		}
+	}
     }
     public function update(Request $request, $id){
 		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');

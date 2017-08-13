@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-
+use App\Http\Controllers\EmailTrait;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 
@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
 
-class MembersController extends Controller
-{
+class MembersController extends Controller{
+	use EmailTrait;
     /**
      * Display a listing of the resource.
      *
@@ -209,10 +209,106 @@ class MembersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function deleteUserProfile($id){
+		$userProfileDeleted = DB::table('users')->where('id',$id)->value('profile_deleted');
+		if($userProfileDeleted == 1){
+			return redirect()->back()
+                    ->with('message','The profile for user with id: '.$id.' was already deleted and does not exist ')
+                    ->withInput();
+		}
+		if($userProfileDeleted == 0){
+		DB::beginTransaction();
+		try{
+		DB::table('user_profiles')
+						->where('user_id', $id)
+						->delete();
+						
+		DB::table('users')
+						->where('id',$id)
+						->update([
+							'profile_deleted'=>1
+						]);
+						
+		DB::table('users')
+						->where('id',$id)
+						->update([
+							'enabled'=>0
+						]);
+						if(Auth::User()->external_modified_email == 0){
+						$userEmail = DB::table('users')->where('id',$id)->value('email');
+						$this->email('email.deleteUserProfile',['owner'=>$owner=Auth::User()->name,'name'=>User::find($id)->name, 'link'=>url('/').'/login'],$userEmail);
+						}
+		DB::commit();
+		return redirect()->back()
+					->with('message','The profile for user with id: '.$id.' was deleted successfully')
+                    ->withInput();
+		}catch(\Exception $e){
+				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
+		}
+	}
     }
+	
+	public function disableUserProfile($id){
+		$userProfileEnabled = DB::table('users')->where('id',$id)->value('enabled');
+		if($userProfileEnabled == 0){
+			return redirect()->back()
+                    ->with('message','The profile for user with id: '.$id.' was already disabled')
+                    ->withInput();
+		}
+		if($userProfileEnabled == 1){
+		DB::beginTransaction();
+		try{
+		DB::table('users')
+						->where('id',$id)
+						->update([
+							'enabled'=>0
+						]);
+						if(Auth::User()->external_modified_email == 0){
+						$userEmail = DB::table('users')->where('id',$id)->value('email');
+						$this->email('email.disableUserProfile',['owner'=>$owner=Auth::User()->name,'name'=>User::find($id)->name, 'link'=>url('/').'/login'],$userEmail);
+						}
+		DB::commit();
+		return redirect()->back()
+					->with('message','The profile for user with id: '.$id.' was disabled successfully')
+                    ->withInput();
+		}catch(\Exception $e){
+				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
+		}
+	}
+    }
+	
+	public function enableUserProfile($id){
+		$userProfileEnabled = DB::table('users')->where('id',$id)->value('enabled');
+		if($userProfileEnabled == 1){
+			return redirect()->back()
+                    ->with('message','The profile for user with id: '.$id.' was already enabled')
+                    ->withInput();
+		}
+		if($userProfileEnabled == 0){
+		DB::beginTransaction();
+		try{
+		DB::table('users')
+						->where('id',$id)
+						->update([
+							'enabled'=>1
+						]);
+						if(Auth::User()->external_modified_email == 0){
+						$userEmail = DB::table('users')->where('id',$id)->value('email');
+						$this->email('email.enableUserProfile',['owner'=>$owner=Auth::User()->name,'name'=>User::find($id)->name, 'link'=>url('/').'/login'],$userEmail);
+						}
+		DB::commit();
+		return redirect()->back()
+					->with('message','The profile for user with id: '.$id.' was enabled successfully')
+                    ->withInput();
+		}catch(\Exception $e){
+				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
+		}
+	}
+    }
+	
     public function validateUser($id){
         $company_auth=Auth::User();
         if(User::where('id',$id)->exists()){

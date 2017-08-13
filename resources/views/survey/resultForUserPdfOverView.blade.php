@@ -190,235 +190,8 @@
                 }
             }
   </style>
-  </head>
-
-  <body>
-    <div id="content">
-      <div class="container">
-
-        <div class="pdf">
-
-          <div class="info">
-            <img id="fincoda" src="img/FINCODA logo.png" alt="Fincoda Logo">
-            <h1>FINCODA Innovation Barometer</h1>
-            <h1>Assessment Tool</h1>
-            <ul>
-              <li><b>Name: </b>{!! $survey->title !!}</li>
-              <li><b>Date: </b>{!! $survey->start_time !!}</li>
-            </ul>
-
-            <img id="eu" src="img/EU logo.png" alt="EU Logo">
-            <p>The FINCODA Innovation Barometer Assessment Tool has been developed by the European Union through academic and business partnership.</p>
-            <p>To find out more visit www.fincoda.eu</p>
-
-          </div><!-- .info -->
-
-          <div class="introduction">
-            <h1>Introduction</h1>
-            <p>Thank you for completing the FINCODA barometer Innovation Assessment Tool which assesses an individual’s capacity to be innovative within their work environment. This report summarises your scores with an interpretative description. The scores and the accompanying descriptions will give you an indication of possible directions in which you can develop your innovative capacity.</p>
-            <p>You may find it valuable to share and discuss your profile with your peers or a manager when considering how to increase your innovative capacity. If your manager administered the survey for you to complete then they will also receive a copy of this report.</p>
-            <p>Within this report, there are five ‘dimensions’ – for each dimension you will be provided with your score and an interpretative description for that score. The dimensions are as follows:</p>
-            <br>
-            <h4>Creativity</h4>
-            <p>Your ability to think beyond tradition to generate or adapt meaningful alternatives (regardless of their possible practicality or future added value)</p>
-            <br>
-            <h4>Critical Thinking</h4>
-            <p>Your ability to deconstruct and analyse ideas (to evaluate advantages and disadvantages, foresee how events will develop and estimate risk)</p>
-            <br>
-            <h4>Initiative</h4>
-            <p>Your ability to make decisions or carry out actions to operationalise your ideas, as well as mobilise and manage those who have to implement the ideas.</p>
-            <br>
-            <h4>Teamwork</h4>
-            <p>Your ability to work efficiently with others in a group</p>
-            <br>
-            <h4>Networking</h4>
-            <p>Your ability to involve internal / external stakeholders</p>
-            <br>
-            <p>An innovator is defined as someone who has a <u><b>high mastery on one or more</b></u> of the basic innovation competencies.</p>
-          </div> <!-- .introduction -->
-
-          <!-- hidden results for displaying evaluation -->
-          <!-- get variables in here -->
-          <div class="hidden">
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
-          </div>
-
-          <div class="comments">
-            <div id="creativity" class="mastery">
-              <h3><b>Creativity</b></h3>
-              <div class="scores">
-                <div class="below-avg score">
-                  <h4>Below average</h4>
-                  <p>This score indicates someone who prefers to share others’ perspectives and is less likely to come up with new ideas or actions</p>
-                </div>
-                <div class="avg score">
-                  <h4>Average</h4>
-                  <p>This score indicates someone who is rather creative and able to come up with new ideas and/or actions</p>
-                </div>
-                <div class="above-avg score">
-                  <h4>Above average</h4>
-                  <p>This score indicates a creative individual who is very able to come up with new and valuable ideas and/or actions</p>
-                </div>
-              </div>
-
-              <div class="progress cr">
-                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
-
-                </div>
-              </div>
-              <div class="rec">
-                <h4>Your score suggests a<span id="cr-above"></span> tendency to...</h4>
-                <ul id="cr">
-
-                </ul>
-                <h4>Recommendation: </h4>
-                <p id="cr-rec"></p>
-              </div>
-            </div><!-- #creativitiy -->
-
-            <div id="critical-thinking" class="mastery">
-              <h3><b>Critital Thinking</b></h3>
-              <div class="scores">
-                <div class="below-avg score">
-                  <h4>Below average</h4>
-                  <p>This score indicates someone who rarely evaluates the effectiveness of ideas or engages in critical thought</p>
-                </div>
-                <div class="avg score">
-                  <h4>Average</h4>
-                  <p>This score indicates someone who uses their critical thinking ability to an extent to assess the impact or effectiveness of ideas</p>
-                </div>
-                <div class="above-avg score">
-                  <h4>Above average</h4>
-                  <p>This score indicates someone who regularly evaluates ideas and engages in critical thought to identify advantages and disadvantages of ideas</p>
-                </div>
-              </div>
-
-              <div class="progress ct">
-                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
-
-                </div>
-              </div>
-              <div class="rec">
-                <h4>Your score suggests a<span id="ct-above"></span> tendency to...</h4>
-                <ul id="ct">
-
-                </ul>
-                <h4>Recommendation: </h4>
-                <p id="ct-rec"></p>
-              </div>
-            </div><!-- #critical-thinking -->
-
-            <div id="initiative" class="mastery">
-              <h3><b>Initiative</b></h3>
-              <div class="scores">
-                <div class="below-avg score">
-                  <h4>Below average</h4>
-                  <p>This score indicates someone who rarely takes independent action to drive forward ideas by making decisions and motivating others</p>
-                </div>
-                <div class="avg score">
-                  <h4>Average</h4>
-                  <p>This score indicates someone who is often proactive and when desired can make decisions and take action to push ideas forward</p>
-                </div>
-                <div class="above-avg score">
-                  <h4>Above average</h4>
-                  <p>This score indicates someone who is very proactive and willing to make their own decisions to take action to push ideas forward</p>
-                </div>
-              </div>
-
-              <div class="progress in">
-                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
-
-                </div>
-              </div>
-              <div class="rec">
-                <h4>Your score suggests a<span id="in-above"></span> tendency to...</h4>
-                <ul id="in">
-
-                </ul>
-                <h4>Recommendation: </h4>
-                <p id="in-rec"></p>
-              </div>
-            </div><!-- #initiative -->
-
-            <div id="teamwork" class="mastery">
-              <h3><b>Teamwork</b></h3>
-              <div class="scores">
-                <div class="below-avg score">
-                  <h4>Below average</h4>
-                  <p>This score indicates someone who may prefer to work independently and be less inclined to work collaboratively in the pursuit of a goal</p>
-                </div>
-                <div class="avg score">
-                  <h4>Average</h4>
-                  <p>This score indicates someone who often works collaboratively with others in pursuit of a goal</p>
-                </div>
-                <div class="above-avg score">
-                  <h4>Above average</h4>
-                  <p>This score indicates someone who works collaboratively with others in achieving a goal, demonstrating a strong ability to work with others effectively</p>
-                </div>
-              </div>
-
-              <div class="progress tw">
-                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
-
-                </div>
-              </div>
-              <div class="rec">
-                <h4>Your score suggests a<span id="tw-above"></span> tendency to...</h4>
-                <ul id="tw">
-
-                </ul>
-                <h4>Recommendation: </h4>
-                <p id="tw-rec"></p>
-              </div>
-            </div><!-- #teamwork -->
-
-            <div id="networking" class="mastery">
-              <h3><b>Networking</b></h3>
-              <div class="scores">
-                <div class="below-avg score">
-                  <h4>Below average</h4>
-                  <p>This score indicates someone who infrequently engages with those outside their immediate team and is unlikely to make new contacts unless necessary</p>
-                </div>
-                <div class="avg score">
-                  <h4>Average</h4>
-                  <p>This score indicates someone who identifies new contacts from time to time and expands their network as required for the benefit of innovation</p>
-                </div>
-                <div class="above-avg score">
-                  <h4>Above average</h4>
-                  <p>This score indicates someone who actively expands their network both within and outside their organisation</p>
-                </div>
-              </div>
-
-              <div class="progress nw">
-                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
-
-                </div>
-              </div>
-              <div class="rec">
-                <h4>Your score suggests a<span id="nw-above"></span> tendency to...</h4>
-                <ul id="nw">
-
-                </ul>
-                <h4>Recommendation: </h4>
-                <p id="nw-rec"></p>
-              </div>
-            </div><!-- #networking -->
-
-          </div><!-- .comments -->
-
-        </div><!-- .pdf -->
-
-      </div><!-- .container -->
-
-</div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="js/bootstrap.min.js"></script>
-
+    <script>window.jQuery || document.write('<script src="{{URL::asset('../../assets/js/vendor/jquery.min.js')}}"></script>')</script>
+    
     <script>
     $(document).ready(function(){
       var x = $(".average"),
@@ -633,5 +406,232 @@
       evaluateNetworking(x[4].innerHTML);
     });
     </script>
+  
+  </head>
+
+  <body>
+    <div id="content">
+      <div class="container">
+
+        <div class="pdf">
+
+          <div class="info">
+            <img id="fincoda" src="{{URL::asset('img/FINCODA logo.png')}}" alt="Fincoda Logo">
+            <h1>FINCODA Innovation Barometer</h1>
+            <h1>Assessment Tool</h1>
+            <ul>
+              <li><b>Name: </b>{!! $survey->title !!}</li>
+              <li><b>Date: </b>{!! $survey->start_time !!}</li>
+            </ul>
+
+            <img id="eu" src="{{URL::asset('img/EU logo.png')}}" alt="EU Logo">
+            <p>The FINCODA Innovation Barometer Assessment Tool has been developed by the European Union through academic and business partnership.</p>
+            <p>To find out more visit www.fincoda.eu</p>
+
+          </div><!-- .info -->
+
+          <div class="introduction">
+            <h1>Introduction</h1>
+            <p>Thank you for completing the FINCODA barometer Innovation Assessment Tool which assesses an individual’s capacity to be innovative within their work environment. This report summarises your scores with an interpretative description. The scores and the accompanying descriptions will give you an indication of possible directions in which you can develop your innovative capacity.</p>
+            <p>You may find it valuable to share and discuss your profile with your peers or a manager when considering how to increase your innovative capacity. If your manager administered the survey for you to complete then they will also receive a copy of this report.</p>
+            <p>Within this report, there are five ‘dimensions’ – for each dimension you will be provided with your score and an interpretative description for that score. The dimensions are as follows:</p>
+            <br>
+            <h4>Creativity</h4>
+            <p>Your ability to think beyond tradition to generate or adapt meaningful alternatives (regardless of their possible practicality or future added value)</p>
+            <br>
+            <h4>Critical Thinking</h4>
+            <p>Your ability to deconstruct and analyse ideas (to evaluate advantages and disadvantages, foresee how events will develop and estimate risk)</p>
+            <br>
+            <h4>Initiative</h4>
+            <p>Your ability to make decisions or carry out actions to operationalise your ideas, as well as mobilise and manage those who have to implement the ideas.</p>
+            <br>
+            <h4>Teamwork</h4>
+            <p>Your ability to work efficiently with others in a group</p>
+            <br>
+            <h4>Networking</h4>
+            <p>Your ability to involve internal / external stakeholders</p>
+            <br>
+            <p>An innovator is defined as someone who has a <u><b>high mastery on one or more</b></u> of the basic innovation competencies.</p>
+          </div> <!-- .introduction -->
+
+          <!-- hidden results for displaying evaluation -->
+          <!-- get variables in here -->
+          <div class="hidden">
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
+          </div>
+
+          <div class="comments">
+            <div id="creativity" class="mastery">
+              <h3><b>Creativity</b></h3>
+              <div class="scores">
+                <div class="below-avg score">
+                  <h4>Below average</h4>
+                  <p>This score indicates someone who prefers to share others’ perspectives and is less likely to come up with new ideas or actions</p>
+                </div>
+                <div class="avg score">
+                  <h4>Average</h4>
+                  <p>This score indicates someone who is rather creative and able to come up with new ideas and/or actions</p>
+                </div>
+                <div class="above-avg score">
+                  <h4>Above average</h4>
+                  <p>This score indicates a creative individual who is very able to come up with new and valuable ideas and/or actions</p>
+                </div>
+              </div>
+
+              <div class="progress cr">
+                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
+
+                </div>
+              </div>
+              <div class="rec">
+                <h4>Your score suggests a<span id="cr-above"></span> tendency to...</h4>
+                <ul id="cr">
+
+                </ul>
+                <h4>Recommendation: </h4>
+                <p id="cr-rec"></p>
+              </div>
+            </div><!-- #creativitiy -->
+
+            <div id="critical-thinking" class="mastery">
+              <h3><b>Critital Thinking</b></h3>
+              <div class="scores">
+                <div class="below-avg score">
+                  <h4>Below average</h4>
+                  <p>This score indicates someone who rarely evaluates the effectiveness of ideas or engages in critical thought</p>
+                </div>
+                <div class="avg score">
+                  <h4>Average</h4>
+                  <p>This score indicates someone who uses their critical thinking ability to an extent to assess the impact or effectiveness of ideas</p>
+                </div>
+                <div class="above-avg score">
+                  <h4>Above average</h4>
+                  <p>This score indicates someone who regularly evaluates ideas and engages in critical thought to identify advantages and disadvantages of ideas</p>
+                </div>
+              </div>
+
+              <div class="progress ct">
+                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
+
+                </div>
+              </div>
+              <div class="rec">
+                <h4>Your score suggests a<span id="ct-above"></span> tendency to...</h4>
+                <ul id="ct">
+
+                </ul>
+                <h4>Recommendation: </h4>
+                <p id="ct-rec"></p>
+              </div>
+            </div><!-- #critical-thinking -->
+
+            <div id="initiative" class="mastery">
+              <h3><b>Initiative</b></h3>
+              <div class="scores">
+                <div class="below-avg score">
+                  <h4>Below average</h4>
+                  <p>This score indicates someone who rarely takes independent action to drive forward ideas by making decisions and motivating others</p>
+                </div>
+                <div class="avg score">
+                  <h4>Average</h4>
+                  <p>This score indicates someone who is often proactive and when desired can make decisions and take action to push ideas forward</p>
+                </div>
+                <div class="above-avg score">
+                  <h4>Above average</h4>
+                  <p>This score indicates someone who is very proactive and willing to make their own decisions to take action to push ideas forward</p>
+                </div>
+              </div>
+
+              <div class="progress in">
+                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
+
+                </div>
+              </div>
+              <div class="rec">
+                <h4>Your score suggests a<span id="in-above"></span> tendency to...</h4>
+                <ul id="in">
+
+                </ul>
+                <h4>Recommendation: </h4>
+                <p id="in-rec"></p>
+              </div>
+            </div><!-- #initiative -->
+
+            <div id="teamwork" class="mastery">
+              <h3><b>Teamwork</b></h3>
+              <div class="scores">
+                <div class="below-avg score">
+                  <h4>Below average</h4>
+                  <p>This score indicates someone who may prefer to work independently and be less inclined to work collaboratively in the pursuit of a goal</p>
+                </div>
+                <div class="avg score">
+                  <h4>Average</h4>
+                  <p>This score indicates someone who often works collaboratively with others in pursuit of a goal</p>
+                </div>
+                <div class="above-avg score">
+                  <h4>Above average</h4>
+                  <p>This score indicates someone who works collaboratively with others in achieving a goal, demonstrating a strong ability to work with others effectively</p>
+                </div>
+              </div>
+
+              <div class="progress tw">
+                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
+
+                </div>
+              </div>
+              <div class="rec">
+                <h4>Your score suggests a<span id="tw-above"></span> tendency to...</h4>
+                <ul id="tw">
+
+                </ul>
+                <h4>Recommendation: </h4>
+                <p id="tw-rec"></p>
+              </div>
+            </div><!-- #teamwork -->
+
+            <div id="networking" class="mastery">
+              <h3><b>Networking</b></h3>
+              <div class="scores">
+                <div class="below-avg score">
+                  <h4>Below average</h4>
+                  <p>This score indicates someone who infrequently engages with those outside their immediate team and is unlikely to make new contacts unless necessary</p>
+                </div>
+                <div class="avg score">
+                  <h4>Average</h4>
+                  <p>This score indicates someone who identifies new contacts from time to time and expands their network as required for the benefit of innovation</p>
+                </div>
+                <div class="above-avg score">
+                  <h4>Above average</h4>
+                  <p>This score indicates someone who actively expands their network both within and outside their organisation</p>
+                </div>
+              </div>
+
+              <div class="progress nw">
+                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" style="width: 0%">
+
+                </div>
+              </div>
+              <div class="rec">
+                <h4>Your score suggests a<span id="nw-above"></span> tendency to...</h4>
+                <ul id="nw">
+
+                </ul>
+                <h4>Recommendation: </h4>
+                <p id="nw-rec"></p>
+              </div>
+            </div><!-- #networking -->
+
+          </div><!-- .comments -->
+
+        </div><!-- .pdf -->
+
+      </div><!-- .container -->
+
+</div>
+    
   </body>
 </html>

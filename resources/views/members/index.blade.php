@@ -8,6 +8,9 @@
                 <h2 class="box-title">{!! $company->name !!}</h2>
                 <p><i>Below is the list of all the members in the company registered for the Fincoda Survey System.</i></p>
             </div><!-- /.box-header -->
+			@if(Session::has('message'))
+                <h4 style="color:red;">{{Session::get('message')}}</h4>
+            @endif
             <div class="box-body">
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
@@ -28,7 +31,13 @@
                             <td>{!! $member->email !!}</td>
                            <td> {!! $member->display_name !!}</td>
                             <td>{!! $member->created_at !!}</td>
-
+							<td><a href="{!! url('admin/members/deleteUserProfile/'.$member->id.'') !!}"><button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Delete Profile</button></a>
+                                </td>
+							<td><a href="{!! url('admin/members/disableUserProfile/'.$member->id.'') !!}"><button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Disable Profile</button></a>
+                                </td>
+							<td><a href="{!! url('admin/members/enableUserProfile/'.$member->id.'') !!}"><button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Enable Profile</button></a>
+                                </td>
+							
 
                         </tr>
                         @endforeach
