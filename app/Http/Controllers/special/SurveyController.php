@@ -133,7 +133,7 @@ class SurveyController extends Controller
                     ->withInput();
 				}
 				
-				$view = View::make('survey.resultForAdminPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
+				$view = View::make('survey.resultForUserPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
 									'surveyScorePerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
 									'participants','company','company_profile','answers'))->render();
 				$pdf = App::make('snappy.pdf.wrapper');
@@ -252,7 +252,7 @@ class SurveyController extends Controller
                     ->withInput();
 				}
 				
-				$view = PDF::loadView('survey.resultForAdminPdfOverView',
+				$view = PDF::loadView('survey.resultForUserPdfOverView',
 										compact('survey','$surveyScoreAllUsersCheckThreeParticipants','surveyScoreAllUsers',
 											'surveyGroupAveragePerIndicatorAllUsers','surveyScorePerIndicatorGroup',
 											'surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
@@ -479,7 +479,7 @@ class SurveyController extends Controller
 										->where('survey_id',$id)
 										->where('user_id',Auth::User()->id)
 										->value('user_id');
-		if($userParticipatedInSurvey!==Auth::User()->id){
+		if($userParticipatedInSurvey!=Auth::User()->id){
 			Session::flash('message','We could not find you as a participant in this survey');
 			return redirect()->back();
 		}

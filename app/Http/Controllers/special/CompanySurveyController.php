@@ -52,6 +52,239 @@ class CompanySurveyController extends Controller
 	}
 	
 	
+	public function downloadPdf($id){
+	try{
+	//dd($this->SurveyType($id));
+		if ($this->SurveyType($id) == 'self') {
+			
+			$surveyScoreAllUsersCheckThreeParticipants = DB::table('results')
+                                              ->select('results.user_id as User_ID')
+                                              ->where('results.survey_id',$id)
+                                              ->distinct()->get();
+			
+			$surveyScoreAllUsers = DB::table('indicators')
+                                              ->join('results','results.indicator_id','=','indicators.id')
+                                              ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
+                                              ->select('results.survey_id as Survey_ID',
+                                                       'results.user_id as User_ID','indicators.id as Indicator_ID',
+                                                       'indicators.indicator as Indicator', 'results.answer as Answer',
+                                                       'indicators.group_id as Indicator_Group_ID','indicator_groups.name as Indicator_Group')
+                                              ->where('results.survey_id',$id)
+                                              ->where('results.user_id',Auth::User()->id)
+                                              ->groupBy('results.survey_id', 'results.user_id', 'indicators.id')
+                                              ->get();
+
+
+              //This returns the average of the user group per indicator in this survey
+              $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
+                                "SELECT results.survey_id as Survey_ID,
+                                indicators.id as Indicator_ID, indicators.indicator as Indicator,
+                                AVG(results.answer) as Group_Average
+                                FROM indicators
+                                join results on results.indicator_id = indicators.id
+                                WHERE results.survey_id = :surveyId
+                                GROUP BY results.survey_id, indicators.id"),
+                                array("surveyId"=>$id));
+
+              //This returns the average of each user per indicator group for this survey
+              $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
+                                "SELECT results.survey_id as Survey_ID,
+                                results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
+                                indicator_groups.name as Indicator_Group,
+                                AVG(results.answer) as Indicator_Group_Average
+                                FROM indicators
+                                JOIN results on results.indicator_id = indicators.id
+                                JOIN indicator_groups on indicators.group_id = indicator_groups.id
+                                WHERE results.survey_id = :surveyId
+                                GROUP BY results.survey_id, results.user_id, indicators.group_id"),
+                                array("surveyId"=>$id));
+
+              //This returns the average of each user group per indicator group in this survey
+              $surveyScorePerIndicatorGroup = DB::select(DB::raw(
+                                "SELECT results.survey_id as Survey_ID,
+                                indicators.group_id as Indicator_Group_ID,
+                                indicator_groups.name as Indicator_Group,
+                                AVG(results.answer) as Indicator_Group_Average
+                                FROM indicators
+                                JOIN results on results.indicator_id = indicators.id
+                                JOIN indicator_groups on indicators.group_id = indicator_groups.id
+                                WHERE results.survey_id = :surveyId
+                                GROUP BY results.survey_id, indicators.group_id"),
+                                array("surveyId"=>$id));
+								
+								
+			  //This returns the average of each user group per indicator group in this survey
+              $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
+                                "SELECT p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,
+									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
+									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
+										(SELECT results.survey_id as Survey_ID, results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
+											indicator_groups.name as Indicator_Group,
+											AVG(results.answer) as Indicator_Group_Average
+											FROM indicators
+											JOIN results on results.indicator_id = indicators.id
+											JOIN indicator_groups on indicators.group_id = indicator_groups.id
+											WHERE results.survey_id = :surveyId
+											GROUP BY results.survey_id, results.user_id, indicators.group_id)
+								AS p GROUP BY p.Indicator_Group_ID"),
+                                array("surveyId"=>$id));
+
+
+				$company=Auth::User()->company()->first();
+				$company_profile=$company->profile()->first();
+				$survey = Survey::find($id);
+				$participants = Survey::find($id)->participants;
+				$answers = count(Survey::find($id)->participants()->where('completed',1)->get());
+				
+				//This check tests if you have the required data to generate the pdf: You can delete the checks that do not affect your data
+				if(empty($surveyScoreAllUsers)){
+					return redirect()->back()
+                    ->with('fail','PDF could not be generated because some of the required results were null ')
+                    ->withInput();
+				}
+				
+				$view = View::make('survey.resultForUserPdfOverView',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
+									'surveyScorePerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
+									'participants','company','company_profile','answers'))->render();
+				$pdf = App::make('snappy.pdf.wrapper');
+				$pdf->setOption('enable-javascript', true);
+				$pdf->setOption('javascript-delay', 5000);
+				$pdf->setOption('enable-smart-shrinking', true);
+				$pdf->setOption('no-stop-slow-scripts', true);
+				$pdf->loadHTML($view);
+				return $pdf->inline();
+			  				
+		}
+		
+		if ($this->SurveyType($id) == 'peer') {
+						
+							$surveyScoreAllUsersCheckThreeParticipants = DB::select(DB::raw(
+												"select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+												having count(peer_results.peer_id)>1) as p group by p.user_id"),
+                                              array("surveyId"=>$id));
+			
+							$surveyScoreAllUsers = DB::select(DB::raw(
+												"select peer_results.id, peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID, 
+												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator, indicators.group_id as Indicator_Group_ID, 
+												 indicator_groups.name as Indicator_Group, avg(peer_results.answer) as Answer from `peer_results`
+												 join indicators on indicators.id = peer_results.indicator_id
+												 join indicator_groups on indicator_groups.id = indicators.group_id
+												 where peer_results.peer_survey_id = :surveyId and peer_results.user_id = :userId group by 
+												 peer_results.peer_survey_id, peer_results.user_id, 
+												 peer_results.indicator_id having count(peer_results.peer_id)>1"),
+												array("surveyId"=>$id,"userId"=>Auth::User()->id));
+
+
+                            //This returns the average of the user group per indicator in this survey
+                            $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.indicator_id as Indicator_ID, p.indicator as Indicator, avg(p.Group_Average) as Group_Average from 
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Group_Average 
+											  from `peer_results`
+											  join indicators on indicators.id = peer_results.indicator_id
+											  join indicator_groups on indicator_groups.id = indicators.group_id
+											  where peer_results.peer_survey_id = :surveyId group by 
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.indicator_id"),
+                                              array("surveyId"=>$id));
+
+                            //This returns the average of each user per indicator group for this survey
+                            $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+											  from `peer_results`
+											  join indicators on indicators.id = peer_results.indicator_id
+											  join indicator_groups on indicator_groups.id = indicators.group_id
+											  where peer_results.peer_survey_id = :surveyId group by 
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id"),
+                                              array("surveyId"=>$id));
+
+                            //This returns the average of each user group per indicator group in this survey
+                            $surveyScorePerIndicatorGroup = DB::select(DB::raw(
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+											  from `peer_results`
+											  join indicators on indicators.id = peer_results.indicator_id
+											  join indicator_groups on indicator_groups.id = indicators.group_id
+											  where peer_results.peer_survey_id = :surveyId group by 
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.group_id"),
+                                              array("surveyId"=>$id));
+							
+							$company=Auth::User()->company()->first();
+							$company_profile=$company->profile()->first();
+							
+							
+							//This returns the minimum and maximum average per indicator group in this survey
+							$surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
+                                "SELECT d.Survey_ID, d.Indicator_Group_ID, d.Indicator_Group,
+									MIN(d.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
+									MAX(d.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
+										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+											  from `peer_results`
+											  join indicators on indicators.id = peer_results.indicator_id
+											  join indicator_groups on indicator_groups.id = indicators.group_id
+											  where peer_results.peer_survey_id = :surveyId group by 
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id)
+								AS d GROUP BY d.Indicator_Group_ID"),
+                                array("surveyId"=>$id));
+							
+							
+							$answers = DB::select(DB::raw(
+									"select users.id, users.name, users.email from users where users.id in
+										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
+											array("surveyId"=>$id));
+					
+					
+				$company=Auth::User()->company()->first();
+				$company_profile=$company->profile()->first();
+				$survey = Survey::find($id);
+				$participants = Survey::find($id)->participants;
+				$answers = count($answers);
+				
+				//This check tests if you have the required data to generate the pdf: You can delete the checks that do not affect your data
+				if(empty($surveyScoreAllUsers)){
+					return redirect()->back()
+                    ->with('fail','PDF could not be generated because some of the required results were null ')
+                    ->withInput();
+				}
+				
+				$view = PDF::loadView('survey.resultForUserPdfOverView',
+										compact('survey','$surveyScoreAllUsersCheckThreeParticipants','surveyScoreAllUsers',
+											'surveyGroupAveragePerIndicatorAllUsers','surveyScorePerIndicatorGroup',
+											'surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
+											'participants','company','company_profile','answers'));
+				//$pdf = \App::make('dompdf.wrapper');
+				//$pdf->loadHTML($view);
+				$view->setOption('enable-javascript',true);
+				$view->setOption('javascript-delay',13500);
+				$view->setOption('enable-smart-shrinking',true);
+				$view->setOption('no-stop-slow-scripts',true);
+				return $view->inline();
+		}
+		
+		return redirect()->back();
+		}catch(\Exception $e){
+				return redirect()->back()
+                    ->with('fail','An error occured; your request could not be completed '.$e->getMessage())
+                    ->withInput();			
+	    }
+				
+	}
+	
 		
 	public function downloadCsv($surveyId){
 		$id = $surveyId;
@@ -256,7 +489,7 @@ class CompanySurveyController extends Controller
 										->where('survey_id',$id)
 										->where('user_id',Auth::User()->id)
 										->value('user_id');
-		if($userParticipatedInSurvey!==Auth::User()->id){
+		if($userParticipatedInSurvey!=Auth::User()->id){
 			Session::flash('message','We could not find you as a participant in this survey');
 			return redirect()->back();
 		}

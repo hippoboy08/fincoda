@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2017 at 10:12 PM
+-- Generation Time: Aug 13, 2017 at 11:11 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `fincoda_db`
+-- Database: `fincoda`
 --
 
 -- --------------------------------------------------------
@@ -299,8 +299,7 @@ CREATE TABLE `password_resets` (
 
 INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
 ('admin@fincoda.com', '2aee07dcdc360918663e8a4803acd237d362c237f742f923fe940e4b8fecd1e1', '2016-10-06 11:33:32'),
-('duy.lenguyen@edu.turkuamk.fi', '8fb00b2519c2c997bafbe1d3b5a68df7f8776fd5270862c181426cf652157831', '2017-01-12 18:35:46'),
-('davis.kawalya@edu.turkuamk.fi', '9325e1cd97b8297dfc80b8d9feafc6156b08ab0ab8f1688be02e125562082079', '2017-01-12 18:43:23');
+('duy.lenguyen@edu.turkuamk.fi', '8fb00b2519c2c997bafbe1d3b5a68df7f8776fd5270862c181426cf652157831', '2017-01-12 18:35:46');
 
 -- --------------------------------------------------------
 
@@ -1779,6 +1778,8 @@ CREATE TABLE `users` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `company_id` int(11) NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `enabled` smallint(2) NOT NULL DEFAULT '1',
+  `profile_deleted` tinyint(2) NOT NULL DEFAULT '0',
   `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -1788,26 +1789,26 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `external`, `external_modified_email`, `email`, `company_id`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 0, 0, 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 'mK64Fzj9gIM5J5TG6BlXJp7i19bIe6VVnhMV6TBCUf4HtAULQ7oE9W6029ZM', '2016-09-04 18:24:58', '2017-05-12 17:59:54'),
-(2, 'special', 0, 0, 'special@fincoda.com', 1, '$2y$10$XEkBB9aQOSUsnZnbvtIU/eFpxWuzc3g.xN/Va5QGt5FWbJSh7P0vW', 'uKIIznCM4iQL23ecJF17Ly5OKwe3c8sbOQ5Ar2hCoWpkdPV5oJnzEOXUA8dx', '2016-09-04 18:24:59', '2017-05-12 17:54:56'),
-(3, 'basic', 0, 0, 'basic@fincoda.com', 1, '$2y$10$VJ1.j0X2Ns2gXUHhBs5Ob.orTIrsug85qCSQd36tvzfababDw9OdS', 'He5patJ3rqtPe0vRLgTnrG3cevBwMudahdFyb5KzJLn8PRKQpqpIwCQGV67r', '2016-09-04 18:24:59', '2017-05-12 17:47:32'),
-(15, 'dav', 0, 0, 'davis2.kawalya@edu.turkuamk.fi', 1, '$2y$10$PWJmx4dIVIQkOn9yQ7/2e.RrOuMni5K/0knmxD1bPdxFbGKFo98VK', 'C1RAx24qkGokx4BEaEBIvOw37lEKLwTN4BdpiY378ByzaojfSfp62U1yzq6C', '2016-11-15 09:31:48', '2017-05-12 17:37:20'),
-(16, 'dav', 0, 0, 'balsam2.almurrani@gmail.com', 1, '$2y$10$8ssO4p4nWZN/zkog31bWt.5gkarkW6XQrXiCuVuSXkiW08ngC2M1W', 'ONiHJ0xNUG4xgjojAVDy1PrNNNoXKaUoIU459ssig4qHM6ZlvbveC8wNGKJN', '2016-11-15 09:32:40', '2017-05-12 17:33:47'),
-(17, 'dav', 0, 0, 'duy2.lenguyen@edu.turkuamk.fi', 1, '$2y$10$PBZPCwtbEUqXmQeeyKWQ8.AzVrAZuEocNPfaaSJl504ySykwRy1dq', 'tgVErJkUCIKxFrVEEgEVUYgXLwDLGKentT2gZg5KzQqHmXS6vSNlPfHZvs33', '2016-11-15 09:33:15', '2017-05-12 17:31:24'),
-(18, 'dav', 0, 0, 'dav4@yahoo.coms', 1, '$2y$10$XEdiSkvjJFYlFFhCMv7tYOtBKkuhDauIPKfcDHIBcui9g29JYqiJO', 'Z5GFd1JqwWxvRdIOUA0XUjxquLL20dAKKQYApb8in5eqDfWDeVMNWeGUWrQP', '2016-11-15 09:33:44', '2017-03-31 19:45:46'),
-(19, 'dav', 0, 0, 'dav5@yahoo.coms', 1, '$2y$10$.zHdXynhWlde9hSDKHiJjegBUNnJCKwOMTV1PEVrXQaM3gg82owTm', '0qM2euIpBeZKuhsU4bAP69Q4BoFOiHGLSMD0xudPQj8BOIaz0QTnNQdSj1LW', '2016-11-15 09:34:04', '2017-03-31 21:51:47'),
-(20, 'dav', 0, 0, 'dav6@yahoo.coms', 1, '$2y$10$KWrb57lTkGO1zmGXIVLOneRGTZX5QJgClcOkJ35dvWjt.ENhUAHOK', 'IdAm1Y1U3PYT8IWkSjoD1qDpJ7QjtsgFKSrX1ehRhh4Ihma19dTHvysZ3nAu', '2016-11-15 09:34:33', '2017-04-02 11:43:15'),
-(21, 'dav', 0, 0, 'dav7@yahoo.coms', 1, '$2y$10$hoDB8JLvKK23bGfWsJNY.eK.bfee3fcfBQan0RaQp.Jc8KTkzRwvC', '0eVJ3M8Qqnwnbe8aPTMITFKRHbulF3tYPMNewyRddXprYgrcaCfbWlAlXg5m', '2016-11-15 09:35:04', '2016-11-30 22:17:06'),
-(22, 'dav', 0, 0, 'dav8@yahoo.coms', 1, '$2y$10$RhAv.7VBId8UMVguzTqGQ.KzMEhcBwICHGDekC/NYpvBTGE5yx8x.', '5p0aM0B5peelXHXf69x2XuVZQ4Wu6CgbwZnm2kmgaWsinrDJ7d62ondPeuPW', '2016-11-15 09:35:39', '2017-03-31 21:50:58'),
-(23, 'dav', 0, 0, 'dav9@yahoo.coms', 1, '$2y$10$jocVMuYLutwmoBjttRYYCOifIQGhOT0wTPtsgBuy.h5gDe4DUtSAm', '2VpuVfBEwGKf1gX7fBn5ijTm4jRz5M5q64FpnwLrM8Bkp2j4uMfo1tloD7Vg', '2016-11-15 09:36:08', '2016-11-15 12:43:20'),
-(27, 'kawalya', 0, 0, 'davis.kawalya@edu.turkuamk.fis', 5, '$2y$10$T8xlkKpfTyRN4qkmpppGh.USduGyVeY5LWv.1j8HzgWIxQ2MvmOQK', NULL, '2016-12-01 18:19:25', '2016-12-01 18:19:25'),
-(28, 'd', 0, 0, 'davis.kawalya@edu.turkuamk.fiss', 7, '$2y$10$9rZIH0bWj.gDebgd5ILJwuxkXctat4a3nC59moxidev057RzL4at2', NULL, '2016-12-01 18:48:11', '2016-12-01 18:48:11'),
-(49, 'davi', 0, 0, 'dav11@yahoo.coms', 1, '$2y$10$7/X2ujlNHxs2t.3fLJnZjem8idItYonwlq/PAfUImLF77BS7BPo6K', 'AP9fT8qI2P80MAIPdvpHSos4OkJnkyMy7i8KhTbQ8hio37DiOuS10gOb3E3B', '2017-04-02 16:33:32', '2017-04-02 16:33:55'),
-(82, 'dav', 1, 0, 'davis.kawalya@edu.turkuamk.fi', 1, '$2y$10$itRD3meN1NWm5ycIGiTVL.YKNWIVlkAanvAQ0FLtsb.AldTUyb5U6', 'nBxRnqkxfYhU1SKQcnJQ94fkTw43z0YhnzsPU18Hd7bKI5SnOym6eNqDrDe5', '2017-05-12 15:47:29', '2017-05-12 16:28:21'),
-(83, 'dav', 1, 1, '1.davis2.kawalya@edu.turkuamk.fi', 1, '$2y$10$pUN9oJStefLyNrrjri6WyOeUovzFrs5xHhJ4LdL06CXf1hMgLtp4K', 'kGs03t49cN82kzMQAmO7KceNlu7umPxx6ewbA4PsAbFHEIvKhMxiXKZAzp7o', '2017-05-12 16:07:33', '2017-05-12 17:32:29'),
-(84, 'dav', 1, 0, 'davis5.kawalya@edu.turkuamk.fi', 1, '$2y$10$YFVqkhV0j32Qrh9nPpWVM.eGYMEX.qyDpOpbE2Vtnitr8fknqI6pS', 'zZUFZ0GS1If4jVRquVJkksCDBxAEuIFXXdbEa3hekPEX0aALOlROvApz9GUd', '2017-05-12 17:10:07', '2017-05-12 17:12:58'),
-(85, 'dav', 1, 0, 'davis6.kawalya@edu.turkuamk.fi', 1, '$2y$10$JwrZy6Iwi625zkJL5wGH9evERPJEe9/3sK7pSL5X/6Ysej/wmWLJW', '4grIeidQyJxr76jOE7eDtswE3Umcg9efqP5flv7CraO8hhl4EtzcFMQQg37V', '2017-05-12 17:26:04', '2017-05-12 17:27:25');
+INSERT INTO `users` (`id`, `name`, `external`, `external_modified_email`, `email`, `company_id`, `password`, `enabled`, `profile_deleted`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 0, 0, 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 1, 0, '5cqXyBcvpPt1TX4vR7OSzF2qZkgrf2XwSh45EfyHEsjJbwFOEYGiuR12ojby', '2016-09-04 18:24:58', '2017-08-13 18:25:24'),
+(2, 'special', 0, 0, 'special@fincoda.com', 1, '$2y$10$XEkBB9aQOSUsnZnbvtIU/eFpxWuzc3g.xN/Va5QGt5FWbJSh7P0vW', 1, 0, 'yl6sj90bQ7L0PqoERxc3FnhRAdNaO6P1hMHgq2nManRqLjdDGfpxumbNb4SY', '2016-09-04 18:24:59', '2017-08-13 19:25:35'),
+(3, 'basic', 0, 0, 'basic@fincoda.com', 1, '$2y$10$VJ1.j0X2Ns2gXUHhBs5Ob.orTIrsug85qCSQd36tvzfababDw9OdS', 1, 0, 'D8HQIP7whyLd3e5f4kEk8ATDx2TVlqgK9NnUxakltdiK036vNa4vAJOqM6HI', '2016-09-04 18:24:59', '2017-08-13 19:15:20'),
+(15, 'dav', 0, 0, 'davis2.kawalya@edu.turkuamk.fi', 1, '$2y$10$PWJmx4dIVIQkOn9yQ7/2e.RrOuMni5K/0knmxD1bPdxFbGKFo98VK', 1, 0, 'C1RAx24qkGokx4BEaEBIvOw37lEKLwTN4BdpiY378ByzaojfSfp62U1yzq6C', '2016-11-15 09:31:48', '2017-05-12 17:37:20'),
+(16, 'dav', 0, 0, 'balsam2.almurrani@gmail.com', 1, '$2y$10$8ssO4p4nWZN/zkog31bWt.5gkarkW6XQrXiCuVuSXkiW08ngC2M1W', 1, 0, 'ONiHJ0xNUG4xgjojAVDy1PrNNNoXKaUoIU459ssig4qHM6ZlvbveC8wNGKJN', '2016-11-15 09:32:40', '2017-05-12 17:33:47'),
+(17, 'dav', 0, 0, 'duy2.lenguyen@edu.turkuamk.fi', 1, '$2y$10$PBZPCwtbEUqXmQeeyKWQ8.AzVrAZuEocNPfaaSJl504ySykwRy1dq', 1, 0, 'tgVErJkUCIKxFrVEEgEVUYgXLwDLGKentT2gZg5KzQqHmXS6vSNlPfHZvs33', '2016-11-15 09:33:15', '2017-05-12 17:31:24'),
+(18, 'dav', 0, 0, 'dav4@yahoo.coms', 1, '$2y$10$XEdiSkvjJFYlFFhCMv7tYOtBKkuhDauIPKfcDHIBcui9g29JYqiJO', 1, 0, 'Z5GFd1JqwWxvRdIOUA0XUjxquLL20dAKKQYApb8in5eqDfWDeVMNWeGUWrQP', '2016-11-15 09:33:44', '2017-03-31 19:45:46'),
+(19, 'dav', 0, 0, 'dav5@yahoo.coms', 1, '$2y$10$.zHdXynhWlde9hSDKHiJjegBUNnJCKwOMTV1PEVrXQaM3gg82owTm', 1, 0, '0qM2euIpBeZKuhsU4bAP69Q4BoFOiHGLSMD0xudPQj8BOIaz0QTnNQdSj1LW', '2016-11-15 09:34:04', '2017-03-31 21:51:47'),
+(20, 'dav', 0, 0, 'dav6@yahoo.coms', 1, '$2y$10$KWrb57lTkGO1zmGXIVLOneRGTZX5QJgClcOkJ35dvWjt.ENhUAHOK', 1, 0, 'IdAm1Y1U3PYT8IWkSjoD1qDpJ7QjtsgFKSrX1ehRhh4Ihma19dTHvysZ3nAu', '2016-11-15 09:34:33', '2017-04-02 11:43:15'),
+(21, 'dav', 0, 0, 'dav7@yahoo.coms', 1, '$2y$10$hoDB8JLvKK23bGfWsJNY.eK.bfee3fcfBQan0RaQp.Jc8KTkzRwvC', 1, 0, '0eVJ3M8Qqnwnbe8aPTMITFKRHbulF3tYPMNewyRddXprYgrcaCfbWlAlXg5m', '2016-11-15 09:35:04', '2016-11-30 22:17:06'),
+(22, 'dav', 0, 0, 'dav8@yahoo.coms', 1, '$2y$10$RhAv.7VBId8UMVguzTqGQ.KzMEhcBwICHGDekC/NYpvBTGE5yx8x.', 1, 0, '5p0aM0B5peelXHXf69x2XuVZQ4Wu6CgbwZnm2kmgaWsinrDJ7d62ondPeuPW', '2016-11-15 09:35:39', '2017-03-31 21:50:58'),
+(23, 'dav', 0, 0, 'dav9@yahoo.coms', 1, '$2y$10$jocVMuYLutwmoBjttRYYCOifIQGhOT0wTPtsgBuy.h5gDe4DUtSAm', 1, 0, '2VpuVfBEwGKf1gX7fBn5ijTm4jRz5M5q64FpnwLrM8Bkp2j4uMfo1tloD7Vg', '2016-11-15 09:36:08', '2016-11-15 12:43:20'),
+(27, 'kawalya', 0, 0, 'davis.kawalya@edu.turkuamk.fis', 5, '$2y$10$T8xlkKpfTyRN4qkmpppGh.USduGyVeY5LWv.1j8HzgWIxQ2MvmOQK', 1, 0, NULL, '2016-12-01 18:19:25', '2016-12-01 18:19:25'),
+(28, 'd', 0, 0, 'davis.kawalya@edu.turkuamk.fiss', 7, '$2y$10$9rZIH0bWj.gDebgd5ILJwuxkXctat4a3nC59moxidev057RzL4at2', 1, 0, NULL, '2016-12-01 18:48:11', '2016-12-01 18:48:11'),
+(49, 'davi', 0, 0, 'dav11@yahoo.coms', 1, '$2y$10$7/X2ujlNHxs2t.3fLJnZjem8idItYonwlq/PAfUImLF77BS7BPo6K', 1, 0, 'AP9fT8qI2P80MAIPdvpHSos4OkJnkyMy7i8KhTbQ8hio37DiOuS10gOb3E3B', '2017-04-02 16:33:32', '2017-04-02 16:33:55'),
+(82, 'dav', 1, 0, 'davis.kawalya@edu.turkuamk.fi', 1, '$2y$10$6EOuzWwXO.2v7W2eV2eZWOlwRrugAjgc1c928kVqWPKIfAukjbPAa', 1, 0, 'Gikt4yPcwV4VEzx0dGcNSrjUZkHt8XProLG92JM1YUQKzO9n7ERw1JzUq82I', '2017-05-12 15:47:29', '2017-08-13 19:31:40'),
+(83, 'dav', 1, 1, '1.davis2.kawalya@edu.turkuamk.fi', 1, '$2y$10$pUN9oJStefLyNrrjri6WyOeUovzFrs5xHhJ4LdL06CXf1hMgLtp4K', 1, 0, 'kGs03t49cN82kzMQAmO7KceNlu7umPxx6ewbA4PsAbFHEIvKhMxiXKZAzp7o', '2017-05-12 16:07:33', '2017-05-12 17:32:29'),
+(84, 'dav', 1, 0, 'davis5.kawalya@edu.turkuamk.fi', 1, '$2y$10$YFVqkhV0j32Qrh9nPpWVM.eGYMEX.qyDpOpbE2Vtnitr8fknqI6pS', 1, 0, 'zZUFZ0GS1If4jVRquVJkksCDBxAEuIFXXdbEa3hekPEX0aALOlROvApz9GUd', '2017-05-12 17:10:07', '2017-05-12 17:12:58'),
+(85, 'dav', 1, 0, 'davis6.kawalya@edu.turkuamk.fi', 1, '$2y$10$JwrZy6Iwi625zkJL5wGH9evERPJEe9/3sK7pSL5X/6Ysej/wmWLJW', 1, 0, '4grIeidQyJxr76jOE7eDtswE3Umcg9efqP5flv7CraO8hhl4EtzcFMQQg37V', '2017-05-12 17:26:04', '2017-05-12 17:27:25');
 
 -- --------------------------------------------------------
 
@@ -1845,7 +1846,7 @@ CREATE TABLE `user_in_groups` (
   `user_id` int(10) UNSIGNED NOT NULL,
   `user_group_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1917,15 +1918,15 @@ INSERT INTO `user_profiles` (`id`, `user_id`, `gender`, `dob`, `What_is_your_hig
 (22, 22, 'male', '0000-00-00', 'Phd Level', 'Student', 'ghg', 'jklklkds', 'jkjdfksj', 'kjöajkjk', '', '', '', '', '', 'Ascension Island', 'jlkl', 'jjkkkj', 0, '0000-00-00', 1, '2016-11-15 09:35:39', '2016-11-15 09:35:39'),
 (23, 23, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-11-15 09:36:09', '2016-11-15 09:36:09'),
 (25, 1, 'male', '0000-00-00', 'phd level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more sssd', 'Healthcareddssss', 'Five to ten years', 'engineering', 'Partnerssssd', 'Less than 50 employees', 'Ascension Island', 'klask', 'klkasddddd', 902390232, '0000-00-00', 1, '2016-11-15 09:31:48', '2016-11-15 09:38:18'),
-(26, 2, 'male', '0000-00-00', 'Phd Level', 'Professional', '', '', '', '', 'Healthcare', 'Five to ten years', 'engineering', 'Partner', 'Less than 50 employees', 'Ascension Island', 'jksd', 'kiöejds', 0, '0000-00-00', 1, '2016-11-15 09:31:48', '2016-11-15 09:38:18'),
-(27, 3, 'male', '0000-00-00', 'phd level', 'Professional', 'ghg', '', '', '', 'ghgg', 'Five to ten years', 'engineering', 'Partnerklll', 'Less than 50 employees', 'Ascension Island', 'jlklkl', 'hljui', 4556, '0000-00-00', 1, '2016-11-15 09:31:48', '2016-11-15 09:38:18'),
 (31, 27, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-12-01 18:19:25', '2016-12-01 18:19:25'),
 (32, 28, '', '0000-00-00', 'Phd Level', 'Professional', 'Phd', 'ICT', '', 'Fourth year or more', 'Healthcare', 'Five to ten years', 'ICT', 'Partner', 'Less than 50 employees', '', '', '', 0, '0000-00-00', 0, '2016-12-01 18:48:11', '2016-12-01 18:48:11'),
 (49, 49, '', '2016-09-04', 'Phd Level', 'Professional', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', 0, '0000-00-00', 0, '2017-04-02 16:33:32', '2017-04-02 16:33:32'),
-(75, 82, 'male', '2016-09-04', 'Phd Level', 'Professional', '', '', '', '', 'Healthcareddssss', '23', 'engineering', 'Partner', '990909', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, NULL, NULL),
 (76, 83, 'male', '2016-09-04', 'Phd Level', 'Professional', '', '', '', '', 'Healthcareddssss', '23', 'engineering', 'Partner', '990909', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, NULL, NULL),
 (77, 84, 'male', '2016-09-04', 'Phd Level', 'Professional', '', '', '', '', 'Healthcareddssss', '23', 'engineering', 'Partner', '990909', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, NULL, NULL),
-(78, 85, 'male', '2016-09-04', 'Phd Level', 'Professional', '', '', '', '', 'Healthcareddssss', '23', 'engineering', 'Partner', '990909', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, NULL, NULL);
+(78, 85, 'male', '2016-09-04', 'Phd Level', 'Professional', '', '', '', '', 'Healthcareddssss', '23', 'engineering', 'Partner', '990909', 'Ascension Island', 'jjkkk', 'jkk', 990909, '0000-00-00', 1, NULL, NULL),
+(82, 3, 'male', '0000-00-00', 'Phd Level', 'Professional', '', '', '', '', 'Healthcare', 'Five to ten years', 'engineering', 'Partner', 'Less than 50 employees', 'Ascension Island', 'jksd', 'kiöejds', 0, '0000-00-00', 1, '2016-11-15 09:31:48', '2016-11-15 09:38:18'),
+(84, 2, 'male', '0000-00-00', 'Phd Level', 'Professional', '', '', '', '', 'Healthcare', 'Five to ten years', 'engineering', 'Partner', 'Less than 50 employees', 'Ascension Island', 'jksd', 'kiöejds', 0, '0000-00-00', 1, '2016-11-15 09:31:48', '2016-11-15 09:38:18'),
+(87, 82, 'male', '0000-00-00', 'Phd Level', 'Professional', '', '', '', '', 'Healthcare', 'Five to ten years', 'engineering', 'Partner', 'Less than 50 employees', 'Ascension Island', 'jksd', 'kiöejds', 0, '0000-00-00', 1, '2016-11-15 09:31:48', '2016-11-15 09:38:18');
 
 -- --------------------------------------------------------
 
@@ -1941,7 +1942,7 @@ CREATE TABLE `yearly_averages` (
   `teamwork` decimal(18,4) NOT NULL,
   `networking` decimal(18,4) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -2206,7 +2207,7 @@ ALTER TABLE `survey_types`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 --
 -- AUTO_INCREMENT for table `user_groups`
 --
@@ -2221,7 +2222,7 @@ ALTER TABLE `user_in_groups`
 -- AUTO_INCREMENT for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 --
 -- Constraints for dumped tables
 --
