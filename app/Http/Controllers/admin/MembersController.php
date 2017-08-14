@@ -63,8 +63,56 @@ class MembersController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
+	$userProfileDeleted = DB::table('users')->where('id',$id)->value('profile_deleted');
+	if($userProfileDeleted == 1 && Auth::User()->id != $id){
+		return redirect()->back()
+                    ->with('message','The profile for user with id: '.$id.' was already deleted; You can enable the user account then ask them to login to recreate their profile')
+                    ->withInput();
+	}
+	if(Auth::User()->profile_deleted == 1){
+			if(Auth::User()->enabled == 0){
+			return redirect()->back()
+                    ->with('message','Your profile was already deleted and does not exist ')
+                    ->withInput();
+			}
+			DB::beginTransaction();
+			try{
+			DB::table('user_profiles')
+						->insert([
+							'user_id'=>$id,
+							'gender'=>'male',
+							'country'=>'US',
+							'city'=>'NY',
+							'Street'=>'Main',
+							'phone'=>'+170089777',
+							'hired_date'=>'2016-09-04',
+							'updated_at'=>Carbon::now()
+						]);
+			DB::table('users')
+						->where('id',$id)
+						->update([
+							'profile_deleted'=>0,
+							'enabled'=>1
+						]);
+			DB::commit();
+			}catch(\Exception $e){
+				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
+			}
+		$role=DB::table('role_user')->where('user_id',$id)
+            ->join('roles','roles.id','=','role_user.role_id')
+            ->select('roles.display_name')
+            ->first();
+		if($this->validateUser($id)=='true'){
+			return view('profile.user')->with('user',User::find($id))
+										->with('profile',User_Profile::where('user_id',$id)->first())
+										->with('role',$role);
+		}else{
+			return view('errors.404')->with('title',' User not found')->with('message','The user you requested does not belong to your company or does not exists in Fincoda Survey System.');
+		}
+	}	
+		
     $role=DB::table('role_user')->where('user_id',$id)
             ->join('roles','roles.id','=','role_user.role_id')
             ->select('roles.display_name')
@@ -73,8 +121,6 @@ class MembersController extends Controller{
         return view('profile.user')->with('user',User::find($id))
                                     ->with('profile',User_Profile::where('user_id',$id)->first())
                                     ->with('role',$role);
-
-
     }else{
         return view('errors.404')->with('title',' User not found')->with('message','The user you requested does not belong to your company or does not exists in Fincoda Survey System.');
     }
@@ -88,8 +134,14 @@ class MembersController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
+		$userProfileDeleted = DB::table('users')->where('id',$id)->value('profile_deleted');
+		if($userProfileDeleted == 1 && Auth::User()->id != $id){
+			return redirect()->back()
+						->with('message','The profile for user with id: '.$id.' was already deleted; You can enable the user account then ask them to login to recreate their profile')
+						->withInput();
+		}
+			
         return view('profile.edituser')->with('profile',Auth::User()->profile)->with('user',Auth::User());
     }
 
@@ -226,20 +278,16 @@ class MembersController extends Controller{
 		DB::table('users')
 						->where('id',$id)
 						->update([
-							'profile_deleted'=>1
-						]);
-						
-		DB::table('users')
-						->where('id',$id)
-						->update([
+							'profile_deleted'=>1,
 							'enabled'=>0
 						]);
+						
 						if(Auth::User()->external_modified_email == 0){
 						$userEmail = DB::table('users')->where('id',$id)->value('email');
 						$this->email('email.deleteUserProfile',['owner'=>$owner=Auth::User()->name,'name'=>User::find($id)->name, 'link'=>url('/').'/login'],$userEmail);
 						}
 		DB::commit();
-		return redirect()->back()
+		return redirect('admin/members')
 					->with('message','The profile for user with id: '.$id.' was deleted successfully')
                     ->withInput();
 		}catch(\Exception $e){

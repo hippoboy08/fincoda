@@ -16,7 +16,44 @@ class ProfileController extends Controller{
 	use EmailTrait;
 
     public function index(){
+		if(Auth::User()->profile_deleted == 1){
+			if(Auth::User()->enabled == 0){
+			return redirect()->back()
+                    ->with('message','Your profile was already deleted and does not exist ')
+                    ->withInput();
+			}
+			DB::beginTransaction();
+			try{
+			DB::table('user_profiles')
+						->insert([
+							'user_id'=>Auth::User()->id,
+							'gender'=>'male',
+							'country'=>'US',
+							'city'=>'NY',
+							'Street'=>'Main',
+							'phone'=>'+170089777',
+							'hired_date'=>'2016-09-04',
+							'updated_at'=>Carbon::now()
+						]);
+			DB::table('users')
+						->where('id',Auth::User()->id)
+						->update([
+							'profile_deleted'=>0,
+							'enabled'=>1
+						]);
+			DB::commit();
+			}catch(\Exception $e){
+				DB::rollback();
+				return "An error occured; your request could not be completed ".$e->getMessage();
+			}
+		$role=DB::table('role_user')->where('user_id',Auth::id())
+            ->join('roles','roles.id','=','role_user.role_id')
+            ->select('roles.display_name')->first();
 
+        return view('profile.user')->with('user',Auth::User())
+            ->with('profile',Auth::User()->profile)
+            ->with('role',$role);
+	}	
         $role=DB::table('role_user')->where('user_id',Auth::id())
             ->join('roles','roles.id','=','role_user.role_id')
             ->select('roles.display_name')

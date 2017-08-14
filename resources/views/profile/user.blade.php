@@ -39,7 +39,7 @@
 
                             @role('admin')
                               <a href="{!! url('admin/members/'.Auth::id().'/edit') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button></a>
-                              <a href="{!! url('admin/members/'.Auth::id().'/deleteUserProfile') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Delete Profile</button></a>
+                              <a href="{!! url('admin/members/deleteUserProfile/'.Auth::id()) !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Delete Profile</button></a>
                                 @endrole
 
                                 @role('special')
