@@ -116,21 +116,25 @@ $(document).ready(function(){
 
   /* Show/Hide the option Number of Evaluators depedning on the survey type
   when admin create a survey*/
+  function checkSurveyType() {
+    var $option = $('input[name="numberOfEvaluators"]').closest('div');
+    /* show the option to input how many evaluators if the peer survey (value == 2) is selected */
+    if($('input[name="survey_type"]:checked').val() == 2)
+    {
+      $option.fadeIn('slow');
+    }
+    else
+    {
+      $option.fadeOut('slow');
+    }
+  }
+  // check when the page loads
+  checkSurveyType();
   $('input[name="survey_type"]').change(
     function() {
-      var $option = $('input[name="numberOfEvaluators"]').closest('div');
-      /* show the option to input how many evaluators if the peer survey (value == 2) is selected */
-      if($(this).val() == 2)
-      {
-        $option.fadeIn('slow');
-      }
-      else
-      {
-        $option.fadeOut('slow');
-      }
+      checkSurveyType();
     }
   );
-
   /* Only shows the corresponding fields of the professional status in the EditProfile blade*/
   $(function () {
     $('select[name="professional_status"]').change();
