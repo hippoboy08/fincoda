@@ -79,7 +79,7 @@
             <div class="col-lg-12">
                 <h1>Fincoda Survey System</h1>
                 <br>
-                <h3>A tool for measuring intended learning outcomes in internal development activities for universities and working life organizations</h3>
+                <h3>A tool for Universities and other working life organizations for measuring individuals’ innovation competences</h3>
                 <br><br>
             </div>
 
@@ -201,7 +201,7 @@
                 <h3>Contact</h3>
                 <p>
                 Mr. Balsam Almurrani<br/>
-                Project Manager<br/>
+                FINCODA Software Application Manager<br/>
                 Turku University of Applied Sciences<br/>
                 Turku Finland<br>
                 balsam.almurrani@turkuamk.fi<br>
@@ -263,6 +263,7 @@
 
 <div class="container">
 <div class="row row-logo">
+
     <div class="logos col-sm-4">
         <a href="http://www2.mmu.ac.uk/" target="_blank"><img src="{{ url('landing_page/img/Logo-MMU.png')}}"></a>
     </div>
@@ -277,6 +278,9 @@
     </div>
     <div class="logos-long col-sm-6">
         <a href="https://www.haw-hamburg.de/english.html" target="_blank"><img src="{{ url('landing_page/img/01_HAW_Logo_P_web.gif')}}"></a>
+    </div>
+    <div class="logos-long col-sm-6">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/eu_flag_co_funded_pos__5brgb_5d_right.jpg')}}"></a>
     </div>
 </div>
 
