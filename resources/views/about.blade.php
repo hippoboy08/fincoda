@@ -43,7 +43,10 @@
 
             <ul class="nav navbar-nav">
                 <li><a href="{{url('/')}}" class="smothscroll">Home</a></li>
-
+                <li><a href="{{url('/')}}#desc" class="smothScroll">Description</a></li>
+                <li><a href="{{url('/')}}#showcase" class="smothScroll">Showcase</a></li>
+                <li><a href="{{url('/')}}#contact" class="smothScroll">Contact</a></li>
+                <li><a href="{{url('/')}}#tutorial" class="smothScroll">Tutorial</a></li>
             </ul>
 
 

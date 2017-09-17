@@ -139,9 +139,9 @@ $(document).ready(function(){
     function() {
       var professionalStatus = $(this).val();
       /* Choose the fields to hide*/
-      var hidingFields = professionalStatus == "professional" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
+      var hidingFields = professionalStatus == "Professional" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
       /* Choose the fields to show*/
-      var displayingFields = professionalStatus == "student" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
+      var displayingFields = professionalStatus == "Student" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
       hidingFields.fadeOut('slow');
       displayingFields.fadeIn('slow');
     //   /* Set the view to the displaying fields*/
