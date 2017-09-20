@@ -263,24 +263,56 @@
 
 <div class="container">
 <div class="row row-logo">
-
-    <div class="logos col-sm-4">
-        <a href="http://www2.mmu.ac.uk/" target="_blank"><img src="{{ url('landing_page/img/Logo-MMU.png')}}"></a>
+    <style media="screen">
+      img {
+        width: 80%;
+        height: 80%;
+      }
+    </style>
+    <div class="logos col-sm-2">
+        <a href="http://www2.mmu.ac.uk/" target="_blank"><img src="{{ url('landing_page/img/Logos/MMU.gif')}}"></a>
     </div>
-    <div class="logos col-sm-4">
-        <a href="https://www.international.hu.nl/" target="_blank"><img src="{{ url('landing_page/img/Logo-hu.png')}}"></a>
+    <div class="logos col-sm-2">
+        <a href="https://www.international.hu.nl/" target="_blank"><img src="{{ url('landing_page/img/Logos/HU_LOGO_1.jpg')}}"></a>
     </div>
-    <div class="logos col-sm-4">
-        <a href="https://www.upv.es/" target="_blank"><img src="{{ url('landing_page/img/Logo_Universidad_Politecnica_valencia.png')}}"></a>
+    <div class="logos col-sm-2">
+        <a href="https://www.upv.es/" target="_blank"><img src="{{ url('landing_page/img/Logos/UPV.png')}}"></a>
     </div>
-    <div class="logos-long col-sm-6">
-        <a href="http://www.tuas.fi/en/" target="_blank"><img src="{{ url('landing_page/img/Logo-turunamk.jpg')}}"></a>
+    <div class="logos col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Carter Corson.png')}}"></a>
     </div>
-    <div class="logos-long col-sm-6">
-        <a href="https://www.haw-hamburg.de/english.html" target="_blank"><img src="{{ url('landing_page/img/01_HAW_Logo_P_web.gif')}}"></a>
+    <div class="logos col-sm-2">
+        <a href="https://www.haw-hamburg.de/english.html" target="_blank"><img src="{{ url('landing_page/img/Logos/Hamburg.jpg')}}"></a>
     </div>
-    <div class="logos-long col-sm-6">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/eu_flag_co_funded_pos__5brgb_5d_right.jpg')}}"></a>
+    <div class="logos col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Celestica.png')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/ECDL.gif')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/EENNW.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Elomatic.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/JCS logo.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Lactoprot.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Meyer Turku.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Schneider Electric.gif')}}"></a>
+    </div>
+    <div class="logos-long col-sm-2">
+        <a href="http://www.tuas.fi/en/" target="_blank"><img src="{{ url('landing_page/img/Logos/TURKU.jpg')}}"></a>
+    </div>
+    <div class="logos-long col-sm-2">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/eu_flag_co_funded_pos_brgbd_right.jpg')}}"></a>
     </div>
 </div>
 
