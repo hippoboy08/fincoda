@@ -196,8 +196,8 @@
     <div class="container">
         <div class="row centered">
             <h1>FINCODA - we need your opinion</h1>
-            <br><br>
-            <div class="col-lg-6 align-left">
+            <br>
+            <div class="col-lg-12 align-center">
                 <h3>Contact</h3>
                 <p>
                 Mr. Balsam Almurrani<br/>
@@ -208,7 +208,7 @@
                 Tel +358-449074990
                 </p>
             </div>
-            <div class="col-lg-6 align-right">
+            <!-- <div class="col-lg-6 align-right">
                 <h3>Drop any question or suggestion</h3>
                 <br>
                 <form role="form" action="#" method="post" enctype="plain">
@@ -227,7 +227,7 @@
                     <br>
                     <button type="submit" class="btn btn-large btn-success" id="submit-home-contact">SUBMIT</button>
                 </form>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -269,51 +269,59 @@
         height: 80%;
       }
     </style>
-    <div class="logos col-sm-2">
-        <a href="http://www2.mmu.ac.uk/" target="_blank"><img src="{{ url('landing_page/img/Logos/MMU.gif')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="https://www.international.hu.nl/" target="_blank"><img src="{{ url('landing_page/img/Logos/HU_LOGO_1.jpg')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="https://www.upv.es/" target="_blank"><img src="{{ url('landing_page/img/Logos/UPV.png')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Carter Corson.png')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="https://www.haw-hamburg.de/english.html" target="_blank"><img src="{{ url('landing_page/img/Logos/Hamburg.jpg')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Celestica.png')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/ECDL.gif')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/EENNW.jpg')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Elomatic.jpg')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/JCS logo.jpg')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Lactoprot.jpg')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Meyer Turku.jpg')}}"></a>
-    </div>
-    <div class="logos col-sm-2">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/Schneider Electric.gif')}}"></a>
-    </div>
-    <div class="logos-long col-sm-2">
-        <a href="http://www.tuas.fi/en/" target="_blank"><img src="{{ url('landing_page/img/Logos/TURKU.jpg')}}"></a>
-    </div>
-    <div class="logos-long col-sm-2">
+    <div class="logos-long col-sm-6" style="position: relative; float: left;">
         <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/eu_flag_co_funded_pos_brgbd_right.jpg')}}"></a>
     </div>
+    <div class="logos-long col-sm-3" style="position: relative; float: right;">
+        <a href="http://www.tuas.fi/en/" target="_blank"><img src="{{ url('landing_page/img/Logos/TURKU.jpg')}}"></a>
+    </div>
+</div>
+<div class="row row-logo">
+    <div class="logos col-sm-3">
+        <a href="http://www2.mmu.ac.uk/" target="_blank"><img src="{{ url('landing_page/img/Logos/MMU.gif')}}"></a>
+    </div>
+    <div class="logos col-sm-3">
+        <a href="https://www.international.hu.nl/" target="_blank"><img src="{{ url('landing_page/img/Logos/HU_LOGO_1.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-3">
+        <a href="https://www.upv.es/" target="_blank"><img src="{{ url('landing_page/img/Logos/UPV.png')}}"></a>
+    </div>
+    <div class="logos col-sm-3">
+        <a href="https://www.haw-hamburg.de/english.html" target="_blank"><img src="{{ url('landing_page/img/Logos/Hamburg.jpg')}}"></a>
+    </div>
+  </div>
+  <div class="row row-logo">
+    <div class="logos col-sm-3">
+        <a href="http://www.cartercorson.co.uk/" target="_blank"><img src="{{ url('landing_page/img/Logos/Carter Corson.png')}}"></a>
+    </div>
+    <div class="logos col-sm-3">
+        <a href="https://www.celestica.com/home" target="_blank"><img src="{{ url('landing_page/img/Logos/Celestica.png')}}"></a>
+    </div>
+    <div class="logos col-sm-3">
+        <a href="http://www.ecdl.nl/" target="_blank"><img src="{{ url('landing_page/img/Logos/ECDL.gif')}}"></a>
+    </div>
+
+    <div class="logos col-sm-3">
+        <a href="http://www.enterprise-europe.co.uk/" target="_blank"><img src="{{ url('landing_page/img/Logos/EENNW.jpg')}}"></a>
+    </div>
+  </div>
+  <div class="row row-logo">
+    <div class="logos col-sm-2">
+        <a href="https://www.elomatic.com/en/" target="_blank"><img src="{{ url('landing_page/img/Logos/Elomatic.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="http://www.johncaunt.com/" target="_blank"><img src="{{ url('landing_page/img/Logos/JCS logo.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="http://www.lactoprot.de/english/home.html" target="_blank"><img src="{{ url('landing_page/img/Logos/Lactoprot.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="http://www.meyerturku.fi/en/meyerturku_com/index.jsp" target="_blank"><img src="{{ url('landing_page/img/Logos/Meyer Turku.jpg')}}"></a>
+    </div>
+    <div class="logos col-sm-2">
+        <a href="https://www.schneider-electric.es/es/" target="_blank"><img src="{{ url('landing_page/img/Logos/Schneider Electric.gif')}}"></a>
+    </div>
+
 </div>
 
 </div><hr>
