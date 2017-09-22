@@ -40,14 +40,12 @@
                                 @endif
                                 {!! Form::textarea('editor1',old('editor1'),['id'=>'editor1','rows'=>'10','cols'=>'80']) !!}
                             </div><br>
-<<<<<<< HEAD
 
 
                             <div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
-=======
 
 							<div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
->>>>>>> a186129c708b3e424b99343da394472aae3a3c14
+
                             <label><h3>Open data ane time range*:</h3></label>
                             <p>Please choose the date and time range of the start and end of the survey.</p>
                                 @if($errors->has('startDate'))
