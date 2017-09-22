@@ -9,6 +9,7 @@
 <p>Survey title : <strong>{!! $title !!}</strong></p>
 <p>Created by : <strong>{!! $owner !!}</strong></p>
 <p>Survey end date : <strong>{!! $end_time !!}</strong></p>
-<p>You can access the survey via this link : <strong> <a href="{!! $link !!}">{!! $link !!}</a></strong></p>
-<br>
-<strong>Fincoda Survey System</strong>
+
+<p>To access the questionnaire, please follow this link: <a target="_blank" href="http://fincoda.dc.turkuamk.fi">http://fincoda.dc.turkuamk.fi</a></p>
+
+<p>If you have any queries, please contact FINCODA Sofware Application Manager Balsam Abdulghani <strong>balsam.abdulghani@turkuamk.fi</strong></p>
