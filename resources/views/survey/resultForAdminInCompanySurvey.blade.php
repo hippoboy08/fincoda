@@ -47,9 +47,9 @@
                     <div class="tab-content">
                       <div id="overview" class="tab-pane fade in active">
                         <div class="row pull-right" >
-                           <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('special/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
+                           <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                           &nbsp;
-                           <i class="fa fa-download" aria-hidden="true"></i> <u><a href="{!! url('special/survey/downloadCsv/'.$survey->id) !!}">Download Excel</a></u>
+                           <i class="fa fa-download" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadCsv/'.$survey->id) !!}">Download Excel</a></u>
                         </div>
                         <div class="report-caption">
                           <h4><b>Description</b></h4>
