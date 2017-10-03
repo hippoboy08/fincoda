@@ -38,15 +38,26 @@
                                 <ul class="nav nav-tabs">
                                   <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
+                                  <div class="row pull-right" >
+                                     <div style="float:left;">
+                                       <u><a class="btn btn-lg btn-success" href="{!! url('special/groupsurvey/downloadPdf/'.$survey->id) !!}">
+                                         <i class="fa fa-print" style="font-size:24px;" aria-hidden="true"></i> Print report (PDF)</a></u>
+                                     </div>
+                                    &nbsp;&nbsp;&nbsp;
+                                     <div style="float:right;">
+                                       <u><a class="btn btn-lg btn-success" href="{{route('downloadExcelSpecial',$survey->id)}}">
+                                         <i class="fa fa-download" style="font-size:24px;" aria-hidden="true"></i> Download Excel</a></u>
+                                     </div>
+                                  </div>
                                 </ul>
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade in active">
 
-								  <div class="pull-right" >
+								  <!-- <div class="pull-right" >
                                             <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('special/groupsurvey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                                             &nbsp;
-                                         </div>
+                                         </div> -->
 
 
                                     <div class="report-caption">

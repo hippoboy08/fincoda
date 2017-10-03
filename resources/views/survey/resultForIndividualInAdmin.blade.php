@@ -37,15 +37,26 @@
                                 <ul class="nav nav-tabs">
                                   <li><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li class="active"><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
+                                  <div class="row pull-right" >
+                                     <div style="float:left;">
+                                       <u><a class="btn btn-lg btn-success" href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">
+                                         <i class="fa fa-print" style="font-size:24px;" aria-hidden="true"></i> Print report (PDF)</a></u>
+                                     </div>
+                                    &nbsp;&nbsp;&nbsp;
+                                     <div style="float:right;">
+                                       <u><a class="btn btn-lg btn-success" href="{{route('downloadExcelAdmin',$survey->id)}}">
+                                         <i class="fa fa-download" style="font-size:24px;" aria-hidden="true"></i> Download Excel</a></u>
+                                     </div>
+                                  </div>
                                 </ul>
 
                                 <div class="tab-content">
                                   <div id="overview" class="tab-pane fade">
-                                    <div class="row pull-right" >
+                                    <!-- <div class="row pull-right" >
                                        <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                                        &nbsp;
                                        <i class="fa fa-print" aria-hidden="true"></i> <u><a href="#">Download Excel</a></u>
-                                    </div>
+                                    </div> -->
                                     <div class="report-caption">
                                       <h4><b>Description</b></h4>
                                       <p>The bar graph shows your answers in this survey.
@@ -116,11 +127,11 @@
 
                                     <div class="tab-content">
                                         <div id="participants" class="tab-pane fade in active">
-                                          <div class="row pull-right">
-                                            <i class="fa fa-print" aria-hidden="true"></i> <u><a href="#">Print report (PDF)</a></u>
+                                          <!-- <div class="row pull-right">
+                                            <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                                             &nbsp;
                                             <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{{route('downloadExcelAdmin',$survey->id)}}">Download Excel</a></u>
-                                          </div>
+                                          </div> -->
 
                                            <div class="pull-left" >
                                              <h5 class="select-users"><label>Select User</label>

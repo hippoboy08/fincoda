@@ -39,15 +39,26 @@
                   <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#myAnswer">My Answer</a></li>
                     <li><a data-toggle="tab" href="#compared">Compared</a></li>
+                    <div class="row pull-right" >
+                       <div style="float:left;">
+                         <u><a class="btn btn-lg btn-success" href="{!! url('basic/survey/downloadPdf/'.$survey->id) !!}">
+                           <i class="fa fa-print" style="font-size:24px;" aria-hidden="true"></i> Print report (PDF)</a></u>
+                       </div>
+                      &nbsp;&nbsp;&nbsp;
+                       <div style="float:right;">
+                         <u><a class="btn btn-lg btn-success" href="{!! url('basic/survey/downloadCsv/'.$survey->id) !!}">
+                           <i class="fa fa-download" style="font-size:24px;" aria-hidden="true"></i> Download Excel</a></u>
+                       </div>
+                    </div>
                   </ul>
 
                   <div class="tab-content">
                     <div id="myAnswer" class="tab-pane fade in active">
-                      <div class="row pull-right" >
+                      <!-- <div class="row pull-right" >
                          <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('basic/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                         &nbsp;
                          <i class="fa fa-download" aria-hidden="true"></i> <u><a href="{!! url('basic/survey/downloadCsv/'.$survey->id) !!}">Download Excel</a></u>
-                      </div>
+                      </div> -->
                       <div class="report-caption">
                         <h4><b>Description</b></h4>
                         <p>The bar graph shows your answers in this survey.
@@ -120,11 +131,11 @@
                       </div>
 
                       <div id="compared" class="tab-pane fade">
-                        <div class="row pull-right" >
+                        <!-- <div class="row pull-right" >
                            <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('basic/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
                           &nbsp;
                            <i class="fa fa-download" aria-hidden="true"></i> <u><a href="{!! url('basic/survey/downloadCsv/'.$survey->id) !!}">Download Excel</a></u>
-                        </div>
+                        </div> -->
 
                         @if(count($surveyScoreAllUsersCheckThreeParticipants)>2)
                         <div class="report-caption">
