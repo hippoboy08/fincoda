@@ -192,7 +192,6 @@
                                                </script>
 											    @endif
                                              </div>
-
                                              <div>
                                                <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
                                                  <h3 style="text-align: center;"><b>User average per dimension VS Group average per dimension</h3>

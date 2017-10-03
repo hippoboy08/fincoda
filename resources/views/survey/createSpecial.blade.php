@@ -94,7 +94,9 @@
                                 <label><h3>Select a group for this survey*:</h3></label>
                                 <p>Please select a group. The special users of the company are the administrators for the user groups.</p>
                                {!! Form::select('group',$groups,null,['class'=>'form-control']) !!}
-
+                               <?php foreach($groups as $key => $value) {
+                                 echo "Group '".$value."' has ".count(\App\User_In_Group::where('user_group_id',$key)->get())." members.\n";
+                               } ?>
                             </div>
 
                             <p class="panel-title">

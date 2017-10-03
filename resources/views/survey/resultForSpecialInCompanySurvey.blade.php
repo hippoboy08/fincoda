@@ -61,6 +61,7 @@
                         <div>
                           @include ('survey.resultContent.scoreTable')
                         </div>
+                        <!-- <?php echo '<pre>'; echo print_r($surveyScoreGroupAvgPerIndicatorGroup); echo '<pre>'; ?> -->
 
                         @role ('special')
                         <div>

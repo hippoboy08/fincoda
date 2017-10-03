@@ -44,8 +44,8 @@ class GroupSurveyController extends Controller
 							->where('surveys.start_time','<',Carbon::now($companyTimeZone))
 							->where('surveys.end_time','>',Carbon::now($companyTimeZone))
 							->where('surveys.category_id',2)->get();
-		
-		//This status looks to be redundant without much activity defined in it: A survey seems to have activity when its either open or closed.				
+
+		//This status looks to be redundant without much activity defined in it: A survey seems to have activity when its either open or closed.
 		$pending = DB::table('surveys')
 							->join('user_groups','user_groups.id','=','surveys.user_group_id')
 							->select('surveys.id','surveys.user_id','surveys.type_id','surveys.company_id','surveys.category_id',
@@ -57,7 +57,7 @@ class GroupSurveyController extends Controller
 							->where('surveys.start_time','>',Carbon::now($companyTimeZone))
 							->where('surveys.end_time','>',Carbon::now($companyTimeZone))
 							->where('surveys.category_id',2)->get();
-							
+
 		$closed = DB::table('surveys')
 							->join('user_groups','user_groups.id','=','surveys.user_group_id')
 							->select('surveys.id','surveys.user_id','surveys.type_id','surveys.company_id','surveys.category_id',
@@ -69,7 +69,7 @@ class GroupSurveyController extends Controller
 							->where('surveys.start_time','<',Carbon::now($companyTimeZone))
 							->where('surveys.end_time','<',Carbon::now($companyTimeZone))
 							->where('surveys.category_id',2)->get();
-		
+
         return view('dashboard')->with('open',$open)->with('closed',$closed)->with('pending',$pending);
 
     }
@@ -94,7 +94,7 @@ class GroupSurveyController extends Controller
                 ->get());
 
     }
-	
+
 	//All the functions that persist data to the model should be reviewed
         public function store(Request $request){
 			$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
@@ -125,16 +125,16 @@ class GroupSurveyController extends Controller
                     ->with('fail','The Survey open date should not be after the closing date. Your Company Time Zone was set to: '.$companyTimeZone)
                     ->withInput();
 			}
-			
+
 			if($request->survey_type == 1){
 				$participants = DB::select(DB::raw(
 									"select user_in_groups.user_id, role_user.role_id from user_in_groups
 										join role_user on user_in_groups.user_id = role_user.user_id
-										where user_in_groups.user_group_id = :groupId 
+										where user_in_groups.user_group_id = :groupId
 										and role_user.role_id != 4
 										and user_in_groups.user_id != 0"),
 										array("groupId"=>$request->group));
-									
+
 				DB::beginTransaction();
 					try{
 						$survey=$owner->creates_survey()->create([
@@ -151,7 +151,7 @@ class GroupSurveyController extends Controller
 							'end_time'=>$to
 					]);
 
-					
+
 					if(!empty($participants)){
 						foreach($participants as $user){
 							DB::table('participants')
@@ -174,38 +174,38 @@ class GroupSurveyController extends Controller
 
                     return Redirect::to('special/groupsurvey')->with('success','The survey has been created successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
-               
+
 			}catch(\Exception $e){
 				DB::rollback();
 				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
 			}
-			
+
 			if($request->survey_type == 2){
 				$participants = DB::select(DB::raw(
 									"select user_in_groups.user_id from user_in_groups
-										where user_in_groups.user_group_id = :groupId 
+										where user_in_groups.user_group_id = :groupId
 											and user_in_groups.user_id != 0 "),
 										array("groupId"=>$request->group));
-										
+
 				if($request->numberOfEvaluators < 1){
 					return redirect()->back()
 						->with('fail','You need to provide the number of evaluators for your peer survey: It cannot be zero')
 						->withInput();
 				}
-			
+
 				if($request->numberOfEvaluators == count($participants)){
 					return redirect()->back()
 						->with('fail','The number of evaluators for your peer survey cannot equal the number of participants in the survey')
 						->withInput();
 				}
-		
+
 				if($request->numberOfEvaluators > count($participants)){
 					return redirect()->back()
 						->with('fail','The number of evaluators for your peer survey cannot be greator than the number of participants in the survey')
 						->withInput();
-				}	
-										
+				}
+
 				DB::beginTransaction();
 					try{
 						$survey=$owner->creates_survey()->create([
@@ -222,7 +222,7 @@ class GroupSurveyController extends Controller
 							'end_time'=>$to
 					]);
 
-					
+
 					if(!empty($participants)){
 						foreach($participants as $user){
 							DB::table('participants')
@@ -245,23 +245,23 @@ class GroupSurveyController extends Controller
 
                     return Redirect::to('special/groupsurvey')->with('success','The survey has been created successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
-               
+
 			}catch(\Exception $e){
 				DB::rollback();
 				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
 			}
-			
-			
+
+
 		}
 
         }
-		
-		
+
+
 	public function switchLanguage(Request $request){
 		return response()->json(array('stri'=>'success'));
 	}
-		
+
 
 		public function lookForGroupMembers(Request $request){
 					$members = DB::table('users')
@@ -304,8 +304,8 @@ class GroupSurveyController extends Controller
 
     }
 
-	
-	
+
+
 	//This is the download pdf function: It could look that we should do a dedicated function since the queries look the same; but the problem is that we are dealing with an app that has dynamically
 	//evolving requirements subject to change at any time: at one point they may look similar enough to be grouped into a clearly known function, but at another instance
 	//they may change and you find yourself refactoring or rewriting to separate them out.
@@ -360,8 +360,8 @@ class GroupSurveyController extends Controller
                                 WHERE results.survey_id = :surveyId
                                 GROUP BY results.survey_id, indicators.group_id"),
                                 array("surveyId"=>$id));
-								
-								
+
+
 			  //This returns the average of each user group per indicator group in this survey
               $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
                                 "SELECT p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,
@@ -384,15 +384,15 @@ class GroupSurveyController extends Controller
 				$survey = Survey::find($id);
 				$participants = Survey::find($id)->participants;
 				$answers = count(Survey::find($id)->participants()->where('completed',1)->get());
-				
+
 				//This check tests if you have the required data to generate the pdf: You can delete the checks that do not affect your data
 				if(empty($surveyScoreAllUsers)){
 					return redirect()->back()
                     ->with('fail','PDF could not be generated because some of the required results were null ')
                     ->withInput();
 				}
-				
-				
+
+
 				$view = PDF::loadview('survey.resultForSpecialPdfOverview',compact('survey','surveyScoreAllUsers','surveyGroupAveragePerIndicatorAllUsers',
 									'surveyScorePerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroup','surveyScoreGroupAvgPerIndicatorGroupMinAndMax',
 									'participants','company','company_profile','answers'));
@@ -400,114 +400,114 @@ class GroupSurveyController extends Controller
 				//$pdf->loadHTML($view);
 				return $view->inline();
 		}
-		
+
 		if ($this->SurveyType($id) == 'peer') {
-						
+
 							$surveyScoreAllUsersCheckThreeParticipants = DB::select(DB::raw(
-												"select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
-												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
-												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
-												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+												"select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 												having count(peer_results.peer_id)>1) as p group by p.user_id"),
                                               array("surveyId"=>$id));
-			
+
 							$surveyScoreAllUsers = DB::select(DB::raw(
-												"select peer_results.id, peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID, 
-												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator, indicators.group_id as Indicator_Group_ID, 
+												"select peer_results.id, peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID,
+												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator, indicators.group_id as Indicator_Group_ID,
 												 indicator_groups.name as Indicator_Group, avg(peer_results.answer) as Answer from `peer_results`
 												 join indicators on indicators.id = peer_results.indicator_id
 												 join indicator_groups on indicator_groups.id = indicators.group_id
-												 where peer_results.peer_survey_id = :surveyId group by 
-												 peer_results.peer_survey_id, peer_results.user_id, 
+												 where peer_results.peer_survey_id = :surveyId group by
+												 peer_results.peer_survey_id, peer_results.user_id,
 												 peer_results.indicator_id having count(peer_results.peer_id)>1"),
 												array("surveyId"=>$id));
 
 
                             //This returns the average of the user group per indicator in this survey
                             $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
-                                              "select p.id, p.peer_survey_id as Survey_ID, p.indicator_id as Indicator_ID, p.indicator as Indicator, avg(p.Group_Average) as Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Group_Average 
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.indicator_id as Indicator_ID, p.indicator as Indicator, avg(p.Group_Average) as Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.indicator_id"),
                                               array("surveyId"=>$id));
 
                             //This returns the average of each user per indicator group for this survey
                             $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
-                                              "select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id"),
                                               array("surveyId"=>$id));
 
                             //This returns the average of each user group per indicator group in this survey
                             $surveyScorePerIndicatorGroup = DB::select(DB::raw(
-                                              "select p.id, p.peer_survey_id as Survey_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.group_id"),
                                               array("surveyId"=>$id));
-							
+
 							$company=Auth::User()->company()->first();
 							$company_profile=$company->profile()->first();
-							
-							
+
+
 							//This returns the minimum and maximum average per indicator group in this survey
 							$surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
                                 "SELECT d.Survey_ID, d.Indicator_Group_ID, d.Indicator_Group,
 									MIN(d.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
 									MAX(d.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
-										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id)
 								AS d GROUP BY d.Indicator_Group_ID"),
                                 array("surveyId"=>$id));
-							
-							
+
+
 							$answers = DB::select(DB::raw(
 									"select users.id, users.name, users.email from users where users.id in
-										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
-												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
-												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
-												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 											array("surveyId"=>$id));
-					
-					
+
+
 				$company=Auth::User()->company()->first();
 				$company_profile=$company->profile()->first();
 				$survey = Survey::find($id);
 				$participants = Survey::find($id)->participants;
 				$answers = count($answers);
-				
-				
+
+
 				//This check tests if you have the required data to generate the pdf: You can delete the checks that do not affect your data
 				if(empty($surveyScoreAllUsers)){
 					return redirect()->back()
                     ->with('fail','PDF could not be generated because some of the required results were null ')
                     ->withInput();
 				}
-				
+
 				$view = PDF::loadview('survey.resultForSpecialPdfOverview',
 												compact('survey','$surveyScoreAllUsersCheckThreeParticipants','surveyScoreAllUsers',
 															'surveyGroupAveragePerIndicatorAllUsers','surveyScorePerIndicatorGroup',
@@ -516,17 +516,17 @@ class GroupSurveyController extends Controller
 				//$pdf = \App::make('dompdf.wrapper');
 				//$pdf->loadHTML($view);
 				return $view->inline();		}
-		
+
 		return redirect()->back();
 		}catch(\Exception $e){
 				return redirect()->back()
                     ->with('fail','An error occured; your request could not be completed '.$e->getMessage())
-                    ->withInput();			
+                    ->withInput();
 	    }
-					
+
 	}
 
-	
+
 
 	//Tight coupling the seemingly similar queries or functions may look feasible at first sight, but remember they cater for different situations and functionality which may
 	//dynamically change: abstract class implementations in laravel may possibly be okay but we opted for a self contained implementation
@@ -545,7 +545,7 @@ class GroupSurveyController extends Controller
               //Used native or raw queries because laravel has no support for listed grouping on aggregate functions
               //In other words it will always return a single result
 			  $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
-                            "SELECT p.Group_ID, p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,
+                            "SELECT p.Group_ID, p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group, AVG(p.Indicator_Group_Average),
 									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
 									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
 										(SELECT user_in_groups.user_group_id as Group_ID, results.survey_id as Survey_ID,
@@ -560,7 +560,7 @@ class GroupSurveyController extends Controller
                                             GROUP BY results.survey_id, user_in_groups.user_group_id, results.user_id, indicators.group_id)
 									AS p GROUP BY p.Survey_ID, p.Group_ID, p.Indicator_Group_ID"),
                             array("surveyId"=>$id));
-			  
+
               $surveyScoreAllUsers = DB::table('indicators')
                                 ->join('results','results.indicator_id','=','indicators.id')
                                 ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
@@ -594,37 +594,45 @@ class GroupSurveyController extends Controller
 			  $company_profile=$company->profile()->first();
 			  $participantsNumber = count(Survey::find($id)->participants()->get());
 			  $participantsCompletedNumber = count(Survey::find($id)->participants()->where('completed',1)->get());
-			  
+				$participantsCompletedNumberPeer = DB::select(DB::raw(
+						"select users.id, users.name, users.email from users where users.id in
+							(select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+									peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+									from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+									peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
+									having count(peer_results.peer_id)>1) as p group by p.user_id)"),
+								array("surveyId"=>$id));
+
 			   //These are the peer survey variables: the application is an evolving one with changes crafted in from time to time: reorganizing the code to have pre defined functions
 			  //as any programmer would think of the code below, would mean doing so so many times as unanticipated changes arise: better to have the loose coupling and allow for future
 			  //growth
 							$surveyScoreGroupAvgPerIndicatorGroupMinAndMaxPeer = DB::select(DB::raw(
-                                "SELECT d.Survey_ID, d.Indicator_Group_ID, d.Indicator_Group,
+                                "SELECT d.Survey_ID, d.Indicator_Group_ID, d.Indicator_Group, avg(d.Indicator_Group_Average),
 									MIN(d.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
 									MAX(d.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
-										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id)
 								AS d GROUP BY d.Indicator_Group_ID"),
                                 array("surveyId"=>$id));
-								
+
 								 $surveyScoreAllUsersPeer = DB::select(DB::raw(
-												"select peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID, 
-												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator,  
+												"select peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID,
+												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator,
 												 avg(peer_results.answer) as Answer from `peer_results`
 												 join indicators on indicators.id = peer_results.indicator_id
 												 join indicator_groups on indicator_groups.id = indicators.group_id
-												 where peer_results.peer_survey_id = :surveyId group by 
-												 peer_results.peer_survey_id, peer_results.user_id, 
+												 where peer_results.peer_survey_id = :surveyId group by
+												 peer_results.peer_survey_id, peer_results.user_id,
 												 peer_results.indicator_id having count(peer_results.peer_id)>1"),
 												array("surveyId"=>$id));
-							
+
 
 			  $headers = array(
 					'Content-Type' 	=> 'application/vnd.ms-excel',
@@ -643,8 +651,14 @@ class GroupSurveyController extends Controller
 
 			  //Write the survey details to the excel sheet
 			  $surveyArray = array();
-			  $surveyArray[] = ['Survey_ID','Title','Description','Start_Time','End_Time'
-                                         ];
+			  $surveyArray[] = ['Survey_ID','Title','Description','Start_Time','End_Time', 'Total_Participants', 'Total_Answers'];
+				$surveys[0]->Total_Participants = $participantsNumber;
+        if ($this->SurveyType($id) == 'self') {
+          $surveys[0]->Total_Answers = $participantsCompletedNumber;
+        }
+        if ($this->SurveyType($id) == 'peer') {
+          $surveys[0]->Total_Answers = count($participantsCompletedNumberPeer);
+        }
 			  foreach ($surveys as $survey){
 				  $surveyArray[] = get_object_vars($survey);
 			  }
@@ -688,11 +702,11 @@ class GroupSurveyController extends Controller
 					NULL,
 					'A1'
 			  );
-			  
-			  
+
+
 			  //Write the min and maximum to the excel sheet
 			  $surveyScoreMinMaxArray = array();
-			  $surveyScoreMinMaxArray[] = ['Survey_ID','Indicator_Group_ID','Indicator_Group',
+			  $surveyScoreMinMaxArray[] = ['Group_ID', 'Survey_ID','Indicator_Group_ID','Indicator_Group', 'Indicator_Group_Average',
                                          'Minimum_User_Indicator_Group_Average', 'Maximum_User_Indicator_Group_Average'
                                          ];
 			if ($this->SurveyType($id) == 'self') {
@@ -710,7 +724,7 @@ class GroupSurveyController extends Controller
 					NULL,
 					'A1'
 			  );
-			  
+
 
 			  //Get a php object writer coz we want to write objects to file
 			  $objectWriter = PHPExcel_IOFactory::createWriter($workBook,'Excel2007');
@@ -741,14 +755,14 @@ class GroupSurveyController extends Controller
               //The function should return the results of the survey in the group
 				if ($this->SurveyType($id) == 'self') {
 					$participants = DB::select(DB::raw(
-                            "select users.id as User_ID, users.name, users.email from users where users.id in 
-														(select participants.user_id from participants 
+                            "select users.id as User_ID, users.name, users.email from users where users.id in
+														(select participants.user_id from participants
 															where participants.survey_id = :surveyId)"),
                             array("surveyId"=>$id));
 
 
                     $surveyScoreAllUsers = DB::select(DB::raw(
-                            "select results.survey_id as Survey_ID, 
+                            "select results.survey_id as Survey_ID,
 								results.user_id as User_ID, indicators.id as Indicator_ID,
 								indicators.indicator as Indicator, results.answer as Answer,
 								indicators.group_id as Indicator_Group_ID, indicator_groups.name as Indicator_Group
@@ -773,7 +787,7 @@ class GroupSurveyController extends Controller
 
                     //This returns the average of each user per indicator group for this survey
                     $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
-                            "select results.survey_id as Survey_ID, 
+                            "select results.survey_id as Survey_ID,
                             results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
                             indicator_groups.name as Indicator_Group,
                             AVG(results.answer) as Indicator_Group_Average
@@ -812,7 +826,7 @@ class GroupSurveyController extends Controller
 											GROUP BY results.survey_id, results.user_id, indicators.group_id)
 								AS p GROUP BY p.Indicator_Group_ID"),
                             array("surveyId"=>$id));
-							
+
 					$company=Auth::User()->company()->first();
 					$company_profile=$company->profile()->first();
 
@@ -834,103 +848,103 @@ class GroupSurveyController extends Controller
             }else{
 			  //This is peer
 			  $surveyScoreAllUsersCheckThreeParticipants = DB::select(DB::raw(
-												"select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
-												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
-												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
-												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+												"select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 												having count(peer_results.peer_id)>1) as p group by p.user_id"),
                                               array("surveyId"=>$id));
-							
+
                             $surveyScoreAllUsers = DB::select(DB::raw(
-												"select peer_results.id, peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID, 
-												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator, indicators.group_id as Indicator_Group_ID, 
+												"select peer_results.id, peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID,
+												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator, indicators.group_id as Indicator_Group_ID,
 												 indicator_groups.name as Indicator_Group, avg(peer_results.answer) as Answer from `peer_results`
 												 join indicators on indicators.id = peer_results.indicator_id
 												 join indicator_groups on indicator_groups.id = indicators.group_id
-												 where peer_results.peer_survey_id = :surveyId group by 
-												 peer_results.peer_survey_id, peer_results.user_id, 
+												 where peer_results.peer_survey_id = :surveyId group by
+												 peer_results.peer_survey_id, peer_results.user_id,
 												 peer_results.indicator_id having count(peer_results.peer_id)>1"),
 												array("surveyId"=>$id));
-												
-							//This returns the participants that were invited to take part in the peer survey 
+
+							//This returns the participants that were invited to take part in the peer survey
 							$participants = DB::select(DB::raw(
-							 					"select users.id as User_ID, users.name, users.email from users where users.id in 
-														(select participants.user_id from participants 
+							 					"select users.id as User_ID, users.name, users.email from users where users.id in
+														(select participants.user_id from participants
 															where participants.survey_id = :surveyId)"),
 														array("surveyId"=>$id));
 
 
                             //This returns the average of the user group per indicator in this survey
                             $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
-                                              "select p.id, p.peer_survey_id as Survey_ID, p.indicator_id as Indicator_ID, p.indicator as Indicator, avg(p.Group_Average) as Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Group_Average 
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.indicator_id as Indicator_ID, p.indicator as Indicator, avg(p.Group_Average) as Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.indicator_id"),
                                               array("surveyId"=>$id));
 
                             //This returns the average of each user per indicator group for this survey
                             $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
-                                              "select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id"),
                                               array("surveyId"=>$id));
 
                             //This returns the average of each user group per indicator group in this survey
                             $surveyScorePerIndicatorGroup = DB::select(DB::raw(
-                                              "select p.id, p.peer_survey_id as Survey_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.group_id"),
                                               array("surveyId"=>$id));
-							
+
 							$company=Auth::User()->company()->first();
 							$company_profile=$company->profile()->first();
-							
-							
+
+
 							//This returns the minimum and maximum average per indicator group in this survey
 							$surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
                                 "SELECT d.Survey_ID, d.Indicator_Group_ID, d.Indicator_Group,
 									MIN(d.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
 									MAX(d.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
-										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id)
 								AS d GROUP BY d.Indicator_Group_ID"),
                                 array("surveyId"=>$id));
-							
-							
+
+
 							$answers = DB::select(DB::raw(
 									"select users.id, users.name, users.email from users where users.id in
-										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
-												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
-												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
-												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 											array("surveyId"=>$id));
-					
-						  
+
+
 
                             return view('survey.resultForSpecialGroupSurvey')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
@@ -972,7 +986,7 @@ class GroupSurveyController extends Controller
                                               ->where('results.survey_id',$id)
                                               ->distinct()->get();
 
-											  						  
+
 			  $participantsSelect = DB::select(DB::raw(
                             "select results.survey_id as Survey_ID, user_in_groups.user_group_id as Group_ID,
 								results.user_id as User_ID, users.name as name,
@@ -992,8 +1006,8 @@ class GroupSurveyController extends Controller
 
 
 				$participants = DB::select(DB::raw(
-                            "select users.id as User_ID, users.name, users.email from users where users.id in 
-														(select participants.user_id from participants 
+                            "select users.id as User_ID, users.name, users.email from users where users.id in
+														(select participants.user_id from participants
 															where participants.survey_id = :surveyId)"),
                             array("surveyId"=>$id));
 
@@ -1037,10 +1051,10 @@ class GroupSurveyController extends Controller
                             JOIN results on results.indicator_id = indicators.id
                             JOIN indicator_groups on indicators.group_id = indicator_groups.id
                             JOIN user_in_groups on results.user_id = user_in_groups.user_id
-                            WHERE results.survey_id = :surveyId
+                            WHERE results.survey_id = :surveyId and results.user_id = :userId
                             and user_in_groups.user_group_id = :groupId
 							GROUP BY results.survey_id, user_in_groups.user_group_id, results.user_id, indicators.group_id"),
-                            array("surveyId"=>$id,"groupId"=>$groupId));
+                            array("surveyId"=>$id,"groupId"=>$groupId,"userId"=>$userId));
 
                     //This returns the average of each user group per indicator group in this survey
                     $surveyScorePerIndicatorGroup = DB::select(DB::raw(
@@ -1079,10 +1093,10 @@ class GroupSurveyController extends Controller
 
               $company=Auth::User()->company()->first();
               $company_profile=$company->profile()->first();
-			  
+
 			  $answers = DB::select(DB::raw(
-									"select users.id, users.name, users.email from users where users.id in 
-										(select participants.user_id from participants 
+									"select users.id, users.name, users.email from users where users.id in
+										(select participants.user_id from participants
 											where participants.survey_id = :surveyId and participants.completed=1)"),
 										array("surveyId"=>$id));
 
@@ -1104,103 +1118,103 @@ class GroupSurveyController extends Controller
 		  }else{
 			  //This is peer
 			  $surveyScoreAllUsersCheckThreeParticipants = DB::select(DB::raw(
-												"select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
-												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
-												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
-												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+												"select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 												having count(peer_results.peer_id)>1) as p group by p.user_id"),
                                               array("surveyId"=>$id));
-											  
-							//This returns the participants that were invited to take part in the peer survey 
+
+							//This returns the participants that were invited to take part in the peer survey
 							$participants = DB::select(DB::raw(
-									"select users.id as User_ID, users.name, users.email from users where users.id in 
-										(select participants.user_id from participants 
+									"select users.id as User_ID, users.name, users.email from users where users.id in
+										(select participants.user_id from participants
 											where participants.survey_id = :surveyId)"),
 										array("surveyId"=>$id));
-							
+
                            $surveyScoreAllUsers = DB::select(DB::raw(
-												"select peer_results.id, peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID, 
-												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator, indicators.group_id as Indicator_Group_ID, 
+												"select peer_results.id, peer_results.peer_survey_id as Survey_ID, peer_results.user_id as User_ID,
+												 peer_results.indicator_id as Indicator_ID, indicators.indicator as Indicator, indicators.group_id as Indicator_Group_ID,
 												 indicator_groups.name as Indicator_Group, avg(peer_results.answer) as Answer from `peer_results`
 												 join indicators on indicators.id = peer_results.indicator_id
 												 join indicator_groups on indicator_groups.id = indicators.group_id
-												 where peer_results.peer_survey_id = :surveyId and peer_results.user_id = :userId group by 
-												 peer_results.peer_survey_id, peer_results.user_id, 
+												 where peer_results.peer_survey_id = :surveyId and peer_results.user_id = :userId group by
+												 peer_results.peer_survey_id, peer_results.user_id,
 												 peer_results.indicator_id having count(peer_results.peer_id)>1"),
 												array("surveyId"=>$surveyId,"userId"=>$participantId));
 
 
                             //This returns the average of the user group per indicator in this survey
                             $surveyGroupAveragePerIndicatorAllUsers = DB::select(DB::raw(
-                                              "select p.id, p.peer_survey_id as Survey_ID, p.indicator_id as Indicator_ID, p.indicator as Indicator, avg(p.Group_Average) as Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Group_Average 
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.indicator_id as Indicator_ID, p.indicator as Indicator, avg(p.Group_Average) as Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.indicator_id"),
                                               array("surveyId"=>$id));
 
                             //This returns the average of each user per indicator group for this survey
                             $surveyScoreGroupAvgPerIndicatorGroup = DB::select(DB::raw(
-                                              "select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId and peer_results.user_id = :userId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id"),
-                                              array("surveyId"=>$id));
+                                              array("surveyId"=>$id, "userId"=>$userId));
 
                             //This returns the average of each user group per indicator group in this survey
                             $surveyScorePerIndicatorGroup = DB::select(DB::raw(
-                                              "select p.id, p.peer_survey_id as Survey_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+                                              "select p.id, p.peer_survey_id as Survey_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.group_id"),
                                               array("surveyId"=>$id));
-							
+
 							$company=Auth::User()->company()->first();
 							$company_profile=$company->profile()->first();
-							
-							
+
+
 							//This returns the minimum and maximum average per indicator group in this survey
 							$surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
                                 "SELECT d.Survey_ID, d.Indicator_Group_ID, d.Indicator_Group,
 									MIN(d.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
 									MAX(d.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
-										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from 
-											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id, 
-											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average 
+										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
+											  (select peer_results.id, peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id,
+											  indicators.indicator, indicators.group_id, indicator_groups.name, avg(peer_results.answer) as Indicator_Group_Average
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by 
-											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+											  where peer_results.peer_survey_id = :surveyId group by
+											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id)
 								AS d GROUP BY d.Indicator_Group_ID"),
                                 array("surveyId"=>$id));
-							
-							
+
+
 							$answers = DB::select(DB::raw(
 									"select users.id, users.name, users.email from users where users.id in
-										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
-												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
-												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
-												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 											array("surveyId"=>$id));
-					
-						  
+
+
 
                             return view('survey.resultForIndividualInSpecial')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
@@ -1225,7 +1239,7 @@ class GroupSurveyController extends Controller
 
     }
 
-	
+
 	/**
      * Show the form for editing the specified resource.
      *
@@ -1242,13 +1256,13 @@ class GroupSurveyController extends Controller
 							->where('administrator','=',Auth::id())
 							->where('id','=',$survey->user_group_id)
 							->lists('user_groups.name','user_groups.id');
-							
+
 		if(empty($group)){
 			return ('fail: The Survey you tried to open may not be under any of the groups you manage.');
-		}					
-		
+		}
+
 		$surveyGroupName = User_Group::find($survey->user_group_id)->name;
-		
+
 		if($this->SurveyType($id)=='self'){
 			$surveys = DB::table('surveys')->where('id',$id)->where('user_id',Auth::User()->id)->get();//Check if this is the owner of the survey
 			if(!empty($surveys)){
@@ -1257,9 +1271,9 @@ class GroupSurveyController extends Controller
 										->where('administrator','=',Auth::id())
 										->orderByRaw("CASE WHEN user_groups.name='$surveyGroupName' THEN -1 ELSE user_groups.name END")
 										->lists('user_groups.name','user_groups.id');
-					
+
 					$participantsCompleted = DB::select(DB::raw(
-										"select users.id, users.name, users.email from users where users.id in 
+										"select users.id, users.name, users.email from users where users.id in
 											(select participants.user_id from participants
 											 join user_in_groups on participants.user_id = user_in_groups.user_id
 											 join surveys on participants.survey_id = surveys.id
@@ -1268,9 +1282,9 @@ class GroupSurveyController extends Controller
 											 and participants.survey_id = :surveyId
 											 and participants.completed = 1)"),
 											array("userGroupId"=>$survey->user_group_id,"surveyGroupId"=>$survey->user_group_id, "surveyId"=>$id));
-											
+
 					$participantsNotCompleted = DB::select(DB::raw(
-										"select users.id, users.name, users.email from users where users.id in 
+										"select users.id, users.name, users.email from users where users.id in
 											(select participants.user_id from participants
 											 join user_in_groups on participants.user_id = user_in_groups.user_id
 											 join surveys on participants.survey_id = surveys.id
@@ -1279,17 +1293,17 @@ class GroupSurveyController extends Controller
 											 and participants.survey_id = :surveyId
 											 and participants.completed != 1)"),
 											array("userGroupId"=>$survey->user_group_id,"surveyGroupId"=>$survey->user_group_id, "surveyId"=>$id));
-					
-					
+
+
 					$participantsNot = DB::select(DB::raw(
-									"select users.id, users.name, users.email from users where users.company_id = :companyId 
-										and users.id in (select user_in_groups.user_id from `user_in_groups` 
+									"select users.id, users.name, users.email from users where users.company_id = :companyId
+										and users.id in (select user_in_groups.user_id from `user_in_groups`
 										where user_in_groups.user_group_id = (select surveys.user_group_id from surveys where surveys.id = :surveyId2))
-										and users.id not in(select participants.user_id from participants where participants.survey_id = :surveyId)and users.id 
+										and users.id not in(select participants.user_id from participants where participants.survey_id = :surveyId)and users.id
 										in (select role_user.user_id from role_user where role_user.role_id != 1 and role_user.role_id != 4)"),
 										array("surveyId"=>$id,"companyId"=>Auth::User()->company_id,"surveyId2"=>$id));
-										
-					
+
+
 					return view('survey.editSpecial')
 							->with('survey',$survey)
 							->with('groups',$group)
@@ -1297,35 +1311,35 @@ class GroupSurveyController extends Controller
 							->with('participantsNot',$participantsNot)
 							->with('participantsNotCompleted',$participantsNotCompleted)
 							->with('participantsCompleted',$participantsCompleted);
-				
+
 	}}else{//This is peer evaluation
 			$surveys = DB::table('surveys')->where('id',$id)->where('user_id',Auth::User()->id)->get();
 			if(!empty($surveys)){
 				$indicators = Indicator::all();
 				$participantsCompleted = DB::select(DB::raw(
-									"select users.id, users.name, users.email from users where users.id in 
-										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
-												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
-												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
-												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+									"select users.id, users.name, users.email from users where users.id in
+										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 										array("surveyId"=>$id));
-										
+
 				/*$participantsNotCompleted = DB::select(DB::raw(
-									"select users.id, users.name, users.email from users where users.id in 
-										(select participants.user_id from participants 
+									"select users.id, users.name, users.email from users where users.id in
+										(select participants.user_id from participants
 											where participants.survey_id = :surveyId1 and participants.user_id != :currentUser
 											and participants.user_id not in
-										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id, 
-												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id) 
-												from `peer_results` where peer_results.peer_survey_id = :surveyId group by 
-												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id 
+										(select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+												peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+												from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+												peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 												having count(peer_results.peer_id)>1) as p group by p.user_id))"),
 										array("surveyId1"=>$id,"surveyId"=>$id,"currentUser"=>Auth::User()->id));*/
-										
+
 				$participantsNotCompleted = DB::select(DB::raw(
-									"select users.id, users.name, users.email from users where users.id in 
-										(select participants.user_id from participants 
+									"select users.id, users.name, users.email from users where users.id in
+										(select participants.user_id from participants
 											where participants.survey_id = :surveyId
 											and participants.completed = 0 and participants.user_id not in
 										(select distinct peer_results.user_id from peer_results where peer_results.peer_survey_id = :surveyId1)
@@ -1333,19 +1347,19 @@ class GroupSurveyController extends Controller
                                          (select distinct peer_results.peer_id from peer_results where peer_results.peer_survey_id = :surveyId2)
                                          and participants.user_id not in
                                         (select distinct peer_surveys.user_id from peer_surveys where peer_surveys.survey_id = :surveyId3)
-                                        and participants.user_id not in 
+                                        and participants.user_id not in
                                         (select distinct peer_surveys.peer_id from peer_surveys where peer_surveys.survey_id = :surveyId4))"),
 										array("surveyId"=>$id,"surveyId1"=>$id,"surveyId2"=>$id,"surveyId3"=>$id,"surveyId4"=>$id));
-				
-				//These are the ones who have not been invited to take part in the survey						
+
+				//These are the ones who have not been invited to take part in the survey
 				$participantsNot = DB::select(DB::raw(
-									"select users.id, users.name, users.email from users where users.company_id = :companyId 
-										and users.id in (select user_in_groups.user_id from `user_in_groups` 
+									"select users.id, users.name, users.email from users where users.company_id = :companyId
+										and users.id in (select user_in_groups.user_id from `user_in_groups`
 										where user_in_groups.user_group_id = (select surveys.user_group_id from surveys where surveys.id = :surveyId2))
-										and users.id not in(select participants.user_id from participants where participants.survey_id = :surveyId)and users.id 
+										and users.id not in(select participants.user_id from participants where participants.survey_id = :surveyId)and users.id
 										in (select role_user.user_id from role_user where role_user.role_id != 1)"),
 										array("surveyId"=>$id,"companyId"=>Auth::User()->company_id,"surveyId2"=>$id));
-				
+
 				return view('survey.editSpecial')
 						->with('survey',$survey)
 						->with('groups',$group)
@@ -1357,7 +1371,7 @@ class GroupSurveyController extends Controller
 
     }
 	}
-	
+
 
     /**
      * Update the specified resource in storage.
@@ -1398,18 +1412,18 @@ class GroupSurveyController extends Controller
 								'end_time'=>$to,
 								'updated_at'=>Carbon::now()
 					]);
-				
+
 			}
 			if(!empty($request->startDate)&&empty($request->endDate)){
 				$from=new Carbon($request->startDate);
 				$to=new Carbon($request->currentEndTime);
-				
+
 				if($from > $to){
 					return redirect()->back()
                     ->with('fail','The Survey open date cannot be after the close date. Your company timezone was set to: '.$companyTimeZone)
                     ->withInput();
 				}
-				
+
 				DB::table('surveys')
 							->where('id',$request->id)
 							->update([
@@ -1428,7 +1442,7 @@ class GroupSurveyController extends Controller
                     ->with('fail','The Survey open date cannot be after the close date. Your company timezone was set to: '.$companyTimeZone)
                     ->withInput();
 				}
-				
+
 				DB::table('surveys')
 							->where('id',$request->id)
 							->update([
@@ -1449,13 +1463,13 @@ class GroupSurveyController extends Controller
 								'updated_at'=>Carbon::now()
 					]);
 			}
-            	
+
 			if(!empty($request->usersToRemove)){
 					$owner=Auth::User();
 					$participants = DB::select(DB::raw(
 											"select user_in_groups.user_id from user_in_groups where user_in_groups.user_group_id = :groupId and user_in_groups.user_id != 0"),
 												array("groupId"=>$survey->user_group_id));
-					
+
 					if($request->survey_type == 2){
 						if(count($participants)-count($request->usersToRemove)<6){
 								return redirect()->back()
@@ -1463,7 +1477,7 @@ class GroupSurveyController extends Controller
 									->withInput();
 						}
 					}
-				
+
 				   foreach($request->usersToRemove as $user){
 						DB::table('participants')
 							->where('user_id', $user)
@@ -1490,16 +1504,16 @@ class GroupSurveyController extends Controller
 				}
 			}
             DB::commit();
-			
+
             return Redirect::to('special/groupsurvey')->with('success','The survey has been updated successfully.
                  The survey will be open to the participants on the open date you have specified. Also, you can view the complete result of the survey once it is closed ');
-           
+
 		   }catch(\Exception $e){
 				DB::rollback();
 				return "An error occured; your request could not be completed ".$e->getMessage();
 			}
         }
-		
+
     }
 
 	public function SurveyType($id)
@@ -1510,7 +1524,7 @@ class GroupSurveyController extends Controller
             return 'self';
         }
     }
-	
+
 	 /**
      * Remove the specified resource from storage.
      *
@@ -1532,11 +1546,11 @@ class GroupSurveyController extends Controller
 					DB::delete(DB::raw(
 									"delete from results where results.survey_id = :surveyId and results.survey_id is not null"),
 										array("surveyId"=>$id));
-						
+
 					DB::delete(DB::raw(
 									"delete from participants where participants.survey_id = :surveyId and participants.survey_id is not null"),
 										array("surveyId"=>$id));
-						
+
 					DB::delete(DB::raw(
 									"delete from surveys where surveys.id = :surveyId"),
 										array("surveyId"=>$id));
@@ -1547,15 +1561,15 @@ class GroupSurveyController extends Controller
 					DB::delete(DB::raw(
 									"delete from peer_results where peer_results.peer_survey_id = :surveyId and peer_results.peer_survey_id is not null"),
 										array("surveyId"=>$id));
-						
+
 					DB::delete(DB::raw(
 									"delete from peer_surveys where peer_surveys.survey_id = :surveyId and peer_surveys.survey_id is not null"),
 										array("surveyId"=>$id));
-						
+
 					DB::delete(DB::raw(
 									"delete from participants where participants.survey_id = :surveyId and participants.survey_id is not null"),
 										array("surveyId"=>$id));
-						
+
 					DB::delete(DB::raw(
 									"delete from surveys where surveys.id = :surveyId"),
 										array("surveyId"=>$id));

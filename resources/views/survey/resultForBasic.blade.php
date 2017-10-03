@@ -59,7 +59,7 @@
                         <div>
                           @include ('survey.resultContent.scoreTable')
                         </div>
-
+                        <!-- <?php echo '<pre>'; echo print_r($surveyScoreGroupAvgPerIndicatorGroup); echo '<pre>'; ?> -->
                         <div>
                           <br>
                           <h3 style="text-align: center"><b>User average per dimension VS Company average per dimension</b></h3>
@@ -173,6 +173,7 @@
     @endif
                         </div>
                         <br>
+
                         <div>
                           <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
                             <h3 style="text-align: center;"><b>User average score per dimension VS company average score per dimension</b></h3>
