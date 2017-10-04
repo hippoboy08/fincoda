@@ -52,7 +52,7 @@
 					<td> </td>
                 @endif
                 @endrole
-			
+
                 @role('special')
                 <td><input type="checkbox" name="hide" value=""></td>
                 @if(Route::current()->getName()=='special.groupsurvey.index')
@@ -91,7 +91,7 @@
                 <td>{!! $closed->start_time !!}</td>
                 <td>{!! $closed->end_time !!}</td>
                 <td>{!! \App\User::find($closed->user_id)->name !!}</td>
-                <td>{!! count(\App\Participant::where('survey_id',$closed->id)->get()) !!}</td>
+                <td>{!! count(\App\Survey::find($closed->id)->participants()->where('completed',1)->get()) + count(\App\Survey::find($closed->id)->participants()->where('completed',3)->get()) + count(\App\Survey::find($closed->id)->participants()->where('completed',5)->get()) !!} / {!! count(\App\Participant::where('survey_id',$closed->id)->get()) !!}</td>
             </tr>
         @endforeach
 

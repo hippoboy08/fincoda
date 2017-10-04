@@ -122,13 +122,13 @@
         <td>{!! $open->end_time !!}</td>
         <td>{!! \App\User::find($open->user_id)->name !!}</td>
         @role('admin')
-        <td>{!! count(\App\Participant::where('survey_id',$open->id)->get()) !!}</td>
+        <td>{!! count(\App\Survey::find($open->id)->participants()->where('completed',1)->get()) !!} / {!! count(\App\Participant::where('survey_id',$open->id)->get()) !!}</td>
         @endrole
 
 
         @role('special')
         @if(Route::current()->getName()=='special.groupsurvey.index')
-            <td>{!! count(\App\Participant::where('survey_id',$open->id)->get()) !!}</td>
+            <td>{!! count(\App\Survey::find($open->id)->participants()->where('completed',1)->get()) + count(\App\Survey::find($open->id)->participants()->where('completed',3)->get()) + count(\App\Survey::find($open->id)->participants()->where('completed',5)->get()) !!} / {!! count(\App\Participant::where('survey_id',$open->id)->get()) !!}</td>
         @else
         @if($open->completed=='0')
 			<td><span class="label label-danger">Not completed</span></td>
