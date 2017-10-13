@@ -21,7 +21,7 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
 
-					<div class="pull-right" >
+					<!-- <div class="pull-right" >
 							<h5 class="select-users"><label></label>
 								<select id="languageId">
 									<option value="">language</option>
@@ -65,7 +65,7 @@
 									 });
 								   });
 							</script>
-					</div>
+					</div> -->
 
             <ul class="nav navbar-nav">
                 <!-- Messages: style can be found in dropdown.less-->

@@ -31,7 +31,54 @@
                          @endif
                         {!! Form::text('title',old('title'),['class'=>'form-control','placeholder'=>'Title of your Survey']) !!}
                                 </div><br>
+                                <label><h3>Survey Language*:</h3></label>
+                                <div class="form-group" >
+                      							<h5 class="select-users">
+                                      <label for="languageId"></label>
+                      								<select id="languageId" class="form-control col-lg-3">
+                      									<option value="">Please select the required language for the survey</option>
+                      									<option value="fi">fi</option>
+                      									<option value="en">en</option>
+                      									<option value="de">de</option>
+                      									<option value="nl">nl</option>
+                      									<option value="sp">sp</option>
+                      								</select>
+                      							</h5>
 
+                      							<script>
+                      								  $(document).ready(function(){
+                      								  $('#languageId').change(function(){
+                      								  if($(this).val()==""){
+                      								  return;
+                      								  }
+                      								  else{
+                      										   $.ajaxSetup({
+                      											 headers:{
+                      											   'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                      											 }
+                      										   });
+                      										   $.ajax({
+                      											 method: 'POST',
+                      											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete/public/admin/language",
+                      											 dataType: 'json',
+                      											 data: {'languageId':$(this).val()},
+                      											 success: function(data){
+                      												 //alert(data.stri);
+                      											 window.location.replace(window.location);
+                      											},
+                      										  error: function(result){
+                      												var errors = result.responseJSON;
+                      												console.log(result);
+                      												console.log(errors);
+                      										  }
+
+                      									   });
+                      									   }
+                      									 });
+                      								   });
+                      							</script>
+                      					</div>
+                                <br>
                             <div class="form-group{!! $errors->has('editor1') ? ' has-error':'' !!} has-feedback">
                                 <label><h3>Survey Description*:</h3></label>
                                 <p>Please give a description of the survey. This will appear to your survey's participant page once the participants starts taking the survey. </p>
