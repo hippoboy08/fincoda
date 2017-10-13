@@ -41,7 +41,7 @@
                                 @if($errors->has('editor1'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('editor1') !!}</label>
                                 @endif
-                                {!! Form::textarea('editor1',old('editor1'),['id'=>'editor1','rows'=>'10','cols'=>'80']) !!}
+                                {!! Form::textarea('editor1',null,['id'=>'editor1','rows'=>'10','cols'=>'80', 'class'=>'createGroup']) !!}
                             </div><br>
 
                             <div class="form-group">

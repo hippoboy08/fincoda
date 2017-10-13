@@ -42,8 +42,8 @@
                             </div><br>
 
                             <div class="form-group{!! $errors->has('startDate') ? ' has-error':'' !!} has-feedback">
-                            <label><h3>Open data ane time range*:</h3></label>
-                            <p>Please choose the date and time range of the start and end of the survey.</p>
+                            <label><h3>Open and Close dates*:</h3></label>
+                            <p>Please, choose the proper date and time to open the survey and to close it.</p>
                                 @if($errors->has('startDate'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('startDate') !!}</label>
                                 @endif
@@ -89,7 +89,7 @@
 
                             <p class="panel-title">
                                 <a data-toggle="collapse" href="#collapse1"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>Indicators appearing in the survey</label></a>
+                                    <label>View indicators</label></a>
                                 <p>There are {!! count($indicators) !!} survey indicators. These indicators are fixed and can not be modified or edited.</p>
                             </p>
 
@@ -131,7 +131,7 @@
 
                             <p class="panel-title">
                              <a data-toggle="collapse" href="#collapse2"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>Participants of the survey</label></a>
+                                    <label>View participants</label></a>
                             <p>By default, all the basic and special users of your company will be invited to participate in the survey. Click above to see the list of participants.</p>
                             </p>
 
