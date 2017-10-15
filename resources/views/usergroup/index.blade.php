@@ -51,8 +51,8 @@
 											<td>{!! $group->id !!}</td>
                                             @role('admin')
                                             <td><a href="{{url('admin/usergroup/'.$group->id)}}"> {!! $group->name !!}</a></td>
-											<td><a href="{{url('admin/usergroup/edit/'.$group->id)}}"> Edit </a></td>
-											<td><a href="{{url('admin/usergroup/deleteGroup/'.$group->id)}}"> Delete </a></td>
+											<td><a class="confirmation" href="{{url('admin/usergroup/edit/'.$group->id)}}"> Edit </a></td>
+											<td><a class="confirmation" href="{{url('admin/usergroup/deleteGroup/'.$group->id)}}"> Delete </a></td>
                                             <td>{!! count(\App\Survey::where('user_group_id',$group->id)->get()) !!}</td>
                                             @endrole
                                             @role('special')
