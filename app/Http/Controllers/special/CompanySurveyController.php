@@ -396,7 +396,7 @@ class CompanySurveyController extends Controller
 
 			  //Write the survey details to the excel sheet
 			  $surveyArray = array();
-			  $surveyArray[] = ['Survey_ID','Title','Description','Start_Time','End_Time'
+			  $surveyArray[] = ['Survey ID','Title','Description','Start Time','End Time'
                                          ];
 			  foreach ($surveys as $survey){
 				  $surveyArray[] = get_object_vars($survey);
@@ -410,7 +410,7 @@ class CompanySurveyController extends Controller
 
 			  //Write the participants to the excel sheet
 			  $surveyParticipantsArray = array();
-			  $surveyParticipantsArray[] = ['User_ID','Name','Email','Completed'
+			  $surveyParticipantsArray[] = ['User ID','Name','Email','Completed'
                                          ];
 			  foreach ($participants as $participant){
 				  $surveyParticipantsArray[] = get_object_vars($participant);
@@ -423,7 +423,7 @@ class CompanySurveyController extends Controller
 
 			  //Write the results to the excel sheet
 			  $surveyScoreAllUsersArray = array();
-			  $surveyScoreAllUsersArray[] = ['Survey_ID','User_ID','Indicator_ID',
+			  $surveyScoreAllUsersArray[] = ['Survey ID','User ID','Indicator ID',
                                          'Indicator', 'Answer'
                                          ];
 			 if ($this->SurveyType($id) == 'self') {
@@ -444,8 +444,8 @@ class CompanySurveyController extends Controller
 
 			  //Write the min and maximum to the excel sheet
 			  $surveyScoreMinMaxArray = array();
-			  $surveyScoreMinMaxArray[] = ['Survey_ID','Indicator_Group_ID','Indicator_Group',
-                                         'Minimum_User_Indicator_Group_Average', 'Maximum_User_Indicator_Group_Average'
+			  $surveyScoreMinMaxArray[] = ['Survey ID','Dimension ID','Dimension Name',
+                                         'Minimum User Dimension Average', 'Maximum User Dimension Average'
                                          ];
 			if ($this->SurveyType($id) == 'self') {
 			  foreach ($surveyScoreGroupAvgPerIndicatorGroupMinAndMax as $surveyScoreAllUser){
@@ -542,9 +542,9 @@ class CompanySurveyController extends Controller
                                               FROM indicators
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
-                                              WHERE results.survey_id = :surveyId
+                                              WHERE results.survey_id = :surveyId and results.user_id = :userId
                                               GROUP BY results.survey_id, results.user_id, indicators.group_id"),
-                                              array("surveyId"=>$id));
+                                              array("surveyId"=>$id,"userId"=>$userId));
 
                             //This returns the average of each user group per indicator group in this survey
                             $surveyScorePerIndicatorGroup = DB::select(DB::raw(
@@ -1241,10 +1241,10 @@ class CompanySurveyController extends Controller
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by
+											  where peer_results.peer_survey_id = :surveyId and peer_results.user_id = :userId group by
 											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id"),
-                                              array("surveyId"=>$surveyId));
+                                              array("surveyId"=>$surveyId,"userId"=>Auth::User()->id));
 
                             //This returns the average of each user group per indicator group in this survey
                             $surveyScorePerIndicatorGroup = DB::select(DB::raw(
