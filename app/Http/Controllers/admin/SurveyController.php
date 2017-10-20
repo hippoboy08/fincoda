@@ -644,8 +644,8 @@ use EmailTrait;
 
 			  //Write the min and maximum to the excel sheet
 			  $surveyScoreMinMaxArray = array();
-			  $surveyScoreMinMaxArray[] = ['Survey ID','Indicator Group ID','Indicator Group', 'Indicator_Group_Average',
-                                         'Minimum User Indicator Group Average', 'Maximum User Indicator Group Average'
+			  $surveyScoreMinMaxArray[] = ['Survey ID','Dimension ID','Dimension Name', 'Dimension Average',
+                                         'Minimum User Dimension Average', 'Maximum User Dimension Average'
                                          ];
 			if ($this->SurveyType($id) == 'self') {
 			  foreach ($surveyScoreGroupAvgPerIndicatorGroupMinAndMax as $surveyScoreAllUser){

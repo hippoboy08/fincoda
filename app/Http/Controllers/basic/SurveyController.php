@@ -549,9 +549,9 @@ class SurveyController extends Controller
                                               FROM indicators
                                               JOIN results on results.indicator_id = indicators.id
                                               JOIN indicator_groups on indicators.group_id = indicator_groups.id
-                                              WHERE results.survey_id = :surveyId
+                                              WHERE results.survey_id = :surveyId AND results.user_id = :userId
                                               GROUP BY results.survey_id, results.user_id, indicators.group_id"),
-                                              array("surveyId"=>$id));
+                                              array("surveyId"=>$id, "userId"=>$userId));
 
                             //This returns the average of each user group per indicator group in this survey
                             $surveyScorePerIndicatorGroup = DB::select(DB::raw(
@@ -628,10 +628,10 @@ class SurveyController extends Controller
                                 JOIN results on results.indicator_id = indicators.id
                                 JOIN indicator_groups on indicators.group_id = indicator_groups.id
                                 JOIN user_in_groups on results.user_id = user_in_groups.user_id
-                                WHERE results.survey_id = :surveyId
+                                WHERE results.survey_id = :surveyId AND results.user_id = :userId
 								AND user_in_groups.user_group_id = $surveyGroupId
                                 GROUP BY user_in_groups.user_group_id, results.survey_id, results.user_id, indicators.group_id"),
-                                array("surveyId"=>$id));
+                                array("surveyId"=>$id,"userId"=>$userId));
 
                         //This returns the average of each user group per indicator group in this survey
                         $surveyScorePerIndicatorGroup = DB::select(DB::raw(
@@ -1406,10 +1406,10 @@ class SurveyController extends Controller
 											  from `peer_results`
 											  join indicators on indicators.id = peer_results.indicator_id
 											  join indicator_groups on indicator_groups.id = indicators.group_id
-											  where peer_results.peer_survey_id = :surveyId group by
+											  where peer_results.peer_survey_id = :surveyId and peer_results.user_id = :userId group by
 											  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
 											  having count(peer_results.peer_id)>1) as p group by p.peer_survey_id, p.user_id, p.group_id"),
-                                              array("surveyId"=>$surveyId));
+                                              array("surveyId"=>$surveyId,"userId"=>Auth::User()->id));
 
                             //This returns the average of each user group per indicator group in this survey
                             $surveyScorePerIndicatorGroup = DB::select(DB::raw(
