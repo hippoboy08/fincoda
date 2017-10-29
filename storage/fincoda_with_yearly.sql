@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2017 at 11:11 PM
--- Server version: 10.1.9-MariaDB
--- PHP Version: 5.6.15
+-- Generation Time: Oct 25, 2017 at 02:52 PM
+-- Server version: 10.1.19-MariaDB
+-- PHP Version: 5.5.38
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -1719,10 +1719,10 @@ CREATE TABLE `surveys` (
 --
 
 INSERT INTO `surveys` (`id`, `user_id`, `type_id`, `company_id`, `category_id`, `user_group_id`, `title`, `description`, `number_of_evaluators`, `end_message`, `start_time`, `end_time`, `created_at`, `updated_at`) VALUES
-(162, 2, 2, 1, 2, 19, 'peer survey group scoped include group test 24', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 5, '<p>thank you</p>\r\n', '2017-05-12 18:44:00', '2017-06-10 00:00:00', '2017-05-12 14:45:45', '2017-05-12 14:45:45'),
-(163, 2, 1, 1, 2, 19, 'self survey group scoped include special test 24', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 5, '<p>thank you</p>\r\n', '2017-05-12 18:46:00', '2017-06-10 00:00:00', '2017-05-12 14:46:56', '2017-05-12 14:46:56'),
-(165, 1, 1, 1, 1, NULL, 'self survey company scoped include admin test 28', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 0, '<p>thank you</p>\r\n', '2017-05-12 19:36:00', '2017-06-10 00:00:00', '2017-05-12 15:37:32', '2017-05-12 15:42:03'),
-(166, 1, 2, 1, 1, NULL, 'peer survey company scoped include admin test 28', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 5, '<p>thank you</p>\r\n', '2017-05-12 19:40:00', '2017-06-10 00:00:00', '2017-05-12 15:41:21', '2017-05-12 15:41:21');
+(162, 2, 2, 1, 2, 19, 'peer survey group scoped include group test 24', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 5, '<p>thank you</p>\r\n', '2017-05-12 18:44:00', '2017-10-30 00:00:00', '2017-05-12 14:45:45', '2017-05-12 14:45:45'),
+(163, 2, 1, 1, 2, 19, 'self survey group scoped include special test 24', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 5, '<p>thank you</p>\r\n', '2017-05-12 18:46:00', '2017-10-30 00:00:00', '2017-05-12 14:46:56', '2017-05-12 14:46:56'),
+(165, 1, 1, 1, 1, NULL, 'self survey company scoped include admin test 28', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 0, '<p>thank you</p>\r\n', '2017-05-12 19:36:00', '2017-10-30 00:00:00', '2017-05-12 15:37:32', '2017-05-12 15:42:03'),
+(166, 1, 2, 1, 1, NULL, 'peer survey company scoped include admin test 28', '<p>Innovation encourages an organisation to develop a knowledge-based competitive advantage. Innovation is often a critical component for success in today&rsquo;s working world and so the FINCODA Innovation Barometer Assessment Tool gives organisations and individuals the ability to assess their capacity for innovation &ndash; by assessing individual levels of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\n<br />\r\nThe Fincoda Barometer includes five Innovation competencies that span the process of innovation from idea to outcome. The following five dimensions are measured using the FINCODA Barometer: creativity, critical thinking, initiative, teamwork and networking. As it is unlikely that an individual would show a high mastery on all five innovation competencies, an innovator is defined as someone who has a high mastery on one or more of the five innovation competencies.</p>\r\n', 5, '<p>thank you</p>\r\n', '2017-05-12 19:40:00', '2017-10-30 00:00:00', '2017-05-12 15:41:21', '2017-10-12 10:35:54');
 
 -- --------------------------------------------------------
 
@@ -1790,11 +1790,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `external`, `external_modified_email`, `email`, `company_id`, `password`, `enabled`, `profile_deleted`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 0, 0, 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 1, 0, '5cqXyBcvpPt1TX4vR7OSzF2qZkgrf2XwSh45EfyHEsjJbwFOEYGiuR12ojby', '2016-09-04 18:24:58', '2017-08-13 18:25:24'),
-(2, 'special', 0, 0, 'special@fincoda.com', 1, '$2y$10$XEkBB9aQOSUsnZnbvtIU/eFpxWuzc3g.xN/Va5QGt5FWbJSh7P0vW', 1, 0, 'yl6sj90bQ7L0PqoERxc3FnhRAdNaO6P1hMHgq2nManRqLjdDGfpxumbNb4SY', '2016-09-04 18:24:59', '2017-08-13 19:25:35'),
-(3, 'basic', 0, 0, 'basic@fincoda.com', 1, '$2y$10$VJ1.j0X2Ns2gXUHhBs5Ob.orTIrsug85qCSQd36tvzfababDw9OdS', 1, 0, 'D8HQIP7whyLd3e5f4kEk8ATDx2TVlqgK9NnUxakltdiK036vNa4vAJOqM6HI', '2016-09-04 18:24:59', '2017-08-13 19:15:20'),
-(15, 'dav', 0, 0, 'davis2.kawalya@edu.turkuamk.fi', 1, '$2y$10$PWJmx4dIVIQkOn9yQ7/2e.RrOuMni5K/0knmxD1bPdxFbGKFo98VK', 1, 0, 'C1RAx24qkGokx4BEaEBIvOw37lEKLwTN4BdpiY378ByzaojfSfp62U1yzq6C', '2016-11-15 09:31:48', '2017-05-12 17:37:20'),
-(16, 'dav', 0, 0, 'balsam2.almurrani@gmail.com', 1, '$2y$10$8ssO4p4nWZN/zkog31bWt.5gkarkW6XQrXiCuVuSXkiW08ngC2M1W', 1, 0, 'ONiHJ0xNUG4xgjojAVDy1PrNNNoXKaUoIU459ssig4qHM6ZlvbveC8wNGKJN', '2016-11-15 09:32:40', '2017-05-12 17:33:47'),
+(1, 'admin', 0, 0, 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 1, 0, 'eZGBaOzhk1nTAk1qw7JRRIxm0Bzrr0uxfzR44mC9eioJjjztDztdVfbAGt6p', '2016-09-04 18:24:58', '2017-10-24 18:15:50'),
+(2, 'special', 0, 0, 'special@fincoda.com', 1, '$2y$10$XEkBB9aQOSUsnZnbvtIU/eFpxWuzc3g.xN/Va5QGt5FWbJSh7P0vW', 1, 0, 'n5dEfYd4usP346yoPOXJSJfPIWeCUalT52b2st6A42m05TB4wB1GDkNGs2pK', '2016-09-04 18:24:59', '2017-10-24 18:19:45'),
+(3, 'basic', 0, 0, 'basic@fincoda.com', 1, '$2y$10$VJ1.j0X2Ns2gXUHhBs5Ob.orTIrsug85qCSQd36tvzfababDw9OdS', 1, 0, 'Zf4QoGHdkjJrPicB2edrX7tGJe5ZMvaUz2nSGB7dEbvvpmf2L33ltNmwW0Fh', '2016-09-04 18:24:59', '2017-10-24 18:26:00'),
+(15, 'dav', 0, 0, 'davis2.kawalya@edu.turkuamk.fi', 1, '$2y$10$PWJmx4dIVIQkOn9yQ7/2e.RrOuMni5K/0knmxD1bPdxFbGKFo98VK', 1, 0, 'Lz8tEnDJ8JWODYlDxlQof5iG4CxlbIHSvIixKTXEr5oHU6kjd19yWZxXfoXH', '2016-11-15 09:31:48', '2017-10-11 12:56:09'),
+(16, 'dav', 0, 0, 'balsam2.almurrani@gmail.com', 1, '$2y$10$8ssO4p4nWZN/zkog31bWt.5gkarkW6XQrXiCuVuSXkiW08ngC2M1W', 1, 0, 'i07A12LzWjgY9p6vr2DmZpZUl2zLGWLHssEKBqB4jwVcrEi7YEYgz9bwQxIg', '2016-11-15 09:32:40', '2017-10-12 10:39:21'),
 (17, 'dav', 0, 0, 'duy2.lenguyen@edu.turkuamk.fi', 1, '$2y$10$PBZPCwtbEUqXmQeeyKWQ8.AzVrAZuEocNPfaaSJl504ySykwRy1dq', 1, 0, 'tgVErJkUCIKxFrVEEgEVUYgXLwDLGKentT2gZg5KzQqHmXS6vSNlPfHZvs33', '2016-11-15 09:33:15', '2017-05-12 17:31:24'),
 (18, 'dav', 0, 0, 'dav4@yahoo.coms', 1, '$2y$10$XEdiSkvjJFYlFFhCMv7tYOtBKkuhDauIPKfcDHIBcui9g29JYqiJO', 1, 0, 'Z5GFd1JqwWxvRdIOUA0XUjxquLL20dAKKQYApb8in5eqDfWDeVMNWeGUWrQP', '2016-11-15 09:33:44', '2017-03-31 19:45:46'),
 (19, 'dav', 0, 0, 'dav5@yahoo.coms', 1, '$2y$10$.zHdXynhWlde9hSDKHiJjegBUNnJCKwOMTV1PEVrXQaM3gg82owTm', 1, 0, '0qM2euIpBeZKuhsU4bAP69Q4BoFOiHGLSMD0xudPQj8BOIaz0QTnNQdSj1LW', '2016-11-15 09:34:04', '2017-03-31 21:51:47'),
@@ -1832,7 +1832,7 @@ CREATE TABLE `user_groups` (
 --
 
 INSERT INTO `user_groups` (`id`, `name`, `description`, `company_id`, `created_by`, `administrator`, `created_at`, `updated_at`) VALUES
-(19, 'special', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 1, 1, 2, '2016-11-15 12:37:46', '2016-11-15 12:37:46'),
+(19, 'special', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\n', 1, 1, 2, '2016-11-15 12:37:46', '2016-11-15 12:37:46'),
 (20, 'special2', '<p>Innovation deals with knowledge-based competitive advantage. The FINCODA barometer gives an overview of a person&#39;s level of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br />\r\nInnovation competencies can be defined as those motivations, attitudes, values, behavior characteristics, individual qualities, cognitive or practical skills that are needed for a successful innovation. The following five dimensions are measured with the FINCODA barometer: creativity, critical thinking, initiative, teamwork and networking. Successful innovation is in many cases a team effort. Therefore, one cannot expect each individual to show a high mastery on all five innovation competencies. Accordingly, an n innovator is defined as someone who has a high mastery on one or more of the basic innovation competencies.</p>\r\n', 1, 1, 2, '2016-12-01 12:42:04', '2016-12-01 12:42:04');
 
 -- --------------------------------------------------------
@@ -1936,14 +1936,32 @@ INSERT INTO `user_profiles` (`id`, `user_id`, `gender`, `dob`, `What_is_your_hig
 
 CREATE TABLE `yearly_averages` (
   `id` int(10) UNSIGNED NOT NULL,
-  `creativity` decimal(18,4) NOT NULL,
-  `critical_thinking` decimal(18,4) NOT NULL,
-  `initiative` decimal(18,4) NOT NULL,
-  `teamwork` decimal(18,4) NOT NULL,
-  `networking` decimal(18,4) NOT NULL,
+  `dimension_name` varchar(50) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `number_of_participants` mediumint(8) UNSIGNED NOT NULL,
+  `minimum_score` decimal(18,4) NOT NULL,
+  `maximum_score` decimal(18,4) NOT NULL,
+  `average_score` decimal(18,4) NOT NULL,
+  `std_deviation` decimal(10,5) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `yearly_averages`
+--
+
+INSERT INTO `yearly_averages` (`id`, `dimension_name`, `type`, `number_of_participants`, `minimum_score`, `maximum_score`, `average_score`, `std_deviation`, `created_at`, `updated_at`) VALUES
+(1, 'CREATIVITY', 'STUDENTS', 238, '1.4400', '5.0000', '3.4776', '0.69878', '2017-10-25 12:38:05', '2017-10-25 12:38:05'),
+(2, 'CRITICAL THINKING', 'STUDENTS', 238, '1.8300', '5.0000', '3.5588', '0.64198', '2017-10-25 12:40:24', '2017-10-25 12:40:24'),
+(3, 'TEAMWORK', 'STUDENTS', 267, '1.1400', '5.0000', '3.7154', '0.63755', '2017-10-25 12:41:32', '2017-10-25 12:41:32'),
+(4, 'INITIATIVE', 'STUDENTS', 245, '1.3300', '5.0000', '3.4735', '0.66142', '2017-10-25 12:42:26', '2017-10-25 12:42:26'),
+(5, 'NETWORKING', 'STUDENTS', 224, '1.1700', '5.0000', '3.4792', '0.75404', '2017-10-25 12:42:56', '2017-10-25 12:42:56'),
+(6, 'CREATIVITY', 'PROFESSIONALS', 173, '1.8900', '4.8900', '3.6159', '0.69991', '2017-10-25 12:44:35', '2017-10-25 12:44:35'),
+(7, 'CRITICAL THINKING', 'PROFESSIONALS', 175, '2.0000', '5.0000', '3.6210', '0.60236', '2017-10-25 12:45:05', '2017-10-25 12:45:05'),
+(8, 'TEAMWORK', 'PROFESSIONALS', 183, '1.8600', '5.0000', '3.8087', '0.56243', '2017-10-25 12:47:07', '2017-10-25 12:47:07'),
+(9, 'INITIATIVE', 'PROFESSIONALS', 181, '2.0000', '4.6700', '3.5543', '0.62259', '2017-10-25 12:47:34', '2017-10-25 12:47:34'),
+(10, 'NETWORKING', 'PROFESSIONALS', 153, '1.8300', '5.0000', '3.5697', '0.67663', '2017-10-25 12:48:04', '2017-10-25 12:48:04');
 
 --
 -- Indexes for dumped tables
@@ -2125,6 +2143,12 @@ ALTER TABLE `user_profiles`
   ADD KEY `user_profiles_user_id_foreign` (`user_id`);
 
 --
+-- Indexes for table `yearly_averages`
+--
+ALTER TABLE `yearly_averages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -2207,7 +2231,7 @@ ALTER TABLE `survey_types`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 --
 -- AUTO_INCREMENT for table `user_groups`
 --
@@ -2223,6 +2247,11 @@ ALTER TABLE `user_in_groups`
 --
 ALTER TABLE `user_profiles`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+--
+-- AUTO_INCREMENT for table `yearly_averages`
+--
+ALTER TABLE `yearly_averages`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- Constraints for dumped tables
 --
