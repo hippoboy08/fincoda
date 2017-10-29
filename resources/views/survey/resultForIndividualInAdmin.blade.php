@@ -37,6 +37,7 @@
                                 <ul class="nav nav-tabs">
                                   <li><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li class="active"><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
+                                  <li><a data-toggle="tab" href="#statistics">Statistics</a></li>
                                   <div class="row pull-right" >
                                      <div style="float:left;">
                                        <u><a class="btn btn-lg btn-success" href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">
@@ -51,6 +52,10 @@
                                 </ul>
 
                                 <div class="tab-content">
+                                  <div id="statistics" class="tab-pane fade in">
+                                    <h2>SHOWING THE AVERAGE OF THE COMPANY CAMPARED TO OTHER COMPANIES' AVERAGE</h2>
+                                    <?php echo '<pre>'; print_r($surveyScoreStatistics); echo '</pre>'; ?>
+                                  </div>
                                   <div id="overview" class="tab-pane fade">
                                     <!-- <div class="row pull-right" >
                                        <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('admin/survey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>

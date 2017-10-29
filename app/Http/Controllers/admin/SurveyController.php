@@ -10,6 +10,7 @@ use App\Survey;
 use App\Survey_Type;
 use App\User;
 use App\Company;
+use App\Yearly_Averages;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\UrlGenerator;
@@ -983,6 +984,30 @@ use EmailTrait;
                                 array("surveyId"=>$id));
 
 
+                                $surveyScoreAllUsers1 = DB::table('indicators')
+                                                  ->join('results','results.indicator_id','=','indicators.id')
+                                                  ->join('indicator_groups','indicators.group_id','=','indicator_groups.id')
+                                                  ->select('results.survey_id as Survey_ID',
+                                                           'results.user_id as User_ID','indicators.id as Indicator_ID',
+                                                           'indicators.indicator as Indicator', 'results.answer as Answer',
+                                                           'indicators.group_id as Indicator_Group_ID','indicator_groups.name as Indicator_Group')
+                                                  ->where('results.survey_id',$id)
+                                                  ->groupBy('results.survey_id','results.user_id', 'indicators.id')
+                                                  ->get();
+
+
+        // This returns some results from yearly_averages table
+        $surveyScoreStatistics = DB::table('yearly_averages')
+          ->select(
+            'yearly_averages.dimension_name as Dimension_Name',
+            'yearly_averages.type as Type',
+            'yearly_averages.number_of_participants as Number_Of_Participants',
+            'yearly_averages.minimum_score as Minimum_Score',
+            'yearly_averages.maximum_score as Maximum_Score',
+            'yearly_averages.average_score as Average_Score'
+            )
+          ->get();
+
 				$company=Auth::User()->company()->first();
 				$company_profile=$company->profile()->first();
 
@@ -997,6 +1022,8 @@ use EmailTrait;
               ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
               ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
               ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+              ->with(['surveyScoreStatistics' => $surveyScoreStatistics])
+
 
 			  ->with(['surveyScoreGroupAvgPerIndicatorGroupMinAndMax' => $surveyScoreGroupAvgPerIndicatorGroupMinAndMax])
 
@@ -1106,9 +1133,21 @@ use EmailTrait;
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 											array("surveyId"=>$id));
 
+              // This returns some results from yearly_averages table
+              $surveyScoreStatistics = DB::table('yearly_averages')
+                ->select(
+                  'yearly_averages.dimension_name as Dimension_Name',
+                  'yearly_averages.type as Type',
+                  'yearly_averages.number_of_participants as Number_Of_Participants',
+                  'yearly_averages.minimum_score as Minimum_Score',
+                  'yearly_averages.maximum_score as Maximum_Score',
+                  'yearly_averages.average_score as Average_Score'
+                  )
+                ->get();
 
 
                             return view('survey.resultForAdmin')->with('survey',Survey::find($id))
+                            ->with(['surveyScoreStatistics' => $surveyScoreStatistics])
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
                             ->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
 							->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
@@ -1435,6 +1474,17 @@ public function getParticipantDetails($surveyId, $participantId){
 						(select participants.user_id from participants where participants.survey_id = :surveyId and participants.completed = 1)"),
 							array("surveyId"=>$id));
 
+        // This returns some results from yearly_averages table
+        $surveyScoreStatistics = DB::table('yearly_averages')
+          ->select(
+            'yearly_averages.dimension_name as Dimension_Name',
+            'yearly_averages.type as Type',
+            'yearly_averages.number_of_participants as Number_Of_Participants',
+            'yearly_averages.minimum_score as Minimum_Score',
+            'yearly_averages.maximum_score as Maximum_Score',
+            'yearly_averages.average_score as Average_Score'
+            )
+          ->get();
 
               return view('survey.resultForIndividualInAdmin')->with('survey',Survey::find($id))
               ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
@@ -1453,6 +1503,7 @@ public function getParticipantDetails($surveyId, $participantId){
               ->with(['surveyGroupAveragePerIndicatorAllUsersMaximum' => $surveyGroupAveragePerIndicatorAllUsersMaximum])
               ->with(['surveyScorePerIndicatorGroupMaximum' => $surveyScorePerIndicatorGroupMaximum])
               ->with(['surveyScoreGroupAvgPerIndicatorGroupMaximum' => $surveyScoreGroupAvgPerIndicatorGroupMaximum])
+              ->with(['surveyScoreStatistics' => $surveyScoreStatistics])
 
 			  ->with('participants',Survey::find($id)->participants)
               ->with('company',$company)
@@ -1558,7 +1609,17 @@ public function getParticipantDetails($surveyId, $participantId){
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 											array("surveyId"=>$id));
 
-
+              // This returns some results from yearly_averages table
+              $surveyScoreStatistics = DB::table('yearly_averages')
+                ->select(
+                  'yearly_averages.dimension_name as Dimension_Name',
+                  'yearly_averages.type as Type',
+                  'yearly_averages.number_of_participants as Number_Of_Participants',
+                  'yearly_averages.minimum_score as Minimum_Score',
+                  'yearly_averages.maximum_score as Maximum_Score',
+                  'yearly_averages.average_score as Average_Score'
+                  )
+                ->get();
 
                             return view('survey.resultForIndividualInAdmin')->with('survey',Survey::find($surveyId))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
@@ -1566,6 +1627,7 @@ public function getParticipantDetails($surveyId, $participantId){
 							->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                             ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
                             ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+                            ->with(['surveyScoreStatistics' => $surveyScoreStatistics])
                             ->with('participants',Survey::find($surveyId)->participants)
                             ->with('user',$userId)
 							->with('company',$company)

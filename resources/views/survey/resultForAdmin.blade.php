@@ -180,6 +180,7 @@
 
                                   <div id="statistics" class="tab-pane fade in">
                                     <h2>SHOWING THE AVERAGE OF THE COMPANY CAMPARED TO OTHER COMPANIES' AVERAGE</h2>
+                                    <?php echo '<pre>'; print_r($surveyScoreStatistics); echo '</pre>'; ?>
                                   </div>
 
                                 </div>

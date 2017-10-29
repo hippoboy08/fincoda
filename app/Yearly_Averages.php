@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Yearly_Averages extends Model
 {
-    public $table='yearly_averages';
+  public $table='yearly_averages';
 	public $dates=['created_at','updated_at'];
-    public $fillable=['creativity','critical_thinking','initiative','teamwork','networking','created_at','updated_at'];
+  public $fillable=['dimension_name','type','number_of_participants','minimum_score','maximum_score','average_score','std_deviation', 'created_at', 'updated_at'];
 
 }

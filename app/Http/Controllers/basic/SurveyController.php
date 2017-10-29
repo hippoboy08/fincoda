@@ -302,7 +302,7 @@ class SurveyController extends Controller
               //In other words it will always return a single result
 			  //This returns the average of each user group per indicator group in this survey
               $surveyScoreGroupAvgPerIndicatorGroupMinAndMax = DB::select(DB::raw(
-                                "SELECT p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group,
+                                "SELECT p.Survey_ID, p.Indicator_Group_ID, p.Indicator_Group, AVG(p.Indicator_Group_Average),
 									MIN(p.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
 									MAX(p.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
 										(SELECT results.survey_id as Survey_ID, results.user_id as User_ID, indicators.group_id as Indicator_Group_ID,
@@ -351,12 +351,20 @@ class SurveyController extends Controller
 			  $company_profile=$company->profile()->first();
 			  $participantsNumber = count(Survey::find($id)->participants()->get());
 			  $participantsCompletedNumber = count(Survey::find($id)->participants()->where('completed',1)->get());
+				$participantsCompletedNumberPeer = DB::select(DB::raw(
+            "select users.id, users.name, users.email from users where users.id in
+              (select p.user_id from (select peer_results.id, peer_results.peer_survey_id,
+                  peer_results.user_id, peer_results.indicator_id, count(peer_results.peer_id)
+                  from `peer_results` where peer_results.peer_survey_id = :surveyId group by
+                  peer_results.peer_survey_id, peer_results.user_id, peer_results.indicator_id
+                  having count(peer_results.peer_id)>1) as p group by p.user_id)"),
+                array("surveyId"=>$id));
 
 			  //These are the peer survey variables: the application is an evolving one with changes crafted in from time to time: reorganizing the code to have pre defined functions
 			  //as any programmer would think of the code below, would mean doing so so many times as unanticipated changes arise: better to have the loose coupling and allow for future
 			  //growth
 			  $surveyScoreGroupAvgPerIndicatorGroupMinAndMaxPeer = DB::select(DB::raw(
-                                "SELECT d.Survey_ID, d.Indicator_Group_ID, d.Indicator_Group,
+                                "SELECT d.Survey_ID, d.Indicator_Group_ID, d.Indicator_Group, AVG(d.Indicator_Group_Average),
 									MIN(d.Indicator_Group_Average) as Minimum_User_Indicator_Group_Average ,
 									MAX(d.Indicator_Group_Average) as Maximum_User_Indicator_Group_Average FROM
 										(select p.id, p.peer_survey_id as Survey_ID, p.user_id as User_ID, p.group_id as Indicator_Group_ID, p.name as Indicator_Group, avg(p.Indicator_Group_Average) as Indicator_Group_Average from
@@ -400,8 +408,15 @@ class SurveyController extends Controller
 
 			  //Write the survey details to the excel sheet
 			  $surveyArray = array();
-			  $surveyArray[] = ['Survey_ID','Title','Description','Start_Time','End_Time'
+			  $surveyArray[] = ['Survey ID','Title','Description','Start Time','End Time', 'Total Participants', 'Total Answers'
                                          ];
+				$surveys[0]->Total_Participants = $participantsNumber;
+ 			 	if ($this->SurveyType($id) == 'self') {
+          $surveys[0]->Total_Answers = $participantsCompletedNumber;
+        }
+        if ($this->SurveyType($id) == 'peer') {
+          $surveys[0]->Total_Answers = count($participantsCompletedNumberPeer);
+        }
 			  foreach ($surveys as $survey){
 				  $surveyArray[] = get_object_vars($survey);
 			  }
@@ -414,7 +429,7 @@ class SurveyController extends Controller
 
 			  //Write the participants to the excel sheet
 			  $surveyParticipantsArray = array();
-			  $surveyParticipantsArray[] = ['User_ID','Name','Email','Completed'
+			  $surveyParticipantsArray[] = ['User ID','Name','Email','Completed'
                                          ];
 			  foreach ($participants as $participant){
 				  $surveyParticipantsArray[] = get_object_vars($participant);
@@ -427,7 +442,7 @@ class SurveyController extends Controller
 
 			  //Write the results to the excel sheet
 			  $surveyScoreAllUsersArray = array();
-			  $surveyScoreAllUsersArray[] = ['Survey_ID','User_ID','Indicator_ID',
+			  $surveyScoreAllUsersArray[] = ['Survey ID','User ID','Indicator ID',
                                          'Indicator', 'Answer'
                                          ];
 			 if ($this->SurveyType($id) == 'self') {
@@ -448,8 +463,8 @@ class SurveyController extends Controller
 
 			  //Write the min and maximum to the excel sheet
 			  $surveyScoreMinMaxArray = array();
-			  $surveyScoreMinMaxArray[] = ['Survey_ID','Indicator_Group_ID','Indicator_Group',
-                                         'Minimum_User_Indicator_Group_Average', 'Maximum_User_Indicator_Group_Average'
+			  $surveyScoreMinMaxArray[] = ['Survey ID','Indicator Group ID','Indicator Group', 'Dimension Average',
+                                         'Minimum User Indicator Group Average', 'Maximum User Indicator Group Average'
                                          ];
 			if ($this->SurveyType($id) == 'self') {
 			  foreach ($surveyScoreGroupAvgPerIndicatorGroupMinAndMax as $surveyScoreAllUser){

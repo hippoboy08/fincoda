@@ -38,6 +38,7 @@
                                 <ul class="nav nav-tabs">
                                   <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
                                   <li><a data-toggle="tab" href="#detailedview">Detailed View</a></li>
+                                  <li><a data-toggle="tab" href="#statistics">Statistics</a></li>
                                   <div class="row pull-right" >
                                      <div style="float:left;">
                                        <u><a class="btn btn-lg btn-success" href="{!! url('special/groupsurvey/downloadPdf/'.$survey->id) !!}">
@@ -177,10 +178,15 @@
                                             </div> -->
 
                                         </div>
+                                        <div id="statistics" class="tab-pane fade in">
+                                          <h2>SHOWING THE AVERAGE OF THE COMPANY CAMPARED TO OTHER COMPANIES' AVERAGE</h2>
+                                          <?php echo '<pre>'; print_r($surveyScoreStatistics); echo '</pre>'; ?>
+                                        </div>
 
                                     </div>
                                   </div>
                                   @endrole
+
                                 </div>
                                     @else
                                     <ul>

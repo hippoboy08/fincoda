@@ -8,6 +8,7 @@ use App\Survey;
 use App\User;
 use App\Survey_Type;
 use App\User_Group;
+use App\Yearly_Averages;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -834,12 +835,24 @@ class GroupSurveyController extends Controller
 									"select users.id, users.name, users.email from users where users.id in
 										(select participants.user_id from participants where participants.survey_id = :surveyId and participants.completed = 1)"),
 											array("surveyId"=>$id));
+					// This returns some results from yearly_averages table
+					$surveyScoreStatistics = DB::table('yearly_averages')
+						->select(
+							'yearly_averages.dimension_name as Dimension_Name',
+							'yearly_averages.type as Type',
+							'yearly_averages.number_of_participants as Number_Of_Participants',
+							'yearly_averages.minimum_score as Minimum_Score',
+							'yearly_averages.maximum_score as Maximum_Score',
+							'yearly_averages.average_score as Average_Score'
+							)
+						->get();
 
                     return view('survey.resultForSpecialGroupSurvey')->with('survey',Survey::find($id))
                     ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
                     ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                     ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
                     ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+										->with(['surveyScoreStatistics' => $surveyScoreStatistics])
                     ->with('participants',$participants)
 					->with('company',$company)
 					->with('company_profile',$company->profile()->first())
@@ -944,7 +957,17 @@ class GroupSurveyController extends Controller
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 											array("surveyId"=>$id));
 
-
+							// This returns some results from yearly_averages table
+			        $surveyScoreStatistics = DB::table('yearly_averages')
+			          ->select(
+			            'yearly_averages.dimension_name as Dimension_Name',
+			            'yearly_averages.type as Type',
+			            'yearly_averages.number_of_participants as Number_Of_Participants',
+			            'yearly_averages.minimum_score as Minimum_Score',
+			            'yearly_averages.maximum_score as Maximum_Score',
+			            'yearly_averages.average_score as Average_Score'
+			            )
+			          ->get();
 
                             return view('survey.resultForSpecialGroupSurvey')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
@@ -952,6 +975,7 @@ class GroupSurveyController extends Controller
 							->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                             ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
                             ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+														->with(['surveyScoreStatistics' => $surveyScoreStatistics])
                             ->with('participants',$participants)
                             ->with('company',$company)
 						    ->with('company_profile',$company->profile()->first())
@@ -1100,12 +1124,25 @@ class GroupSurveyController extends Controller
 											where participants.survey_id = :surveyId and participants.completed=1)"),
 										array("surveyId"=>$id));
 
+				// This returns some results from yearly_averages table
+				$surveyScoreStatistics = DB::table('yearly_averages')
+					->select(
+						'yearly_averages.dimension_name as Dimension_Name',
+						'yearly_averages.type as Type',
+						'yearly_averages.number_of_participants as Number_Of_Participants',
+						'yearly_averages.minimum_score as Minimum_Score',
+						'yearly_averages.maximum_score as Maximum_Score',
+						'yearly_averages.average_score as Average_Score'
+						)
+					->get();
+
               return view('survey.resultForIndividualInSpecial')->with('survey',Survey::find($id))
               ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
               ->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
               ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
               ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
               ->with(['surveyScoreAllUsersCheckThreeParticipants' => $surveyScoreAllUsersCheckThreeParticipants])
+							->with(['surveyScoreStatistics' => $surveyScoreStatistics])
 			  ->with('participants',$participants)
               ->with('participantsSelect',$participantsSelect)
               ->with('company',$company)
@@ -1214,7 +1251,17 @@ class GroupSurveyController extends Controller
 												having count(peer_results.peer_id)>1) as p group by p.user_id)"),
 											array("surveyId"=>$id));
 
-
+							// This returns some results from yearly_averages table
+							$surveyScoreStatistics = DB::table('yearly_averages')
+								->select(
+									'yearly_averages.dimension_name as Dimension_Name',
+									'yearly_averages.type as Type',
+									'yearly_averages.number_of_participants as Number_Of_Participants',
+									'yearly_averages.minimum_score as Minimum_Score',
+									'yearly_averages.maximum_score as Maximum_Score',
+									'yearly_averages.average_score as Average_Score'
+									)
+								->get();
 
                             return view('survey.resultForIndividualInSpecial')->with('survey',Survey::find($id))
                             ->with(['surveyScoreAllUsers' => $surveyScoreAllUsers])
@@ -1222,6 +1269,7 @@ class GroupSurveyController extends Controller
 							->with(['surveyGroupAveragePerIndicatorAllUsers' => $surveyGroupAveragePerIndicatorAllUsers])
                             ->with(['surveyScorePerIndicatorGroup' => $surveyScorePerIndicatorGroup])
                             ->with(['surveyScoreGroupAvgPerIndicatorGroup' => $surveyScoreGroupAvgPerIndicatorGroup])
+														->with(['surveyScoreStatistics' => $surveyScoreStatistics])
                             ->with('participants',$participants)
                             ->with('user',$userId)
 							->with('company',$company)
