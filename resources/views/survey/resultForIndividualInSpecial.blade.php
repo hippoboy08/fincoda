@@ -56,7 +56,78 @@
                                   <div id="statistics" class="tab-pane fade in">
                                     <h2>SHOWING THE AVERAGE OF THE COMPANY CAMPARED TO OTHER COMPANIES' AVERAGE</h2>
                                     <?php echo '<pre>'; print_r($surveyScoreStatistics); echo '</pre>'; ?>
-                              </div>
+
+                                    <!-- Show the compared results of the organisation with the national results -->
+                                    <h3 style="text-align:center;"><b>Organisation average compared to National statistics average score per dimension</b></h3>
+                                    <div class="form-group">
+                                      <label for="statisticsType">Select type:</label>
+                                      <select class="form-control" name="statisticsType">
+                                        <option value="Student">Student</option>
+                                        <option value="Professional">Professional</option>
+                                      </select>
+                                    </div>
+
+									@if(count($surveyScorePerIndicatorGroup)==5)
+                                    <canvas id="statisticsIndicatorGroupAverageOfStudent" width="800" height="400"></canvas>
+                                    <script src="{{URL::asset('js/displayChart.js')}}">
+                                    </script>
+                                    <script>
+                                    var chartArea = document.getElementById('statisticsIndicatorGroupAverageOfStudent');
+                                    var datasetAvgStatistics = {
+                                      label: 'Statistics Average Score Each Dimension',
+                                      data: [
+                                        {!!number_format((float)$surveyScoreStatistics[0]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[1]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[2]->Average_Score,2,'.','')!!},
+                                          {!!number_format((float)$surveyScoreStatistics[3]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[4]->Average_Score,2,'.','')!!}
+                                      ],
+                                      backgroundColor: 'rgba(0,0,255,1)'
+                                    };
+
+                                    var datasetAvgCompany = {
+                                      label: 'Organisation Average Score Each Dimension',
+                                      data: [
+                                        {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average,2,'.','')!!},
+                                          {!!number_format((float)$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average,2,'.','')!!}
+                                      ],
+                                      backgroundColor: 'rgba(255,255,0,1)'
+                                    };
+                                    var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
+                                    createComparedChart(chartArea, labelArr, datasetAvgCompany,datasetAvgStatistics);
+                                    </script>
+
+                                    <canvas id="statisticsIndicatorGroupAverageOfProfessional" width="800" height="400"></canvas>
+                                    <script src="{{URL::asset('js/displayChart.js')}}">
+                                    </script>
+                                    <script>
+                                    var chartArea = document.getElementById('statisticsIndicatorGroupAverageOfProfessional');
+                                    var datasetAvgStatistics = {
+                                      label: 'Statistics Average Score Each Dimension',
+                                      data: [
+                                        {!!number_format((float)$surveyScoreStatistics[5]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[6]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[7]->Average_Score,2,'.','')!!},
+                                          {!!number_format((float)$surveyScoreStatistics[8]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[9]->Average_Score,2,'.','')!!}
+                                      ],
+                                      backgroundColor: 'rgba(0,0,255,1)'
+                                    };
+
+                                    var datasetAvgCompany = {
+                                      label: 'Organisation Average Score Each Dimension',
+                                      data: [
+                                        {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average,2,'.','')!!},
+                                          {!!number_format((float)$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average,2,'.','')!!}
+                                      ],
+                                      backgroundColor: 'rgba(255,255,0,1)'
+                                    };
+                                    var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
+                                    createComparedChart(chartArea, labelArr, datasetAvgCompany,datasetAvgStatistics);
+                                    </script>
+									@else
+										<h3><b>You have no surveys results to display or your indicators group count is not equal 5<b></h3>
+									@endif
+
+
+                                    <div>
+                                      @include ('survey.resultContent.statisticsScorePerIndicatorGroup')
+                                    </div>
+                                  </div>
                                   <div id="overview" class="tab-pane fade">
                                     <!-- <div class="row pull-right" >
                                        <i class="fa fa-print" aria-hidden="true"></i> <u><a href="{!! url('special/groupsurvey/downloadPdf/'.$survey->id) !!}">Print report (PDF)</a></u>
