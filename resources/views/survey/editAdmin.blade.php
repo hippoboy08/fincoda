@@ -49,6 +49,8 @@
 
                             <div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
                             <label><h3>Open data ane time range*:</h3></label>
+                            <br>
+                            <label><b>The system is using Finnish time zone GTM+2.</b></label>
 
 							<div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
                                 <label><h3>Current Start Time:</h3></label>

@@ -268,12 +268,19 @@
         width: 80%;
         height: 80%;
       }
+      img .full {
+        width: 100%;
+        height: 100%;
+      }
     </style>
-    <div class="logos-long col-sm-6" style="position: relative; float: left;">
+    <!-- <div class="logos-long col-sm-4" style="position: relative; float: left;">
         <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/eu_flag_co_funded_pos_brgbd_right.jpg')}}"></a>
     </div>
     <div class="logos-long col-sm-3" style="position: relative; float: right;">
         <a href="http://www.tuas.fi/en/" target="_blank"><img src="{{ url('landing_page/img/Logos/TURKU.jpg')}}"></a>
+    </div> -->
+    <div class="logos-long full">
+        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/footer.png')}}"></a>
     </div>
 </div>
 <div class="row row-logo">

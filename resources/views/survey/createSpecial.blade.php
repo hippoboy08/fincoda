@@ -95,6 +95,8 @@
 							<div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
 
                             <label><h3>Open and Close dates*:</h3></label>
+                            <br>
+                            <label><b>The system is using Finnish time zone GTM+2.</b></label>
                             <p>Please, choose the proper date and time to open the survey and to close it.</p>
                                 @if($errors->has('startDate'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('startDate') !!}</label>
