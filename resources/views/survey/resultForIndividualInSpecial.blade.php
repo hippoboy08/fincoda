@@ -54,8 +54,6 @@
 
                                 <div class="tab-content">
                                   <div id="statistics" class="tab-pane fade in">
-                                    <h2>SHOWING THE AVERAGE OF THE COMPANY CAMPARED TO OTHER COMPANIES' AVERAGE</h2>
-                                    <?php echo '<pre>'; print_r($surveyScoreStatistics); echo '</pre>'; ?>
 
                                     <!-- Show the compared results of the organisation with the national results -->
                                     <h3 style="text-align:center;"><b>Organisation average compared to National statistics average score per dimension</b></h3>

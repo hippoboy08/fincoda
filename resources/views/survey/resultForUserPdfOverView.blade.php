@@ -151,7 +151,6 @@
                 }
             }
   </style>
-    <script>window.jQuery || document.write('<script src="{{URL::asset('../../assets/js/vendor/jquery.min.js')}}"></script>')</script>
     
     <script>
     $(document).ready(function(){
@@ -387,15 +386,9 @@
             </ul>
 
             <img id="eu" src="{{URL::asset('img/EU logo.png')}}" alt="EU Logo">
-<<<<<<< HEAD
-            <p>The FINCODA Innovation Barometer Assessment Tool has been developed by the European Union through academic and business partnership.</p>
-            <p>To find out more visit www.fincoda.eu</p>
-
-=======
             <h3>The FINCODA Innovation Barometer Assessment Tool has been developed by the European Union through academic and business partnership.</h3>
             <h3>To find out more visit www.fincoda.eu</h3>
 	    <br><br><br>
->>>>>>> 8829eb3cf38464e4c4fffc4315068ade16d762fe
           </div><!-- .info -->
           <div class="introduction">
             <h1>Introduction</h1>
@@ -424,11 +417,11 @@
           <!-- hidden results for displaying evaluation -->
           <!-- get variables in here.-->
           <div class="test" style="display: none">
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[2]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[3]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
-            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[4]->Minimum_User_Indicator_Group_Average,2,'.','')!!}</p>
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!}</p>
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!}</p>
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroup[2]->Indicator_Group_Average,2,'.','')!!}</p>
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroup[3]->Indicator_Group_Average,2,'.','')!!}</p>
+            <p class="average">{!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroup[4]->Indicator_Group_Average,2,'.','')!!}</p>
           </div>
           
           <div class="test2"></div>
@@ -791,10 +784,10 @@
 	    }
 	}
 	
-	evalCreativity(4.5);
-	evalCriThink(4.5);
-	evalInit(4.5);
-	evalTeam(4.5);
-	evalNetwork(4.5);
+	evalCreativity(x[0].innerHTML);
+	evalCriThink(x[1].innerHTML);
+	evalInit(x[2].innerHTML);
+	evalTeam(x[3].innerHTML);
+	evalNetwork(x[4].innerHTML);
   </script>
 </html>
