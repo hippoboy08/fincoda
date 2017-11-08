@@ -146,14 +146,14 @@
                                     @role ('admin')
                                     <!-- Company average graph -->
 									@if(count($surveyScorePerIndicatorGroup)==5)
-                                    <h3 style="text-align:center;"><b>Company average score per dimension</b></h3>
+                                    <h3 style="text-align:center;"><b>Organization scores per dimension</b></h3>
                                     <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
                                     <script src="{{URL::asset('js/displayChart.js')}}">
                                     </script>
                                     <script>
                                     var chartArea = document.getElementById('indicatorGroupAverage');
                                     var datasetMinCompany = {
-                                      label: 'Minimum Average Score Each Dimension',
+                                      label: 'Minimum score',
                                       data: [
                                         {!! number_format($surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Minimum_User_Indicator_Group_Average, 2, '.','') !!},
                                         {!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Minimum_User_Indicator_Group_Average,2,'.','')!!},
@@ -164,7 +164,7 @@
                                        backgroundColor: 'rgba(255,0,0,1)'
                                     };
                                     var datasetMaxCompany = {
-                                      label: 'Maximum Average Score Each Dimension',
+                                      label: 'Maximum score',
                                       data: [
                                         {!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[0]->Maximum_User_Indicator_Group_Average,2,'.','')!!},
                                         {!!number_format((float)$surveyScoreGroupAvgPerIndicatorGroupMinAndMax[1]->Maximum_User_Indicator_Group_Average,2,'.','')!!},
@@ -175,7 +175,7 @@
                                       backgroundColor: 'rgba(255,255,0,1)'
                                     };
                                     var datasetAvgCompany = {
-                                      label: 'Company Average Score Each Dimension',
+                                      label: 'Average score',
                                       data: [
                                         {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!},
                                         {!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!},

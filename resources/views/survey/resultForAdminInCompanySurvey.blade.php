@@ -77,7 +77,7 @@
                           @role ('admin')
                           <div>
                             <br>
-                            <h3 style="text-align: center"><b>User average per dimension VS Company average per dimension</b></h3>
+                            <h3 style="text-align: center"><b>User average per dimension VS Organization average per dimension</b></h3>
                             <canvas id="graphCategory" width="800" height="400"></canvas>
                             <script src="{{URL::asset('js/displayChart.js')}}"></script>
     @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
@@ -104,7 +104,7 @@
                           <br>
                           <div>
                             <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                              <h3 style="text-align: center;"><b>User average score per dimension VS company average score per dimension</b></h3>
+                              <h3 style="text-align: center;"><b>User average score per dimension VS Organization average score per dimension</b></h3>
                               <thead>
                                 <tr>
                                   <th>Dimension</th>
@@ -148,8 +148,8 @@
                             @if(count($surveyScoreAllUsersCheckThreeParticipants)>2)
                             <div class="report-caption">
                               <h4><b>Description</b></h4>
-                              <p>The bar graph shows a comparison between your score and company average score in this survey.
-                                The table underneath this graph displays company average score in table format.
+                              <p>The bar graph shows a comparison between your score and Organization average score in this survey.
+                                The table underneath this graph displays Organization average score in table format.
                               </p>
                             </div>
 
@@ -158,7 +158,7 @@
                             </div>
                             <div>
                               <br>
-                              <h3 style="text-align: center"><b>User average per dimension VS Company average per dimension</b></h3>
+                              <h3 style="text-align: center"><b>User average per dimension VS Organization average per dimension</b></h3>
                               <canvas id="comparedGraphCategory" width="800" height="400"></canvas>
                               <script src="{{URL::asset('js/displayChart.js')}}"></script>
                             @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
@@ -177,7 +177,7 @@
                                    backgroundColor: 'rgba(255,0,0,1)'
                                 };
                                 var datasetGroupAvg = {
-                                  label: 'Company average per dimension',
+                                  label: 'Organization average per dimension',
                                   data: [
                                     {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!},
                                     {!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!},
@@ -194,12 +194,12 @@
                             <br>
                             <div>
                               <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                                <h3 style="text-align: center;"><b>User average score per dimension VS company average score per dimension</b></h3>
+                                <h3 style="text-align: center;"><b>User average score per dimension VS Organization average score per dimension</b></h3>
                                 <thead>
                                   <tr>
                                     <th>Dimension</th>
                                     <th>User Dimension Average</th>
-                                    <th>Company Dimension Average</th>
+                                    <th>Organization Dimension Average</th>
                                   </tr>
                                 </thead>
                                 <tbody>

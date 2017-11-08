@@ -77,7 +77,7 @@
                         @role ('special')
                         <div>
                           <br>
-                          <h3 style="text-align: center"><b>User average per dimension VS Company average per dimension</b></h3>
+                          <h3 style="text-align: center"><b>User average scores per dimension</b></h3>
                           <canvas id="graphCategory" width="800" height="400"></canvas>
                           <script src="{{URL::asset('js/displayChart.js')}}"></script>
   @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
@@ -86,7 +86,7 @@
                           <script>
                             var chartArea = document.getElementById('graphCategory');
                             var datasetOwnScore = {
-                              label: 'User average score per dimension',
+                              label: 'User average scores per dimension',
                               data: [
                                 {!! number_format((float)$surveyScoreGroupAvgPerIndicatorGroup[0]->Indicator_Group_Average,2,'.','') !!},
                                 {!! number_format((float)$surveyScoreGroupAvgPerIndicatorGroup[1]->Indicator_Group_Average,2,'.','') !!},
@@ -104,7 +104,7 @@
                         <br>
                         <div>
                           <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                            <h3 style="text-align: center;"><b>User average score per dimension VS company average score per dimension</b></h3>
+                            <h3 style="text-align: center;"><b>Dimension Table</b></h3>
                             <thead>
                               <tr>
                                 <th>Dimension</th>
