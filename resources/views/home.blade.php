@@ -262,70 +262,74 @@
 
 
 <div class="container">
-<div class="row row-logo">
-    <style media="screen">
+<style media="screen">
       img {
         width: 80%;
         height: 80%;
       }
-      img .full {
+      /* img .full {
         width: 100%;
         height: 100%;
-      }
+      } */
     </style>
-    <!-- <div class="logos-long col-sm-4" style="position: relative; float: left;">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/eu_flag_co_funded_pos_brgbd_right.jpg')}}"></a>
+<div class="row row-logo">
+    
+    <div class="logos-long col-sm-3" style="position: relative; float: left;">
+        <a href="http://ec.europa.eu/programmes/erasmus-plus/" target="_blank"><img src="{{ url('landing_page/img/Logos/Erasmus_plus.png')}}"></a>
+    </div>
+    <div class="logos-long col-sm-6">
+      <h3>Framework For Innovation Competencies Development And Assessment</h3>
+      <a href="https://www.fincoda.eu/legal" target="_blank">Legal Information @ FINCODA 2016</a>
     </div>
     <div class="logos-long col-sm-3" style="position: relative; float: right;">
         <a href="http://www.tuas.fi/en/" target="_blank"><img src="{{ url('landing_page/img/Logos/TURKU.jpg')}}"></a>
-    </div> -->
-    <div class="logos-long full">
-        <a href="#" target="_blank"><img src="{{ url('landing_page/img/Logos/footer.png')}}"></a>
     </div>
 </div>
+<hr>
+
 <div class="row row-logo">
-    <div class="logos col-sm-3">
+    <div class="logos-long col-sm-3">
         <a href="http://www2.mmu.ac.uk/" target="_blank"><img src="{{ url('landing_page/img/Logos/MMU.gif')}}"></a>
     </div>
-    <div class="logos col-sm-3">
+    <div class="logos-long col-sm-3">
         <a href="https://www.international.hu.nl/" target="_blank"><img src="{{ url('landing_page/img/Logos/HU_LOGO_1.jpg')}}"></a>
     </div>
-    <div class="logos col-sm-3">
+    <div class="logos-long col-sm-3">
         <a href="https://www.upv.es/" target="_blank"><img src="{{ url('landing_page/img/Logos/UPV.png')}}"></a>
     </div>
-    <div class="logos col-sm-3">
+    <div class="logos-long col-sm-3">
         <a href="https://www.haw-hamburg.de/english.html" target="_blank"><img src="{{ url('landing_page/img/Logos/Hamburg.jpg')}}"></a>
     </div>
   </div>
   <div class="row row-logo">
-    <div class="logos col-sm-3">
+    <div class="logos-long col-sm-3">
         <a href="http://www.cartercorson.co.uk/" target="_blank"><img src="{{ url('landing_page/img/Logos/Carter Corson.png')}}"></a>
     </div>
-    <div class="logos col-sm-3">
+    <div class="logos-long col-sm-3">
         <a href="https://www.celestica.com/home" target="_blank"><img src="{{ url('landing_page/img/Logos/Celestica.png')}}"></a>
     </div>
-    <div class="logos col-sm-3">
+    <div class="logos-long col-sm-3">
         <a href="http://www.ecdl.nl/" target="_blank"><img src="{{ url('landing_page/img/Logos/ECDL.gif')}}"></a>
     </div>
 
-    <div class="logos col-sm-3">
-        <a href="http://www.enterprise-europe.co.uk/" target="_blank"><img src="{{ url('landing_page/img/Logos/EENNW.jpg')}}"></a>
+    <div class="logos-long col-sm-3">
+        <a href="http://www.enterprise-europe.co.uk/" target="_blank"><img src="{{ url('landing_page/img/Logos/BSS_colour.png')}}"></a>
     </div>
   </div>
   <div class="row row-logo">
-    <div class="logos col-sm-2">
+    <div class="logos-long col-sm-2">
         <a href="https://www.elomatic.com/en/" target="_blank"><img src="{{ url('landing_page/img/Logos/Elomatic.jpg')}}"></a>
     </div>
-    <div class="logos col-sm-2">
+    <div class="logos-long col-sm-2">
         <a href="http://www.johncaunt.com/" target="_blank"><img src="{{ url('landing_page/img/Logos/JCS logo.jpg')}}"></a>
     </div>
-    <div class="logos col-sm-2">
+    <div class="logos-long col-sm-2">
         <a href="http://www.lactoprot.de/english/home.html" target="_blank"><img src="{{ url('landing_page/img/Logos/Lactoprot.jpg')}}"></a>
     </div>
-    <div class="logos col-sm-2">
+    <div class="logos-long col-sm-2">
         <a href="http://www.meyerturku.fi/en/meyerturku_com/index.jsp" target="_blank"><img src="{{ url('landing_page/img/Logos/Meyer Turku.jpg')}}"></a>
     </div>
-    <div class="logos col-sm-2">
+    <div class="logos-long col-sm-2">
         <a href="https://www.schneider-electric.es/es/" target="_blank"><img src="{{ url('landing_page/img/Logos/Schneider Electric.gif')}}"></a>
     </div>
 
