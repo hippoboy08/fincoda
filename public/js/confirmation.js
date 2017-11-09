@@ -3,6 +3,11 @@ $(document).ready(function(){
     return confirm('Are you sure?');
   });
 
+  /* Makes the Languages selector to show the flags.*/
+  $(function(){
+    $('.selectpicker').selectpicker();
+  });
+  
   /* The variable holds the number of evaluators of the current survey*/
   var numberOfEvaluators = $('#numberOfEvaluators').data("field-id");
 
