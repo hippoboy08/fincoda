@@ -181,7 +181,7 @@
                                   <div id="statistics" class="tab-pane fade in">
                                     
                                     <!-- Show the compared results of the organisation with the national results -->
-                                    <h3 style="text-align:center;"><b>Organisation average compared to National statistics average score per dimension</b></h3>
+                                    <h3 style="text-align:center;"><b>Organisation scores compared to National statistics scores per dimension</b></h3>
                                     <div class="form-group">
                                       <label for="statisticsType">Select type:</label>
                                       <select class="form-control" name="statisticsType">

@@ -181,7 +181,7 @@
                                         <div id="statistics" class="tab-pane fade in">
 
                                           <!-- Show the compared results of the organisation with the national results -->
-                                          <h3 style="text-align:center;"><b>Organisation average compared to National statistics average score per dimension</b></h3>
+                                          <h3 style="text-align:center;"><b>Organization scores compared to National statistics scores per dimension</b></h3>
                                           <div class="form-group">
                                             <label for="statisticsType">Select type:</label>
                                             <select class="form-control" name="statisticsType">
@@ -197,7 +197,7 @@
                                           <script>
                                           var chartArea = document.getElementById('statisticsIndicatorGroupAverageOfStudent');
                                           var datasetAvgStatistics = {
-                                            label: 'Statistics Average Score Each Dimension',
+                                            label: 'Statistics Scores Each Dimension',
                                             data: [
                                               {!!number_format((float)$surveyScoreStatistics[0]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[1]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[2]->Average_Score,2,'.','')!!},
                                                 {!!number_format((float)$surveyScoreStatistics[3]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[4]->Average_Score,2,'.','')!!}
@@ -206,7 +206,7 @@
                                           };
 
                                           var datasetAvgCompany = {
-                                            label: 'Organisation Average Score Each Dimension',
+                                            label: 'Organisation Scores Each Dimension',
                                             data: [
                                               {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average,2,'.','')!!},
                                                 {!!number_format((float)$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average,2,'.','')!!}
@@ -223,7 +223,7 @@
                                           <script>
                                           var chartArea = document.getElementById('statisticsIndicatorGroupAverageOfProfessional');
                                           var datasetAvgStatistics = {
-                                            label: 'Statistics Average Score Each Dimension',
+                                            label: 'Statistics Scores Each Dimension',
                                             data: [
                                               {!!number_format((float)$surveyScoreStatistics[5]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[6]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[7]->Average_Score,2,'.','')!!},
                                                 {!!number_format((float)$surveyScoreStatistics[8]->Average_Score,2,'.','')!!}, {!!number_format((float)$surveyScoreStatistics[9]->Average_Score,2,'.','')!!}
@@ -232,7 +232,7 @@
                                           };
 
                                           var datasetAvgCompany = {
-                                            label: 'Organisation Average Score Each Dimension',
+                                            label: 'Organisation Scores Each Dimension',
                                             data: [
                                               {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average,2,'.','')!!},
                                                 {!!number_format((float)$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average,2,'.','')!!}
