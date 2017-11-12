@@ -56,7 +56,7 @@
                                   <div id="statistics" class="tab-pane fade in">
 
                                     <!-- Show the compared results of the organisation with the national results -->
-                                    <h3 style="text-align:center;"><b>Organization scores compared to National statistics scores per dimension</b></h3>
+                                    <h3 style="text-align:center;"><b>Group scores compared to National statistics scores per dimension</b></h3>
                                     <div class="form-group">
                                       <label for="statisticsType">Select type:</label>
                                       <select class="form-control" name="statisticsType">
@@ -107,7 +107,7 @@
                                     };
 
                                     var datasetAvgCompany = {
-                                      label: 'Organization Scores Each Dimension',
+                                      label: 'Group Scores Each Dimension',
                                       data: [
                                         {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average,2,'.','')!!},
                                           {!!number_format((float)$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average,2,'.','')!!}

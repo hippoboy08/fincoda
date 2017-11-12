@@ -259,7 +259,7 @@
                                                    backgroundColor: 'rgba(255,0,0,1)'
                                                 };
                                                 var datasetGroupAvg = {
-                                                  label: 'Company scores per dimension',
+                                                  label: 'Organization scores per dimension',
                                                   data: [
                                                     {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!},
                                                     {!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!},
@@ -276,12 +276,12 @@
                                             <br>
                                             <div>
                                               <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                                                <h3 style="text-align: center;"><b>User scores per dimension VS company scores per dimension</b></h3>
+                                                <h3 style="text-align: center;"><b>User scores per dimension VS Organization scores per dimension</b></h3>
                                                 <thead>
                                                   <tr>
                                                     <th>Dimension</th>
                                                     <th>User Dimension Average</th>
-                                                    <th>Company Dimension Average</th>
+                                                    <th>Organization Dimension Average</th>
                                                   </tr>
                                                 </thead>
                                                 <tbody>
