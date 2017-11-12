@@ -21,15 +21,17 @@
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
 
 
-    <script src="{{'landing_page/js/smoothscroll.js'}}"></script>
+    <script src="{{'landing_page/js/scroll.js'}}"></script>
+    <!-- <script src="{{'landing_page/js/scrolling-nav.js'}}"></script> -->
     <script src="{{URL::asset('js/confirmation.js')}}" ></script>
+
 
 </head>
 
 <body data-spy="scroll" data-offset="0" data-target="#navigation">
 
 <!-- Fixed navbar -->
-<div id="navigation" class="navbar navbar-default navbar-fixed-top">
+<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -41,15 +43,15 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#home" class="smothscroll">Home</a></li>
-                <li><a href="#desc" class="smothScroll">Description</a></li>
-                <li><a href="#showcase" class="smothScroll">Showcase</a></li>
-                <li><a href="#contact" class="smothScroll">Contact</a></li>
-                <li><a href="#tutorial" class="smothScroll">Tutorial</a></li>
+                <li class="active"><a href="#home" class="smoothScroll">Home</a></li>
+                <li><a href="#desc" class="smoothScroll">Description</a></li>
+                <li><a href="#showcases" class="smoothScroll">Showcase</a></li>
+                <li><a href="#contacts" class="smoothScroll">Contact</a></li>
+                <li><a href="#tutorials" class="smoothScroll">Tutorial</a></li>
             </ul>
 
             <ul class="nav navbar-nav pull-right">
-                <li><a href="login" class="smothscroll">Login</a></li>
+                <li><a href="login" class="smoothScroll">Login</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                          Register  <span class="caret"></span>
@@ -69,7 +71,13 @@
 
         <!--/.nav-collapse -->
     </div>
-</div>
+</nav>
+<style>
+    section {
+        height: 81px;
+        offset: -1px;
+    }
+</style>
 
 
 <section id="home" name="home"></section>
@@ -159,7 +167,7 @@
 
 
 
-<section id="showcase" name="showcase"></section>
+<section id="showcases" name="showcase"></section>
 <div id="showcase">
     <div class="container">
         <div class="row centered">
@@ -191,7 +199,7 @@
     </div><!-- /container -->
 </div>
 
-
+<section id="contacts" name="contacts"></section>
 <div id="contact">
     <div class="container">
         <div class="row centered">
@@ -232,6 +240,7 @@
     </div>
 </div>
 
+<section id="tutorials" name="tutorials"></section>
 <div id="tutorial">
     <div class="container">
         <div class="row centered">
@@ -272,19 +281,7 @@
         height: 100%;
       } */
     </style>
-<div class="row row-logo">
-    
-    <div class="logos-long col-sm-3" style="position: relative; float: left;">
-        <a href="http://ec.europa.eu/programmes/erasmus-plus/" target="_blank"><img src="{{ url('landing_page/img/Logos/Erasmus_plus.png')}}"></a>
-    </div>
-    <div class="logos-long col-sm-6">
-      <h3>Framework For Innovation Competencies Development And Assessment</h3>
-      <a href="https://www.fincoda.eu/legal" target="_blank">Legal Information @ FINCODA 2016</a>
-    </div>
-    <div class="logos-long col-sm-3" style="position: relative; float: right;">
-        <a href="http://www.tuas.fi/en/" target="_blank"><img src="{{ url('landing_page/img/Logos/TURKU.jpg')}}"></a>
-    </div>
-</div>
+
 <hr>
 
 <div class="row row-logo">
@@ -334,14 +331,27 @@
     </div>
 
 </div>
+<hr>
+<div class="row row-logo">
+    
+    <div class="logos-long col-sm-3" style="position: relative; float: left;">
+        <a href="http://ec.europa.eu/programmes/erasmus-plus/" target="_blank"><img src="{{ url('landing_page/img/Logos/Erasmus_plus.png')}}"></a>
+    </div>
+    <div class="logos-long col-sm-6">
+      <h3>Framework For Innovation Competencies Development And Assessment</h3>
+      <a href="https://www.fincoda.eu/legal" target="_blank">Legal Information @ FINCODA 2016</a>
+    </div>
+    <div class="logos-long col-sm-3" style="position: relative; float: right;">
+        <a href="http://www.tuas.fi/en/" target="_blank"><img src="{{ url('landing_page/img/Logos/TURKU.jpg')}}"></a>
+    </div>
+</div>
+</div>
 
-</div><hr>
-
-<div class="navbar copyright">
+<!-- <div class="navbar copyright">
     <div class="pull-left col-sm-6">
         <h4>Copyright © 2015 FINCODA</h4>
     </div>
-</div>
+</div> -->
 
 
 

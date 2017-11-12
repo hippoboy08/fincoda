@@ -21,7 +21,7 @@
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
 
 
-    <script src="{{'landing_page/js/smoothscroll.js'}}"></script>
+    <script src="{{'landing_page/js/scroll.js'}}"></script>
 
 
 </head>
@@ -42,16 +42,16 @@
         <div class="navbar-collapse collapse">
 
             <ul class="nav navbar-nav">
-                <li><a href="{{url('/')}}" class="smothscroll">Home</a></li>
+                <li><a href="{{url('/')}}" class="smothScroll">Home</a></li>
                 <li><a href="{{url('/')}}#desc" class="smothScroll">Description</a></li>
-                <li><a href="{{url('/')}}#showcase" class="smothScroll">Showcase</a></li>
-                <li><a href="{{url('/')}}#contact" class="smothScroll">Contact</a></li>
-                <li><a href="{{url('/')}}#tutorial" class="smothScroll">Tutorial</a></li>
+                <li><a href="{{url('/')}}#showcases" class="smothScroll">Showcase</a></li>
+                <li><a href="{{url('/')}}#contacts" class="smothScroll">Contact</a></li>
+                <li><a href="{{url('/')}}#tutorials" class="smothScroll">Tutorial</a></li>
             </ul>
 
 
             <ul class="nav navbar-nav pull-right">
-                <li><a href="login" class="smothscroll">Login</a></li>
+                <li><a href="login" class="smothScroll">Login</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         Register  <span class="caret"></span>
