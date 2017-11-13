@@ -48,7 +48,7 @@
                       							<script>
                       								  $(document).ready(function(){
                       								  $('#languageId').change(function(){
-                      								  if($(this).val()==""){
+                      								  if($(this).val()===""){
                       								  return;
                       								  }
                       								  else{
@@ -59,7 +59,7 @@
                       										   });
                       										   $.ajax({
                       											 method: 'POST',
-                      											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete/public/admin/language",
+                      											 url: window.location.protocol+"//"+window.location.host+"/"+"resources/lang/" + $(this).val(),
                       											 dataType: 'json',
                       											 data: {'languageId':$(this).val()},
                       											 success: function(data){
