@@ -199,7 +199,7 @@
                                 <tr>
                                   <th>Dimension</th>
                                   <th>User Dimension Average</th>
-                                  <th>Company Dimension Average</th>
+                                  <th>Organization Dimension Average</th>
                                 </tr>
                               </thead>
                               <tbody>

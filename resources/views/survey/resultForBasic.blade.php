@@ -63,7 +63,7 @@
                         <h4><b>Description</b></h4>
                         <p>The bar graph shows your answers in this survey.
                           The table underneath this graph displayed the same data in table format.
-                          Alternate between the two buttons to view your scores only or in comparison with the company scores.
+                          Alternate between the two buttons to view your scores only or in comparison with the organization scores.
                           Only your score are shown by default.</p>
                         </div>
 
@@ -72,7 +72,7 @@
                         </div>
                         <div>
                           <br>
-                          <h3 style="text-align: center"><b>User scores per dimension VS Organization scores per dimension</b></h3>
+                          <h3 style="text-align: center"><b>User scores per dimension</b></h3>
                           <canvas id="graphCategory" width="800" height="400"></canvas>
                           <script src="{{URL::asset('js/displayChart.js')}}"></script>
   @if(count($surveyScoreGroupAvgPerIndicatorGroup)==0)
@@ -99,7 +99,7 @@
                         <br>
                         <div>
                           <table id="indicator_group_average_scores" class="table table-bordered table-striped text-center">
-                            <h3 style="text-align: center;"><b>User scores per dimension VS company scores per dimension</b></h3>
+                            <h3 style="text-align: center;"><b>User scores per dimension</b></h3>
                             <thead>
                               <tr>
                                 <th>Dimension</th>
@@ -191,7 +191,7 @@
                               <tr>
                                 <th>Dimension</th>
                                 <th>User Dimension Average</th>
-                                <th>Company Dimension Average</th>
+                                <th>Organization Dimension Average</th>
                               </tr>
                             </thead>
                             <tbody>

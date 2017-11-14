@@ -48,7 +48,7 @@
                       							<script>
                       								  $(document).ready(function(){
                       								  $('#languageId').change(function(){
-                      								  if($(this).val()==""){
+                      								  if($(this).val()===""){
                       								  return;
                       								  }
                       								  else{
