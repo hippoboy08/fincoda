@@ -21,7 +21,7 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
 
-			<div class="pull-right" >
+			<div class="pull-right" style = 'height: 50px;'>
 							<h5 class="select-users"><label></label>
                             <select id="languageId" class="selectpicker show-tick" data-style = 'btn-info' data-width = 'auto'>
                                 <option value="">Please select required language</option>
