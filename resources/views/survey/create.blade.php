@@ -31,7 +31,7 @@
                          @endif
                         {!! Form::text('title',old('title'),['class'=>'form-control','placeholder'=>'Title of your Survey']) !!}
                                 </div><br>
-                                <label><h3>Survey Language*:</h3></label>
+                                <!-- <label><h3>Survey Language*:</h3></label>
                                 <div class="form-group" >
                       							<h5 class="select-users">
                                       <label for="languageId"></label>
@@ -59,7 +59,7 @@
                       										   });
                       										   $.ajax({
                       											 method: 'POST',
-                      											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete/public/admin/language",
+                      											 url: window.location.protocol+"//"+window.location.host+"/"+"admin/language",
                       											 dataType: 'json',
                       											 data: {'languageId':$(this).val()},
                       											 success: function(data){
@@ -78,7 +78,7 @@
                       								   });
                       							</script>
                       					</div>
-                                <br>
+                                <br> -->
                             <div class="form-group{!! $errors->has('editor1') ? ' has-error':'' !!} has-feedback">
                                 <label><h3>Survey Description*:</h3></label>
                                 <p>Please give a description of the survey. This will appear to your survey's participant page once the participants starts taking the survey. </p>

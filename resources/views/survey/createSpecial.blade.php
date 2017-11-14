@@ -31,7 +31,7 @@
                          @endif
                         {!! Form::text('title',old('title'),['class'=>'form-control','placeholder'=>'Title of your Survey']) !!}
                                 </div><br>
-                                <label><h3>Survey Language*:</h3></label>
+                                <!-- <label><h3>Survey Language*:</h3></label>
                                 <div class="form-group" >
                       							<h5 class="select-users">
                                       <label for="languageId"></label>
@@ -78,7 +78,7 @@
                       									 });
                       								   });
                       							</script>
-                      					</div>
+                      					</div> -->
 
                             <div class="form-group{!! $errors->has('editor1') ? ' has-error':'' !!} has-feedback">
                                 <label><h3>Survey Description*:</h3></label>

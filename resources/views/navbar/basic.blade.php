@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 
-
 <!-- Main Header -->
 <header class="main-header">
-
     <!-- Logo -->
     <a href="" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -23,14 +21,14 @@
 
 					<!-- <div class="pull-right" >
 							<h5 class="select-users"><label></label>
-								<select id="languageId">
-									<option value="">language</option>
-									<option value="fi">fi</option>
-									<option value="en">en</option>
-									<option value="de">de</option>
-									<option value="nl">nl</option>
-									<option value="sp">sp</option>
-								</select>
+                            <select id="languageId" class="selectpicker show-tick" data-style = 'btn-info' data-width = 'auto'>
+                                <option value="">Please select required language</option>
+                                <option value="fi" data-content='<span class="flag-icon flag-icon-fi"></span> Finnish'></option>
+                                <option value="en" data-content='<span class="flag-icon flag-icon-us"></span> English'></option>
+                                <option value="de" data-content='<span class="flag-icon flag-icon-de"></span> German'></option>
+                                <option value="nl" data-content='<span class="flag-icon flag-icon-nl"></span> Dutch'></option>
+                                <option value="sp" data-content='<span class="flag-icon flag-icon-es"></span> Spanish'></option>
+                            </select>
 							</h5>
 
 							<script>
@@ -47,7 +45,7 @@
 										   });
 										   $.ajax({
 											 method: 'POST',
-											 url: window.location.protocol+"//"+window.location.host+"/"+"fincoda-new-folder/fincoda-phase2-complete/public/basic/language",
+											 url: window.location.protocol+"//"+window.location.host+"/"+"basic/language",
 											 dataType: 'json',
 											 data: {'languageId':$(this).val()},
 											 success: function(data){
