@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="{{URL::asset('css/AdminLTE.min.css')}}">
 
     <link rel="stylesheet" href="{{URL::asset('css/skins/skin-blue.min.css')}}">
-    <link rel="stylesheet" href="{{URL::asset('dataTables/dataTables.bootstrap.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('datatables/dataTables.bootstrap.css')}}">
 
     <link rel="stylesheet" href="{{ URL::asset('iCheck/all.css') }}">
     <link rel="stylesheet" href="{{URL::asset('bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
@@ -82,7 +82,7 @@
     @include('footer.basic')
     @include('controlbar.basic')
     @endrole
-	
+
 	<!--role external-->
     @role('external')
     @include('navbar.external')
