@@ -9,7 +9,7 @@ $(document).ready(function(){
   });
   
   /* The variable holds the number of evaluators of the current survey*/
-  var numberOfEvaluators = $('#numberOfEvaluators').data("field-id");
+  var evaluatorsAmount = $('#numberOfEvaluators').data("field-id");
 
   /* Hide the closed Survey when the checkbox is checked */
   $('[name="hide"]').click(function()
@@ -49,7 +49,7 @@ $(document).ready(function(){
   $('#externalEvaluator').on('click',
   function()
   {
-    if(countEvaluator() < numberOfEvaluators)
+    if(countEvaluator() < evaluatorsAmount)
     {
     var newRow =
     $("<tr>\
@@ -84,7 +84,7 @@ $(document).ready(function(){
   $('[name="usersToEvaluate[]"]').change(function()
   {
     var $this = $(this);
-    if(countEvaluator() > numberOfEvaluators)
+    if(countEvaluator() > evaluatorsAmount)
     {
       $this.prop('checked', false);
       notice();
@@ -183,6 +183,47 @@ $(document).ready(function(){
   var description = "Innovation encourages an organisation to develop a knowledge-based competitive advantage. Innovation is often a critical component for success in today’s working world and so the FINCODA Innovation Barometer Assessment Tool gives organisations and individuals the ability to assess their capacity for innovation – by assessing individual levels of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br><br>The Fincoda Barometer includes five Innovation competencies that span the process of innovation from idea to outcome. The following five dimensions are measured using the FINCODA Barometer: creativity, critical thinking, initiative, teamwork and networking. As it is unlikely that an individual would show a high mastery on all five innovation competencies, an innovator is defined as someone who has a high mastery on one or more of the five innovation competencies.";
 
   $("textarea#editor1:not(.createGroup)").val(description);
+
+  /* validate the input number of evaluators when creating peer survey on leaveFocus event of input field */
+  function validateEvaluatorsNumber() {
+    var evaluatorsInput = $('input[name = "numberOfEvaluators"]');
+    var minimumAmount = 3;
+    //chooses maximum amount depending on the current group or organization
+    var maximumAmount = $('#groupMemberAmountList').length != 0 ? $('#groupMemberAmountList').find('option:selected').data('amount') :
+    $('#totalParticipantsNumber').data('amount');
+    console.log(maximumAmount);
+    
+    // validate the minimum and maximum the amount could be with selected group
+    if(evaluatorsInput.val() < minimumAmount || evaluatorsInput.val() > maximumAmount){
+      //show the message to user
+      $('#evaluatorValidationError').modal('show');
+      //clears input value & notifies user to input new value
+      $('input[name = "numberOfEvaluators"]').css('border-color', 'red');
+      evaluatorsInput.val('');
+      var timer;
+      clearTimeout(timer);
+      evaluatorsInput.css('border-color', 'red');
+      timer = setTimeout(function() {
+        // reset CSS
+        evaluatorsInput.css('border-color', '');
+      }, 5000);
+
+    }
+  }
+  //
+  $('input[name = "numberOfEvaluators"]').change(function(){
+    validateEvaluatorsNumber();
+  });
+
+
+  /* update the selected group maximum input evaluators when create survey*/
+  $('#groupMemberAmountList').change(
+    function() {
+      // var selectedOption = $(this).find('option:selected');
+      // console.log(selectedOption.data('amount'));
+      validateEvaluatorsNumber();
+    }
+  );
 
   //REGULAR EXPRESSION FOR EVERY INPUT:
 

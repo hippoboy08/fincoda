@@ -137,16 +137,55 @@
                                             <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('numberOfEvaluators') !!}</label>
                                        @endif
                                       {!! Form::text('numberOfEvaluators',old('numberOfEvaluators'),['class'=>'form-control','placeholder'=>'Number Of Evaluators']) !!}
+                                        <div class="modal fade" id="evaluatorValidationError" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h3 class="modal-title"><b>Number of evaluators is not valid!!!</b></h3>
+                                                </div>
+                                                <!-- <div class="modal-body">
+                                                    <div class="form-group">
+                                                    <label for="email">There is already 5 evaluators !!!</label>
+                                                    </div>
+                                                </div> -->
+                                                <!-- <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
                                               </div><br>
 
 
               <div class="form-group">
                                 <label><h3>Select a group for this survey*:</h3></label>
                                 <p>Please select a group. The special users of the company are the administrators for the user groups.</p>
-                               {!! Form::select('group',$groups,null,['class'=>'form-control']) !!}
-                               <?php foreach($groups as $key => $value) {
-                                 echo "Group '".$value."' has ".count(\App\User_In_Group::where('user_group_id',$key)->get())." members.\n";
-                               } ?>
+                               <!-- {!! Form::select('group',$groups,null,['class'=>'form-control']) !!} -->
+
+                               <?php 
+                                    // foreach($groups as $key => $value) {
+                                    //     echo "Group '".$value."' has ".count(\App\User_In_Group::where('user_group_id',$key)->get())." members.\n";
+                                    // }
+                                    $groupList = array();
+                                    $group;
+                                    foreach($groups as $key=>$value) {
+                                        
+                                        $group['numOfMem'] = count(\App\User_In_Group::where('user_group_id',$key)->get());
+                                        $group['groupId']= $key;
+                                        $group['groupName']= $value;
+                                        $groupList[] = $group;
+                                    }
+
+                                    
+                               ?>
+                               <select id="groupMemberAmountList" name = 'group' class = 'form-control'>
+                                    @foreach ($groupList as $group)
+                                    <option value=" {{ $group['groupId'] }}" data-amount = "{{ $group['numOfMem'] }}">{{ $group['groupName'] }} - {{ $group['numOfMem'] }} members</option>
+                                    @endforeach
+                                </select>
+
+                               
                             </div>
 
                             <p class="panel-title">

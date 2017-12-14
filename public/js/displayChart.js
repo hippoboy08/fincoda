@@ -1,3 +1,4 @@
+var minimumScale = 0.5;
 function createChart(chartArea, labelArr, dataLabelStr, dataArr, bgColor) {
     var labelArrLength = labelArr.length;
     var bgColorArr = [];
@@ -18,7 +19,7 @@ function createChart(chartArea, labelArr, dataLabelStr, dataArr, bgColor) {
             scales: {
                 yAxes: [{
                     ticks: {
-                      min: 1,
+                      min: minimumScale,
                       stepSize: 0.5
                     }
                 }]
@@ -39,7 +40,7 @@ function createComparedChart(chartArea, labelArr, dataset1, dataset2) {
             scales: {
                 yAxes: [{
                     ticks: {
-                      min: 1,
+                      min: minimumScale,
                       stepSize: 0.5
                     }
                 }]
@@ -60,7 +61,7 @@ function createMaxMinChart(chartArea, labelArr, dataset1, dataset2, dataset3) {
             scales: {
                 yAxes: [{
                     ticks: {
-                      min: 1,
+                      min: minimumScale,
                       stepSize: 0.5
                     }
                 }]
