@@ -10,16 +10,16 @@
 
                     <div class="box-header with-border">
                         <h3 class="box-title"><b>{!! $company->name !!}</b></h3>
-                        <p><i>The company has been registered to the <strong>Fincoda Survey System.</strong> </i></p>
-                        <p>Below is the details you had provided to Fincoda upon registration. </p>
+                        <p><i>The organization has been registered to the <strong>FINCODA survey system.</strong> </i></p>
+                        <p>Below are the details you provided to FINCODA upon registration. </p>
                     </div>
 
                     <div class="box box-primary">
                         <div class="box-body">
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                           <p> <label>Company Name : </label> {!! $company->name !!}<br></p>
-                            <p><label>Company Code : </label> {!! $company->company_code !!}<br></p>
+                           <p> <label>Organization Name : </label> {!! $company->name !!}<br></p>
+                            <p><label>Organization Code : </label> {!! $company->company_code !!}<br></p>
                             <p><label>Type : </label> {!! $company_profile->type !!}<br></p>
                             <p><label>Country : </label> {!! $company_profile->country !!}<br></p>
                             <p><label>City : </label> {!! $company_profile->city !!}<br></p>

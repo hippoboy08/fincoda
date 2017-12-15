@@ -14,7 +14,7 @@
 
             <div class="box-header with-border">
                 <h3 class="box-title"><b>Create a new survey.</b></h3>
-                <p><i>Please provide all the information below to create a new survey.</i></p>
+                <p><i>. Please provide the required information below to create a new survey.</i></p>
             </div>
 
             @include('message.fail')
@@ -24,7 +24,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="form-group{!! $errors->has('title') ? ' has-error':'' !!} has-feedback">
-                        <label><h3>Survey Title*:</h3></label>
+                        <label><h3>Survey title*:</h3></label>
                             <p>Provide a name/title for your survey</p>
                          @if($errors->has('title'))
                               <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('title') !!}</label>
@@ -81,8 +81,8 @@
                       					</div> -->
 
                             <div class="form-group{!! $errors->has('editor1') ? ' has-error':'' !!} has-feedback">
-                                <label><h3>Survey Description*:</h3></label>
-                                <p>Please give a description of the survey. This will appear to your survey's participant page once the participants starts taking the survey. </p>
+                                <label><h3>Survey description*:</h3></label>
+                                <p>This will appear on users’ dashboards once they start taking the survey.</p>
                                 @if($errors->has('editor1'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('editor1') !!}</label>
                                 @endif
@@ -94,10 +94,10 @@
 
 							<div class="form-group{!! $errors->has('date') ? ' has-error':'' !!} has-feedback">
 
-                            <label><h3>Open and Close dates*:</h3></label>
+                            <label><h3>Survey start and end times:*:</h3></label>
                             <br>
                             <label><b>The system is using Finnish time zone GTM+2.</b></label>
-                            <p>Please, choose the proper date and time to open the survey and to close it.</p>
+                            <p>Please choose the start and end dates and times for the survey.</p>
                                 @if($errors->has('startDate'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('startDate') !!}</label>
                                 @endif
@@ -124,18 +124,18 @@
 
 
                             <br>
-                            <label><h3>Select a Survey Type*:</h3></label><br>
+                            <label><h3>Select a survey type*:</h3></label><br>
                             {!! Form::radio('survey_type','1',true,['class'=>'form-group']) !!}
-                            <label>Self Evaluation Survey</label><br>
+                            <label>Self-evaluation Survey</label><br>
                             {!! Form::radio('survey_type','2','',['class'=>'form-group']) !!}
-                            <label>Peer Evaluation Survey</label><br><br>
+                            <label>Peer-evaluation Survey</label><br><br>
 
                             
 
 
               <div class="form-group">
                                 <label><h3>Select a group for this survey*:</h3></label>
-                                <p>Please select a group. The special users of the company are the administrators for the user groups.</p>
+                                <p>Please select a group. The special users of the organization are the administrators for the user groups.</p>
                                <!-- {!! Form::select('group',$groups,null,['class'=>'form-control']) !!} -->
 
                                <?php 
@@ -161,7 +161,7 @@
                                 </select>
 
                                 <div hidden class="form-group{!! $errors->has('numberOfEvaluators') ? ' has-error':'' !!} has-feedback">
-                                <label><h3>Number Of Evaluators:</h3></label>
+                                <label><h3>Number of evaluators:</h3></label>
                                     <p>Provide the number of peer evaluators for your survey</p>
                                 @if($errors->has('numberOfEvaluators'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('numberOfEvaluators') !!}</label>
@@ -190,7 +190,7 @@
 
                             <p class="panel-title">
                                 <a data-toggle="collapse" href="#collapse1"><i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                    <label>View indicators</label></a>
+                                    <label>Survey indicators</label></a>
                                 <p>There are {!! count($indicators) !!} survey indicators. These indicators are fixed and can not be modified or edited.</p>
                             </p>
 
@@ -227,7 +227,7 @@
 
                            <div class="form-group{!! $errors->has('editor2') ? ' has-error':'' !!} has-feedback">
                             <label><h3>Survey completion text*:</h3></label>
-                            <p>Survey Completion text is the text that appears after a participant has completed the survey. You could mention some thank you text for taking the survey. </p>
+                            <p>This is the text that users will see once they have completed the survey.</p>
                                 @if($errors->has('editor2'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('editor2') !!}</label>
                                 @endif

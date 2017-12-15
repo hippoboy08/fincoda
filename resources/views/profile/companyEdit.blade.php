@@ -7,8 +7,8 @@
                     <!-- general form elements -->
                     <div class="box-header with-border">
                         <h3 class="box-title"><b>{!! $company->name !!}</b></h3>
-                        <p><i>The company has been updated to the <strong>Fincoda Survey System.</strong> </i></p>
-                        <p>Below is the details you had provided to Fincoda upon registration. </p>
+                        <p><i>The organization has been updated to the <strong>FINCODA survey system.</strong> </i></p>
+                        <p>Below are the details you provided to FINCODA upon registration. </p>
                     </div>
                     {!! Form::open(array('method'=>'post', 'action'=>'admin\ProfileController@updateCompanyProfile')) !!}
                       <div class="box box-primary">

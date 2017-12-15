@@ -7,8 +7,8 @@
                     <!-- general form elements -->
                     <div class="box-header with-border">
                         <h3 class="box-title"><b>{!! $company->name !!}</b></h3>
-                        <p><i>The company has been registered to the <strong>Fincoda Survey System.</strong> </i></p>
-                        <p>Below is the details you had provided to Fincoda upon registration. </p>
+                        <p><i>The organization has been registered to the <strong>FINCODA survey system.</strong> </i></p>
+                        <p>Below are the details you provided to FINCODA upon registration. </p>
                     </div>
                     {!! Form::open(array('method'=>'post')) !!}
                     {{ csrf_field() }}
@@ -22,7 +22,7 @@
                                             <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_name') !!}</label>
                                         @endif
                                     <div class="col-md-2 pull-left">
-                                        <strong>Company Name* :</strong>
+                                        <strong>Organization Name* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
                                             {!! Form::text('company_name',$company->name,['class'=>'form-control']) !!}
@@ -32,7 +32,7 @@
                                     <div class="form-group row">
 
                                         <div class="col-md-2 pull-left">
-                                            <strong>Company code* :</strong>
+                                            <strong>Organization code* :</strong>
                                         </div>
                                         <div class="col-md-10 pull-right">
                                             {!! Form::text('company_code',$company->company_code,['class'=>'form-control','disabled']) !!}

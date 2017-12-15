@@ -7,8 +7,8 @@
 
 
             <div class="box-header with-border">
-                <h3 class="box-title"><b>Company User Group information.</b></h3>
-                <p><i>Below is the list of all the user groups in your company. Click the group name to explore more about the group.</i></p>
+                <h3 class="box-title"><b>Organization user group information.</b></h3>
+                <p><i>Below is the list of all user groups in your company.  Click the group name for more information.</i></p>
 
             </div>
 

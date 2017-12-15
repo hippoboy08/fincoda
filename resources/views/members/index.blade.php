@@ -6,7 +6,7 @@
         <div class="box">
             <div class="box-header">
                 <h2 class="box-title">{!! $company->name !!}</h2>
-                <p><i>Below is the list of all the members in the company registered for the Fincoda Survey System.</i></p>
+                <p><i>Below is the list of all the members in the organization registered on the FINCODA survey system.</i></p>
             </div><!-- /.box-header -->
 			@if(Session::has('message'))
                 <h4 style="color:red;">{{Session::get('message')}}</h4>

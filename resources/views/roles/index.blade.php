@@ -6,7 +6,7 @@
         <div class="box">
             <div class="box-header">
                 <h2 class="box-title">COMPANY NAME</h2>
-                <p><i>Below is the list of all the members in the company registered for the Fincoda Survey System.</i></p>
+                <p><i>Below is the list of all registered users in your organization.</i></p>
             </div><!-- /.box-header -->
 
             @include('message.success')

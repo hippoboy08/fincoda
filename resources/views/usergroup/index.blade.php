@@ -7,8 +7,8 @@
 
             {!! Form::open(['method'=>'POST','action'=>'admin\UserGroupController@store']) !!}
             <div class="box-header with-border">
-                <h3 class="box-title"><b>Company User Group information.</b></h3>
-                <p><i>Below is the list of all the user groups in your company. Click the group name to explore more about the group.</i></p>
+                <h3 class="box-title"><b>Organization user group information.</b></h3>
+                <p><i>Below is the list of all user groups in your company.  Click the group name for more information.</i></p>
 
             </div>
 
@@ -22,8 +22,8 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 @role('admin')
-                                <label><h3>List of Company User Groups*:</h3></label>
-                                <p><i>Click the group for more information.</i></p>
+                                <label><h3>List of organization user groups*:</h3></label>
+                                <!-- <p><i>Click the group for more information.</i></p> -->
                                 @endrole
 
                                 @role('basic')

@@ -7,7 +7,7 @@
         <!-- general form elements -->
 
         <div class="box-header with-border">
-            <h3 class="box-title"><b>Provide your Organisation Code</b></h3>
+            <h3 class="box-title"><b>Provide your organization code</b></h3>
             <p><i></i></p>
         </div><!-- /.box-header -->
 
@@ -33,7 +33,7 @@
 
 
         <div class="box-header with-border">
-            <h3 class="box-title"><b>Provide the Detailed Information below</b> </h3>
+            <h3 class="box-title"><b>Provide the detailed information below</b> </h3>
         </div>
         <div class="box box-primary">
             <div class="box-body">
@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="form-group{!! $errors->has('password') ? ' has-error':'' !!} has-feedback">
-                            <label>Conform Password*</label><br>
+                            <label>Confirm Password*</label><br>
                             @if($errors->has('password'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('password') !!}</label>
                             @endif

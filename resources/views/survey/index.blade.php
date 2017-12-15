@@ -7,9 +7,8 @@
             @include('message.success')
 
             <div class="box-header with-border">
-                <h3 class="box-title"><b>Completed Survey.</b></h3>
-                <p><i>Below is the list of all the completed surveys of your company.
-                       Click to view the individual survey results.</i></p>
+                <h3 class="box-title"><b>Completed survey.</b></h3>
+                <p><i>Below is a list of your organization’s completed surveys. Click to view the individual survey results.</i></p>
             </div>
             <div class="box box-primary">
                 <div class="box-body">

@@ -6,7 +6,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title"><b>{!! ucfirst($user->name) !!}</b></h3>
 
-                <p>Below is your personal details. </p>
+                <p>Below are your personal details. </p>
 
                 @include('message.success')
 

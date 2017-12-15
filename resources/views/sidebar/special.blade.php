@@ -27,7 +27,7 @@
             <li class="active"><a href="{!! url('special/profile') !!}"><i class="fa fa-user" aria-hidden="true"></i> <span>Profile</span></a></li>
 
             <li class="treeview">
-                <a href="#"><i class="fa fa-line-chart" aria-hidden="true"></i> <span>Company Survey</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class="fa fa-line-chart" aria-hidden="true"></i> <span>Organization Survey</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{action('special\CompanySurveyController@index')}}"><i class="fa fa-pie-chart" aria-hidden="true"></i>Survey Results</a></li>
 

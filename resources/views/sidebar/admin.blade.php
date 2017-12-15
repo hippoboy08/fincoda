@@ -25,9 +25,9 @@
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="{!! url('admin') !!}"><i class="fa fa-tachometer" aria-hidden="true"></i> <span>Dashboard</span></a></li>
             <li class="treeview">
-                <a href="#"><i class="fa fa-building-o" aria-hidden="true"></i> <span>Company</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class="fa fa-building-o" aria-hidden="true"></i> <span>Organization</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="{!! url('admin/company') !!}"><i class="fa fa-list-alt" aria-hidden="true"></i>Company Profile</a></li>
+                    <li><a href="{!! url('admin/company') !!}"><i class="fa fa-list-alt" aria-hidden="true"></i>Organization Profile</a></li>
                     <li><a href="{!! url('admin/members') !!}"><i class="fa fa-spinner" aria-hidden="true"></i>Members</a></li>
                 </ul>
             </li>
@@ -36,7 +36,7 @@
             <li class="treeview">
                 <a href="#"><i class="fa fa-line-chart" aria-hidden="true"></i> <span>Survey</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="{!! url('admin/survey/create') !!}"><i class="fa fa-list-alt" aria-hidden="true"></i>Create New</a></li>
+                    <li><a href="{!! url('admin/survey/create') !!}"><i class="fa fa-list-alt" aria-hidden="true"></i>Create Survey</a></li>
                     <li><a href="{{url('admin/survey')}}"><i class="fa fa-pie-chart" aria-hidden="true"></i>Survey Results</a></li>
 
                 </ul>

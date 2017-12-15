@@ -87,13 +87,13 @@
             <div class="col-lg-12">
                 <h1>Fincoda Survey System</h1>
                 <br>
-                <h3>A tool for Universities and other working life organizations for measuring individuals’ innovation competences</h3>
+                <h3>A tool for universities and other working life organizations for measuring individuals’ innovation competencies</h3>
                 <br><br>
             </div>
 
             <div class="col-lg-2">
-                <h5>Amazing Results</h5>
-                <p>Scaled bar charts with all data fit in provide visual presentation of categorical data.</p>
+                <h5>Amazing results</h5>
+                <p>Scaled bar charts provide a visual representation of data across dimensions</p>
                 <img class="hidden-xs hidden-sm hidden-md" src="{{'landing_page/img/arrow1.png'}}">
             </div>
             <div class="col-lg-8">
@@ -103,8 +103,8 @@
             <div class="col-lg-2">
                 <br>
                 <img class="hidden-xs hidden-sm hidden-md" src="{{'landing_page/img/arrow2.png'}}">
-                <h5>Awesome Design</h5>
-                <p>Column chart in survey report displays grouped data as vertical bars and show comparisons among categories.</p>
+                <h5>Awesome design</h5>
+                <p>The columns in the survey report display grouped data and compare across dimensions</p>
             </div>
         </div>
     </div> <!--/ .container -->
@@ -116,7 +116,7 @@
 <div id="intro">
     <div class="container">
         <div class="row centered">
-            <h1>FINCODA - Framework for innovation competencies <br>development and assessment</h1>
+            <h1>FINCODA - Framework for Innovation Competencies <br>Development and Assessment</h1>
             <br>
             <br>
             <div class="col-lg-4">
@@ -132,7 +132,7 @@
             <div class="col-lg-4">
                 <img src="{{'landing_page/img/innovation.png'}}" alt="">
                 <h3>Objectives</h3>
-                <p>Innovation competence development and<br>assessment</p>
+                <p>The development and assessment of innovation competencies</p>
             </div>
         </div>
         <br>
@@ -144,7 +144,7 @@
 <div id="features">
     <div class="container">
         <div class="row centered">
-            <h1>FINCODA - production of remarkable tangible outputs</h1>
+            <h1>FINCODA</h1>
             <br>
             <br>
             <div class="col-lg-7">
@@ -203,7 +203,7 @@
 <div id="contact">
     <div class="container">
         <div class="row centered">
-            <h1>FINCODA - we need your opinion</h1>
+            <h1>FINCODA – we’d love your feedback</h1>
             <br>
             <div class="col-lg-12 align-center">
                 <h3>Contact</h3>

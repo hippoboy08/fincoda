@@ -8,7 +8,7 @@
             {!! Form::open(['method'=>'POST','action'=>'special\UserGroupController@store']) !!}
             <div class="box-header with-border">
                 <h3 class="box-title"><b>Create a new user group.</b></h3>
-                <p><i>Please provide all the information below to create user group for your company.</i></p>
+                <p><i>Please provide all the information below to create a user group for your organization.</i></p>
             </div>
 
             @include('message.fail')
@@ -27,8 +27,8 @@
                         <div class="panel-body">
 
                             <div class="form-group{!! $errors->has('name') ? ' has-error':'' !!} has-feedback">
-                                <label><h3>User Group Name*:</h3></label>
-                                <p>Provide a name of the user group</p>
+                                <label><h3>User group name*:</h3></label>
+                                <!-- <p>Provide a name of the user group</p> -->
                                 @if($errors->has('name'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('name') !!}</label>
                                 @endif
@@ -36,8 +36,8 @@
                             </div><br>
 
                             <div class="form-group{!! $errors->has('editor1') ? ' has-error':'' !!} has-feedback">
-                                <label><h3>Group Description*:</h3></label>
-                                <p>Please provide a short description of the use group. </p>
+                                <label><h3>Group description*:</h3></label>
+                                <!-- <p>Please provide a short description of the use group. </p> -->
                                 @if($errors->has('editor1'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('editor1') !!}</label>
                                 @endif
@@ -46,14 +46,14 @@
 
                             <div class="form-group">
                                 <label><h3>Assign a group administrator*:</h3></label>
-                                <p>Please select an administrator for the group. The special users of the company are the administrators for the user groups.</p>
+                                <!-- <p>Please select an administrator for the group. The special users of the company are the administrators for the user groups.</p> -->
                                {!! Form::select('administrator',$administrators,null,['class'=>'form-control']) !!}
 
                             </div>
 
                             <div class="form-group{!! $errors->has('users') ? ' has-error':'' !!} has-feedback">
-                                <label><h3>Select users to the group*:</h3></label>
-                                <p>Please select users for this group.</p>
+                                <label><h3>Select group users*:</h3></label>
+                                <!-- <p>Please select users for this group.</p> -->
                                 @if($errors->has('users'))
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('users') !!}</label>
                                 @endif

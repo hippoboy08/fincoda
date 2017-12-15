@@ -4,7 +4,7 @@
 </style>
 <div class="panel-body">
     <h3>Closed surveys</h3>
-    <p>The surveys that have been closed already.</p>
+    <!-- <p>The surveys that have been closed already.</p> -->
     <table id="example3" class="table table-bordered table-striped">
         <thead>
         <tr>

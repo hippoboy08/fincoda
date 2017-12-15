@@ -58,7 +58,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <li style="padding: 5px 8px;"><a href="register/user">User</a></li>
-                        <li style="padding: 5px 8px"><a href="register/company">Company</a></li>
+                        <li style="padding: 5px 8px"><a href="register/company">Organization</a></li>
 
                     </ul>
                 </li>

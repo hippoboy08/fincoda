@@ -41,9 +41,9 @@
 
                 <a href="{{url('password/reset')}}">I forgot my password</a><br>
                 <br>
-                <a href="{{url('register/company')}}" class="text-center">Register a new company</a><br>
+                <a href="{{url('register/company')}}" class="text-center">Register a new Organization</a><br>
                 --OR--<br>
-                <a href="{{url('register/user')}}" class="text-center">Register as a company member</a>
+                <a href="{{url('register/user')}}" class="text-center">Register as an Organization member</a>
             @endsection
 
 

@@ -6,7 +6,7 @@
             <!-- general form elements -->
 
             <div class="box-header with-border">
-                <h3 class="box-title"><b>Registration Successful.</b></h3><br>
+                <h3 class="box-title"><b>Registration successful</b></h3><br>
 
                         <p>{!! $success !!}</p><br>
                 <p><a href="../login"> <button type = "button" class = "btn btn-primary" href="../login">
