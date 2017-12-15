@@ -42,8 +42,6 @@
       padding: 0;
       margin: 30px 0;
     }
-    .info p {
-    }
     /*introduction*/
     .introduction {
       margin-top: 100px;
@@ -57,77 +55,12 @@
 	line-height: 2em;
     }
 
-    /*comments*/
-    .score {
-      display: inline-block;
-      width: 180px;
-      height: 230px;
-      margin: 10px;
-      vertical-align: middle;
-    }
-    .scores {
-      width: 100%;
-      text-align:center;
-      margin: 10px auto;
-      margin-top: 80px;
-      overflow: auto;
-    }
-    .below-avg {
-      border: 3px solid #C55B11;
-      background: #F7CBAE;
-    }
-    .below-avg h4 {
-      color: #C55B11;
-      margin: 0;
-      padding: 10px 10px;
-    }
-    .below-avg p {
-      margin: 0;
-      padding: 10px;
-    }
-    .avg {
-      border: 3px solid #77933F;
-      background: #D8E4BE;
-    }
-    .avg h4 {
-      color: 	#77933F;
-      margin: 0;
-      padding: 10px 10px;
-    }
-    .avg p {
-      margin: 0;
-      padding: 10px;
-    }
-    .above-avg {
-      border: 3px solid #30859c;
-      background: #c4e4ed;
-    }
-    .above-avg h4 {
-      color: 	#30859c;
-      margin: 0;
-      padding: 10px 10px;
-    }
-    .above-avg p {
-      margin: 0;
-      padding: 10px;
-    }
-    .progress {
-      margin: 100px 0;
-    }
-    .rec {
-      margin: 100px 0;
-    }
-    .mastery {
-      padding: 40px 0;
-      margin-bottom: 0px;
-    }
-  </style>
+ </style>
     
       
   </head>
 
-  <body>
-    <div id="content">
+<body>
       <div class="container">
 
         <div class="pdf">
@@ -147,6 +80,7 @@
             <h3>To find out more visit www.fincoda.eu</h3>
 	    <br><br><br><br><br><br><br><br><br><br><br><br>
           </div><!-- .info -->
+          
           <div class="introduction">
             <h1>Introduction</h1>
             <p>Thank you for completing the FINCODA barometer Innovation Assessment Tool which assesses an individual’s capacity to be innovative within their work environment. This report summarises your scores with an interpretative description. The scores and the accompanying descriptions will give you an indication of possible directions in which you can develop your innovative capacity.</p>
@@ -173,16 +107,16 @@
           
           <br><br><br><br><br><br><br><br><br><br><br><br>    
 
-                                              @role ('special')
+        @role ('special')
 
         <h3 style="text-align:center;"><b>Group scores per dimension</b></h3>
 				<div class="canvas-holder" style="width: 818px; height: 409px;">
-									@if(count($surveyScorePerIndicatorGroup)==5)
-				    <canvas id="indicatorGroupAverage" width="800" height="400"></canvas>
-                                    <script src="http://fincoda.dc.turkuamk.fi/js/displayChart.js">
-                                    </script>
-				    <script>
-            var chartArea = document.getElementById('indicatorGroupAverage');
+
+          @if(count($surveyScorePerIndicatorGroup)==5)
+			    <canvas id="indicatorGroupAverage1" width="800" height="400"></canvas>
+          <script src="http://fincoda.dc.turkuamk.fi/js/displayChart.js"></script>
+			    <script>
+            var chartArea = document.getElementById('indicatorGroupAverage1');
             var datasetMinCompany = {
               label: 'Minimum Score',
               data: [
@@ -208,33 +142,30 @@
             var datasetAvgCompany = {
               label: 'Group Score',
               data: [
-                {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average,2,'.','')!!},
-                  {!!number_format((float)$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average,2,'.','')!!}, {!!number_format((float)$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average,2,'.','')!!}
+                {!!number_format((float)$surveyScorePerIndicatorGroup[0]->Indicator_Group_Average,2,'.','')!!}, 
+		{!!number_format((float)$surveyScorePerIndicatorGroup[1]->Indicator_Group_Average,2,'.','')!!}, 
+		{!!number_format((float)$surveyScorePerIndicatorGroup[2]->Indicator_Group_Average,2,'.','')!!},
+                {!!number_format((float)$surveyScorePerIndicatorGroup[3]->Indicator_Group_Average,2,'.','')!!}, 
+		{!!number_format((float)$surveyScorePerIndicatorGroup[4]->Indicator_Group_Average,2,'.','')!!}
               ],
               backgroundColor: 'rgba(0,0,255,1)'
             };
             var labelArr = ["CREATIVITY", "CRITICAL THINKING", "INITIATIVE", "TEAMWORK", "NETWORKING"];
             createMaxMinChart(chartArea, labelArr, datasetMinCompany, datasetAvgCompany, datasetMaxCompany);
-                                    </script>
+          </script>
 
-									@else
-										<h3><b>You have no surveys results to display or your indicators group count is not equal 5</b></h3>
-									@endif
-				</div>
+					@else
+						<h3><b>You have no surveys results to display or your indicators group count is not equal 5</b></h3>
+					@endif
+				</div><!--.canvas-holder -->
+        
 	<br><br><br><br><br><br>
-        <div>
+
           @include ('survey.resultContent.surveyScorePerIndicatorGroup')
-        </div>
 
+        @endrole        
+	    </div><!-- .pdf -->
 
-                                  </div>
-
-                                  @endrole        
-	</div><!-- .pdf -->
-
-      </div><!-- .container -->
-
-</div><!-- .content -->
-    
-  </body>
+    </div><!-- .container -->    
+</body>
   </html>
