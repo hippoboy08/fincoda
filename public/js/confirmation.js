@@ -192,9 +192,11 @@ $(document).ready(function(){
     var maximumAmount = $('#groupMemberAmountList').length != 0 ? $('#groupMemberAmountList').find('option:selected').data('amount') :
     $('#totalParticipantsNumber').data('amount');
     console.log(maximumAmount);
+    // console.log(evaluatorsInput.val());
+    
     
     // validate the minimum and maximum the amount could be with selected group
-    if(evaluatorsInput.val() < minimumAmount || evaluatorsInput.val() > maximumAmount){
+    if(evaluatorsInput.val() != '' && (evaluatorsInput.val() < minimumAmount || evaluatorsInput.val() > maximumAmount)){
       //show the message to user
       $('#evaluatorValidationError').modal('show');
       //clears input value & notifies user to input new value

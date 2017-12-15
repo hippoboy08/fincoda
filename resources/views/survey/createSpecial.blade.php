@@ -130,32 +130,7 @@
                             {!! Form::radio('survey_type','2','',['class'=>'form-group']) !!}
                             <label>Peer Evaluation Survey</label><br><br>
 
-                            <div hidden class="form-group{!! $errors->has('numberOfEvaluators') ? ' has-error':'' !!} has-feedback">
-                                      <label><h3>Number Of Evaluators:</h3></label>
-                                          <p>Provide the number of peer evaluators for your survey</p>
-                                       @if($errors->has('numberOfEvaluators'))
-                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('numberOfEvaluators') !!}</label>
-                                       @endif
-                                      {!! Form::text('numberOfEvaluators',old('numberOfEvaluators'),['class'=>'form-control','placeholder'=>'Number Of Evaluators']) !!}
-                                        <div class="modal fade" id="evaluatorValidationError" tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h3 class="modal-title"><b>Number of evaluators is not valid!!!</b></h3>
-                                                </div>
-                                                <!-- <div class="modal-body">
-                                                    <div class="form-group">
-                                                    <label for="email">There is already 5 evaluators !!!</label>
-                                                    </div>
-                                                </div> -->
-                                                <!-- <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                              </div><br>
+                            
 
 
               <div class="form-group">
@@ -185,7 +160,32 @@
                                     @endforeach
                                 </select>
 
-                               
+                                <div hidden class="form-group{!! $errors->has('numberOfEvaluators') ? ' has-error':'' !!} has-feedback">
+                                <label><h3>Number Of Evaluators:</h3></label>
+                                    <p>Provide the number of peer evaluators for your survey</p>
+                                @if($errors->has('numberOfEvaluators'))
+                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('numberOfEvaluators') !!}</label>
+                                @endif
+                                {!! Form::text('numberOfEvaluators',old('numberOfEvaluators'),['class'=>'form-control','placeholder'=>'Number Of Evaluators']) !!}
+                                <div class="modal fade" id="evaluatorValidationError" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h3 class="modal-title"><b>Number of evaluators is not valid!!!</b></h3>
+                                        </div>
+                                        <!-- <div class="modal-body">
+                                            <div class="form-group">
+                                            <label for="email">There is already 5 evaluators !!!</label>
+                                            </div>
+                                        </div> -->
+                                        <!-- <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
                             </div>
 
                             <p class="panel-title">
@@ -239,6 +239,7 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
 
            {!! Form::close() !!}
