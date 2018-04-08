@@ -21,7 +21,7 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
 
-			<div class="pull-right" style = 'height: 50px;'>
+			<!-- <div class="pull-right">
 							<h5 class="select-users"><label></label>
                             <select id="languageId" class="selectpicker show-tick" data-style = 'btn-info' data-width = 'auto'>
                                 <option value="">Please select required language</option>
@@ -67,7 +67,7 @@
 									 });
 								   });
 							</script>
-					</div>
+					</div> -->
 
             <ul class="nav navbar-nav">
                 <!-- Messages: style can be found in dropdown.less-->
@@ -137,3 +137,9 @@
         </div>
     </nav>
 </header>
+
+<style>
+	.pull-right {
+		height: 50px !important;
+	}
+</style>

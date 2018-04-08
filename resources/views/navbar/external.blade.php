@@ -35,6 +35,7 @@
 
 							<script>
 								  $(document).ready(function(){
+                                    $('.selectpicker').selectpicker();
 								  $('#languageId').change(function(){
 								  if($(this).val()==""){
 								  return;
@@ -138,3 +139,9 @@
         </div>
     </nav>
 </header>
+
+<style>
+	.pull-right {
+		height: 50px !important;
+	}
+</style>
