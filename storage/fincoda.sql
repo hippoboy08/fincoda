@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 25, 2017 at 02:52 PM
--- Server version: 10.1.19-MariaDB
--- PHP Version: 5.5.38
+-- Host: 127.0.0.1:3306
+-- Generation Time: Apr 08, 2018 at 11:56 AM
+-- Server version: 5.7.19
+-- PHP Version: 5.6.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -26,14 +28,18 @@ SET time_zone = "+00:00";
 -- Table structure for table `companies`
 --
 
-CREATE TABLE `companies` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` char(50) COLLATE utf8_unicode_ci NOT NULL,
+DROP TABLE IF EXISTS `companies`;
+CREATE TABLE IF NOT EXISTS `companies` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `company_code` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
   `slug` char(50) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `companies_company_code_unique` (`company_code`),
+  UNIQUE KEY `companies_slug_unique` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `companies`
@@ -50,8 +56,9 @@ INSERT INTO `companies` (`id`, `name`, `company_code`, `slug`, `created_at`, `up
 -- Table structure for table `company_profiles`
 --
 
-CREATE TABLE `company_profiles` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `company_profiles`;
+CREATE TABLE IF NOT EXISTS `company_profiles` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `company_id` int(10) UNSIGNED NOT NULL,
   `type` char(50) COLLATE utf8_unicode_ci NOT NULL,
   `country` char(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -62,8 +69,10 @@ CREATE TABLE `company_profiles` (
   `postcode` int(11) NOT NULL,
   `time_zone` char(50) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `company_profiles_company_id_foreign` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `company_profiles`
@@ -80,8 +89,9 @@ INSERT INTO `company_profiles` (`id`, `company_id`, `type`, `country`, `city`, `
 -- Table structure for table `external_evaluators`
 --
 
-CREATE TABLE `external_evaluators` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `external_evaluators`;
+CREATE TABLE IF NOT EXISTS `external_evaluators` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `invited_by_user_id` int(10) UNSIGNED NOT NULL,
   `survey_id` int(10) UNSIGNED NOT NULL,
   `email` char(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -89,8 +99,14 @@ CREATE TABLE `external_evaluators` (
   `registered_email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `confirmed` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `invited_by_user_id` (`invited_by_user_id`,`survey_id`,`email`),
+  UNIQUE KEY `email` (`email`,`company_id`),
+  KEY `external_evaluators_invited_by_fk` (`invited_by_user_id`),
+  KEY `external_evaluators_invited_on_survey_id_fk` (`survey_id`),
+  KEY `external_evaluators_company_id_foreign` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `external_evaluators`
@@ -110,11 +126,15 @@ INSERT INTO `external_evaluators` (`id`, `invited_by_user_id`, `survey_id`, `ema
 -- Table structure for table `indicators`
 --
 
-CREATE TABLE `indicators` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `indicators`;
+CREATE TABLE IF NOT EXISTS `indicators` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `indicator` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `group_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `group_id` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `indicators_indicator_unique` (`indicator`),
+  KEY `indicators_group_id_foreign` (`group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `indicators`
@@ -162,10 +182,12 @@ INSERT INTO `indicators` (`id`, `indicator`, `group_id`) VALUES
 -- Table structure for table `indicator_groups`
 --
 
-CREATE TABLE `indicator_groups` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` char(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+DROP TABLE IF EXISTS `indicator_groups`;
+CREATE TABLE IF NOT EXISTS `indicator_groups` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` char(30) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `indicator_groups`
@@ -184,7 +206,8 @@ INSERT INTO `indicator_groups` (`id`, `name`) VALUES
 -- Table structure for table `migrations`
 --
 
-CREATE TABLE `migrations` (
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -218,15 +241,19 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 -- Table structure for table `participants`
 --
 
-CREATE TABLE `participants` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `participants`;
+CREATE TABLE IF NOT EXISTS `participants` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `survey_id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
   `reminder` tinyint(1) NOT NULL DEFAULT '0',
   `completed` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `participants_survey_id_index` (`survey_id`),
+  KEY `participants_user_id_index` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=780 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `participants`
@@ -287,10 +314,13 @@ INSERT INTO `participants` (`id`, `survey_id`, `user_id`, `reminder`, `completed
 -- Table structure for table `password_resets`
 --
 
-CREATE TABLE `password_resets` (
+DROP TABLE IF EXISTS `password_resets`;
+CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` char(50) COLLATE utf8_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `password_resets_email_index` (`email`),
+  KEY `password_resets_token_index` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -307,16 +337,23 @@ INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
 -- Table structure for table `peer_results`
 --
 
-CREATE TABLE `peer_results` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `peer_results`;
+CREATE TABLE IF NOT EXISTS `peer_results` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `peer_survey_id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
   `peer_id` int(10) UNSIGNED NOT NULL,
   `indicator_id` int(10) UNSIGNED NOT NULL,
   `answer` int(3) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `peer_survey_id` (`peer_survey_id`,`user_id`,`peer_id`,`indicator_id`),
+  KEY `peer_results_peer_survey_id_foreign` (`peer_survey_id`),
+  KEY `peer_results_indicator_id_foreign` (`indicator_id`),
+  KEY `peer_results_user_id_fk` (`user_id`),
+  KEY `peer_results_peer_id_fk` (`peer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6156 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `peer_results`
@@ -1214,15 +1251,21 @@ INSERT INTO `peer_results` (`id`, `peer_survey_id`, `user_id`, `peer_id`, `indic
 -- Table structure for table `peer_surveys`
 --
 
-CREATE TABLE `peer_surveys` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `peer_surveys`;
+CREATE TABLE IF NOT EXISTS `peer_surveys` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `survey_id` int(10) UNSIGNED NOT NULL,
   `peer_id` int(10) UNSIGNED NOT NULL,
   `peer_completed` tinyint(1) NOT NULL DEFAULT '0',
   `user_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `survey_id` (`survey_id`,`peer_id`,`user_id`),
+  KEY `peer_surveys_survey_id_foreign` (`survey_id`),
+  KEY `peer_surveys_peer_id_foreign` (`peer_id`),
+  KEY `peer_surveys_user_id_foreign` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=358 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `peer_surveys`
@@ -1265,13 +1308,16 @@ INSERT INTO `peer_surveys` (`id`, `survey_id`, `peer_id`, `peer_completed`, `use
 -- Table structure for table `permissions`
 --
 
-CREATE TABLE `permissions` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `permissions`;
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `permissions_name_unique` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1280,9 +1326,12 @@ CREATE TABLE `permissions` (
 -- Table structure for table `permission_role`
 --
 
-CREATE TABLE `permission_role` (
+DROP TABLE IF EXISTS `permission_role`;
+CREATE TABLE IF NOT EXISTS `permission_role` (
   `permission_id` int(10) UNSIGNED NOT NULL,
-  `role_id` int(10) UNSIGNED NOT NULL
+  `role_id` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`permission_id`,`role_id`),
+  KEY `permission_role_role_id_foreign` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1291,15 +1340,20 @@ CREATE TABLE `permission_role` (
 -- Table structure for table `results`
 --
 
-CREATE TABLE `results` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `results`;
+CREATE TABLE IF NOT EXISTS `results` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `survey_id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
   `indicator_id` int(10) UNSIGNED NOT NULL,
   `answer` int(3) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `results_survey_id_foreign` (`survey_id`),
+  KEY `results_indicator_id_foreign` (`indicator_id`),
+  KEY `results_user_id_foreign` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2857 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `results`
@@ -1619,12 +1673,15 @@ INSERT INTO `results` (`id`, `survey_id`, `user_id`, `indicator_id`, `answer`, `
 -- Table structure for table `roles`
 --
 
-CREATE TABLE `roles` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` char(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `roles_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `roles`
@@ -1642,9 +1699,12 @@ INSERT INTO `roles` (`id`, `name`, `display_name`, `description`) VALUES
 -- Table structure for table `role_user`
 --
 
-CREATE TABLE `role_user` (
+DROP TABLE IF EXISTS `role_user`;
+CREATE TABLE IF NOT EXISTS `role_user` (
   `user_id` int(10) UNSIGNED NOT NULL,
-  `role_id` int(10) UNSIGNED NOT NULL
+  `role_id` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `role_user_role_id_foreign` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1653,20 +1713,20 @@ CREATE TABLE `role_user` (
 
 INSERT INTO `role_user` (`user_id`, `role_id`) VALUES
 (1, 1),
+(27, 1),
+(28, 1),
 (2, 2),
 (3, 3),
 (15, 3),
 (16, 3),
 (17, 3),
-(18, 4),
 (19, 3),
 (20, 3),
 (21, 3),
 (22, 3),
 (23, 3),
-(27, 1),
-(28, 1),
 (49, 3),
+(18, 4),
 (82, 4),
 (83, 4),
 (84, 4),
@@ -1678,11 +1738,13 @@ INSERT INTO `role_user` (`user_id`, `role_id`) VALUES
 -- Table structure for table `scheduled_tasks`
 --
 
-CREATE TABLE `scheduled_tasks` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `scheduled_tasks`;
+CREATE TABLE IF NOT EXISTS `scheduled_tasks` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `running` tinyint(2) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `running` tinyint(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scheduled_tasks`
@@ -1697,8 +1759,9 @@ INSERT INTO `scheduled_tasks` (`id`, `name`, `running`) VALUES
 -- Table structure for table `surveys`
 --
 
-CREATE TABLE `surveys` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `surveys`;
+CREATE TABLE IF NOT EXISTS `surveys` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(10) UNSIGNED NOT NULL,
   `type_id` int(10) UNSIGNED NOT NULL,
   `company_id` int(10) UNSIGNED NOT NULL,
@@ -1711,8 +1774,14 @@ CREATE TABLE `surveys` (
   `start_time` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `end_time` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `surveys_user_id_foreign` (`user_id`),
+  KEY `surveys_type_id_foreign` (`type_id`),
+  KEY `surveys_company_id_foreign` (`company_id`),
+  KEY `surveys_category_id_foreign` (`category_id`),
+  KEY `surveys_user_groups_fk` (`user_group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `surveys`
@@ -1730,12 +1799,14 @@ INSERT INTO `surveys` (`id`, `user_id`, `type_id`, `company_id`, `category_id`, 
 -- Table structure for table `survey_categories`
 --
 
-CREATE TABLE `survey_categories` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `survey_categories`;
+CREATE TABLE IF NOT EXISTS `survey_categories` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `survey_categories`
@@ -1751,10 +1822,13 @@ INSERT INTO `survey_categories` (`id`, `name`, `created_at`, `updated_at`) VALUE
 -- Table structure for table `survey_types`
 --
 
-CREATE TABLE `survey_types` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+DROP TABLE IF EXISTS `survey_types`;
+CREATE TABLE IF NOT EXISTS `survey_types` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `survey_types_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `survey_types`
@@ -1770,8 +1844,9 @@ INSERT INTO `survey_types` (`id`, `name`) VALUES
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `external` tinyint(2) NOT NULL DEFAULT '0',
   `external_modified_email` tinyint(2) NOT NULL DEFAULT '0',
@@ -1782,17 +1857,19 @@ CREATE TABLE `users` (
   `profile_deleted` tinyint(2) NOT NULL DEFAULT '0',
   `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `external`, `external_modified_email`, `email`, `company_id`, `password`, `enabled`, `profile_deleted`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 0, 0, 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 1, 0, 'eZGBaOzhk1nTAk1qw7JRRIxm0Bzrr0uxfzR44mC9eioJjjztDztdVfbAGt6p', '2016-09-04 18:24:58', '2017-10-24 18:15:50'),
-(2, 'special', 0, 0, 'special@fincoda.com', 1, '$2y$10$XEkBB9aQOSUsnZnbvtIU/eFpxWuzc3g.xN/Va5QGt5FWbJSh7P0vW', 1, 0, 'n5dEfYd4usP346yoPOXJSJfPIWeCUalT52b2st6A42m05TB4wB1GDkNGs2pK', '2016-09-04 18:24:59', '2017-10-24 18:19:45'),
-(3, 'basic', 0, 0, 'basic@fincoda.com', 1, '$2y$10$VJ1.j0X2Ns2gXUHhBs5Ob.orTIrsug85qCSQd36tvzfababDw9OdS', 1, 0, 'Zf4QoGHdkjJrPicB2edrX7tGJe5ZMvaUz2nSGB7dEbvvpmf2L33ltNmwW0Fh', '2016-09-04 18:24:59', '2017-10-24 18:26:00'),
+(1, 'admin', 0, 0, 'admin@fincoda.com', 1, '$2y$10$aDPsBeCSx/hcyUEa82kXOeBJj6kR.H.6jougBIdWwuGXUIBzcbSw.', 1, 0, 'HC2RohTAmOid8Vktiv6DZAe0tfEslq35M1Rjb8GqEIbbQ80R226y3ylgzruc', '2016-09-04 18:24:58', '2018-04-08 10:56:06'),
+(2, 'special', 0, 0, 'special@fincoda.com', 1, '$2y$10$XEkBB9aQOSUsnZnbvtIU/eFpxWuzc3g.xN/Va5QGt5FWbJSh7P0vW', 1, 0, 'uk2L90jd4qstpBdI3HGVZL78Ct0oED003K8gK27xxZ3SC8LyOud1jZh0w0ay', '2016-09-04 18:24:59', '2018-04-03 11:18:01'),
+(3, 'basic', 0, 0, 'basic@fincoda.com', 1, '$2y$10$VJ1.j0X2Ns2gXUHhBs5Ob.orTIrsug85qCSQd36tvzfababDw9OdS', 1, 0, 'hdAA6SkAH6NZwXus3ghYu87s0kqwSwNiSNEnbZIKdNZ8hO9Iak4vQnuBSxDN', '2016-09-04 18:24:59', '2018-04-03 11:20:15'),
 (15, 'dav', 0, 0, 'davis2.kawalya@edu.turkuamk.fi', 1, '$2y$10$PWJmx4dIVIQkOn9yQ7/2e.RrOuMni5K/0knmxD1bPdxFbGKFo98VK', 1, 0, 'Lz8tEnDJ8JWODYlDxlQof5iG4CxlbIHSvIixKTXEr5oHU6kjd19yWZxXfoXH', '2016-11-15 09:31:48', '2017-10-11 12:56:09'),
 (16, 'dav', 0, 0, 'balsam2.almurrani@gmail.com', 1, '$2y$10$8ssO4p4nWZN/zkog31bWt.5gkarkW6XQrXiCuVuSXkiW08ngC2M1W', 1, 0, 'i07A12LzWjgY9p6vr2DmZpZUl2zLGWLHssEKBqB4jwVcrEi7YEYgz9bwQxIg', '2016-11-15 09:32:40', '2017-10-12 10:39:21'),
 (17, 'dav', 0, 0, 'duy2.lenguyen@edu.turkuamk.fi', 1, '$2y$10$PBZPCwtbEUqXmQeeyKWQ8.AzVrAZuEocNPfaaSJl504ySykwRy1dq', 1, 0, 'tgVErJkUCIKxFrVEEgEVUYgXLwDLGKentT2gZg5KzQqHmXS6vSNlPfHZvs33', '2016-11-15 09:33:15', '2017-05-12 17:31:24'),
@@ -1816,16 +1893,21 @@ INSERT INTO `users` (`id`, `name`, `external`, `external_modified_email`, `email
 -- Table structure for table `user_groups`
 --
 
-CREATE TABLE `user_groups` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `user_groups`;
+CREATE TABLE IF NOT EXISTS `user_groups` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` char(50) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `company_id` int(10) UNSIGNED NOT NULL,
   `created_by` int(10) UNSIGNED NOT NULL,
   `administrator` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_groups_company_id_foreign` (`company_id`),
+  KEY `user_groups_created_by_foreign` (`created_by`),
+  KEY `user_groups_administrator_foreign` (`administrator`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user_groups`
@@ -1841,13 +1923,18 @@ INSERT INTO `user_groups` (`id`, `name`, `description`, `company_id`, `created_b
 -- Table structure for table `user_in_groups`
 --
 
-CREATE TABLE `user_in_groups` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `user_in_groups`;
+CREATE TABLE IF NOT EXISTS `user_in_groups` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(10) UNSIGNED NOT NULL,
   `user_group_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id_group_id` (`user_id`,`user_group_id`),
+  KEY `user_in_groups_user_id_foreign` (`user_id`),
+  KEY `user_in_groups_user_group_id_foreign` (`user_group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user_in_groups`
@@ -1877,8 +1964,9 @@ INSERT INTO `user_in_groups` (`id`, `user_id`, `user_group_id`, `created_at`, `u
 -- Table structure for table `user_profiles`
 --
 
-CREATE TABLE `user_profiles` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `user_profiles`;
+CREATE TABLE IF NOT EXISTS `user_profiles` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(10) UNSIGNED NOT NULL,
   `gender` char(10) COLLATE utf8_unicode_ci NOT NULL,
   `dob` date NOT NULL DEFAULT '2016-09-04',
@@ -1900,8 +1988,10 @@ CREATE TABLE `user_profiles` (
   `hired_date` date NOT NULL,
   `complete` tinyint(2) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_profiles_user_id_foreign` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user_profiles`
@@ -1934,8 +2024,9 @@ INSERT INTO `user_profiles` (`id`, `user_id`, `gender`, `dob`, `What_is_your_hig
 -- Table structure for table `yearly_averages`
 --
 
-CREATE TABLE `yearly_averages` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `yearly_averages`;
+CREATE TABLE IF NOT EXISTS `yearly_averages` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `dimension_name` varchar(50) NOT NULL,
   `type` varchar(20) NOT NULL,
   `number_of_participants` mediumint(8) UNSIGNED NOT NULL,
@@ -1944,8 +2035,9 @@ CREATE TABLE `yearly_averages` (
   `average_score` decimal(18,4) NOT NULL,
   `std_deviation` decimal(10,5) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `yearly_averages`
@@ -1963,295 +2055,6 @@ INSERT INTO `yearly_averages` (`id`, `dimension_name`, `type`, `number_of_partic
 (9, 'INITIATIVE', 'PROFESSIONALS', 181, '2.0000', '4.6700', '3.5543', '0.62259', '2017-10-25 12:47:34', '2017-10-25 12:47:34'),
 (10, 'NETWORKING', 'PROFESSIONALS', 153, '1.8300', '5.0000', '3.5697', '0.67663', '2017-10-25 12:48:04', '2017-10-25 12:48:04');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `companies`
---
-ALTER TABLE `companies`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `companies_company_code_unique` (`company_code`),
-  ADD UNIQUE KEY `companies_slug_unique` (`slug`);
-
---
--- Indexes for table `company_profiles`
---
-ALTER TABLE `company_profiles`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `company_profiles_company_id_foreign` (`company_id`);
-
---
--- Indexes for table `external_evaluators`
---
-ALTER TABLE `external_evaluators`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `invited_by_user_id` (`invited_by_user_id`,`survey_id`,`email`),
-  ADD UNIQUE KEY `email` (`email`,`company_id`),
-  ADD KEY `external_evaluators_invited_by_fk` (`invited_by_user_id`),
-  ADD KEY `external_evaluators_invited_on_survey_id_fk` (`survey_id`),
-  ADD KEY `external_evaluators_company_id_foreign` (`company_id`);
-
---
--- Indexes for table `indicators`
---
-ALTER TABLE `indicators`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `indicators_indicator_unique` (`indicator`),
-  ADD KEY `indicators_group_id_foreign` (`group_id`);
-
---
--- Indexes for table `indicator_groups`
---
-ALTER TABLE `indicator_groups`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `participants`
---
-ALTER TABLE `participants`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `participants_survey_id_index` (`survey_id`),
-  ADD KEY `participants_user_id_index` (`user_id`);
-
---
--- Indexes for table `password_resets`
---
-ALTER TABLE `password_resets`
-  ADD KEY `password_resets_email_index` (`email`),
-  ADD KEY `password_resets_token_index` (`token`);
-
---
--- Indexes for table `peer_results`
---
-ALTER TABLE `peer_results`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `peer_survey_id` (`peer_survey_id`,`user_id`,`peer_id`,`indicator_id`),
-  ADD KEY `peer_results_peer_survey_id_foreign` (`peer_survey_id`),
-  ADD KEY `peer_results_indicator_id_foreign` (`indicator_id`),
-  ADD KEY `peer_results_user_id_fk` (`user_id`),
-  ADD KEY `peer_results_peer_id_fk` (`peer_id`);
-
---
--- Indexes for table `peer_surveys`
---
-ALTER TABLE `peer_surveys`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `survey_id` (`survey_id`,`peer_id`,`user_id`),
-  ADD KEY `peer_surveys_survey_id_foreign` (`survey_id`),
-  ADD KEY `peer_surveys_peer_id_foreign` (`peer_id`),
-  ADD KEY `peer_surveys_user_id_foreign` (`user_id`);
-
---
--- Indexes for table `permissions`
---
-ALTER TABLE `permissions`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `permissions_name_unique` (`name`);
-
---
--- Indexes for table `permission_role`
---
-ALTER TABLE `permission_role`
-  ADD PRIMARY KEY (`permission_id`,`role_id`),
-  ADD KEY `permission_role_role_id_foreign` (`role_id`);
-
---
--- Indexes for table `results`
---
-ALTER TABLE `results`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `results_survey_id_foreign` (`survey_id`),
-  ADD KEY `results_indicator_id_foreign` (`indicator_id`),
-  ADD KEY `results_user_id_foreign` (`user_id`);
-
---
--- Indexes for table `roles`
---
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `roles_name_unique` (`name`);
-
---
--- Indexes for table `role_user`
---
-ALTER TABLE `role_user`
-  ADD PRIMARY KEY (`user_id`,`role_id`),
-  ADD KEY `role_user_role_id_foreign` (`role_id`);
-
---
--- Indexes for table `scheduled_tasks`
---
-ALTER TABLE `scheduled_tasks`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `surveys`
---
-ALTER TABLE `surveys`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `surveys_user_id_foreign` (`user_id`),
-  ADD KEY `surveys_type_id_foreign` (`type_id`),
-  ADD KEY `surveys_company_id_foreign` (`company_id`),
-  ADD KEY `surveys_category_id_foreign` (`category_id`),
-  ADD KEY `surveys_user_groups_fk` (`user_group_id`);
-
---
--- Indexes for table `survey_categories`
---
-ALTER TABLE `survey_categories`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `survey_types`
---
-ALTER TABLE `survey_types`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `survey_types_name_unique` (`name`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
-
---
--- Indexes for table `user_groups`
---
-ALTER TABLE `user_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_groups_company_id_foreign` (`company_id`),
-  ADD KEY `user_groups_created_by_foreign` (`created_by`),
-  ADD KEY `user_groups_administrator_foreign` (`administrator`);
-
---
--- Indexes for table `user_in_groups`
---
-ALTER TABLE `user_in_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id_group_id` (`user_id`,`user_group_id`),
-  ADD KEY `user_in_groups_user_id_foreign` (`user_id`),
-  ADD KEY `user_in_groups_user_group_id_foreign` (`user_group_id`);
-
---
--- Indexes for table `user_profiles`
---
-ALTER TABLE `user_profiles`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_profiles_user_id_foreign` (`user_id`);
-
---
--- Indexes for table `yearly_averages`
---
-ALTER TABLE `yearly_averages`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `companies`
---
-ALTER TABLE `companies`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `company_profiles`
---
-ALTER TABLE `company_profiles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `external_evaluators`
---
-ALTER TABLE `external_evaluators`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
---
--- AUTO_INCREMENT for table `indicators`
---
-ALTER TABLE `indicators`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT for table `indicator_groups`
---
-ALTER TABLE `indicator_groups`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `participants`
---
-ALTER TABLE `participants`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=780;
---
--- AUTO_INCREMENT for table `peer_results`
---
-ALTER TABLE `peer_results`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6156;
---
--- AUTO_INCREMENT for table `peer_surveys`
---
-ALTER TABLE `peer_surveys`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=358;
---
--- AUTO_INCREMENT for table `permissions`
---
-ALTER TABLE `permissions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `results`
---
-ALTER TABLE `results`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2857;
---
--- AUTO_INCREMENT for table `roles`
---
-ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `scheduled_tasks`
---
-ALTER TABLE `scheduled_tasks`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `surveys`
---
-ALTER TABLE `surveys`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
---
--- AUTO_INCREMENT for table `survey_categories`
---
-ALTER TABLE `survey_categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `survey_types`
---
-ALTER TABLE `survey_types`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
---
--- AUTO_INCREMENT for table `user_groups`
---
-ALTER TABLE `user_groups`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
---
--- AUTO_INCREMENT for table `user_in_groups`
---
-ALTER TABLE `user_in_groups`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
---
--- AUTO_INCREMENT for table `user_profiles`
---
-ALTER TABLE `user_profiles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
---
--- AUTO_INCREMENT for table `yearly_averages`
---
-ALTER TABLE `yearly_averages`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- Constraints for dumped tables
 --
@@ -2351,6 +2154,7 @@ ALTER TABLE `user_in_groups`
 --
 ALTER TABLE `user_profiles`
   ADD CONSTRAINT `user_profiles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
