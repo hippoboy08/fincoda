@@ -25,17 +25,17 @@ class ProfileController extends Controller{
 			}
 			DB::beginTransaction();
 			try{
-			DB::table('user_profiles')
-						->insert([
-							'user_id'=>Auth::User()->id,
-							'gender'=>'male',
-							'country'=>'US',
-							'city'=>'NY',
-							'Street'=>'Main',
-							'phone'=>'+170089777',
-							'hired_date'=>'2016-09-04',
-							'updated_at'=>Carbon::now()
-						]);
+			// DB::table('user_profiles')
+			// 			->insert([
+			// 				'user_id'=>Auth::User()->id,
+			// 				'gender'=>'male',
+			// 				'country'=>'US',
+			// 				'city'=>'NY',
+			// 				'Street'=>'Main',
+			// 				'phone'=>'+170089777',
+			// 				'hired_date'=>'2016-09-04',
+			// 				'updated_at'=>Carbon::now()
+			// 			]);
 			DB::table('users')
 						->where('id',Auth::User()->id)
 						->update([
@@ -84,35 +84,58 @@ class ProfileController extends Controller{
 		if(Auth::User()->profile_deleted == 0){
 		DB::beginTransaction();
 		try{
-		DB::table('user_profiles')
-						->where('user_id', $id)
-						->delete();
-						
-		DB::table('users')
-						->where('id',$id)
-						->update([
-							'profile_deleted'=>1
-						]);
-						
-		DB::table('users')
-						->where('id',$id)
-						->update([
-							'enabled'=>0
-						]);
-						
-						if(Auth::User()->external_modified_email == 0){
-						$userEmail = DB::table('users')->where('id',$id)->value('email');
-						$this->email('email.deleteUserProfile',['name'=>$owner=Auth::User()->name,'link'=>url('/').'/login'],$userEmail);
-						}
-		DB::commit();
-		return redirect('basic')
-					->with('message','Your profile was deleted successfully');
+			DB::table('user_profiles')
+							->where('user_id', $id)
+							->delete();
+				
+			DB::table('users')
+							->where('id',$id)
+							->update([
+								'profile_deleted'=>1
+							]);
+							
+			DB::table('users')
+							->where('id',$id)
+							->update([
+								'enabled'=>0
+							]);
+							if(Auth::User()->external_modified_email == 0){
+							$userEmail = DB::table('users')->where('id',$id)->value('email');
+							$this->email('email.deleteUserProfile',['name'=>$owner=Auth::User()->name,'link'=>url('/').'/login'],$userEmail);
+							}
+			DB::commit();
+			return redirect('basic')
+						->with('message','Your profile was deleted successfully');
 		}catch(\Exception $e){
 				DB::rollback();
 				return "An error occured; your request could not be completed ".$e->getMessage();
 		}
 	}
-    }
+		}
+
+		// resign by self from system
+		public function resign($id) {
+			if(Auth::id() == $id) {
+				$this->deleteUserProfile($id);
+				DB::beginTransaction();
+				try {
+					// delete user from the users table (actually making some unique fields empty instead of deleting)
+					DB::table('users')
+					->where('id',$id)
+					->update([
+						'name'=>'khoi deleted',
+						'email'=>'khoi1@yahoo.coms-deleted'
+					]);
+					DB::commit();
+				// force to logout after deleting
+				return redirect('logout');
+				}catch(\Exception $e) {
+					DB::rollback();
+					return "An error occured; your request could not be completed ".$e->getMessage();
+				}	
+			}
+		}
+
     public function update(Request $request, $id){
 		$companyTimeZone = DB::table('company_profiles')->where('id',Auth::User()->company_id)->value('time_zone');
         if(Auth::id()==$id){

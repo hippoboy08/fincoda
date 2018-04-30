@@ -328,7 +328,8 @@ class MembersController extends Controller{
     }
 	
 	public function enableUserProfile($id){
-		$userProfileEnabled = DB::table('users')->where('id',$id)->value('enabled');
+    $userProfileEnabled = DB::table('users')->where('id',$id)->value('enabled');
+    $userProfileDeleted = DB::table('users')->where('id',$id)->value('profile_deleted');
 		if($userProfileEnabled == 1){
 			return redirect()->back()
                     ->with('message','The profile for user with id: '.$id.' was already enabled')
@@ -337,15 +338,34 @@ class MembersController extends Controller{
 		if($userProfileEnabled == 0){
 		DB::beginTransaction();
 		try{
-		DB::table('users')
-						->where('id',$id)
-						->update([
-							'enabled'=>1
-						]);
-						if(Auth::User()->external_modified_email == 0){
-						$userEmail = DB::table('users')->where('id',$id)->value('email');
-						$this->email('email.enableUserProfile',['owner'=>$owner=Auth::User()->name,'name'=>User::find($id)->name, 'link'=>url('/').'/login'],$userEmail);
-						}
+      DB::table('users')
+        ->where('id',$id)
+        ->update([
+          'enabled'=>1
+        ]);
+      // creates new record for user if his profile is already deleted
+      if($userProfileDeleted == 1) {
+        try {
+          DB::table('user_profiles')
+          ->insert([
+            'user_id'=>$id,
+            'gender'=>'male',
+            'country'=>'US',
+            'city'=>'NY',
+            'Street'=>'Main',
+            'phone'=>'+170089777',
+            'hired_date'=>'2016-09-04',
+            'updated_at'=>Carbon::now()
+          ]);
+        }catch (\Exception $e) {
+          DB::rollback();
+				  return "An error occured; it fails to enable the selected user ".$e->getMessage();
+        }
+      }
+			if(Auth::User()->external_modified_email == 0){
+			$userEmail = DB::table('users')->where('id',$id)->value('email');
+			$this->email('email.enableUserProfile',['owner'=>$owner=Auth::User()->name,'name'=>User::find($id)->name, 'link'=>url('/').'/login'],$userEmail);
+			}
 		DB::commit();
 		return redirect()->back()
 					->with('message','The profile for user with id: '.$id.' was enabled successfully')

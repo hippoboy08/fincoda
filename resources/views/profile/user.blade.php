@@ -50,6 +50,7 @@
                                 @role('basic')
                                 <a href="{!! url('basic/profile/'.Auth::id().'/edit') !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Update Profile</button></a>
                                 <a href="{!! url('basic/profile/deleteUserProfile/'.Auth::id()) !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Delete Profile</button></a>
+                                <a href="{!! url('basic/profile/resign/'.Auth::id()) !!}"> <button class="btn  btn-info btn-flat" ><i class="fa fa-pencil-square-o" aria-hidden="true" ></i> Resign</button></a>
 								@endrole
 								
 								@role('external')

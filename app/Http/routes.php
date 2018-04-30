@@ -96,7 +96,8 @@ Route::group(['middleware'=>'basic',
     Route::get('/','DashboardController@index');
     Route::post('language','DashboardController@switchLanguage');
 	Route::resource('profile','ProfileController@index');
-	Route::get('profile/deleteUserProfile/{id}','ProfileController@deleteUserProfile');
+    Route::get('profile/deleteUserProfile/{id}','ProfileController@deleteUserProfile');
+    Route::get('profile/resign/{id}','ProfileController@resign');
     Route::resource('profile','ProfileController');
     Route::get('survey/viewPeerResults/{surveyId}/{userId}','SurveyController@viewPeerResults');
 	Route::get('survey/evaluateUser/{surveyId}/{userId}','SurveyController@evaluateUser');
