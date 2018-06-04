@@ -42,7 +42,7 @@
                                   <div>
                                     <button class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Profile</button>
                                     <div class="row pull-right" >
-                                     <button disabled class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Delete Profile</button>
+                                     <button disabled class="btn  btn-info btn-flat"><i class="fa fa-pencil-square-o confirmation" aria-hidden="true"></i> Delete Profile</button>
                                     </div>
                                   </div>
 
