@@ -32,36 +32,38 @@
 							</h5>
 
 							<script>
-								  $(document).ready(function(){
+								$(document).ready(function(){
+									/* Makes the Languages selector to show the flags.*/
+									$('.selectpicker').selectpicker();
+									
 								  $('#languageId').change(function(){
 								  if($(this).val()==""){
 								  return;
 								  }
 								  else{
-										   $.ajaxSetup({
-											 headers:{
-											   'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-											 }
-										   });
-										   $.ajax({
-											 method: 'POST',
-											 url: window.location.protocol+"//"+window.location.host+"/"+"basic/language",
-											 dataType: 'json',
-											 data: {'languageId':$(this).val()},
-											 success: function(data){
-												 alert(data.stri);
-											 window.location.replace(window.location);
-											},
-										  error: function(result){
-												var errors = result.responseJSON;
-												console.log(result);
-												console.log(errors);
-										  }
-
-									   });
-									   }
-									 });
-								   });
+											$.ajaxSetup({
+											headers:{
+												'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+											}
+											});
+											$.ajax({
+											method: 'POST',
+											url: window.location.protocol+"//"+window.location.host+"/"+"basic/language",
+											dataType: 'json',
+											data: {'languageId':$(this).val()},
+											success: function(data){
+											//  alert(data.stri);
+											window.location.replace(window.location);
+										},
+										error: function(result){
+											var errors = result.responseJSON;
+											console.log(result);
+											console.log(errors);
+										}
+										});
+									}
+									});
+								});
 							</script>
 					</div> -->
 
@@ -136,3 +138,9 @@
         </div>
     </nav>
 </header>
+
+<style>
+	.pull-right {
+		height: 50px !important;
+	}
+</style>

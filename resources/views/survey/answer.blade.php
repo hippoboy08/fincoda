@@ -13,6 +13,63 @@
       <h2 class="box-title"><b>Take survey.</b></h2>
       <p><i>Below is the information of the survey you are going to take.
       </i></p>
+      <div class="pull-right">
+							<h5 class="select-users"><label></label>
+                            <select id="languageId" class="selectpicker show-tick" data-style = 'btn-info' data-width = 'auto'>
+                                <option value="">Please select required language</option>
+                                <option value="fi" data-content='<span class="flag-icon flag-icon-fi"></span> Finnish'>Finnish</option>
+                                <option value="en" data-content='<span class="flag-icon flag-icon-us"></span> English'>English</option>
+                                <option value="de" data-content='<span class="flag-icon flag-icon-de"></span> German'>German</option>
+                                <option value="nl" data-content='<span class="flag-icon flag-icon-nl"></span> Dutch'>Dutch</option>
+                                <option value="sp" data-content='<span class="flag-icon flag-icon-es"></span> Spanish'>Spanish</option>
+                            </select>
+							</h5>
+
+							<script>
+								  $(document).ready(function(){
+                    $('.selectpicker').selectpicker();
+                    $('#languageId').change(function(){
+                    if($(this).val()==""){
+                    return;
+                    }
+                    else{
+                        $.ajaxSetup({
+                        headers:{
+                          'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                        }
+                        });
+                        $.ajax({
+                        method: 'POST',
+                        @role('admin')
+                          url: window.location.protocol+"//"+window.location.host+"/"+"admin/language",
+                        @endrole
+                        @role('special')
+                          url: window.location.protocol+"//"+window.location.host+"/"+"special/language",
+                        @endrole
+                        @role('basic')
+                          url: window.location.protocol+"//"+window.location.host+"/"+"basic/language",
+                        @endrole
+                        @role('external')
+                          url: window.location.protocol+"//"+window.location.host+"/"+"external/language",
+                        @endrole
+                        dataType: 'json',
+                        data: {'languageId':$(this).val()},
+                        success: function(data){
+                          //alert(data.stri);
+                        window.location.replace(window.location);
+                        },
+                        error: function(result){
+                          var errors = result.responseJSON;
+                          console.log(result);
+                          console.log(errors);
+                        }
+
+                      });
+                      }
+                    });
+                  });
+							</script>
+					</div>
     </div>
 
     <div class="box box-primary">
