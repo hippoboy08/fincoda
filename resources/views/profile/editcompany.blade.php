@@ -17,6 +17,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
 
+                                    <!-- name -->
                                     <div class="form-group{!! $errors->has('company_name') ? ' has-error':'' !!} has-feedback row">
                                         @if($errors->has('company_name'))
                                             <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_name') !!}</label>
@@ -25,12 +26,12 @@
                                         <strong>Organization Name* :</strong>
                                     </div>
                                     <div class="col-md-10 pull-right">
-                                            {!! Form::text('company_name',$company->name,['class'=>'form-control']) !!}
+                                            {!! Form::text('company_name',$company->name,['id' => 'com-name-edit','class'=>'form-control']) !!}
                                     </div>
                                     </div>
 
+                                    <!-- Organization code -->
                                     <div class="form-group row">
-
                                         <div class="col-md-2 pull-left">
                                             <strong>Organization code* :</strong>
                                         </div>
@@ -38,7 +39,7 @@
                                             {!! Form::text('company_code',$company->company_code,['class'=>'form-control','disabled']) !!}
                                         </div>
                                     </div>
-
+                                    <!-- company_type -->
                                     <div class="form-group{!! $errors->has('company_type') ? ' has-error':'' !!} has-feedback row">
                                         @if($errors->has('company_type'))
                                             <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('company_type') !!}</label>
@@ -50,45 +51,7 @@
                                             {!! Form::text('company_type',$company_profile->type,['class'=>'form-control']) !!}
                                         </div>
                                     </div>
-
-                                    <div class="form-group row">
-                                        <div class="col-md-2 pull-left">
-                                            <strong>Country* :</strong>
-                                        </div>
-                                        <div class="col-md-10 pull-right">
-                                            <?php
-                                            $default=$company_profile->country
-                                            ?>
-
-                                           @include('partials.countries')
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group{!! $errors->has('city') ? ' has-error':'' !!} has-feedback row">
-                                        @if($errors->has('city'))
-                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('city') !!}</label>
-                                        @endif
-                                        <div class="col-md-2 pull-left">
-                                            <strong> City* :</strong>
-                                        </div>
-                                        <div class="col-md-10 pull-right">
-                                            {!! Form::text('city',$company_profile->city,['class'=>'form-control']) !!}
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group{!! $errors->has('address') ? ' has-error':'' !!} has-feedback row">
-                                        @if($errors->has('address'))
-                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('address') !!}</label>
-                                        @endif
-                                        <div class="col-md-2 pull-left">
-                                            <strong> Address* :</strong>
-                                        </div>
-                                        <div class="col-md-10 pull-right">
-                                            {!! Form::text('address',$company_profile->street,['class'=>'form-control']) !!}
-                                        </div>
-                                    </div>
-
+                                    <!-- Email -->
                                     <div class="form-group{!! $errors->has('email') ? ' has-error':'' !!} has-feedback row">
                                         @if($errors->has('email'))
                                             <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('email') !!}</label>
@@ -101,6 +64,7 @@
                                         </div>
                                     </div>
 
+                                    <!-- Phone -->
                                     <div class="form-group{!! $errors->has('phone') ? ' has-error':'' !!} has-feedback row">
                                         @if($errors->has('phone'))
                                             <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('phone') !!}</label>
@@ -109,24 +73,49 @@
                                             <strong> Phone:</strong>
                                         </div>
                                         <div class="col-md-10 pull-right">
-                                            {!! Form::text('phone',$company_profile->phone,['class'=>'form-control']) !!}
+                                            {!! Form::number('phone',$company_profile->phone,['class'=>'form-control','id'=>'com-phone-edit']) !!}
                                         </div>
                                     </div>
 
 
-                                    <div class="form-group{!! $errors->has('postcode') ? ' has-error':'' !!} has-feedback row">
-                                        @if($errors->has('postcode'))
-                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('postcode') !!}</label>
-                                        @endif
+                                    <!-- Country -->
+                                    <div class="form-group row">
                                         <div class="col-md-2 pull-left">
-                                            <strong> Post code:</strong>
+                                            <strong>Country* :</strong>
                                         </div>
                                         <div class="col-md-10 pull-right">
-                                            {!! Form::text('postcode',$company_profile->postcode,['class'=>'form-control']) !!}
+                                            <?php
+                                            $default=$company_profile->country
+                                            ?>
+
+                                           @include('partials.countries')
+                                        </div>
+                                    </div>
+                                    <!-- City -->
+                                    <div class="form-group{!! $errors->has('city') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('city'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('city') !!}</label>
+                                        @endif
+                                        <div class="col-md-2 pull-left">
+                                            <strong> City* :</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('city',$company_profile->city,['id'=>'com-city-profile','class'=>'form-control']) !!}
                                         </div>
                                     </div>
 
 
+                                    <div class="form-group{!! $errors->has('address') ? ' has-error':'' !!} has-feedback row">
+                                        @if($errors->has('address'))
+                                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('address') !!}</label>
+                                        @endif
+                                        <div class="col-md-2 pull-left">
+                                            <strong> Address* :</strong>
+                                        </div>
+                                        <div class="col-md-10 pull-right">
+                                            {!! Form::text('address',$company_profile->street,['class'=>'form-control','pattern' => '(?=(?:[^a-zA-Z]*[a-zA-Z]){2})(?=(?:\D*\d){2}).*', 'title' => 'at least two characters and two numbers']) !!}
+                                        </div>
+                                    </div>
 
                                     <div class="form-group row">
 
@@ -137,13 +126,6 @@
                                             {!! Form::text('join',$company_profile->created_at->toDateString(),['class'=>'form-control','disabled']) !!}
                                         </div>
                                     </div>
-
-
-
-
-
-
-
 
                                   <div class="form-group">
                                       <div class="col-md-2 pull-left">
