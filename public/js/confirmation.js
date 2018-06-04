@@ -1,22 +1,100 @@
-$(document).ready(function(){
+$(document).ready(function () {
+
+  //PHU only input number in Oranization register number,post code, and phone number in edit pages of company and user.
+  IDs = ['com-phone-reg', 'user-phone-edit', 'com-phone-edit']
+  for (var i = 0; i < IDs.length; i++) {
+    var numInput = document.getElementById(IDs[i]);
+    if (numInput != null) {
+      numInput.addEventListener('input', function () {
+        var num = this.value.match(/^\d+$/);
+        if (num === null) {
+          this.value = "";
+        }
+      });
+    }
+  }
+
+  // PHU company name in register don't has special char.
+  companyID = ["#com-name-edit","#com-name-reg"];
+  $(function () {
+    for(var i = 0; i < companyID.length;i++)
+    {
+      $(companyID[i]).bind('keypress', function (e) {
+        var keyCode = (e.which) ? e.which : event.keyCode
+        if ((keyCode >= 65 && keyCode <= 90)
+          || (keyCode >= 97 && keyCode <= 122)
+          || (keyCode >= 48 && keyCode <= 57)
+          || (keyCode == 45 || keyCode == 95)) return true;
+        return false;
+      });
+    }
+  });
+  
+  // PHU company name in edit don't has special char.
+  let phu = document.getElementById("com-name-edit");
+  if (phu != null) {
+    phu.addEventListener("input", e => {
+      let string = e.target.value;
+      e.target.value = string.replace(/[^a-zA-Z\s0-9-_]/g, '');
+    })
+  }
+
+  //Phu city only word
+  cityID = ['user-city-profile', 'com-city-profile', 'com-city-reg'];
+  for (let i = 0; i < cityID.length; i++) {
+    let a = document.getElementById(cityID[i]);
+    if (a != null) {
+      a.addEventListener("input", e => {
+        let string = e.target.value;
+        e.target.value = string.replace(/[^a-zA-Z\s]/g, '');
+      })
+    }
+  }
+
+  // //Phu street only word and space
+  // let b = document.getElementById('user-street-profile');
+  // if (b != null) {
+  //   b.addEventListener("input", e => {
+  //     let string = e.target.value;
+  //     e.target.value = string.replace(/[^a-zA-Z\s]/g, '');
+  //   })
+  // }
+
+  //PHU increase 100 char in Register Organisation page -- name
+  const inputError = document.getElementById('com-name-reg');
+  if (inputError != null) {
+    inputError.addEventListener("input", e => {
+      if (e.target.value.length >= 100) {
+        document.getElementById('error--OrgName').style.display = "block";
+      }
+      else {
+        document.getElementById('error--OrgName').style.display = "none";
+      }
+    });
+  }
+
+ 
+
+
+
+
+  //ask user , delete profile
   $('.confirmation').on('click', function () {
-    return confirm('Are you sure?');
+    return confirm('Do you really want to delete your profile');
   });
 
   /* Makes the Languages selector to show the flags.*/
-  $(function(){
-    $('.selectpicker').selectpicker();
+  $(function () {
+    $('.selectpicker').selectpicker;
   });
-  
+
   /* The variable holds the number of evaluators of the current survey*/
   var evaluatorsAmount = $('#numberOfEvaluators').data("field-id");
 
   /* Hide the closed Survey when the checkbox is checked */
-  $('[name="hide"]').click(function()
-  {
+  $('[name="hide"]').click(function () {
     var $this = $(this);
-    if($this.is(':checked'))
-    {
+    if ($this.is(':checked')) {
       var $row = $this.closest('tr');
       $row.fadeOut('slow');
       $('[name="showAll"]').prop('checked', false);
@@ -25,21 +103,16 @@ $(document).ready(function(){
   });
 
   /* Show all the closed Survey when the Show All button is clicked */
-  $('[name="showAll"]').change(function()
-  {
+  $('[name="showAll"]').change(function () {
     var $this = $(this);
-    if($this.is(':checked'))
-    {
-      $('[name="closedSurvey"]').each(function(index, row)
-      {
+    if ($this.is(':checked')) {
+      $('[name="closedSurvey"]').each(function (index, row) {
         $(row).fadeIn('slow');
         $('[name="hide"]').prop('checked', false);
       });
     }
-    else
-    {
-      $('[name="closedSurvey"]').each(function(index, row)
-      {
+    else {
+      $('[name="closedSurvey"]').each(function (index, row) {
         $(row).fadeOut('slow');
       });
     }
@@ -47,45 +120,38 @@ $(document).ready(function(){
 
   /* Allows to add external evaluator in peer survey*/
   $('#externalEvaluator').on('click',
-  function()
-  {
-    if(countEvaluator() < evaluatorsAmount)
-    {
-    var newRow =
-    $("<tr>\
+    function () {
+      if (countEvaluator() < evaluatorsAmount) {
+        var newRow =
+          $("<tr>\
       <td colspan='2'>\
         <input style='width: 35%; float:left;' id='email' type='email' class='form-control' placeholder='Enter email address'/>\
         <button type='button' class='remove btn btn-info glyphicon glyphicon-remove'  style='float:right;' />\
       </td>\
     </tr>");
-    newRow.prependTo('#tfooter');
-  }
-  else
-  {
-    // Notice there is already 5 evaluators
-    notice();
-  }
-  });
+        newRow.prependTo('#tfooter');
+      }
+      else {
+        // Notice there is already 5 evaluators
+        notice();
+      }
+    });
 
   /* Counts the current number of selected evaluators*/
-  function countEvaluator()
-  {
+  function countEvaluator() {
     var currentEvaluatorsQuantity = $('#example7 tbody input[name="usersToEvaluate[]"]:checked').length + $('#example7 tfoot tr').length - 1;
     return currentEvaluatorsQuantity;
   }
 
   /* Notice there is already 5 evaluators*/
-  function notice()
-  {
+  function notice() {
     $('#externalEvaluatorModal').modal('show');
   }
 
   /* Check that there will not be more than 5 evaluators are selected including externalEvaluator*/
-  $('[name="usersToEvaluate[]"]').change(function()
-  {
+  $('[name="usersToEvaluate[]"]').change(function () {
     var $this = $(this);
-    if(countEvaluator() > evaluatorsAmount)
-    {
+    if (countEvaluator() > evaluatorsAmount) {
       $this.prop('checked', false);
       notice();
     }
@@ -93,18 +159,16 @@ $(document).ready(function(){
 
   /* Remove rows when number of current evaluators > 5*/
   $(document).on('click', '.remove',
-    function()
-    {
+    function () {
       var $row = $(this).closest('tr');
-      $row.fadeOut(250, function()
-      {
+      $row.fadeOut(250, function () {
         $(this).remove();
       });
     }
   );
 
   /* Trigger the singleDatePicker when edit a survey*/
-  $(function() {
+  $(function () {
     $('input[name="startDate"], input[name="endDate"]').daterangepicker(
       {
         singleDatePicker: true,
@@ -112,11 +176,11 @@ $(document).ready(function(){
         // minDate: moment()
       }
     )
-    /* set the format of the picked value */
-    .on('apply.daterangepicker', function(ev, picker) {
-      $(this).val(picker.startDate.format('YYYY-MM-DD h:mm A'));
-      $(this).val(picker.endDate.format('YYYY-MM-DD h:mm A'));
-    });
+      /* set the format of the picked value */
+      .on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD h:mm A'));
+        $(this).val(picker.endDate.format('YYYY-MM-DD h:mm A'));
+      });
   });
 
   /* Show/Hide the option Number of Evaluators depedning on the survey type
@@ -124,19 +188,17 @@ $(document).ready(function(){
   function checkSurveyType() {
     var $option = $('input[name="numberOfEvaluators"]').closest('div');
     /* show the option to input how many evaluators if the peer survey (value == 2) is selected */
-    if($('input[name="survey_type"]:checked').val() == 2)
-    {
+    if ($('input[name="survey_type"]:checked').val() == 2) {
       $option.fadeIn('slow');
     }
-    else
-    {
+    else {
       $option.fadeOut('slow');
     }
   }
   // check when the page loads
   checkSurveyType();
   $('input[name="survey_type"]').change(
-    function() {
+    function () {
       checkSurveyType();
     }
   );
@@ -145,7 +207,7 @@ $(document).ready(function(){
     $('select[name="professional_status"]').change();
   });
   $('select[name="professional_status"]').change(
-    function() {
+    function () {
       var professionalStatus = $(this).val();
       /* Choose the fields to hide*/
       var hidingFields = professionalStatus == "Professional" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
@@ -153,10 +215,10 @@ $(document).ready(function(){
       var displayingFields = professionalStatus == "Student" ? $('div[name="student-field"]') : $('div[name="professional-field"]');
       hidingFields.fadeOut('slow');
       displayingFields.fadeIn('slow');
-    //   /* Set the view to the displaying fields*/
-    //   $("html, body").delay(0).animate({
-    //     scrollTop: displayingFields.offset().top
-    // }, 500);
+      //   /* Set the view to the displaying fields*/
+      //   $("html, body").delay(0).animate({
+      //     scrollTop: displayingFields.offset().top
+      // }, 500);
     }
   ).change();
 
@@ -174,15 +236,22 @@ $(document).ready(function(){
   }
 
   checkStatisticsType();
-  $('select[name="statisticsType"]').change(function() {
+  $('select[name="statisticsType"]').change(function () {
     checkStatisticsType();
   });
 
 
   //add template description to every survey
-  var description = "Innovation encourages an organisation to develop a knowledge-based competitive advantage. Innovation is often a critical component for success in today’s working world and so the FINCODA Innovation Barometer Assessment Tool gives organisations and individuals the ability to assess their capacity for innovation – by assessing individual levels of innovativeness. Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br><br>The Fincoda Barometer includes five Innovation competencies that span the process of innovation from idea to outcome. The following five dimensions are measured using the FINCODA Barometer: creativity, critical thinking, initiative, teamwork and networking. As it is unlikely that an individual would show a high mastery on all five innovation competencies, an innovator is defined as someone who has a high mastery on one or more of the five innovation competencies.";
+  var description = `Innovation encourages an organisation to develop a knowledge-based competitive advantage. 
+  Innovation is often a critical component for success in today’s working world and so the FINCODA Innovation Barometer Assessment Tool gives organisations and individuals the ability to assess their capacity for innovation – by assessing individual levels of innovativeness. 
+  Innovation is a process that allows for the introduction of a new product or service, new production methods, opens up new markets, identifies new suppliers, and business or management models that result in enhanced performance by, or within, the organization. 
+  Therefore, innovation starts with the generation of new ideas and finishes with the use or commercial exploitation of the outcomes.<br><br>The Fincoda Barometer includes five Innovation competencies that span the process of innovation from idea to outcome. 
+  The following five dimensions are measured using the FINCODA Barometer: creativity, critical thinking, initiative, teamwork and networking. As it is unlikely that an individual would show a high mastery on all five innovation competencies, an innovator is defined as someone who has a high mastery on one or more of the five innovation competencies.`;
 
-  $("textarea#editor1:not(.createGroup)").val(description);
+  if($("textarea#editor1:not(.createGroup)").val() == ""){
+    $("textarea#editor1:not(.createGroup)").val(description);
+  }
+   
 
   /* validate the input number of evaluators when creating peer survey on leaveFocus event of input field */
   function validateEvaluatorsNumber() {
@@ -190,13 +259,13 @@ $(document).ready(function(){
     var minimumAmount = 3;
     //chooses maximum amount depending on the current group or organization
     var maximumAmount = $('#groupMemberAmountList').length != 0 ? $('#groupMemberAmountList').find('option:selected').data('amount') :
-    $('#totalParticipantsNumber').data('amount');
+      $('#totalParticipantsNumber').data('amount');
     console.log(maximumAmount);
     // console.log(evaluatorsInput.val());
-    
-    
+
+
     // validate the minimum and maximum the amount could be with selected group
-    if(evaluatorsInput.val() != '' && (evaluatorsInput.val() < minimumAmount || evaluatorsInput.val() > maximumAmount)){
+    if (evaluatorsInput.val() != '' && (evaluatorsInput.val() < minimumAmount || evaluatorsInput.val() > maximumAmount)) {
       //show the message to user
       $('#evaluatorValidationError').modal('show');
       //clears input value & notifies user to input new value
@@ -205,7 +274,7 @@ $(document).ready(function(){
       var timer;
       clearTimeout(timer);
       evaluatorsInput.css('border-color', 'red');
-      timer = setTimeout(function() {
+      timer = setTimeout(function () {
         // reset CSS
         evaluatorsInput.css('border-color', '');
       }, 5000);
@@ -213,14 +282,14 @@ $(document).ready(function(){
     }
   }
   //
-  $('input[name = "numberOfEvaluators"]').change(function(){
+  $('input[name = "numberOfEvaluators"]').change(function () {
     validateEvaluatorsNumber();
   });
 
 
   /* update the selected group maximum input evaluators when create survey*/
   $('#groupMemberAmountList').change(
-    function() {
+    function () {
       // var selectedOption = $(this).find('option:selected');
       // console.log(selectedOption.data('amount'));
       validateEvaluatorsNumber();
@@ -229,136 +298,136 @@ $(document).ready(function(){
 
   //REGULAR EXPRESSION FOR EVERY INPUT:
 
-      //homepage contact input
-      $("#submit-home-contact").on('click', function() {
-        var text = '';
+  //homepage contact input
+  $("#submit-home-contact").on('click', function () {
+    var text = '';
 
-        var name = $("#name1").val();
-        var email = $("#email1").val();
-        var message = $("#message1").val();
+    var name = $("#name1").val();
+    var email = $("#email1").val();
+    var message = $("#message1").val();
 
-        if (!validateFullName(name)) {
-          text += 'Full name invalid. Please enter the correct name.\n';
-        }
-        if (!validateEmail(email)) {
-          text += 'Email invalid. Please enter the correct email.\n';
-        }
-        if (!validateTextarea(message)) {
-          text += 'Message invalid. Please enter the correct message.';
-        }
+    if (!validateFullName(name)) {
+      text += 'Full name invalid. Please enter the correct name.\n';
+    }
+    if (!validateEmail(email)) {
+      text += 'Email invalid. Please enter the correct email.\n';
+    }
+    if (!validateTextarea(message)) {
+      text += 'Message invalid. Please enter the correct message.';
+    }
 
-        if(text === ''){
-          return true;
-        }
-        else {
-          alert(text);
-          return false;
-        }
-      });
+    if (text === '') {
+      return true;
+    }
+    else {
+      alert(text);
+      return false;
+    }
+  });
 
-      //company register
-      $("#company-reg").on('click', function() {
-        var text = '';
-        var name = $("#com-name-reg").val();
-        var type = $("#com-type-reg").val();
-        var city = $("#com-type-reg").val();
-        var address = $("#com-type-reg").val();
-        var comEmail = $("#com-email-reg").val();
-        var phone = $("#com-phone-reg").val();
-        var postcode = $("#com-postcode-reg").val();
-        var timezone = $("#com-timezone-reg").val();
+  //company register
+  $("#company-reg").on('click', function () {
+    var text = '';
+    var name = $("#com-name-reg").val();
+    var type = $("#com-type-reg").val();
+    var city = $("#com-type-reg").val();
+    var address = $("#com-type-reg").val();
+    var comEmail = $("#com-email-reg").val();
+    var phone = $("#com-phone-reg").val();
+    var postcode = $("#com-postcode-reg").val();
+    var timezone = $("#com-timezone-reg").val();
 
-        var adminName = $("#ad-name-reg").val();
-        var adminEmail = $("#ad-email-reg").val();
-        var password = $("#ad-pass-reg").val();
-        var confirmPass = $("#ad-repass-reg").val();
+    var adminName = $("#ad-name-reg").val();
+    var adminEmail = $("#ad-email-reg").val();
+    var password = $("#ad-pass-reg").val();
+    var confirmPass = $("#ad-repass-reg").val();
 
 
-        if(!validateFullName(name)){
-          text += 'Company name invalid. Please enter the correct name.\n';
-        }
-        if(!validateFullName(type)){
-          text += 'Company type invalid. Please enter the correct type.\n';
-        }
-        if(!validateCity(city)){
-          text += 'City invalid. Please enter the correct city.\n';
-        }
-        if(!validateAddress(address)){
-          text += 'Company address invalid. Please enter the correct address.\n';
-        }
-        if(!validateEmail(comEmail)){
-          text += 'Company email invalid. Please enter the correct email.\n';
-        }
-        if(!validatePhone(phone)){
-          text += 'Company phone number invalid. Please enter the correct phone number.\n';
-        }
-        if(!validatePostcode(postcode)){
-          text += 'Company post code invalid. Please enter the correct post code.\n';
-        }
-        if(timezone === ''){
-          text += 'Company time zone blank. Please select the correct timezone.\n\n';
-        }
+    if (!validateFullName(name)) {
+      text += 'Company name invalid. Please enter the correct name.\n';
+    }
+    if (!validateFullName(type)) {
+      text += 'Company type invalid. Please enter the correct type.\n';
+    }
+    if (!validateCity(city)) {
+      text += 'City invalid. Please enter the correct city.\n';
+    }
+    if (!validateAddress(address)) {
+      text += 'Company address invalid. Please enter the correct address.\n';
+    }
+    if (!validateEmail(comEmail)) {
+      text += 'Company email invalid. Please enter the correct email.\n';
+    }
+    if (!validatePhone(phone)) {
+      text += 'Company phone number invalid. Please enter the correct phone number.\n';
+    }
+    if (!validatePostcode(postcode)) {
+      text += 'Company post code invalid. Please enter the correct post code.\n';
+    }
+    if (timezone === '') {
+      text += 'Company time zone blank. Please select the correct timezone.\n\n';
+    }
 
-        if(!validateFullName(adminName)){
-          text += 'Admin name invalid. Please enter the correct name.\n';
-        }
-        if(!validateEmail(adminEmail)){
-          text += 'Admin email invalid. Please enter the correct email.\n';
-        }
-        if(validatePassword(password)){
-          if( password !== confirmPass ){
-            text += 'Password does not match. Please enter the password again.';
-          }
-        }
-        else {
-          text += 'Password should contain at least 6 characters, 1 number, 1 uppercase letter and 1 lowercase letter.'
-        }
+    if (!validateFullName(adminName)) {
+      text += 'Admin name invalid. Please enter the correct name.\n';
+    }
+    if (!validateEmail(adminEmail)) {
+      text += 'Admin email invalid. Please enter the correct email.\n';
+    }
+    if (validatePassword(password)) {
+      if (password !== confirmPass) {
+        text += 'Password does not match. Please enter the password again.';
+      }
+    }
+    else {
+      text += 'Password should contain at least 6 characters, 1 number, 1 uppercase letter and 1 lowercase letter.'
+    }
 
-        if(text === ''){
-          return true;
-        }
-        else {
-          alert(text);
-          return false;
-        }
+    if (text === '') {
+      return true;
+    }
+    else {
+      alert(text);
+      return false;
+    }
 
-      });
+  });
 
-      //company member register
-      $("#user-reg").on('click', function(){
-        var text = '';
-        var code = $("#com-code-reg").val();
-        var email = $("#email-reg").val();
-        var name = $("#name-reg").val();
-        var password = $("#user-pass-reg").val();
-        var confirmPass = $("#user-repass").val();
+  //company member register
+  $("#user-reg").on('click', function () {
+    var text = '';
+    var code = $("#com-code-reg").val();
+    var email = $("#email-reg").val();
+    var name = $("#name-reg").val();
+    var password = $("#user-pass-reg").val();
+    var confirmPass = $("#user-repass").val();
 
-        if (!validateCode(code)) {
-          text += 'Company code invalid. Please enter the correct form of code.\n';
-        }
-        if (!validateFullName(name)) {
-          text += 'Full name invalid. Please enter the correct name.\n';
-        }
-        if (!validateEmail(email)) {
-          text += 'Email invalid. Please enter the correct email.\n';
-        }
-        if(validatePassword(password)) {
-          if( password !== confirmPass ){
-            text += 'Password does not match. Please enter the password again.';
-          }
-        }
-        else {
-          text += 'Password should contain at least 6 characters, 1 number, 1 uppercase letter and 1 lowercase letter.'
-        }
+    if (!validateCode(code)) {
+      text += 'Company code invalid. Please enter the correct form of code.\n';
+    }
+    if (!validateFullName(name)) {
+      text += 'Full name invalid. Please enter the correct name.\n';
+    }
+    if (!validateEmail(email)) {
+      text += 'Email invalid. Please enter the correct email.\n';
+    }
+    if (validatePassword(password)) {
+      if (password !== confirmPass) {
+        text += 'Password does not match. Please enter the password again.';
+      }
+    }
+    else {
+      text += 'Password should contain at least 6 characters, 1 number, 1 uppercase letter and 1 lowercase letter.'
+    }
 
-        if(text === ''){
-          return true;
-        }
-        else {
-          alert(text);
-          return false;
-        }
-      });
+    if (text === '') {
+      return true;
+    }
+    else {
+      alert(text);
+      return false;
+    }
+  });
 
 });
 
@@ -397,7 +466,7 @@ function validateFullName(name) {
   return re.test(name);
 }
 
-function validateCity(city){
+function validateCity(city) {
   var re = /^[a-zA-Z0-9åäöüéëïóáíñúÅÄÖßÜÉËÏÓÁÍÑÚ]+(\s[a-zA-Z0-9åäöüéëïóáíñúÅÄÖßÜÉËÏÓÁÍÑÚ]*){0,3}$/;
   return re.test(city);
 }
@@ -406,3 +475,7 @@ function validatePassword(password) {
   var re = /^(?=.*[a-zåäöüéëïóáíñú])(?=.*[A-ZÅÄÖßÜÉËÏÓÁÍÑÚ])(?=.*[0-9])(?=.{6,})/;
   return re.test(password);
 }
+
+
+
+
