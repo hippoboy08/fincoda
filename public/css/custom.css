@@ -15,8 +15,8 @@ input[type="radio"] {
 
 input[type="radio"]  {
     display:inline-block;
-    width:16px;
-    height:16px;
+    width:30px;
+    height:30px;
     margin:-1px 4px 0 0;
     vertical-align:middle;
     cursor:pointer;
@@ -25,8 +25,8 @@ input[type="radio"]  {
 }
 
 input[type="radio"]:checked {
-    width:20px;
-    height:20px;
+    width:30px;
+    height:30px;
     border: 5px solid #0DFF92;
     color: #0DFF92;
     background: orangered;
@@ -89,3 +89,46 @@ button#agree:disabled {
   cursor: no-drop !important;
   background: #aaaaaa !important;
 }
+
+/* Error for Organisation Name ( over 100 char)*/
+#error--OrgName{
+	color:#B22222;
+	display:none;
+}
+
+#select-country{
+  width: 8vw;
+  height: 25px;
+  float: left;
+  margin-right: 2%;
+  margin-top: 4px;
+}
+
+#com-phone-reg{
+  width: 74%;
+}
+
+/* Phu divide two part of edit profiles.*/
+.personal-question,
+.professional-question{
+  border: 1px dotted  #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+/* Phu: change the type of phone in edit profile */
+#user-phone-edit{
+    width: 16.5vw;
+    float: right
+}
+
+/* Phu : change the color of the delete button in profile */
+.btn-delete{
+  color:#FFF;
+  background-color: #df2739;
+}
+.btn-delete:hover{
+  background-color: #d32638;
+}
+
