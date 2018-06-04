@@ -44,6 +44,12 @@
                     <li><a href="{!! url('special/groupsurveyresult') !!}"><i class="fa fa-pie-chart" aria-hidden="true"></i>Survey Results</a></li>
 					<li hidden><a href="{{url('special/usergroup/create')}}"><i class="fa fa-list-alt" aria-hidden="true"></i>Create New Group</a></li>
                 </ul>
+
+                
+            <li class = "logOut">
+                <a href="http://localhost:8000/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Sign Out</span></a>
+            </li>
+            
             </li>
 
 
