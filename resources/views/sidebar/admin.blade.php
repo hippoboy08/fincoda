@@ -52,6 +52,11 @@
             </li>
             <li class="active"><a href="{!! url('admin/roles') !!}"><i class="fa fa-lock" aria-hidden="true"></i> <span>Permissions</span></a></li>
 
+            
+            <li class = "logOut">
+                <a href="http://localhost:8000/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Sign Out</span></a>
+            </li>
+            
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
