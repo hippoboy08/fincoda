@@ -58,11 +58,11 @@
                         </div>
 
                         <div class="form-group{!! $errors->has('password') ? ' has-error':'' !!} has-feedback">
-                            <label>Password*</label><br>
+                            <label>Password*<i>( > 6 characters contains at least one special char, capital character, and numeric value )</i></label><br>
                             @if($errors->has('company_code'))
                                 <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{!! $errors->first('password') !!}</label>
                             @endif
-                            {!! Form::password('password',['id'=>'user-pass-reg','class'=>'form-control','placeholder'=>'Password']) !!}
+                            {!! Form::password('password',['id'=>'user-pass-reg','class'=>'form-control','placeholder'=>'example: Password123*!!!']) !!}
                             <span class="form-control-feedback"><i class="fa fa-eye" aria-hidden="true"></i></span>
                         </div>
 
